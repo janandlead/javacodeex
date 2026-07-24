@@ -141,3 +141,7 @@ p { max-width: 70ch; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
+
+.behavioral-page .state-overview-points, .behavioral-page .strategy-overview-points, .behavioral-page .chain-overview-points, .behavioral-page .command-overview-points, .behavioral-page .memento-overview-points, .behavioral-page .observer-overview-points { margin: 0; padding-left: 1.25rem; color: #334155; }
+.behavioral-page .state-overview-points li, .behavioral-page .strategy-overview-points li, .behavioral-page .chain-overview-points li, .behavioral-page .command-overview-points li, .behavioral-page .memento-overview-points li, .behavioral-page .observer-overview-points li { margin-bottom: .65rem; line-height: 1.75; }
+.behavioral-page .pattern-hero h1 { max-width: none; }

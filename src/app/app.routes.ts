@@ -39,7 +39,7 @@ export const routes: Routes = [
       { path: 'design-patterns/template-method', title: 'Template Method Design Pattern in Java | Java Codeex', data: { category: 'Design Patterns', pattern: 'template-method' }, loadComponent: () => import('./features/design-patterns/behavioral-pattern.component').then((m) => m.BehavioralPatternComponent) },
       { path: 'design-patterns/visitor', title: 'Visitor Design Pattern in Java | Java Codeex', data: { category: 'Design Patterns', pattern: 'visitor' }, loadComponent: () => import('./features/design-patterns/behavioral-pattern.component').then((m) => m.BehavioralPatternComponent) },
       { path: 'spring-ai', title: 'Spring AI Course | Java Codeex', data: { category: 'AI Application Development', title: 'Spring AI', description: 'Build intelligent Java applications with Spring AI, prompts, models, retrieval, and practical production patterns.' }, loadComponent: () => import('./features/course-placeholder/course-placeholder.component').then((m) => m.CoursePlaceholderComponent) },
-      { path: '**', loadComponent: () => import('./shared/components/not-found/not-found.component').then((m) => m.NotFoundComponent) }
+      { path: '**', data: { robots: 'noindex, nofollow' }, loadComponent: () => import('./shared/components/not-found/not-found.component').then((m) => m.NotFoundComponent) }
     ]
   }
 ];
