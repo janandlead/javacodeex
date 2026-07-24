@@ -1,0 +1,433 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Deploy Spring Boot Applications | Java Codeex</title>
+    <link rel="icon" href="../icons/javacodeex.jpg" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../site-theme.css" />
+    <link rel="stylesheet" href="./springboot.css" />
+  </head>
+  <body>
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" /></a>
+        <a class="topic-link" href="./index.html#basics">Overview</a>
+        <a class="topic-link" href="https://javacodeex.com/springboot/project-structure.html"
+          >Project Structure</a
+        >
+        <a class="topic-link" href="./aop.html">AOP</a>
+        <a class="topic-link" href="./index.html#data-jpa">Data JPA</a>
+        <a class="topic-link" href="./index.html#security">Security</a>
+        <a class="topic-link" href="./index.html#exception-handling"
+          >Global Exception Handling</a
+        >
+        <a class="topic-link" href="./index.html#rest-api">REST APIs</a>
+        <a class="topic-link" href="./validation.html">Validation</a>
+        <a class="topic-link" href="./index.html#testing">Testing</a>
+        <a class="topic-link" href="./index.html#actuator">Actuator</a>
+        <a class="topic-link" href="./index.html#deployment">Deployment</a>
+      </div>
+    </nav>
+    <section class="spring-hero">
+      <div class="container-xl">
+        <span class="spring-pill">Java Codeex</span>
+        <h1 class="mt-3">Deployment</h1>
+        <p class="lead">
+          Package your application and run it consistently in a production
+          environment.
+        </p>
+      </div>
+    </section>
+    <main class="container-xl py-5">
+      <div class="spring-callout mb-4">
+        <strong>In simple terms:</strong> Deployment means taking an application
+        from a developer's computer and running it reliably where real users can
+        access it. A good deployment is repeatable, configurable, observable,
+        secure, and easy to roll back.
+      </div>
+
+      <div class="concept-diagram">
+        <figcaption>Typical deployment path</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>Build</strong><small>Compile and test</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Package</strong><small>Create JAR or image</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Configure</strong><small>Profiles and secrets</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Run</strong><small>Server or container</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Monitor</strong><small>Health and logs</small>
+          </div>
+        </div>
+      </div>
+
+      <h2 id="deployment-options">Deployment options</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Option</th>
+              <th>Best for</th>
+              <th>What you provide</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Executable JAR</td>
+              <td>VM, bare server, or simple hosting</td>
+              <td>Java runtime and configuration</td>
+            </tr>
+            <tr>
+              <td>Docker</td>
+              <td>Consistent local, CI, and production environments</td>
+              <td>Image and environment variables</td>
+            </tr>
+            <tr>
+              <td>Docker Compose</td>
+              <td>Local development with application dependencies</td>
+              <td>Compose file and volumes</td>
+            </tr>
+            <tr>
+              <td>Kubernetes</td>
+              <td>Multiple replicas and rolling deployments</td>
+              <td>Container image and manifests</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="jar-deployment">Build and run an executable JAR</h2>
+      <p>
+        Spring Boot packages the application, embedded server, and required
+        libraries into one executable JAR. The target machine needs a compatible
+        Java runtime, but it does not need a separately installed Tomcat.
+      </p>
+      <pre class="spring-code"><code>./mvnw clean test
+./mvnw clean package
+
+java -jar target/employee-service-1.0.0.jar
+
+# Override settings for one run
+java -jar target/employee-service-1.0.0.jar \
+  --server.port=9090 \
+  --spring.profiles.active=prod</code></pre>
+
+      <h2 id="environment-configuration">Configure each environment</h2>
+      <p>
+        Keep the same artifact across development, testing, and production.
+        Change environment-specific values with profiles, environment variables,
+        or a secret manager instead of rebuilding the JAR.
+      </p>
+      <pre class="spring-code"><code># application-prod.properties
+server.port=8080
+spring.datasource.url=DATABASE_URL
+spring.datasource.username=DATABASE_USERNAME
+spring.datasource.password=DATABASE_PASSWORD
+spring.jpa.hibernate.ddl-auto=validate
+management.endpoints.web.exposure.include=health,info,prometheus
+
+# Runtime environment variables
+SPRING_PROFILES_ACTIVE=prod
+DATABASE_URL=jdbc:postgresql://db:5432/employee_portal</code></pre>
+      <ul class="lh-lg">
+        <li>Never commit database passwords, API keys, or JWT secrets.</li>
+        <li>
+          Use <code>ddl-auto=validate</code> with Flyway or Liquibase in
+          production.
+        </li>
+        <li>Use a separate database and credentials for every environment.</li>
+      </ul>
+
+      <h2 id="docker-deployment">Dockerize the application</h2>
+      <p>
+        Docker puts the Java runtime and application into an image. The same
+        image can run on a developer laptop, in CI, or in a cloud platform.
+      </p>
+      <h3 id="dockerfile-example">Dockerfile</h3>
+      <pre class="spring-code"><code>FROM eclipse-temurin:21-jre
+WORKDIR /app
+COPY target/employee-service-1.0.0.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]</code></pre>
+      <h3 id="docker-commands">Build and run the image</h3>
+      <pre class="spring-code"><code>./mvnw clean package
+docker build -t javacodeex/employee-service:1.0.0 .
+
+docker run --name employee-service \
+  -p 8080:8080 \
+  -e SPRING_PROFILES_ACTIVE=prod \
+  -e DATABASE_URL=jdbc:postgresql://host.docker.internal:5432/employee_portal \
+  -e DATABASE_USERNAME=postgres \
+  -e DATABASE_PASSWORD=change-me \
+  javacodeex/employee-service:1.0.0</code></pre>
+      <p>
+        <code>-p 8080:8080</code> maps the host port to the container port.
+        Environment variables are injected at runtime, so the image does not
+        contain a database password.
+      </p>
+
+      <h3 id="multistage-docker">Multi-stage Docker build</h3>
+      <p>
+        A multi-stage build compiles the application in one stage and copies
+        only the final JAR into a smaller runtime image.
+      </p>
+      <pre class="spring-code"><code>FROM maven:3.9-eclipse-temurin-21 AS build
+WORKDIR /workspace
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:21-jre
+WORKDIR /app
+COPY --from=build /workspace/target/*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]</code></pre>
+
+      <h2 id="compose-example">
+        Run Spring Boot and PostgreSQL with Docker Compose
+      </h2>
+      <p>
+        Compose is useful for local development because it starts the
+        application and database together on one private network.
+      </p>
+      <pre class="spring-code"><code>services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: employee_portal
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: local-password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DATABASE_URL: jdbc:postgresql://db:5432/employee_portal
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: local-password
+
+volumes:
+  postgres-data:</code></pre>
+      <pre class="spring-code"><code>docker compose up --build
+docker compose logs -f app
+docker compose down</code></pre>
+      <p>
+        Inside Compose, the application connects to host <code>db</code>, not
+        <code>localhost</code>. A Compose service name becomes a network
+        hostname.
+      </p>
+      <h2 id="deployment-health">Health checks and readiness</h2>
+      <p>
+        Add Actuator so a platform can decide whether the application is alive
+        and ready. Liveness controls restarts; readiness controls traffic.
+      </p>
+      <pre
+        class="spring-code"
+      ><code>management.endpoint.health.probes.enabled=true
+management.endpoints.web.exposure.include=health,info
+
+GET /actuator/health/liveness
+GET /actuator/health/readiness</code></pre>
+      <pre
+        class="spring-code"
+      ><code>HEALTHCHECK --interval=30s --timeout=5s --start-period=20s \
+  CMD wget --no-verbose --tries=1 \
+  --spider http://localhost:8080/actuator/health/readiness || exit 1</code></pre>
+
+      <h2 id="kubernetes-deployment">Deploy the container to Kubernetes</h2>
+      <p>
+        Kubernetes can run multiple copies, send traffic through a Service, and
+        use probes to control traffic and restarts.
+      </p>
+      <pre class="spring-code"><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employee-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: employee-service
+  template:
+    metadata:
+      labels:
+        app: employee-service
+    spec:
+      containers:
+        - name: employee-service
+          image: javacodeex/employee-service:1.0.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: employee-service
+spec:
+  selector:
+    app: employee-service
+  ports:
+    - port: 80
+      targetPort: 8080</code></pre>
+      <pre class="spring-code"><code>kubectl apply -f employee-service.yaml
+kubectl get pods
+kubectl logs -f deployment/employee-service
+kubectl rollout status deployment/employee-service</code></pre>
+
+      <h2 id="deployment-logging">Logging and monitoring</h2>
+      <p>
+        Containers should write logs to standard output so Docker, Kubernetes,
+        or a cloud logging platform can collect them. Monitor latency, error
+        rate, traffic, CPU, memory, and database connection usage.
+      </p>
+      <pre class="spring-code"><code>logging.level.root=INFO
+logging.level.com.javacodeex=INFO
+logging.pattern.console=%d{ISO8601} %-5level [%X{requestId}] %logger - %msg%n
+
+GET /actuator/health/readiness
+GET /actuator/metrics/http.server.requests
+GET /actuator/prometheus</code></pre>
+
+      <h2 id="ci-cd">CI/CD deployment flow</h2>
+      <ol class="lh-lg">
+        <li>Push code to the source repository.</li>
+        <li>Run unit tests, integration tests, and security checks.</li>
+        <li>Build the JAR and Docker image.</li>
+        <li>Tag the image with a release or commit ID.</li>
+        <li>Push the image to a private container registry.</li>
+        <li>Deploy the image and wait for readiness checks.</li>
+        <li>Stop or roll back automatically when health checks fail.</li>
+      </ol>
+      <pre class="spring-code"><code>javacodeex/employee-service:1.0.0
+javacodeex/employee-service:git-a1b2c3d</code></pre>
+
+      <h2 id="deployment-security">Deployment security</h2>
+      <ul class="lh-lg">
+        <li>Use HTTPS at the load balancer or ingress.</li>
+        <li>Store secrets in a secret manager or Kubernetes Secret.</li>
+        <li>Run containers as a non-root user where possible.</li>
+        <li>Use a small JRE image and scan images for vulnerabilities.</li>
+        <li>Expose only required Actuator endpoints.</li>
+        <li>Restrict database access to the application network.</li>
+        <li>Keep dependencies and base images patched.</li>
+      </ul>
+
+      <h2 id="rollback">Rollback and troubleshooting</h2>
+      <p>
+        Keep the previous image available and make database migrations backward
+        compatible when possible. A deployment is incomplete until recovery has
+        been tested.
+      </p>
+      <pre
+        class="spring-code"
+      ><code>kubectl rollout history deployment/employee-service
+kubectl rollout undo deployment/employee-service
+kubectl describe pod &lt;pod-name&gt;
+kubectl logs &lt;pod-name&gt;</code></pre>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Symptom</th>
+              <th>First checks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Container exits</td>
+              <td>
+                Application logs, Java version, required environment variables
+              </td>
+            </tr>
+            <tr>
+              <td>Readiness fails</td>
+              <td>Database URL, credentials, migrations, dependency health</td>
+            </tr>
+            <tr>
+              <td>502 or 503 response</td>
+              <td>Service port, target port, readiness probe, network rules</td>
+            </tr>
+            <tr>
+              <td>Application is slow</td>
+              <td>HTTP latency, CPU, memory, and database metrics</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="checklist">Production checklist</h2>
+      <ul class="lh-lg">
+        <li>Run tests before packaging and scan dependencies and images.</li>
+        <li>Use an immutable, versioned JAR or Docker image.</li>
+        <li>Keep environment configuration and secrets outside the image.</li>
+        <li>Use database migrations and take backups before risky changes.</li>
+        <li>Configure readiness and liveness probes.</li>
+        <li>Set memory and CPU requests and limits for containers.</li>
+        <li>Collect structured logs, metrics, and alerts.</li>
+        <li>Document rollback steps and test them.</li>
+        <li>Use HTTPS, least privilege, and restricted Actuator endpoints.</li>
+      </ul>
+      <a class="btn btn-success" href="index.html"
+        >Back to Spring Boot Course</a
+      >
+    </main>
+    <footer class="py-4 text-center">
+      <p class="mb-0">&copy; 2026 Java Codeex</p>
+    </footer>
+    <script src="./springboot-nav.js"></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

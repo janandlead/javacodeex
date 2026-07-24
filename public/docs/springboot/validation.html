@@ -1,0 +1,508 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Spring Boot Validation | Java Codeex</title>
+    <link rel="icon" href="../icons/javacodeex.jpg" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../site-theme.css" />
+    <link rel="stylesheet" href="./springboot.css" />
+  </head>
+  <body>
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" /></a>
+        <a class="topic-link" href="./index.html#basics">Overview</a>
+        <a class="topic-link" href="https://javacodeex.com/springboot/project-structure.html"
+          >Project Structure</a
+        >
+        <a class="topic-link" href="./aop.html">AOP</a>
+        <a class="topic-link" href="./index.html#data-jpa">Data JPA</a>
+        <a class="topic-link" href="./index.html#security">Security</a>
+        <a class="topic-link" href="./index.html#exception-handling"
+          >Global Exception Handling</a
+        >
+        <a class="topic-link" href="./index.html#rest-api">REST APIs</a>
+        <a class="topic-link" href="./validation.html">Validation</a>
+        <a class="topic-link" href="./index.html#testing">Testing</a>
+        <a class="topic-link" href="./index.html#actuator">Actuator</a>
+        <a class="topic-link" href="./index.html#deployment">Deployment</a>
+      </div>
+    </nav>
+    <section class="spring-hero">
+      <div class="container-xl">
+        <span class="spring-pill">Java Codeex</span>
+        <h1 class="mt-3">Request Validation</h1>
+        <p class="lead">
+          Reject incomplete or invalid data at the API boundary.
+        </p>
+      </div>
+    </section>
+    <main class="container-xl py-5">
+      <div class="spring-callout mb-4">
+        <strong>In simple terms:</strong> Validation checks whether incoming
+        data follows the rules of your application before business logic uses
+        it. For example, an email must be valid, a price must be positive, and a
+        password must be strong enough.
+      </div>
+
+      <div class="concept-diagram">
+        <figcaption>Where validation happens</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>Client</strong><small>Sends data</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Controller</strong><small>Request validation</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Service</strong><small>Business validation</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Database</strong><small>Data integrity rules</small>
+          </div>
+        </div>
+      </div>
+
+      <h2 id="validation-dependency">1. Add the validation dependency</h2>
+      <pre class="spring-code"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+      <p>
+        Spring Boot uses Jakarta Bean Validation, commonly implemented by
+        Hibernate Validator. The validator checks annotations and reports
+        violations before the controller method runs.
+      </p>
+
+      <h2 id="validation-constraints">2. Common validation annotations</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Annotation</th>
+              <th>Checks</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>@NotNull</code></td>
+              <td>Value is not null</td>
+              <td><code>@NotNull Long departmentId</code></td>
+            </tr>
+            <tr>
+              <td><code>@NotEmpty</code></td>
+              <td>Text or collection is not null or empty</td>
+              <td><code>@NotEmpty List&lt;String&gt; roles</code></td>
+            </tr>
+            <tr>
+              <td><code>@NotBlank</code></td>
+              <td>Text contains non-whitespace characters</td>
+              <td><code>@NotBlank String name</code></td>
+            </tr>
+            <tr>
+              <td><code>@Size</code></td>
+              <td>Text or collection length</td>
+              <td><code>@Size(min = 8, max = 100)</code></td>
+            </tr>
+            <tr>
+              <td><code>@Email</code></td>
+              <td>Email-like format</td>
+              <td><code>@Email String email</code></td>
+            </tr>
+            <tr>
+              <td><code>@Min</code> / <code>@Max</code></td>
+              <td>Integer or long range</td>
+              <td><code>@Min(18) int age</code></td>
+            </tr>
+            <tr>
+              <td><code>@DecimalMin</code> / <code>@DecimalMax</code></td>
+              <td>Decimal range</td>
+              <td><code>@DecimalMin("0.01") BigDecimal price</code></td>
+            </tr>
+            <tr>
+              <td><code>@Positive</code> / <code>@PositiveOrZero</code></td>
+              <td>Number is greater than zero</td>
+              <td><code>@Positive BigDecimal amount</code></td>
+            </tr>
+            <tr>
+              <td><code>@Negative</code> / <code>@NegativeOrZero</code></td>
+              <td>Number is below zero</td>
+              <td><code>@Negative int adjustment</code></td>
+            </tr>
+            <tr>
+              <td><code>@Past</code> / <code>@PastOrPresent</code></td>
+              <td>Date is before today</td>
+              <td><code>@Past LocalDate birthDate</code></td>
+            </tr>
+            <tr>
+              <td><code>@Future</code> / <code>@FutureOrPresent</code></td>
+              <td>Date is after today</td>
+              <td><code>@Future LocalDate deliveryDate</code></td>
+            </tr>
+            <tr>
+              <td><code>@Pattern</code></td>
+              <td>Matches a regular expression</td>
+              <td><code>@Pattern(regexp = "[A-Z]{2}[0-9]{4}")</code></td>
+            </tr>
+            <tr>
+              <td><code>@AssertTrue</code></td>
+              <td>Boolean must be true</td>
+              <td><code>@AssertTrue boolean acceptedTerms</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        <code>@NotNull</code> allows an empty string, while
+        <code>@NotBlank</code> rejects empty and whitespace-only text. Numeric
+        constraints do not reject <code>null</code>; combine them with
+        <code>@NotNull</code> when the number is required.
+      </p>
+
+      <h2 id="request-validation">3. Validate a REST request DTO</h2>
+      <p>
+        A DTO is the safest place for request validation. It describes what the
+        API accepts without exposing database fields such as internal IDs, audit
+        columns, or password hashes.
+      </p>
+      <pre class="spring-code"><code>public record RegisterRequest(
+        @NotBlank(message = "Name is required")
+        @Size(max = 80, message = "Name is too long")
+        String name,
+
+        @NotBlank(message = "Email is required")
+        @Email(message = "Enter a valid email address")
+        String email,
+
+        @NotBlank(message = "Password is required")
+        @Size(min = 8, max = 100,
+              message = "Password must contain 8 to 100 characters")
+        String password,
+
+        @NotNull(message = "Age is required")
+        @Min(value = 18, message = "You must be at least 18")
+        Integer age) {
+}</code></pre>
+
+      <h2 id="valid-annotation">4. Use @Valid in the controller</h2>
+      <pre class="spring-code"><code>@PostMapping("/users")
+public ResponseEntity&lt;UserResponse&gt; register(
+        @Valid @RequestBody RegisterRequest request) {
+
+    UserResponse user = userService.register(request);
+    URI location = URI.create("/api/users/" + user.id());
+    return ResponseEntity.created(location).body(user);
+}</code></pre>
+      <p>
+        If the request is invalid, Spring throws
+        <code>MethodArgumentNotValidException</code> and the service method is
+        not called. A global exception handler should convert that exception to
+        a friendly <code>400 Bad Request</code> response.
+      </p>
+
+      <h2 id="path-query-validation">5. Validate path and query parameters</h2>
+      <p>
+        Use <code>@Validated</code> on the controller or service class when
+        validating method parameters such as IDs, page sizes, and query values.
+      </p>
+      <pre class="spring-code"><code>@RestController
+@Validated
+@RequestMapping("/api/products")
+public class ProductController {
+
+    @GetMapping("/{id}")
+    public Product findById(
+            @PathVariable
+            @Positive(message = "ID must be positive") Long id) {
+        return service.findById(id);
+    }
+
+    @GetMapping
+    public Page&lt;Product&gt; search(
+            @RequestParam(defaultValue = "0")
+            @PositiveOrZero int page,
+            @RequestParam(defaultValue = "20")
+            @Min(1) @Max(100) int size) {
+        return service.search(page, size);
+    }
+}</code></pre>
+      <p>
+        Depending on the Spring version, invalid method parameters may produce
+        <code>ConstraintViolationException</code> or
+        <code>HandlerMethodValidationException</code>. Handle both in your
+        global exception handler when supporting multiple Spring Boot versions.
+      </p>
+
+      <h2 id="nested-validation">6. Validate nested objects and collections</h2>
+      <p>
+        Add <code>@Valid</code> to a nested field or collection so validation
+        continues into its child objects. Without it, the child annotations are
+        not evaluated.
+      </p>
+      <pre class="spring-code"><code>public record CreateOrderRequest(
+        @NotEmpty List&lt;@Valid OrderItemRequest&gt; items,
+        @Valid ShippingAddress address) {
+}
+
+public record OrderItemRequest(
+        @NotNull Long productId,
+        @Min(1) @Max(100) int quantity) {
+}
+
+public record ShippingAddress(
+        @NotBlank String street,
+        @NotBlank String city,
+        @Pattern(regexp = "[0-9]{5,6}") String postalCode) {
+}</code></pre>
+
+      <h2 id="entity-validation">7. Validate entity fields</h2>
+      <p>
+        Entity validation protects data when JPA persists or updates an entity.
+        It is useful as a second line of defense, but it should not replace DTO
+        validation because entities can be used in different workflows.
+      </p>
+      <pre class="spring-code"><code>@Entity
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String name;
+
+    @NotNull
+    @Positive
+    @Column(nullable = false, precision = 12, scale = 2)
+    private BigDecimal price;
+
+    @PositiveOrZero
+    @Column(nullable = false)
+    private int stock;
+}</code></pre>
+      <p>
+        <code>@Column(nullable = false)</code> creates a database-level null
+        rule, while <code>@NotNull</code> reports a validation error before the
+        database call. Use both when the rule is important.
+      </p>
+
+      <h2 id="service-validation">8. Validate business rules in the service</h2>
+      <p>
+        Bean Validation checks individual values. Business validation checks
+        rules that require application data, such as duplicate email, stock
+        availability, or whether a user is allowed to update an order.
+      </p>
+      <pre class="spring-code"><code>@Service
+public class OrderService {
+
+    public Order placeOrder(CreateOrderRequest request) {
+        for (OrderItemRequest item : request.items()) {
+            Product product = productRepository.findById(item.productId())
+                    .orElseThrow(() -&gt; new ProductNotFoundException(
+                            item.productId()));
+
+            if (product.getStock() &lt; item.quantity()) {
+                throw new InsufficientStockException(product.getName());
+            }
+        }
+        return saveOrder(request);
+    }
+}</code></pre>
+
+      <h2 id="cross-field-validation">9. Cross-field validation</h2>
+      <p>
+        Some rules compare two or more fields, such as password confirmation or
+        a start date before an end date. Create a class-level constraint for
+        these rules instead of forcing the controller to compare fields.
+      </p>
+      <pre class="spring-code"><code>@PasswordsMatch
+public record ChangePasswordRequest(
+        @NotBlank String newPassword,
+        @NotBlank String confirmPassword) {
+}
+
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = PasswordsMatchValidator.class)
+public @interface PasswordsMatch {
+    String message() default "Passwords do not match";
+    Class&lt;?&gt;[] groups() default {};
+    Class&lt;? extends Payload&gt;[] payload() default {};
+}</code></pre>
+      <pre class="spring-code"><code>public class PasswordsMatchValidator
+        implements ConstraintValidator&lt;PasswordsMatch, ChangePasswordRequest&gt; {
+
+    @Override
+    public boolean isValid(ChangePasswordRequest value,
+                           ConstraintValidatorContext context) {
+        return value == null
+                || Objects.equals(value.newPassword(),
+                                  value.confirmPassword());
+    }
+}</code></pre>
+
+      <h2 id="custom-validator">10. Custom field validator</h2>
+      <p>
+        Use a custom annotation when a repeated field rule is not provided by
+        the standard constraints, such as an employee code format or a supported
+        country code.
+      </p>
+      <pre class="spring-code"><code>@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = EmployeeCodeValidator.class)
+public @interface ValidEmployeeCode {
+    String message() default "Invalid employee code";
+    Class&lt;?&gt;[] groups() default {};
+    Class&lt;? extends Payload&gt;[] payload() default {};
+}
+
+public class EmployeeCodeValidator
+        implements ConstraintValidator&lt;ValidEmployeeCode, String&gt; {
+    @Override
+    public boolean isValid(String value,
+                           ConstraintValidatorContext context) {
+        return value != null &amp;&amp; value.matches("EMP-[0-9]{5}");
+    }
+}</code></pre>
+
+      <h2 id="method-validation">11. Validate service method parameters</h2>
+      <p>
+        Use <code>@Validated</code> on a Spring service when method arguments
+        must be checked even when the method is called outside a REST
+        controller.
+      </p>
+      <pre class="spring-code"><code>@Service
+@Validated
+public class PaymentService {
+
+    public Payment findPayment(
+            @NotNull @Positive Long paymentId) {
+        return repository.findById(paymentId);
+    }
+}</code></pre>
+
+      <h2 id="database-validation">12. Database validation and uniqueness</h2>
+      <p>
+        A validation annotation cannot safely check whether an email is unique
+        because another request may insert the same email at the same time. Use
+        both an application check and a database unique constraint, then map the
+        database conflict to <code>409 Conflict</code>.
+      </p>
+      <pre class="spring-code"><code>@Column(nullable = false, unique = true)
+private String email;
+
+if (userRepository.existsByEmail(request.email())) {
+    throw new DuplicateEmailException(request.email());
+}
+
+// Also handle DataIntegrityViolationException globally.</code></pre>
+
+      <h2 id="validation-errors">13. Return useful validation errors</h2>
+      <p>
+        A frontend needs the field name and a human-readable message. Do not
+        return a stack trace or internal class name.
+      </p>
+      <pre
+        class="spring-code"
+      ><code>@ExceptionHandler(MethodArgumentNotValidException.class)
+public ResponseEntity&lt;ValidationError&gt; validationErrors(
+        MethodArgumentNotValidException ex) {
+    Map&lt;String, String&gt; fields = new LinkedHashMap&lt;&gt;();
+    ex.getBindingResult().getFieldErrors().forEach(error -&gt;
+            fields.put(error.getField(), error.getDefaultMessage()));
+    return ResponseEntity.badRequest().body(
+            new ValidationError(400, "Validation failed", fields));
+}
+
+public record ValidationError(
+        int status, String error, Map&lt;String, String&gt; fields) {
+}</code></pre>
+      <pre class="spring-code"><code>{
+  "status": 400,
+  "error": "Validation failed",
+  "fields": {
+    "email": "Enter a valid email address",
+    "password": "Password must contain 8 to 100 characters"
+  }
+}</code></pre>
+
+      <h2 id="validation-end-to-end">14. End-to-end registration example</h2>
+      <ol class="lh-lg">
+        <li>The client sends JSON to <code>POST /api/users</code>.</li>
+        <li>
+          <code>@RequestBody</code> converts JSON to
+          <code>RegisterRequest</code>.
+        </li>
+        <li>
+          <code>@Valid</code> checks required fields, email, age, and password.
+        </li>
+        <li>If valid, the service checks whether the email already exists.</li>
+        <li>The service hashes the password and saves the user through JPA.</li>
+        <li>
+          The API returns <code>201 Created</code>; invalid input returns
+          <code>400</code>.
+        </li>
+      </ol>
+      <pre class="spring-code"><code>POST /api/users
+Content-Type: application/json
+
+{
+  "name": "Anand Kumar",
+  "email": "anand@example.com",
+  "password": "StrongPassword123!",
+  "age": 28
+}</code></pre>
+
+      <h2 id="validation-best-practices">15. Validation best practices</h2>
+      <ul class="lh-lg">
+        <li>Validate at the API boundary with request DTOs.</li>
+        <li>
+          Use <code>@Valid</code> for request bodies and
+          <code>@Validated</code> for method parameters.
+        </li>
+        <li>
+          Use <code>@Valid</code> on nested objects and collection elements.
+        </li>
+        <li>Keep business rules in services, not only in annotations.</li>
+        <li>
+          Use database constraints for uniqueness and final data integrity.
+        </li>
+        <li>Return field-level errors with a consistent response format.</li>
+        <li>Never trust frontend validation; validate again on the server.</li>
+        <li>
+          Do not return passwords, tokens, or sensitive values in errors or
+          logs.
+        </li>
+      </ul>
+      <a class="btn btn-success" href="exception-handling.html"
+        >Next: Global Exception Handling</a
+      >
+    </main>
+    <footer class="py-4 text-center">
+      <p class="mb-0">&copy; 2026 Java Codeex</p>
+    </footer>
+    <script src="./springboot-nav.js"></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

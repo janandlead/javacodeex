@@ -1,0 +1,422 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Comprehensive REST API design guide for Spring Boot"
+    />
+    <title>REST API Design Best Practices | Java Codeex</title>
+    <link rel="icon" href="../icons/javacodeex.jpg" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../site-theme.css" />
+    <link rel="stylesheet" href="./springboot.css" />
+  </head>
+  <body>
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" /></a>
+        <a class="topic-link" href="./index.html#basics"
+          >Overview</a
+        >
+        <a class="topic-link" href="https://javacodeex.com/springboot/project-structure.html"
+          >Project Structure</a
+        >
+        <a class="topic-link" href="./aop.html">AOP</a>
+        <a class="topic-link" href="./index.html#data-jpa">Data JPA</a>
+        <a class="topic-link" href="./index.html#security">Security</a>
+        <a class="topic-link" href="./index.html#exception-handling"
+          >Exceptions</a
+        >
+        <a class="topic-link" href="./index.html#rest-api">REST APIs</a>
+        <a class="topic-link" href="./validation.html">Validation</a>
+        <a class="topic-link" href="./index.html#testing">Testing</a>
+        <a class="topic-link" href="./index.html#actuator">Actuator</a>
+        <a class="topic-link" href="./index.html#deployment">Deployment</a>
+      </div>
+    </nav>
+    <section class="spring-hero">
+      <div class="container-xl">
+        <span class="spring-pill">Java Codeex</span>
+        <h1 class="mt-3">REST API Design Best Practices</h1>
+        <p class="lead">
+          Design APIs that are intuitive, scalable, and easy for clients to use
+          correctly.
+        </p>
+      </div>
+    </section>
+    <main class="container-xl py-5">
+      <div class="spring-callout mb-4">
+        <strong>Core principle:</strong> Your API is a contract with clients.
+        Make it clear, predictable, and backwards-compatible when possible.
+      </div>
+
+      <h2 id="naming-conventions">URL Naming Conventions</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Resource</th>
+              <th>Good URL</th>
+              <th>Why</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>List all users</td>
+              <td><code>GET /api/v1/users</code></td>
+              <td>Plural nouns, versioned</td>
+            </tr>
+            <tr>
+              <td>Get one user</td>
+              <td><code>GET /api/v1/users/123</code></td>
+              <td>Resource ID in path</td>
+            </tr>
+            <tr>
+              <td>Create user</td>
+              <td><code>POST /api/v1/users</code></td>
+              <td>POST to collection</td>
+            </tr>
+            <tr>
+              <td>Update user</td>
+              <td><code>PUT /api/v1/users/123</code></td>
+              <td>Full replacement</td>
+            </tr>
+            <tr>
+              <td>Partial update</td>
+              <td><code>PATCH /api/v1/users/123</code></td>
+              <td>Partial changes</td>
+            </tr>
+            <tr>
+              <td>Delete user</td>
+              <td><code>DELETE /api/v1/users/123</code></td>
+              <td>Idempotent delete</td>
+            </tr>
+            <tr>
+              <td>User orders</td>
+              <td><code>GET /api/v1/users/123/orders</code></td>
+              <td>Nested resources</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="http-status-codes">HTTP Status Codes Reference</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Meaning</th>
+              <th>Example Use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>200</strong></td>
+              <td>OK - Success</td>
+              <td>GET user details, successful PUT/PATCH</td>
+            </tr>
+            <tr>
+              <td><strong>201</strong></td>
+              <td>Created - Resource created</td>
+              <td>POST new user (include Location header)</td>
+            </tr>
+            <tr>
+              <td><strong>204</strong></td>
+              <td>No Content - Success, no body</td>
+              <td>DELETE user, successful action</td>
+            </tr>
+            <tr>
+              <td><strong>400</strong></td>
+              <td>Bad Request - Invalid input</td>
+              <td>Missing field, wrong format</td>
+            </tr>
+            <tr>
+              <td><strong>401</strong></td>
+              <td>Unauthorized - Authentication needed</td>
+              <td>No token, invalid token</td>
+            </tr>
+            <tr>
+              <td><strong>403</strong></td>
+              <td>Forbidden - Authenticated but not allowed</td>
+              <td>User can't access admin endpoint</td>
+            </tr>
+            <tr>
+              <td><strong>404</strong></td>
+              <td>Not Found - Resource doesn't exist</td>
+              <td>User ID doesn't exist</td>
+            </tr>
+            <tr>
+              <td><strong>409</strong></td>
+              <td>Conflict - Request conflicts with state</td>
+              <td>Email already exists</td>
+            </tr>
+            <tr>
+              <td><strong>500</strong></td>
+              <td>Internal Server Error - Server error</td>
+              <td>Unexpected exception</td>
+            </tr>
+            <tr>
+              <td><strong>503</strong></td>
+              <td>Service Unavailable - Down for maintenance</td>
+              <td>Database unreachable</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="error-responses">Standard Error Response Format</h2>
+      <p>
+        Return consistent error information so clients can understand what went
+        wrong:
+      </p>
+
+      <pre class="spring-code"><code>// Standard error response structure
+{
+  "timestamp": "2024-07-24T10:30:00Z",
+  "status": 400,
+  "error": "Bad Request",
+  "message": "Validation failed",
+  "path": "/api/v1/users",
+  "details": {
+    "email": "Email is invalid",
+    "age": "Age must be between 18 and 120"
+  }
+}
+
+// Spring Boot implementation
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+    
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity&lt;ErrorResponse&gt; handleValidationError(
+            MethodArgumentNotValidException ex,
+            HttpServletRequest request) {
+        
+        Map&lt;String, String&gt; details = new HashMap&lt;&gt;();
+        ex.getBindingResult().getFieldErrors().forEach(error ->
+            details.put(error.getField(), error.getDefaultMessage())
+        );
+        
+        ErrorResponse error = new ErrorResponse(
+            LocalDateTime.now(),
+            HttpStatus.BAD_REQUEST.value(),
+            "Validation Failed",
+            details
+        );
+        
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+}
+</code></pre>
+
+      <h2 id="pagination-query-params">Pagination and Query Parameters</h2>
+
+      <pre class="spring-code"><code>// Common pagination patterns
+GET /api/v1/users?page=0&size=20&sort=createdAt,desc
+
+// Filtering
+GET /api/v1/users?status=active&role=admin
+
+// Searching
+GET /api/v1/users?search=john&fields=name,email
+
+// Spring implementation
+@GetMapping
+public Page&lt;UserResponse&gt; getUsers(
+    @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC)
+    Pageable pageable,
+    @RequestParam(required = false) String status,
+    @RequestParam(required = false) String search
+) {
+    return userService.findUsers(pageable, status, search);
+}
+</code></pre>
+
+      <h2 id="versioning">API Versioning Strategies</h2>
+
+      <h3>Option 1: URI Path Versioning (Most Common)</h3>
+      <pre class="spring-code"><code>GET /api/v1/users      // Version 1
+GET /api/v2/users      // Version 2
+GET /api/v3/users      // Version 3
+
+@RestController
+@RequestMapping("/api/v1/users")
+class UserControllerV1 { }
+
+@RestController
+@RequestMapping("/api/v2/users")
+class UserControllerV2 { }
+</code></pre>
+
+      <h3>Option 2: Request Header Versioning</h3>
+      <pre class="spring-code"><code>GET /api/users
+Header: X-API-Version: 1
+
+GET /api/users
+Header: X-API-Version: 2
+
+@RestController
+@RequestMapping("/api/users")
+class UserController {
+    
+    @GetMapping(headers = "X-API-Version=1")
+    public UserResponseV1 getUsersV1() { }
+    
+    @GetMapping(headers = "X-API-Version=2")
+    public UserResponseV2 getUsersV2() { }
+}
+</code></pre>
+
+      <h3>Option 3: Accept Header (Content Negotiation)</h3>
+      <pre class="spring-code"><code>GET /api/users
+Accept: application/vnd.company.v1+json
+
+GET /api/users
+Accept: application/vnd.company.v2+json
+</code></pre>
+
+      <h2 id="best-practices-list">API Design Best Practices</h2>
+
+      <div
+        style="
+          background: #d4edda;
+          padding: 20px;
+          border-radius: 4px;
+          border-left: 4px solid #28a745;
+          margin: 20px 0;
+        "
+      >
+        <h4 style="margin-top: 0">✅ DO:</h4>
+        <ul class="lh-lg">
+          <li>Use version in URL for clarity (<code>/api/v1/users</code>)</li>
+          <li>
+            Use plural nouns for resources (<code>/users</code>, not
+            <code>/user</code>)
+          </li>
+          <li>Use HTTP methods correctly (GET reads, POST creates, etc.)</li>
+          <li>Return appropriate status codes</li>
+          <li>Include Location header with 201 Created responses</li>
+          <li>Paginate large result sets</li>
+          <li>Use camelCase in JSON responses</li>
+          <li>Document your API (OpenAPI/Swagger)</li>
+          <li>Use consistent error response format</li>
+          <li>Validate input thoroughly</li>
+        </ul>
+      </div>
+
+      <div
+        style="
+          background: #f8d7da;
+          padding: 20px;
+          border-radius: 4px;
+          border-left: 4px solid #dc3545;
+          margin: 20px 0;
+        "
+      >
+        <h4 style="margin-top: 0">❌ DON'T:</h4>
+        <ul class="lh-lg">
+          <li>
+            Use verbs in URLs (<code>/getUser</code>, <code>/createOrder</code>)
+          </li>
+          <li>Use status codes incorrectly (e.g., 200 OK for errors)</li>
+          <li>Return HTML error pages for API errors</li>
+          <li>Return bare 500 errors without details</li>
+          <li>Expose sensitive information in responses</li>
+          <li>Break backwards compatibility without versioning</li>
+          <li>Mix different response formats</li>
+          <li>Forget to paginate large datasets</li>
+          <li>Use GET for state-changing operations</li>
+        </ul>
+      </div>
+
+      <h2 id="complete-api-example">Complete User API Example</h2>
+
+      <pre class="spring-code"><code>@RestController
+@RequestMapping("/api/v1/users")
+public class UserController {
+    private final UserService userService;
+    
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+    
+    // List all users with pagination
+    @GetMapping
+    public ResponseEntity&lt;Page&lt;UserResponse&gt; listUsers(
+        @PageableDefault(size = 20) Pageable pageable,
+        @RequestParam(required = false) String status
+    ) {
+        Page&lt;UserResponse&gt; users = userService.findAll(pageable, status);
+        return ResponseEntity.ok(users);
+    }
+    
+    // Get single user
+    @GetMapping("/{id}")
+    public ResponseEntity&lt;UserResponse&gt; getUser(@PathVariable Long id) {
+        return userService.findById(id)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    
+    // Create new user
+    @PostMapping
+    public ResponseEntity&lt;UserResponse&gt; createUser(
+        @Valid @RequestBody CreateUserRequest request
+    ) {
+        UserResponse created = userService.create(request);
+        URI location = URI.create("/api/v1/users/" + created.id());
+        return ResponseEntity.created(location).body(created);
+    }
+    
+    // Update existing user
+    @PutMapping("/{id}")
+    public ResponseEntity&lt;UserResponse&gt; updateUser(
+        @PathVariable Long id,
+        @Valid @RequestBody UpdateUserRequest request
+    ) {
+        return userService.update(id, request)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    
+    // Delete user
+    @DeleteMapping("/{id}")
+    public ResponseEntity&lt;Void&gt; deleteUser(@PathVariable Long id) {
+        boolean deleted = userService.delete(id);
+        return deleted ?
+            ResponseEntity.noContent().build() :
+            ResponseEntity.notFound().build();
+    }
+}
+</code></pre>
+
+      <a class="btn btn-success" href="rest-api.html"
+        >See Basic REST API Guide â†’</a
+      >
+    </main>
+    <footer class="py-4 text-center">
+      <p class="mb-0">&copy; 2026 Java Codeex</p>
+    </footer>
+    <script src="./springboot-nav.js"></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

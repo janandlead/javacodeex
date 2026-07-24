@@ -1,0 +1,1438 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Learn OOP Concepts in Java - Classes, Objects, Constructors, Encapsulation, Inheritance, Polymorphism, Abstraction and Packages with real-world examples."
+    />
+    <meta
+      name="keywords"
+      content="OOP Java, object oriented programming Java, inheritance Java, polymorphism Java, encapsulation, abstraction, Java classes"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Java Codeex" />
+    <link rel="canonical" href="https://javacodeex.in/java/oop-concepts/" />
+    <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
+    <link
+      rel="shortcut icon"
+      href="../icons/javacodeex.jpg"
+      type="image/jpeg"
+    />
+    <link rel="apple-touch-icon" href="../icons/javacodeex.jpg" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta
+      property="og:title"
+      content="OOP Concepts in Java - Encapsulation, Inheritance, Polymorphism | Java Codeex"
+    />
+    <meta
+      property="og:description"
+      content="Learn OOP Concepts in Java - Classes, Objects, Constructors, Encapsulation, Inheritance, Polymorphism, Abstraction and Packages with real-world examples."
+    />
+    <meta
+      property="og:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta property="og:url" content="https://javacodeex.in/oop-concepts/" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="OOP Concepts in Java - Encapsulation, Inheritance, Polymorphism | Java Codeex"
+    />
+    <meta
+      name="twitter:description"
+      content="Learn OOP Concepts in Java - Classes, Objects, Constructors, Encapsulation, Inheritance, Polymorphism, Abstraction and Packages with real-world examples."
+    />
+    <meta
+      name="twitter:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      OOP Concepts in Java - Encapsulation, Inheritance, Polymorphism | Java
+      Codeex
+    </title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        scroll-behavior: smooth;
+        font-size: 1rem;
+        color: #222;
+      }
+      .navbar {
+        background-color: #1a1a2e;
+      }
+      .navbar-brand {
+        font-weight: 700;
+        color: #f8a100 !important;
+      }
+      .navbar-nav .nav-link {
+        color: #cdd6f4 !important;
+        font-size: 0.85rem;
+      }
+      .navbar-nav .nav-link:hover {
+        color: #f8a100 !important;
+      }
+      .page-hero {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 60%,
+          #0f3460 100%
+        );
+        color: #fff;
+        padding: 48px 0 36px;
+      }
+      .page-hero h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+      }
+      .breadcrumb-item a {
+        color: #f8a100;
+        text-decoration: none;
+      }
+      .breadcrumb-item.active {
+        color: #cdd6f4;
+      }
+      .breadcrumb-item + .breadcrumb-item::before {
+        color: #8a9bb3;
+      }
+      .content-wrapper {
+        max-width: 860px;
+      }
+      h2 {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: #0f3460;
+        border-left: 5px solid #f8a100;
+        padding-left: 12px;
+        margin-top: 2.2rem;
+        margin-bottom: 0.8rem;
+      }
+      h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #16213e;
+        margin-top: 1.6rem;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        line-height: 1.8;
+      }
+      pre {
+        background: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 1.2rem 1.4rem;
+        font-size: 0.88rem;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+      code.inline {
+        background: #eef2ff;
+        color: #0f3460;
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 0.88rem;
+      }
+      .output-box {
+        background: #0d1117;
+        color: #58d68d;
+        border-left: 4px solid #58d68d;
+        border-radius: 4px;
+        padding: 0.8rem 1.2rem;
+        font-family: monospace;
+        font-size: 0.92rem;
+        margin: 0.5rem 0 1rem;
+      }
+      .note-box {
+        background: #eaf4ff;
+        border-left: 5px solid #3b82f6;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .note-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .warn-box {
+        background: #fff8e1;
+        border-left: 5px solid #f8a100;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .warn-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .success-box {
+        background: #e8f8f0;
+        border-left: 5px solid #28a745;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .success-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .table thead th {
+        background: #0f3460;
+        color: #fff;
+      }
+      .table-hover tbody tr:hover {
+        background: #f0f6ff;
+      }
+      .toc {
+        background: #f8f9fc;
+        border: 1px solid #e0e7ef;
+        border-radius: 10px;
+        padding: 1.2rem 1.4rem;
+        position: sticky;
+        top: 72px;
+      }
+      .toc h6 {
+        font-weight: 700;
+        color: #0f3460;
+        margin-bottom: 0.8rem;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        letter-spacing: 0.05em;
+      }
+      .toc a {
+        display: block;
+        font-size: 0.87rem;
+        color: #444;
+        text-decoration: none;
+        padding: 3px 0 3px 8px;
+        border-left: 3px solid transparent;
+        transition: all 0.15s;
+      }
+      .toc a:hover {
+        color: #f8a100;
+        border-left-color: #f8a100;
+      }
+      footer {
+        background: #1a1a2e;
+        color: #8a9bb3;
+      }
+
+      /* === TECH BANNER HEADER === */
+      .brand-bar {
+        background: #1a1a2e;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .brand-link {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: #f8a100;
+        font-weight: 700;
+        font-size: 1.15rem;
+        gap: 10px;
+      }
+      .brand-link:hover {
+        opacity: 0.85;
+        color: #f8a100;
+      }
+      .tech-banner {
+        background: #16213e;
+        border-bottom: 2px solid rgba(248, 161, 0, 0.2);
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tech-banner::-webkit-scrollbar {
+        height: 3px;
+      }
+      .tech-banner::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .tech-banner .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .tech-tab {
+        display: inline-block;
+        color: #a6adc8;
+        text-decoration: none;
+        padding: 11px 22px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+        white-space: nowrap;
+      }
+      .tech-tab:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.06);
+        text-decoration: none;
+      }
+      .tech-tab.active {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        font-weight: 700;
+      }
+      .tech-tab.coming-soon {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .java-subnav {
+        background: #0f3460;
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+      }
+      .java-subnav::-webkit-scrollbar {
+        height: 3px;
+      }
+      .java-subnav::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .java-subnav .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .topic-link {
+        display: inline-block;
+        color: #cdd6f4;
+        text-decoration: none;
+        padding: 10px 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+      }
+      .topic-link:hover {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        text-decoration: none;
+      }
+    </style>
+    <link rel="stylesheet" href="../site-theme.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg sticky-top shadow-sm">
+      <div class="container-xl">
+        <a class="navbar-brand" href="../index.html#courses"
+          ><img
+            src="../icons/javacodeex.jpg"
+            alt="Java Codeex"
+            style="
+              height: 32px;
+              width: 32px;
+              object-fit: cover;
+              border-radius: 6px;
+              margin-right: 8px;
+              vertical-align: middle;
+            "
+            loading="lazy"
+          />
+          Java Codeex</a
+        >
+        <button
+          class="navbar-toggler border-secondary"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navMenu"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+          <ul class="navbar-nav ms-auto flex-wrap gap-1">
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#basics">Basics</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#methods">Methods</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#arrays">Arrays</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#strings">Strings</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#oop">OOP</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#interfaces">Interfaces</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#exceptions">Exceptions</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#regex">Regex</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#memory">Memory</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#generics">Generics</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#collections"
+                >Collections</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#java8">Java 8+</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#datetime"
+                >Date &amp; Time</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#multithreading"
+                >Multithreading</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#filehandling">Files</a>
+            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="../index.html#networking">Networking</a>
+            </li> -->
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#jdbc">JDBC</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+      <div class="container-xl">
+        <nav aria-label="breadcrumb" class="mb-3">
+          <ol class="breadcrumb mb-0" style="background: none; padding: 0">
+            <li class="breadcrumb-item">
+              <a href="../index.html">Java Codeex</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="../index.html#oop">OOP Concepts</a>
+            </li>
+            <li class="breadcrumb-item active">OOP Concepts in Java</li>
+          </ol>
+        </nav>
+        <h1 class="mb-2">OOP Concepts in Java</h1>
+        <p class="mb-0" style="color: #cdd6f4; font-size: 1.08rem">
+          Master the four pillars of Object-Oriented Programming in Java with
+          clear examples.
+        </p>
+      </div>
+    </section>
+    <aside class="topic-guide" aria-label="Learning guide">
+      <div class="topic-guide-step">
+        <span>01</span><strong>Model real problems</strong
+        ><small>Define classes</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>02</span><strong>Model real problems</strong
+        ><small>Create objects</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>03</span><strong>Model real problems</strong
+        ><small>Reuse behavior</small>
+      </div>
+      <p class="topic-guide-summary">
+        <strong>Learning goal:</strong> Object-oriented design groups state and
+        behavior into understandable units.
+      </p>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="container-xl py-5">
+      <div class="row g-4">
+        <!-- Article -->
+        <div class="col-lg-8">
+          <article class="content-wrapper">
+            <!-- Section 1: What is OOP? -->
+            <h2 id="what-is-oop">1. What is OOP?</h2>
+            <p>
+              Object-Oriented Programming (OOP) is a programming paradigm that
+              organises software design around
+              <strong>data (objects)</strong> rather than functions and logic.
+              Java is fundamentally an object-oriented language — almost
+              everything in Java is an object.
+            </p>
+            <p>OOP is built on <strong>four core pillars</strong>:</p>
+            <div class="table-responsive my-3">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Pillar</th>
+                    <th>One-Line Definition</th>
+                    <th>Key Java Construct</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Encapsulation</strong></td>
+                    <td>Bundling data and methods; hiding internal details</td>
+                    <td>
+                      <code class="inline">private</code> fields +
+                      getters/setters
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Inheritance</strong></td>
+                    <td>A class acquires properties of another class</td>
+                    <td><code class="inline">extends</code></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Polymorphism</strong></td>
+                    <td>One interface, many forms</td>
+                    <td>
+                      Overloading &amp; <code class="inline">@Override</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Abstraction</strong></td>
+                    <td>Hiding complexity, exposing only essentials</td>
+                    <td>
+                      <code class="inline">abstract</code> class / interface
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="note-box">
+              <p>
+                <strong>Why OOP?</strong> OOP promotes code reusability,
+                modularity, maintainability, and makes it easier to model
+                real-world entities in software.
+              </p>
+            </div>
+
+            <!-- Section 2: Classes and Objects -->
+            <h2 id="classes-objects">2. Classes and Objects</h2>
+            <p>
+              A <strong>class</strong> is a blueprint or template that defines
+              the state (fields) and behaviour (methods) that objects of its
+              type will have. An <strong>object</strong> is a concrete instance
+              of a class, created using the
+              <code class="inline">new</code> keyword.
+            </p>
+            <pre><code>// Class = blueprint
+public class Car {
+    // Fields (state)
+    String brand;
+    String model;
+    int year;
+    double speed;
+
+    // Method (behaviour)
+    public void accelerate(double amount) {
+        speed += amount;
+        System.out.println(brand + " is now going at " + speed + " km/h");
+    }
+
+    public void brake(double amount) {
+        speed = Math.max(0, speed - amount);
+        System.out.println(brand + " slowed down to " + speed + " km/h");
+    }
+
+    public void displayInfo() {
+        System.out.println(year + " " + brand + " " + model);
+    }
+}
+
+// Main class to use the Car object
+public class Main {
+    public static void main(String[] args) {
+        // Creating objects (instances) of Car
+        Car car1 = new Car();   // object 1
+        car1.brand = "Toyota";
+        car1.model = "Corolla";
+        car1.year = 2022;
+
+        Car car2 = new Car();   // object 2
+        car2.brand = "Honda";
+        car2.model = "Civic";
+        car2.year = 2023;
+
+        car1.displayInfo();     // 2022 Toyota Corolla
+        car1.accelerate(60);    // Toyota is now going at 60.0 km/h
+        car2.displayInfo();     // 2023 Honda Civic
+    }
+}</code></pre>
+            <div class="output-box">
+              2022 Toyota Corolla<br />Toyota is now going at 60.0 km/h<br />2023
+              Honda Civic
+            </div>
+            <div class="note-box">
+              <p>
+                <strong>Memory:</strong> Each object gets its own copy of
+                instance fields but shares class-level (static) fields and
+                methods.
+              </p>
+            </div>
+
+            <!-- Section 3: Constructors -->
+            <h2 id="constructors">3. Constructors</h2>
+            <p>
+              A <strong>constructor</strong> is a special method that is
+              automatically called when an object is created with
+              <code class="inline">new</code>. It has the same name as the class
+              and <em>no return type</em>.
+            </p>
+
+            <h3>Default Constructor</h3>
+            <p>
+              If you do not define any constructor, Java provides a no-argument
+              default constructor automatically. Once you define any
+              constructor, the default is no longer provided.
+            </p>
+
+            <h3>Parameterized Constructor</h3>
+            <pre><code>public class Car {
+    String brand;
+    String model;
+    int year;
+
+    // Default constructor
+    public Car() {
+        brand = "Unknown";
+        model = "Unknown";
+        year = 0;
+    }
+
+    // Parameterized constructor
+    public Car(String brand, String model, int year) {
+        this.brand = brand;   // 'this' distinguishes field from parameter
+        this.model = model;
+        this.year  = year;
+    }
+
+    // Copy constructor
+    public Car(Car other) {
+        this.brand = other.brand;
+        this.model = other.model;
+        this.year  = other.year;
+    }
+
+    // Constructor chaining with this()
+    public Car(String brand) {
+        this(brand, "Generic", 2024);  // calls parameterized constructor
+    }
+
+    public void display() {
+        System.out.println(year + " " + brand + " " + model);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Car c1 = new Car();                        // default
+        Car c2 = new Car("Ford", "Mustang", 2023); // parameterized
+        Car c3 = new Car(c2);                      // copy
+        Car c4 = new Car("BMW");                   // chained
+
+        c1.display();  // 0 Unknown Unknown
+        c2.display();  // 2023 Ford Mustang
+        c3.display();  // 2023 Ford Mustang
+        c4.display();  // 2024 BMW Generic
+    }
+}</code></pre>
+            <div class="output-box">
+              0 Unknown Unknown<br />2023 Ford Mustang<br />2023 Ford Mustang<br />2024
+              BMW Generic
+            </div>
+            <div class="warn-box">
+              <p>
+                <strong>Note:</strong> <code class="inline">this()</code> must
+                be the <em>first statement</em> in a constructor. You cannot
+                call both <code class="inline">this()</code> and
+                <code class="inline">super()</code> in the same constructor.
+              </p>
+            </div>
+
+            <!-- Section 4: this Keyword -->
+            <h2 id="this-keyword">
+              4. The <code class="inline">this</code> Keyword
+            </h2>
+            <p>
+              <code class="inline">this</code> is a reference to the
+              <strong>current object</strong> — the object whose method or
+              constructor is being called. It has three main uses:
+            </p>
+            <pre><code>public class Person {
+    String name;
+    int age;
+
+    // Use 1: Disambiguate fields from parameters
+    public Person(String name, int age) {
+        this.name = name;  // 'this.name' = field, 'name' = parameter
+        this.age  = age;
+    }
+
+    // Use 2: Call another constructor (constructor chaining)
+    public Person(String name) {
+        this(name, 0);     // delegates to Person(String, int)
+    }
+
+    // Use 3: Pass current object as argument
+    public void register(Registry r) {
+        r.add(this);       // passes the current Person object
+    }
+
+    public String getInfo() {
+        return this.name + ", age " + this.age;
+    }
+}
+
+class Registry {
+    public void add(Person p) {
+        System.out.println("Registered: " + p.getInfo());
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Person p = new Person("Alice", 30);
+        System.out.println(p.getInfo());   // Alice, age 30
+
+        Registry reg = new Registry();
+        p.register(reg);                   // Registered: Alice, age 30
+    }
+}</code></pre>
+            <div class="output-box">
+              Alice, age 30<br />Registered: Alice, age 30
+            </div>
+
+            <!-- Section 5: Encapsulation -->
+            <h2 id="encapsulation">5. Encapsulation</h2>
+            <p>
+              Encapsulation means
+              <strong
+                >wrapping data (fields) and code (methods) together</strong
+              >
+              in a single unit and <strong>restricting direct access</strong> to
+              the fields from outside the class. This is achieved by declaring
+              fields <code class="inline">private</code> and providing
+              <code class="inline">public</code>
+              getter and setter methods.
+            </p>
+            <pre><code>public class BankAccount {
+    private String owner;
+    private double balance;   // cannot be accessed directly from outside
+
+    public BankAccount(String owner, double initialBalance) {
+        this.owner   = owner;
+        this.balance = (initialBalance >= 0) ? initialBalance : 0;
+    }
+
+    // Getter
+    public double getBalance() {
+        return balance;
+    }
+
+    // Setter with validation — this is the power of encapsulation
+    public void deposit(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Deposit amount must be positive.");
+        }
+        balance += amount;
+    }
+
+    public void withdraw(double amount) {
+        if (amount <= 0 || amount > balance) {
+            throw new IllegalArgumentException("Invalid withdrawal amount.");
+        }
+        balance -= amount;
+    }
+
+    public String getOwner() { return owner; }
+
+    @Override
+    public String toString() {
+        return owner + "'s account: $" + String.format("%.2f", balance);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        BankAccount acc = new BankAccount("Alice", 1000.0);
+        // acc.balance = -500;  // COMPILE ERROR — field is private
+        acc.deposit(250.0);
+        acc.withdraw(100.0);
+        System.out.println(acc);            // Alice's account: $1150.00
+        System.out.println(acc.getBalance()); // 1150.0
+    }
+}</code></pre>
+            <div class="output-box">Alice's account: $1150.00<br />1150.0</div>
+            <div class="success-box">
+              <p>
+                <strong>Benefits of Encapsulation:</strong> Data validation,
+                flexibility to change internal implementation without affecting
+                callers, improved security, and easier unit testing.
+              </p>
+            </div>
+
+            <!-- Section 6: Inheritance -->
+            <h2 id="inheritance">6. Inheritance</h2>
+            <p>
+              Inheritance allows a class (child/subclass) to
+              <strong>acquire properties and methods</strong> of another class
+              (parent/superclass) using the
+              <code class="inline">extends</code> keyword. Java supports
+              <em>single</em>, <em>multilevel</em>, and
+              <em>hierarchical</em> inheritance (but NOT multiple class
+              inheritance).
+            </p>
+            <pre><code>// Parent (superclass)
+public class Vehicle {
+    String brand;
+    int speed;
+
+    public Vehicle(String brand, int speed) {
+        this.brand = brand;
+        this.speed = speed;
+    }
+
+    public void move() {
+        System.out.println(brand + " is moving at " + speed + " km/h");
+    }
+}
+
+// Single Inheritance: Car extends Vehicle
+public class Car extends Vehicle {
+    int doors;
+
+    public Car(String brand, int speed, int doors) {
+        super(brand, speed);   // call parent constructor
+        this.doors = doors;
+    }
+
+    public void honk() {
+        System.out.println(brand + " goes Beep!");
+    }
+}
+
+// Multilevel Inheritance: ElectricCar extends Car
+public class ElectricCar extends Car {
+    int batteryCapacity;
+
+    public ElectricCar(String brand, int speed, int doors, int battery) {
+        super(brand, speed, doors);
+        this.batteryCapacity = battery;
+    }
+
+    public void chargeBattery() {
+        System.out.println(brand + " is charging (" + batteryCapacity + " kWh battery)");
+    }
+}
+
+// Hierarchical Inheritance: Truck also extends Vehicle
+public class Truck extends Vehicle {
+    double loadCapacity;
+
+    public Truck(String brand, int speed, double loadCapacity) {
+        super(brand, speed);
+        this.loadCapacity = loadCapacity;
+    }
+
+    public void loadCargo() {
+        System.out.println(brand + " loaded " + loadCapacity + " tons");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Car car = new Car("Toyota", 120, 4);
+        car.move();    // inherited from Vehicle
+        car.honk();
+
+        ElectricCar ev = new ElectricCar("Tesla", 200, 4, 100);
+        ev.move();     // inherited from Vehicle via Car
+        ev.honk();     // inherited from Car
+        ev.chargeBattery();
+
+        Truck truck = new Truck("Volvo", 80, 20.5);
+        truck.move();
+        truck.loadCargo();
+    }
+}</code></pre>
+            <div class="output-box">
+              Toyota is moving at 120 km/h<br />Toyota goes Beep!<br />Tesla is
+              moving at 200 km/h<br />Tesla goes Beep!<br />Tesla is charging
+              (100 kWh battery)<br />Volvo is moving at 80 km/h<br />Volvo
+              loaded 20.5 tons
+            </div>
+            <div class="warn-box">
+              <p>
+                <strong
+                  >Java does NOT support multiple class inheritance</strong
+                >
+                (a class cannot extend two classes at once) to avoid the diamond
+                problem. Use interfaces for multiple inheritance of type.
+              </p>
+            </div>
+
+            <!-- Section 7: Polymorphism -->
+            <h2 id="polymorphism">7. Polymorphism</h2>
+            <p>
+              Polymorphism means <em>"many forms"</em>. In Java it comes in two
+              flavours:
+            </p>
+            <h3>Compile-time Polymorphism — Method Overloading</h3>
+            <p>
+              Same method name, different parameter lists. Resolved at
+              <strong>compile time</strong>.
+            </p>
+            <pre><code>public class Calculator {
+    // Overloaded add methods
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public double add(double a, double b) {
+        return a + b;
+    }
+
+    public int add(int a, int b, int c) {
+        return a + b + c;
+    }
+
+    public String add(String a, String b) {
+        return a + b;  // String concatenation
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Calculator calc = new Calculator();
+        System.out.println(calc.add(2, 3));          // 5
+        System.out.println(calc.add(2.5, 3.5));      // 6.0
+        System.out.println(calc.add(1, 2, 3));       // 6
+        System.out.println(calc.add("Hello, ", "World!")); // Hello, World!
+    }
+}</code></pre>
+            <div class="output-box">5<br />6.0<br />6<br />Hello, World!</div>
+
+            <h3>Runtime Polymorphism — Method Overriding</h3>
+            <p>
+              A subclass provides its own implementation of a method defined in
+              the parent. Resolved at <strong>runtime</strong> via dynamic
+              dispatch.
+            </p>
+            <pre><code>public class Animal {
+    public void sound() {
+        System.out.println("Some animal makes a sound");
+    }
+}
+
+public class Dog extends Animal {
+    @Override
+    public void sound() {
+        System.out.println("Dog says: Woof!");
+    }
+}
+
+public class Cat extends Animal {
+    @Override
+    public void sound() {
+        System.out.println("Cat says: Meow!");
+    }
+}
+
+public class Cow extends Animal {
+    @Override
+    public void sound() {
+        System.out.println("Cow says: Moo!");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Upcasting: parent reference holds child object
+        Animal a1 = new Dog();
+        Animal a2 = new Cat();
+        Animal a3 = new Cow();
+
+        // Runtime decides which sound() to call
+        a1.sound();   // Dog says: Woof!
+        a2.sound();   // Cat says: Meow!
+        a3.sound();   // Cow says: Moo!
+
+        // Polymorphic array
+        Animal[] animals = { new Dog(), new Cat(), new Cow() };
+        for (Animal a : animals) {
+            a.sound();  // each calls its own overridden version
+        }
+    }
+}</code></pre>
+            <div class="output-box">
+              Dog says: Woof!<br />Cat says: Meow!<br />Cow says: Moo!<br />Dog
+              says: Woof!<br />Cat says: Meow!<br />Cow says: Moo!
+            </div>
+            <div class="note-box">
+              <p>
+                Always use <code class="inline">@Override</code> annotation when
+                overriding. It tells the compiler to verify the method actually
+                overrides a parent method, catching typos early.
+              </p>
+            </div>
+
+            <!-- Section 8: Abstraction -->
+            <h2 id="abstraction">8. Abstraction</h2>
+            <p>
+              Abstraction means
+              <strong>hiding complex implementation details</strong> and
+              exposing only the essential features. In Java, abstraction is
+              achieved via <strong>abstract classes</strong> and
+              <strong>interfaces</strong>. An abstract class can have both
+              abstract (no body) and concrete (with body) methods.
+            </p>
+            <pre><code>// Abstract class — cannot be instantiated directly
+public abstract class Shape {
+    String color;
+
+    public Shape(String color) {
+        this.color = color;
+    }
+
+    // Abstract method — subclasses MUST implement this
+    public abstract double area();
+    public abstract double perimeter();
+
+    // Concrete method — shared behaviour
+    public void display() {
+        System.out.println(color + " shape | Area: " + String.format("%.2f", area())
+            + " | Perimeter: " + String.format("%.2f", perimeter()));
+    }
+}
+
+public class Circle extends Shape {
+    double radius;
+
+    public Circle(String color, double radius) {
+        super(color);
+        this.radius = radius;
+    }
+
+    @Override
+    public double area() { return Math.PI * radius * radius; }
+
+    @Override
+    public double perimeter() { return 2 * Math.PI * radius; }
+}
+
+public class Rectangle extends Shape {
+    double width, height;
+
+    public Rectangle(String color, double width, double height) {
+        super(color);
+        this.width = width;
+        this.height = height;
+    }
+
+    @Override
+    public double area() { return width * height; }
+
+    @Override
+    public double perimeter() { return 2 * (width + height); }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Shape s = new Shape("red");  // COMPILE ERROR — abstract class
+        Shape c = new Circle("Red", 5.0);
+        Shape r = new Rectangle("Blue", 4.0, 6.0);
+
+        c.display();  // Red shape | Area: 78.54 | Perimeter: 31.42
+        r.display();  // Blue shape | Area: 24.00 | Perimeter: 20.00
+    }
+}</code></pre>
+            <div class="output-box">
+              Red shape | Area: 78.54 | Perimeter: 31.42<br />Blue shape | Area:
+              24.00 | Perimeter: 20.00
+            </div>
+
+            <!-- Section 9: super Keyword -->
+            <h2 id="super-keyword">
+              9. The <code class="inline">super</code> Keyword
+            </h2>
+            <p>
+              <code class="inline">super</code> refers to the
+              <strong>immediate parent class</strong> of the current object. It
+              is used to access parent class fields, methods, and constructors.
+            </p>
+            <pre><code>public class Animal {
+    String name;
+
+    public Animal(String name) {
+        this.name = name;
+        System.out.println("Animal constructor called for: " + name);
+    }
+
+    public void eat() {
+        System.out.println(name + " eats food.");
+    }
+
+    public String describe() {
+        return "I am an animal named " + name;
+    }
+}
+
+public class Dog extends Animal {
+    String breed;
+
+    public Dog(String name, String breed) {
+        super(name);   // Call parent constructor — must be first line
+        this.breed = breed;
+        System.out.println("Dog constructor called. Breed: " + breed);
+    }
+
+    @Override
+    public void eat() {
+        super.eat();   // Call parent's eat() first
+        System.out.println(name + " also loves bones!");
+    }
+
+    @Override
+    public String describe() {
+        return super.describe() + ", breed: " + breed;  // reuse parent output
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Dog d = new Dog("Rex", "Labrador");
+        // Output during construction:
+        //   Animal constructor called for: Rex
+        //   Dog constructor called. Breed: Labrador
+
+        d.eat();
+        // Rex eats food.
+        // Rex also loves bones!
+
+        System.out.println(d.describe());
+        // I am an animal named Rex, breed: Labrador
+    }
+}</code></pre>
+            <div class="output-box">
+              Animal constructor called for: Rex<br />Dog constructor called.
+              Breed: Labrador<br />Rex eats food.<br />Rex also loves bones!<br />I
+              am an animal named Rex, breed: Labrador
+            </div>
+
+            <!-- Section 10: Object Class -->
+            <h2 id="object-class">10. The Object Class</h2>
+            <p>
+              Every class in Java implicitly extends
+              <code class="inline">java.lang.Object</code>. This means every
+              object automatically inherits a set of methods from
+              <code class="inline">Object</code>. The three most important ones
+              to override are:
+            </p>
+            <div class="table-responsive my-3">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Method</th>
+                    <th>Default Behaviour</th>
+                    <th>Why Override?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code class="inline">toString()</code></td>
+                    <td>
+                      ClassName@hashcode (e.g., <code>Car@1b6d3586</code>)
+                    </td>
+                    <td>Return a human-readable description</td>
+                  </tr>
+                  <tr>
+                    <td><code class="inline">equals(Object o)</code></td>
+                    <td>Reference equality (<code>==</code>)</td>
+                    <td>Define logical equality by field values</td>
+                  </tr>
+                  <tr>
+                    <td><code class="inline">hashCode()</code></td>
+                    <td>Memory address-based integer</td>
+                    <td>
+                      Must be consistent with <code>equals()</code> for use in
+                      HashMap/HashSet
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <pre><code>import java.util.Objects;
+
+public class Student {
+    int id;
+    String name;
+
+    public Student(int id, String name) {
+        this.id   = id;
+        this.name = name;
+    }
+
+    // Override toString
+    @Override
+    public String toString() {
+        return "Student{id=" + id + ", name='" + name + "'}";
+    }
+
+    // Override equals
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;          // same reference
+        if (!(o instanceof Student)) return false;
+        Student s = (Student) o;
+        return id == s.id && Objects.equals(name, s.name);
+    }
+
+    // Override hashCode — always override when you override equals
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Student s1 = new Student(1, "Alice");
+        Student s2 = new Student(1, "Alice");
+        Student s3 = new Student(2, "Bob");
+
+        System.out.println(s1);              // Student{id=1, name='Alice'}
+        System.out.println(s1.equals(s2));   // true  (same id and name)
+        System.out.println(s1.equals(s3));   // false
+        System.out.println(s1 == s2);        // false (different references)
+        System.out.println(s1.hashCode() == s2.hashCode()); // true
+    }
+}</code></pre>
+            <div class="output-box">
+              Student{id=1, name='Alice'}<br />true<br />false<br />false<br />true
+            </div>
+            <div class="warn-box">
+              <p>
+                <strong>Contract:</strong> If
+                <code class="inline">a.equals(b)</code> is <code>true</code>,
+                then
+                <code class="inline">a.hashCode() == b.hashCode()</code> must
+                also be <code>true</code>. Violating this breaks
+                <code>HashMap</code> and <code>HashSet</code>.
+              </p>
+            </div>
+
+            <!-- Section 11: Packages -->
+            <h2 id="packages">11. Packages</h2>
+            <p>
+              A <strong>package</strong> is a namespace that organises related
+              classes and interfaces. Packages prevent name conflicts, control
+              access, and make large projects manageable.
+            </p>
+            <pre><code>// File: com/myapp/model/Employee.java
+package com.myapp.model;   // package declaration — first line of file
+
+public class Employee {
+    private int id;
+    private String name;
+    private double salary;
+
+    public Employee(int id, String name, double salary) {
+        this.id     = id;
+        this.name   = name;
+        this.salary = salary;
+    }
+
+    public int    getId()     { return id; }
+    public String getName()   { return name; }
+    public double getSalary() { return salary; }
+
+    @Override
+    public String toString() {
+        return "Employee[" + id + ", " + name + ", $" + salary + "]";
+    }
+}
+
+// File: com/myapp/service/PayrollService.java
+package com.myapp.service;
+
+import com.myapp.model.Employee;  // import specific class
+// import com.myapp.model.*;      // import all classes from package
+
+public class PayrollService {
+    public double calculateBonus(Employee emp) {
+        return emp.getSalary() * 0.10;
+    }
+}
+
+// File: com/myapp/Main.java
+package com.myapp;
+
+import com.myapp.model.Employee;
+import com.myapp.service.PayrollService;
+
+public class Main {
+    public static void main(String[] args) {
+        Employee e  = new Employee(101, "Alice", 75000);
+        PayrollService ps = new PayrollService();
+
+        System.out.println(e);
+        System.out.println("Bonus: $" + ps.calculateBonus(e));
+    }
+}</code></pre>
+            <div class="output-box">
+              Employee[101, Alice, $75000.0]<br />Bonus: $7500.0
+            </div>
+            <div class="note-box">
+              <p>
+                <strong>Naming Convention:</strong> Package names are all
+                lowercase and typically follow the reverse domain name
+                convention:
+                <code class="inline">com.companyname.projectname.module</code>.
+                Java's built-in packages start with
+                <code class="inline">java.</code> or
+                <code class="inline">javax.</code>.
+              </p>
+            </div>
+
+            <!-- Comparison Table: Abstract Class vs Interface -->
+            <h2 id="abstract-vs-interface">Abstract Class vs Interface</h2>
+            <p>
+              This distinction is one of the most commonly tested Java concepts.
+            </p>
+            <div class="table-responsive my-3">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>Abstract Class</th>
+                    <th>Interface</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Instantiation</td>
+                    <td>Cannot be instantiated</td>
+                    <td>Cannot be instantiated</td>
+                  </tr>
+                  <tr>
+                    <td>Methods</td>
+                    <td>Abstract + concrete methods</td>
+                    <td>Abstract + default + static (Java 8+)</td>
+                  </tr>
+                  <tr>
+                    <td>Fields</td>
+                    <td>Any type (instance variables)</td>
+                    <td>
+                      Only
+                      <code class="inline">public static final</code> constants
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Constructors</td>
+                    <td>Yes — can have constructors</td>
+                    <td>No constructors</td>
+                  </tr>
+                  <tr>
+                    <td>Inheritance</td>
+                    <td>Single inheritance only (<code>extends</code>)</td>
+                    <td>Multiple interfaces (<code>implements</code>)</td>
+                  </tr>
+                  <tr>
+                    <td>Access modifiers</td>
+                    <td>Any (public, protected, private)</td>
+                    <td>Methods are <code>public</code> by default</td>
+                  </tr>
+                  <tr>
+                    <td>Use when</td>
+                    <td>Classes share common code/state</td>
+                    <td>Defining a contract/capability</td>
+                  </tr>
+                  <tr>
+                    <td>Keyword</td>
+                    <td><code class="inline">extends</code></td>
+                    <td><code class="inline">implements</code></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Prev / Next Navigation -->
+            <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+              <a href="../index.html#strings" class="btn btn-outline-secondary"
+                >&larr; Prev: Strings</a
+              >
+              <a href="./interfaces.html" class="btn btn-primary"
+                >Next: Interfaces &rarr;</a
+              >
+            </div>
+          </article>
+        </div>
+
+        <!-- Sticky TOC -->
+        <div class="col-lg-4">
+          <div class="toc">
+            <h6>On This Page</h6>
+            <a href="#what-is-oop">1. What is OOP?</a>
+            <a href="#classes-objects">2. Classes and Objects</a>
+            <a href="#constructors">3. Constructors</a>
+            <a href="#this-keyword">4. The this Keyword</a>
+            <a href="#encapsulation">5. Encapsulation</a>
+            <a href="#inheritance">6. Inheritance</a>
+            <a href="#polymorphism">7. Polymorphism</a>
+            <a href="#abstraction">8. Abstraction</a>
+            <a href="#super-keyword">9. The super Keyword</a>
+            <a href="#object-class">10. The Object Class</a>
+            <a href="#packages">11. Packages</a>
+            <a href="#abstract-vs-interface">Abstract Class vs Interface</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 mt-4">
+      <div class="container-xl text-center">
+        <p class="mb-1" style="font-size: 0.9rem">
+          Java Codeex &mdash; OOP Concepts
+        </p>
+        <p class="mb-0" style="font-size: 0.82rem">
+          Built with Bootstrap 5 &bull; For learning purposes
+        </p>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmk+GOFVeA//xwkFWEVflJ8ikO1y+k"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>

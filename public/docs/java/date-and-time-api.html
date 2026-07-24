@@ -1,0 +1,1371 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Java Date and Time API guide - LocalDate, LocalTime, LocalDateTime, ZonedDateTime, Duration, Period and DateTimeFormatter with complete code examples."
+    />
+    <meta
+      name="keywords"
+      content="Java date time API, LocalDate, LocalDateTime, ZonedDateTime, DateTimeFormatter, Java 8 date time, java.time"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Java Codeex" />
+    <link rel="canonical" href="https://javacodeex.in/java/date-and-time-api/" />
+    <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
+    <link
+      rel="shortcut icon"
+      href="../icons/javacodeex.jpg"
+      type="image/jpeg"
+    />
+    <link rel="apple-touch-icon" href="../icons/javacodeex.jpg" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta
+      property="og:title"
+      content="Java Date and Time API - LocalDate, LocalDateTime, ZonedDateTime | Java Codeex"
+    />
+    <meta
+      property="og:description"
+      content="Java Date and Time API guide - LocalDate, LocalTime, LocalDateTime, ZonedDateTime, Duration, Period and DateTimeFormatter with complete code examples."
+    />
+    <meta
+      property="og:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta
+      property="og:url"
+      content="https://javacodeex.in/date-and-time-api/"
+    />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Java Date and Time API - LocalDate, LocalDateTime, ZonedDateTime | Java Codeex"
+    />
+    <meta
+      name="twitter:description"
+      content="Java Date and Time API guide - LocalDate, LocalTime, LocalDateTime, ZonedDateTime, Duration, Period and DateTimeFormatter with complete code examples."
+    />
+    <meta
+      name="twitter:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Java Date and Time API - LocalDate, LocalDateTime, ZonedDateTime | Java
+      Codeex
+    </title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        scroll-behavior: smooth;
+        font-size: 1rem;
+        color: #222;
+      }
+      .navbar {
+        background-color: #1a1a2e;
+      }
+      .navbar-brand {
+        font-weight: 700;
+        color: #f8a100 !important;
+      }
+      .navbar-nav .nav-link {
+        color: #cdd6f4 !important;
+        font-size: 0.85rem;
+      }
+      .navbar-nav .nav-link:hover {
+        color: #f8a100 !important;
+      }
+      .page-hero {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 60%,
+          #0f3460 100%
+        );
+        color: #fff;
+        padding: 48px 0 36px;
+      }
+      .page-hero h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+      }
+      .breadcrumb-item a {
+        color: #f8a100;
+        text-decoration: none;
+      }
+      .breadcrumb-item.active {
+        color: #cdd6f4;
+      }
+      .breadcrumb-item + .breadcrumb-item::before {
+        color: #8a9bb3;
+      }
+      .content-wrapper {
+        max-width: 860px;
+      }
+      h2 {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: #0f3460;
+        border-left: 5px solid #f8a100;
+        padding-left: 12px;
+        margin-top: 2.2rem;
+        margin-bottom: 0.8rem;
+      }
+      h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #16213e;
+        margin-top: 1.6rem;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        line-height: 1.8;
+      }
+      pre {
+        background: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 1.2rem 1.4rem;
+        font-size: 0.88rem;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+      code.inline {
+        background: #eef2ff;
+        color: #0f3460;
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 0.88rem;
+      }
+      .output-box {
+        background: #0d1117;
+        color: #58d68d;
+        border-left: 4px solid #58d68d;
+        border-radius: 4px;
+        padding: 0.8rem 1.2rem;
+        font-family: monospace;
+        font-size: 0.92rem;
+        margin: 0.5rem 0 1rem;
+      }
+      .note-box {
+        background: #eaf4ff;
+        border-left: 5px solid #3b82f6;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .note-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .warn-box {
+        background: #fff8e1;
+        border-left: 5px solid #f8a100;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .warn-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .table thead th {
+        background: #0f3460;
+        color: #fff;
+      }
+      .table-hover tbody tr:hover {
+        background: #f0f6ff;
+      }
+      .toc {
+        background: #f8f9fc;
+        border: 1px solid #e0e7ef;
+        border-radius: 10px;
+        padding: 1.2rem 1.4rem;
+        position: sticky;
+        top: 72px;
+      }
+      .toc h6 {
+        font-weight: 700;
+        color: #0f3460;
+        margin-bottom: 0.8rem;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        letter-spacing: 0.05em;
+      }
+      .toc a {
+        display: block;
+        font-size: 0.87rem;
+        color: #444;
+        text-decoration: none;
+        padding: 3px 0 3px 8px;
+        border-left: 3px solid transparent;
+        transition: all 0.15s;
+      }
+      .toc a:hover {
+        color: #f8a100;
+        border-left-color: #f8a100;
+      }
+      footer {
+        background: #1a1a2e;
+        color: #8a9bb3;
+      }
+
+      /* === TECH BANNER HEADER === */
+      .brand-bar {
+        background: #1a1a2e;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .brand-link {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: #f8a100;
+        font-weight: 700;
+        font-size: 1.15rem;
+        gap: 10px;
+      }
+      .brand-link:hover {
+        opacity: 0.85;
+        color: #f8a100;
+      }
+      .tech-banner {
+        background: #16213e;
+        border-bottom: 2px solid rgba(248, 161, 0, 0.2);
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tech-banner::-webkit-scrollbar {
+        height: 3px;
+      }
+      .tech-banner::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .tech-banner .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .tech-tab {
+        display: inline-block;
+        color: #a6adc8;
+        text-decoration: none;
+        padding: 11px 22px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+        white-space: nowrap;
+      }
+      .tech-tab:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.06);
+        text-decoration: none;
+      }
+      .tech-tab.active {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        font-weight: 700;
+      }
+      .tech-tab.coming-soon {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .java-subnav {
+        background: #0f3460;
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+      }
+      .java-subnav::-webkit-scrollbar {
+        height: 3px;
+      }
+      .java-subnav::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .java-subnav .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .topic-link {
+        display: inline-block;
+        color: #cdd6f4;
+        text-decoration: none;
+        padding: 10px 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+      }
+      .topic-link:hover {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        text-decoration: none;
+      }
+    </style>
+    <link rel="stylesheet" href="../site-theme.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="topic-link" href="../index.html#basics">Basics</a>
+        <a class="topic-link" href="../index.html#methods">Methods</a>
+        <a class="topic-link" href="../index.html#arrays">Arrays</a>
+        <a class="topic-link" href="../index.html#strings">Strings</a>
+        <a class="topic-link" href="../index.html#oop">OOP</a>
+        <a class="topic-link" href="../index.html#interfaces">Interfaces</a>
+        <a class="topic-link" href="../index.html#exceptions">Exceptions</a>
+        <a class="topic-link" href="../index.html#regex">Regex</a>
+        <a class="topic-link" href="../index.html#memory">Memory</a>
+        <a class="topic-link" href="../index.html#generics">Generics</a>
+        <a class="topic-link" href="../index.html#collections">Collections</a>
+        <a class="topic-link" href="../index.html#java8">Java 8+</a>
+        <a class="topic-link" href="../index.html#datetime">Date &amp; Time</a>
+        <a class="topic-link" href="../index.html#multithreading"
+          >Multithreading</a
+        >
+        <a class="topic-link" href="../index.html#filehandling">Files</a>
+        <!-- <a class="topic-link" href="../index.html#networking">Networking</a> -->
+        <a class="topic-link" href="../index.html#jdbc">JDBC</a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="page-hero">
+      <div class="container-xl">
+        <nav aria-label="breadcrumb" class="mb-3">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="../index.html">Java Codeex</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="../index.html#datetime">Date and Time API</a>
+            </li>
+            <li class="breadcrumb-item active">Date and Time API in Java</li>
+          </ol>
+        </nav>
+        <h1>Date and Time API in Java</h1>
+        <p class="mb-0" style="color: #cdd6f4; font-size: 1.1rem">
+          Use Java's modern, immutable Date and Time API (java.time) introduced
+          in Java 8.
+        </p>
+      </div>
+    </section>
+    <aside class="topic-guide" aria-label="Learning guide">
+      <div class="topic-guide-step">
+        <span>01</span><strong>Represent time</strong
+        ><small>Date, time, and timezone</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>02</span><strong>Represent time</strong
+        ><small>Format for people</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>03</span><strong>Represent time</strong
+        ><small>Calculate safely</small>
+      </div>
+      <p class="topic-guide-summary">
+        <strong>Learning goal:</strong> The java.time API makes time operations
+        clear and immutable.
+      </p>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="container-xl py-5">
+      <div class="row g-5">
+        <!-- Article -->
+        <div class="col-lg-8">
+          <article class="content-wrapper">
+            <!-- Section 1 -->
+            <h2 id="problems-old-api">1. Problems with the Old Date API</h2>
+            <p>
+              Before Java 8, date and time handling relied on
+              <code class="inline">java.util.Date</code> and
+              <code class="inline">java.util.Calendar</code>. These classes had
+              severe design problems that caused bugs and confusion for years:
+            </p>
+            <ul>
+              <li>
+                <strong>Mutable and not thread-safe</strong> —
+                <code class="inline">Date</code> objects can be changed after
+                creation, causing bugs in shared or cached state.
+              </li>
+              <li>
+                <strong>Poor API design</strong> — months in
+                <code class="inline">Calendar</code> are 0-indexed (January = 0,
+                December = 11), years in <code class="inline">Date</code> are
+                relative to 1900, and years in
+                <code class="inline">Calendar</code> are used normally — two
+                inconsistent conventions in the same API.
+              </li>
+              <li>
+                <strong>No separation of concepts</strong> —
+                <code class="inline">Date</code> represents a point in time
+                (timestamp) but is also used as a calendar date, with no clean
+                way to represent just a date, just a time, or a date+time
+                without a timezone.
+              </li>
+              <li>
+                <strong>Confusing timezone handling</strong> — mixing of local
+                and UTC times leads to subtle off-by-hours bugs.
+              </li>
+              <li>
+                <strong>Formatting is not thread-safe</strong> —
+                <code class="inline">SimpleDateFormat</code> is stateful and
+                must not be shared across threads.
+              </li>
+            </ul>
+            <pre>
+// Old API — full of traps
+import java.util.*;
+
+public class OldDateProblems {
+    public static void main(String[] args) {
+        // java.util.Date — year is offset from 1900, month is 0-indexed!
+        Date d = new Date(2024 - 1900, 0, 15);  // Jan 15, 2024
+        System.out.println("Old Date: " + d);   // Confusing output
+
+        // java.util.Calendar — months still 0-indexed
+        Calendar cal = Calendar.getInstance();
+        cal.set(2024, Calendar.JANUARY, 15);  // Must use constant or risk off-by-one
+        System.out.println("Year: "  + cal.get(Calendar.YEAR));
+        System.out.println("Month: " + cal.get(Calendar.MONTH)); // 0 = January!
+        System.out.println("Day: "   + cal.get(Calendar.DAY_OF_MONTH));
+
+        // Mutable — dangerous when shared
+        Date original = new Date();
+        Date copy = original;  // not a copy — same reference
+        copy.setTime(0);        // accidentally mutates 'original' too
+        System.out.println("original == copy? " + (original.getTime() == copy.getTime()));
+    }
+}</pre>
+            <div class="warn-box">
+              <p>
+                <strong>Best practice:</strong> Avoid
+                <code class="inline">java.util.Date</code> and
+                <code class="inline">java.util.Calendar</code> in new code. Use
+                <code class="inline">java.time</code> classes introduced in Java
+                8 instead.
+              </p>
+            </div>
+
+            <!-- Section 2 -->
+            <h2 id="java-time-overview">2. Overview of java.time Package</h2>
+            <p>
+              The <code class="inline">java.time</code> package (inspired by the
+              Joda-Time library) provides a clean, immutable, and thread-safe
+              date/time API. All objects are <strong>immutable</strong> —
+              operations return new instances rather than modifying existing
+              ones.
+            </p>
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Class</th>
+                    <th>Represents</th>
+                    <th>Example</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code class="inline">LocalDate</code></td>
+                    <td>Date without time or timezone</td>
+                    <td>2026-07-23</td>
+                  </tr>
+                  <tr>
+                    <td><code class="inline">LocalTime</code></td>
+                    <td>Time without date or timezone</td>
+                    <td>14:30:00.000</td>
+                  </tr>
+                  <tr>
+                    <td><code class="inline">LocalDateTime</code></td>
+                    <td>Date + time without timezone</td>
+                    <td>2026-07-23T14:30:00</td>
+                  </tr>
+                  <tr>
+                    <td><code class="inline">ZonedDateTime</code></td>
+                    <td>Date + time + timezone</td>
+                    <td>2026-07-23T14:30:00-05:00[America/New_York]</td>
+                  </tr>
+                  <tr>
+                    <td><code class="inline">Instant</code></td>
+                    <td>Machine timestamp (epoch seconds)</td>
+                    <td>2026-07-23T19:30:00Z</td>
+                  </tr>
+                  <tr>
+                    <td><code class="inline">Duration</code></td>
+                    <td>Time-based amount (hours, minutes, seconds)</td>
+                    <td>PT2H30M</td>
+                  </tr>
+                  <tr>
+                    <td><code class="inline">Period</code></td>
+                    <td>Date-based amount (years, months, days)</td>
+                    <td>P1Y6M10D</td>
+                  </tr>
+                  <tr>
+                    <td><code class="inline">DateTimeFormatter</code></td>
+                    <td>Format/parse date-time strings</td>
+                    <td>"dd-MM-yyyy HH:mm"</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="note-box">
+              <p>
+                <strong>Immutability:</strong> All
+                <code class="inline">java.time</code> classes are immutable and
+                thread-safe. Methods like
+                <code class="inline">plusDays()</code> return a
+                <em>new</em> object — the original is unchanged.
+              </p>
+            </div>
+
+            <!-- Section 3 -->
+            <h2 id="localdate">3. LocalDate</h2>
+            <p>
+              <code class="inline">LocalDate</code> represents a date (year,
+              month, day) without any time-of-day or timezone information. It is
+              ideal for representing birthdays, anniversaries, deadlines, or any
+              concept that is just a calendar date.
+            </p>
+            <pre>
+import java.time.*;
+import java.time.temporal.ChronoUnit;
+
+public class LocalDateDemo {
+    public static void main(String[] args) {
+        // Create LocalDate instances
+        LocalDate today   = LocalDate.now();             // current date
+        LocalDate specific = LocalDate.of(2026, 7, 23); // July 23, 2026
+        LocalDate parsed  = LocalDate.parse("2025-12-25"); // ISO-8601 string
+
+        System.out.println("Today:    " + today);
+        System.out.println("Specific: " + specific);
+        System.out.println("Parsed:   " + parsed);
+
+        // Accessing fields
+        System.out.println("Year:        " + today.getYear());
+        System.out.println("Month:       " + today.getMonth());       // JULY
+        System.out.println("MonthValue:  " + today.getMonthValue());  // 7 (1-indexed!)
+        System.out.println("Day:         " + today.getDayOfMonth());
+        System.out.println("DayOfWeek:   " + today.getDayOfWeek());   // WEDNESDAY
+        System.out.println("DayOfYear:   " + today.getDayOfYear());
+        System.out.println("IsLeapYear:  " + today.isLeapYear());
+
+        // Arithmetic — returns new instances (immutable)
+        LocalDate nextWeek      = today.plusDays(7);
+        LocalDate prevMonth     = today.minusMonths(1);
+        LocalDate nextYear      = today.plusYears(1);
+        System.out.println("Next week:   " + nextWeek);
+        System.out.println("Prev month:  " + prevMonth);
+        System.out.println("Next year:   " + nextYear);
+
+        // Comparison
+        LocalDate date1 = LocalDate.of(2024, 1, 1);
+        LocalDate date2 = LocalDate.of(2025, 6, 15);
+        System.out.println("date1 isBefore date2? " + date1.isBefore(date2));
+        System.out.println("date2 isAfter  date1? " + date2.isAfter(date1));
+        System.out.println("Same date?            " + date1.isEqual(date1));
+
+        // Days between two dates
+        long daysBetween = ChronoUnit.DAYS.between(date1, date2);
+        System.out.println("Days between: " + daysBetween);
+    }
+}</pre>
+            <div class="output-box">
+              Today: 2026-07-23<br />
+              Specific: 2026-07-23<br />
+              Parsed: 2025-12-25<br />
+              Year: 2026<br />
+              Month: JULY<br />
+              MonthValue: 7<br />
+              Day: 23<br />
+              DayOfWeek: THURSDAY<br />
+              DayOfYear: 204<br />
+              IsLeapYear: false<br />
+              Next week: 2026-07-30<br />
+              Prev month: 2026-06-23<br />
+              Next year: 2027-07-23<br />
+              date1 isBefore date2? true<br />
+              date2 isAfter date1? true<br />
+              Same date? true<br />
+              Days between: 531
+            </div>
+
+            <!-- Section 4 -->
+            <h2 id="localtime">4. LocalTime</h2>
+            <p>
+              <code class="inline">LocalTime</code> represents a time-of-day
+              (hour, minute, second, nanosecond) without any date or timezone.
+              It is useful for representing opening hours, alarm times, or any
+              recurring daily time.
+            </p>
+            <pre>
+import java.time.*;
+
+public class LocalTimeDemo {
+    public static void main(String[] args) {
+        // Create LocalTime instances
+        LocalTime now     = LocalTime.now();                    // current time
+        LocalTime noon    = LocalTime.of(12, 0);               // 12:00:00
+        LocalTime precise = LocalTime.of(14, 30, 45, 500000000); // 14:30:45.5
+        LocalTime parsed  = LocalTime.parse("08:15:30");
+
+        System.out.println("Now:     " + now);
+        System.out.println("Noon:    " + noon);
+        System.out.println("Precise: " + precise);
+        System.out.println("Parsed:  " + parsed);
+
+        // Accessing fields
+        System.out.println("Hour:   " + now.getHour());
+        System.out.println("Minute: " + now.getMinute());
+        System.out.println("Second: " + now.getSecond());
+        System.out.println("Nano:   " + now.getNano());
+
+        // Arithmetic
+        LocalTime twoHoursLater    = noon.plusHours(2);
+        LocalTime thirtyMinEarlier = noon.minusMinutes(30);
+        System.out.println("Noon + 2h:    " + twoHoursLater);
+        System.out.println("Noon - 30min: " + thirtyMinEarlier);
+
+        // Comparison
+        System.out.println("noon isBefore precise? " + noon.isBefore(precise));
+        System.out.println("noon isAfter  parsed?  " + noon.isAfter(parsed));
+
+        // Truncation — useful for ignoring sub-second precision
+        LocalTime truncated = now.withNano(0).withSecond(0); // floor to minute
+        System.out.println("Truncated to minute: " + truncated);
+
+        // Constants
+        System.out.println("Midnight: " + LocalTime.MIDNIGHT); // 00:00
+        System.out.println("Noon:     " + LocalTime.NOON);     // 12:00
+    }
+}</pre>
+            <div class="output-box">
+              Now: 14:30:22.847<br />
+              Noon: 12:00<br />
+              Precise: 14:30:45.500<br />
+              Parsed: 08:15:30<br />
+              Hour: 14<br />
+              Minute: 30<br />
+              Second: 22<br />
+              Nano: 847000000<br />
+              Noon + 2h: 14:00<br />
+              Noon - 30min: 11:30<br />
+              noon isBefore precise? true<br />
+              noon isAfter parsed? true<br />
+              Truncated to minute: 14:30<br />
+              Midnight: 00:00<br />
+              Noon: 12:00
+            </div>
+
+            <!-- Section 5 -->
+            <h2 id="localdatetime">5. LocalDateTime</h2>
+            <p>
+              <code class="inline">LocalDateTime</code> combines a date and a
+              time in a single object, without any timezone information. It is
+              the most commonly used class when you need to store both date and
+              time but do not need to account for timezones (e.g., a log entry
+              timestamp stored in a database alongside timezone metadata, or a
+              UI display value).
+            </p>
+            <pre>
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+
+public class LocalDateTimeDemo {
+    public static void main(String[] args) {
+        // Create LocalDateTime instances
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime specific = LocalDateTime.of(2026, 7, 23, 14, 30, 0);
+        LocalDateTime fromParts = LocalDateTime.of(
+            LocalDate.of(2026, 1, 1),
+            LocalTime.of(9, 0)
+        );
+
+        System.out.println("Now:       " + now);
+        System.out.println("Specific:  " + specific);
+        System.out.println("FromParts: " + fromParts);
+
+        // Arithmetic
+        LocalDateTime meeting = specific.plusDays(3).plusHours(2).minusMinutes(15);
+        System.out.println("Meeting:   " + meeting);
+
+        // Extract date/time parts
+        System.out.println("Date part: " + specific.toLocalDate());
+        System.out.println("Time part: " + specific.toLocalTime());
+        System.out.println("Year:      " + specific.getYear());
+        System.out.println("DayOfWeek: " + specific.getDayOfWeek());
+
+        // Formatting
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        String formatted = specific.format(fmt);
+        System.out.println("Formatted: " + formatted);
+
+        // Parsing
+        LocalDateTime parsed = LocalDateTime.parse("23-07-2026 14:30", fmt);
+        System.out.println("Parsed:    " + parsed);
+
+        // isBefore / isAfter
+        System.out.println("specific isBefore meeting? " + specific.isBefore(meeting));
+    }
+}</pre>
+            <div class="output-box">
+              Now: 2026-07-23T14:30:22.847<br />
+              Specific: 2026-07-23T14:30<br />
+              FromParts: 2026-01-01T09:00<br />
+              Meeting: 2026-07-26T16:15<br />
+              Date part: 2026-07-23<br />
+              Time part: 14:30<br />
+              Year: 2026<br />
+              DayOfWeek: THURSDAY<br />
+              Formatted: 23-07-2026 14:30<br />
+              Parsed: 2026-07-23T14:30<br />
+              specific isBefore meeting? true
+            </div>
+
+            <!-- Section 6 -->
+            <h2 id="zoneddatetime">6. ZonedDateTime</h2>
+            <p>
+              <code class="inline">ZonedDateTime</code> is a
+              <code class="inline">LocalDateTime</code> with full timezone
+              information. Use it when scheduling across timezones, displaying
+              times to users in different regions, or converting between
+              timezones. Timezones are identified by
+              <code class="inline">ZoneId</code> strings like
+              <code class="inline">"America/New_York"</code> or
+              <code class="inline">"Asia/Kolkata"</code>.
+            </p>
+            <pre>
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+
+public class ZonedDateTimeDemo {
+    public static void main(String[] args) {
+        // Current time in different timezones
+        ZonedDateTime utc        = ZonedDateTime.now(ZoneId.of("UTC"));
+        ZonedDateTime newYork    = ZonedDateTime.now(ZoneId.of("America/New_York"));
+        ZonedDateTime london     = ZonedDateTime.now(ZoneId.of("Europe/London"));
+        ZonedDateTime kolkata    = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
+        ZonedDateTime tokyo      = ZonedDateTime.now(ZoneId.of("Asia/Tokyo"));
+
+        System.out.println("UTC:      " + utc);
+        System.out.println("New York: " + newYork);
+        System.out.println("London:   " + london);
+        System.out.println("Kolkata:  " + kolkata);
+        System.out.println("Tokyo:    " + tokyo);
+
+        // Create a specific ZonedDateTime
+        ZonedDateTime meeting = ZonedDateTime.of(
+            LocalDateTime.of(2026, 7, 23, 9, 0),
+            ZoneId.of("America/New_York")
+        );
+        System.out.println("\nMeeting (NY):     " + meeting);
+
+        // Convert to another timezone
+        ZonedDateTime meetingLondon = meeting.withZoneSameInstant(ZoneId.of("Europe/London"));
+        ZonedDateTime meetingKolkata = meeting.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
+        System.out.println("Meeting (London):  " + meetingLondon);
+        System.out.println("Meeting (Kolkata): " + meetingKolkata);
+
+        // List all available zone IDs (first 5)
+        System.out.println("\nSample Zone IDs:");
+        ZoneId.getAvailableZoneIds().stream()
+              .sorted()
+              .limit(5)
+              .forEach(z -> System.out.println("  " + z));
+
+        // Formatting ZonedDateTime
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm z");
+        System.out.println("\nFormatted: " + meeting.format(fmt));
+    }
+}</pre>
+            <div class="output-box">
+              UTC: 2026-07-23T14:30:22.847Z[UTC]<br />
+              New York: 2026-07-23T10:30:22.847-04:00[America/New_York]<br />
+              London: 2026-07-23T15:30:22.847+01:00[Europe/London]<br />
+              Kolkata: 2026-07-23T20:00:22.847+05:30[Asia/Kolkata]<br />
+              Tokyo: 2026-07-23T23:30:22.847+09:00[Asia/Tokyo]<br />
+              <br />
+              Meeting (NY): 2026-07-23T09:00-04:00[America/New_York]<br />
+              Meeting (London): 2026-07-23T14:00+01:00[Europe/London]<br />
+              Meeting (Kolkata): 2026-07-23T18:30+05:30[Asia/Kolkata]<br />
+              <br />
+              Sample Zone IDs:<br />
+              Africa/Abidjan<br />
+              Africa/Accra<br />
+              Africa/Addis_Ababa<br />
+              Africa/Algiers<br />
+              Africa/Asmara<br />
+              <br />
+              Formatted: 23 Jul 2026 09:00 EDT
+            </div>
+
+            <!-- Section 7 -->
+            <h2 id="instant">7. Instant</h2>
+            <p>
+              <code class="inline">Instant</code> represents a single point on
+              the timeline — a machine timestamp measured as the number of
+              seconds (and nanoseconds) since the Unix epoch (January 1, 1970,
+              00:00:00 UTC). It has no concept of timezone, date, or
+              time-of-day. Use it for measuring elapsed time, storing event
+              timestamps in databases, and interoperating with systems that use
+              epoch times.
+            </p>
+            <pre>
+import java.time.*;
+
+public class InstantDemo {
+    public static void main(String[] args) {
+        // Current moment
+        Instant now = Instant.now();
+        System.out.println("Now (ISO):        " + now);
+        System.out.println("Epoch seconds:    " + now.getEpochSecond());
+        System.out.println("Epoch millis:     " + now.toEpochMilli());
+        System.out.println("Nano adjustment:  " + now.getNano());
+
+        // Create from epoch value
+        Instant fromEpoch = Instant.ofEpochSecond(0);        // Unix epoch
+        Instant fromMillis = Instant.ofEpochMilli(1_000_000_000_000L); // 2001
+        System.out.println("Unix epoch:       " + fromEpoch);
+        System.out.println("From millis:      " + fromMillis);
+
+        // Arithmetic
+        Instant future = now.plusSeconds(3600);  // 1 hour later
+        Instant past   = now.minusSeconds(86400); // 1 day ago
+        System.out.println("1 hour later:     " + future);
+        System.out.println("1 day ago:        " + past);
+
+        // Comparison
+        System.out.println("past isBefore now? " + past.isBefore(now));
+        System.out.println("future isAfter now? " + future.isAfter(now));
+
+        // Convert Instant to ZonedDateTime (for display)
+        ZonedDateTime zdt = now.atZone(ZoneId.of("America/New_York"));
+        System.out.println("Instant as ZDT:   " + zdt);
+
+        // Measure elapsed time
+        Instant start = Instant.now();
+        long sum = 0;
+        for (int i = 0; i < 1_000_000; i++) sum += i;
+        Instant end = Instant.now();
+        long elapsedMs = end.toEpochMilli() - start.toEpochMilli();
+        System.out.println("Sum: " + sum + ", elapsed: " + elapsedMs + "ms");
+    }
+}</pre>
+            <div class="output-box">
+              Now (ISO): 2026-07-23T14:30:22.847Z<br />
+              Epoch seconds: 1753281022<br />
+              Epoch millis: 1753281022847<br />
+              Nano adjustment: 847000000<br />
+              Unix epoch: 1970-01-01T00:00:00Z<br />
+              From millis: 2001-09-08T21:46:40Z<br />
+              1 hour later: 2026-07-23T15:30:22.847Z<br />
+              1 day ago: 2026-07-22T14:30:22.847Z<br />
+              past isBefore now? true<br />
+              future isAfter now? true<br />
+              Instant as ZDT: 2026-07-23T10:30:22.847-04:00[America/New_York]<br />
+              Sum: 499999500000, elapsed: 3ms
+            </div>
+
+            <!-- Section 8 -->
+            <h2 id="duration">8. Duration</h2>
+            <p>
+              <code class="inline">Duration</code> represents a time-based
+              amount — a quantity of time measured in hours, minutes, seconds,
+              and nanoseconds. It is best suited for measuring differences
+              between <code class="inline">Instant</code> or
+              <code class="inline">LocalTime</code> values (precise time spans).
+            </p>
+            <pre>
+import java.time.*;
+
+public class DurationDemo {
+    public static void main(String[] args) {
+        // Create Duration instances
+        Duration twoHours        = Duration.ofHours(2);
+        Duration thirtyMinutes   = Duration.ofMinutes(30);
+        Duration ninetySeconds   = Duration.ofSeconds(90);
+        Duration mixed           = Duration.ofHours(1).plusMinutes(30).plusSeconds(45);
+
+        System.out.println("2 hours:         " + twoHours);        // PT2H
+        System.out.println("30 minutes:      " + thirtyMinutes);   // PT30M
+        System.out.println("90 seconds:      " + ninetySeconds);   // PT1M30S
+        System.out.println("1h 30m 45s:      " + mixed);           // PT1H30M45S
+
+        // Duration between two Instants
+        Instant start = Instant.parse("2026-07-23T08:00:00Z");
+        Instant end   = Instant.parse("2026-07-23T10:45:30Z");
+        Duration between = Duration.between(start, end);
+        System.out.println("Between instants: " + between);         // PT2H45M30S
+        System.out.println("  toHours:   " + between.toHours());
+        System.out.println("  toMinutes: " + between.toMinutes());
+        System.out.println("  toSeconds: " + between.toSeconds());
+        System.out.println("  toMillis:  " + between.toMillis());
+
+        // Duration between two LocalTimes
+        LocalTime open  = LocalTime.of(9, 0);
+        LocalTime close = LocalTime.of(17, 30);
+        Duration workDay = Duration.between(open, close);
+        System.out.println("Work day: " + workDay);                 // PT8H30M
+        System.out.printf("Work day: %d hours %d minutes%n",
+            workDay.toHoursPart(), workDay.toMinutesPart());
+
+        // Arithmetic
+        Duration doubled = twoHours.multipliedBy(2);
+        Duration halved  = twoHours.dividedBy(2);
+        System.out.println("Doubled: " + doubled);
+        System.out.println("Halved:  " + halved);
+
+        // Negative duration
+        Duration negative = Duration.between(end, start);
+        System.out.println("Negative: " + negative);               // PT-2H-45M-30S
+        System.out.println("isNegative? " + negative.isNegative());
+        System.out.println("abs: " + negative.abs());
+    }
+}</pre>
+            <div class="output-box">
+              2 hours: PT2H<br />
+              30 minutes: PT30M<br />
+              90 seconds: PT1M30S<br />
+              1h 30m 45s: PT1H30M45S<br />
+              Between instants: PT2H45M30S<br />
+              toHours: 2<br />
+              toMinutes: 165<br />
+              toSeconds: 9930<br />
+              toMillis: 9930000<br />
+              Work day: PT8H30M<br />
+              Work day: 8 hours 30 minutes<br />
+              Doubled: PT4H<br />
+              Halved: PT1H<br />
+              Negative: PT-2H-45M-30S<br />
+              isNegative? true<br />
+              abs: PT2H45M30S
+            </div>
+
+            <!-- Section 9 -->
+            <h2 id="period">9. Period</h2>
+            <p>
+              <code class="inline">Period</code> represents a date-based amount
+              in years, months, and days. It operates on calendar dates — unlike
+              <code class="inline">Duration</code> which operates on exact time.
+              Use <code class="inline">Period</code> for human-meaningful date
+              spans like age calculation, subscription length, or contract
+              durations.
+            </p>
+            <pre>
+import java.time.*;
+
+public class PeriodDemo {
+    public static void main(String[] args) {
+        // Create Period instances
+        Period oneYear       = Period.ofYears(1);
+        Period sixMonths     = Period.ofMonths(6);
+        Period tenDays       = Period.ofDays(10);
+        Period oneYearFive   = Period.of(1, 5, 10); // 1 year, 5 months, 10 days
+
+        System.out.println("1 year:           " + oneYear);     // P1Y
+        System.out.println("6 months:         " + sixMonths);   // P6M
+        System.out.println("10 days:          " + tenDays);     // P10D
+        System.out.println("1Y 5M 10D:        " + oneYearFive); // P1Y5M10D
+
+        // Period between two LocalDates
+        LocalDate birth  = LocalDate.of(2000, 3, 15);
+        LocalDate today  = LocalDate.of(2026, 7, 23);
+        Period age = Period.between(birth, today);
+        System.out.println("Age period:       " + age);
+        System.out.printf("Age: %d years, %d months, %d days%n",
+            age.getYears(), age.getMonths(), age.getDays());
+
+        // Add Period to a date
+        LocalDate start     = LocalDate.of(2026, 1, 1);
+        LocalDate afterYear = start.plus(Period.ofYears(1));
+        LocalDate afterSix  = start.plus(Period.ofMonths(6));
+        System.out.println("After 1 year:  " + afterYear);
+        System.out.println("After 6 months: " + afterSix);
+
+        // Period arithmetic
+        Period doubled = Period.of(age.getYears() * 2,
+                                   age.getMonths() * 2,
+                                   age.getDays() * 2);
+        System.out.println("Doubled period: " + doubled);
+
+        // isNegative
+        Period neg = Period.between(today, birth);
+        System.out.println("Negative: " + neg.isNegative());
+
+        // Practical: check if 18+ years old
+        LocalDate dob = LocalDate.of(2010, 5, 20);
+        Period sinceB = Period.between(dob, today);
+        boolean isAdult = sinceB.getYears() >= 18;
+        System.out.println("Born " + dob + " — adult? " + isAdult);
+    }
+}</pre>
+            <div class="output-box">
+              1 year: P1Y<br />
+              6 months: P6M<br />
+              10 days: P10D<br />
+              1Y 5M 10D: P1Y5M10D<br />
+              Age period: P26Y4M8D<br />
+              Age: 26 years, 4 months, 8 days<br />
+              After 1 year: 2027-01-01<br />
+              After 6 months: 2026-07-01<br />
+              Doubled period: P52Y8M16D<br />
+              Negative: true<br />
+              Born 2010-05-20 — adult? false
+            </div>
+            <div class="note-box">
+              <p>
+                <strong>Duration vs Period:</strong> Use
+                <code class="inline">Duration</code> for machine-level, exact
+                time spans (seconds, nanoseconds). Use
+                <code class="inline">Period</code> for human calendar spans
+                (years, months, days). Do not mix them — a month is not a fixed
+                number of seconds.
+              </p>
+            </div>
+
+            <!-- Section 10 -->
+            <h2 id="datetimeformatter">10. DateTimeFormatter</h2>
+            <p>
+              <code class="inline">DateTimeFormatter</code> is the thread-safe
+              replacement for <code class="inline">SimpleDateFormat</code>. It
+              can format date/time objects to strings and parse strings into
+              date/time objects. It offers predefined formatters and custom
+              pattern-based formatters.
+            </p>
+            <pre>
+import java.time.*;
+import java.time.format.*;
+import java.util.Locale;
+
+public class DateTimeFormatterDemo {
+    public static void main(String[] args) {
+        LocalDateTime ldt = LocalDateTime.of(2026, 7, 23, 14, 30, 45);
+        LocalDate     ld  = ldt.toLocalDate();
+        ZonedDateTime zdt = ldt.atZone(ZoneId.of("America/New_York"));
+
+        // --- Predefined Formatters ---
+        System.out.println("ISO_DATE:            " +
+            ld.format(DateTimeFormatter.ISO_DATE));
+        System.out.println("ISO_DATE_TIME:       " +
+            ldt.format(DateTimeFormatter.ISO_DATE_TIME));
+        System.out.println("ISO_ZONED_DATE_TIME: " +
+            zdt.format(DateTimeFormatter.ISO_ZONED_DATE_TIME));
+        System.out.println("RFC_1123_DATE_TIME:  " +
+            zdt.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        System.out.println("ISO_LOCAL_DATE:      " +
+            ld.format(DateTimeFormatter.ISO_LOCAL_DATE));
+
+        // --- Custom Patterns ---
+        DateTimeFormatter fmt1 = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        DateTimeFormatter fmt2 = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+        DateTimeFormatter fmt3 = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss");
+        DateTimeFormatter fmt4 = DateTimeFormatter.ofPattern("yyyy/MM/dd h:mm a");
+        DateTimeFormatter fmt5 = DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.FRENCH);
+
+        System.out.println("\nCustom dd-MM-yyyy HH:mm:  " + ldt.format(fmt1));
+        System.out.println("Custom MMMM dd, yyyy:      " + ld.format(fmt2));
+        System.out.println("Custom EEE, dd MMM HH:mm:  " + ldt.format(fmt3));
+        System.out.println("Custom yyyy/MM/dd h:mm a:  " + ldt.format(fmt4));
+        System.out.println("Custom French locale:       " + ld.format(fmt5));
+
+        // --- Parsing strings to date/time objects ---
+        System.out.println("\n--- Parsing ---");
+        String s1 = "23-07-2026 14:30";
+        LocalDateTime parsed1 = LocalDateTime.parse(s1, fmt1);
+        System.out.println("Parsed LocalDateTime: " + parsed1);
+
+        String s2 = "2026-07-23";
+        LocalDate parsed2 = LocalDate.parse(s2); // ISO-8601 default
+        System.out.println("Parsed LocalDate:     " + parsed2);
+
+        String s3 = "July 23, 2026";
+        DateTimeFormatter fmtParse = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+        LocalDate parsed3 = LocalDate.parse(s3, fmtParse);
+        System.out.println("Parsed 'July 23, 2026': " + parsed3);
+
+        // --- Format pattern reference ---
+        System.out.println("\n--- Pattern Reference ---");
+        DateTimeFormatter[] patterns = {
+            DateTimeFormatter.ofPattern("yyyy"),
+            DateTimeFormatter.ofPattern("MM"),
+            DateTimeFormatter.ofPattern("MMMM"),
+            DateTimeFormatter.ofPattern("dd"),
+            DateTimeFormatter.ofPattern("EEE"),
+            DateTimeFormatter.ofPattern("EEEE"),
+            DateTimeFormatter.ofPattern("HH"),
+            DateTimeFormatter.ofPattern("mm"),
+            DateTimeFormatter.ofPattern("ss"),
+            DateTimeFormatter.ofPattern("SSS")
+        };
+        String[] meanings = {
+            "yyyy = year (4-digit)",
+            "MM   = month (2-digit)",
+            "MMMM = month (full name)",
+            "dd   = day (2-digit)",
+            "EEE  = weekday (abbrev)",
+            "EEEE = weekday (full)",
+            "HH   = hour 24h",
+            "mm   = minute",
+            "ss   = second",
+            "SSS  = milliseconds"
+        };
+        for (int i = 0; i < patterns.length; i++) {
+            System.out.println(meanings[i] + " -> " + ldt.format(patterns[i]));
+        }
+    }
+}</pre>
+            <div class="output-box">
+              ISO_DATE: 2026-07-23<br />
+              ISO_DATE_TIME: 2026-07-23T14:30:45<br />
+              ISO_ZONED_DATE_TIME:
+              2026-07-23T14:30:45-04:00[America/New_York]<br />
+              RFC_1123_DATE_TIME: Thu, 23 Jul 2026 14:30:45 -0400<br />
+              ISO_LOCAL_DATE: 2026-07-23<br />
+              <br />
+              Custom dd-MM-yyyy HH:mm: 23-07-2026 14:30<br />
+              Custom MMMM dd, yyyy: July 23, 2026<br />
+              Custom EEE, dd MMM HH:mm: Thu, 23 Jul 14:30:45<br />
+              Custom yyyy/MM/dd h:mm a: 2026/07/23 2:30 PM<br />
+              Custom French locale: 23 juil. 2026<br />
+              <br />
+              --- Parsing ---<br />
+              Parsed LocalDateTime: 2026-07-23T14:30<br />
+              Parsed LocalDate: 2026-07-23<br />
+              Parsed 'July 23, 2026': 2026-07-23<br />
+              <br />
+              --- Pattern Reference ---<br />
+              yyyy = year (4-digit) -> 2026<br />
+              MM = month (2-digit) -> 07<br />
+              MMMM = month (full name) -> July<br />
+              dd = day (2-digit) -> 23<br />
+              EEE = weekday (abbrev) -> Thu<br />
+              EEEE = weekday (full) -> Thursday<br />
+              HH = hour 24h -> 14<br />
+              mm = minute -> 30<br />
+              ss = second -> 45<br />
+              SSS = milliseconds -> 000
+            </div>
+
+            <!-- Section 11 -->
+            <h2 id="old-vs-new-api">11. Comparison: Old vs New API</h2>
+            <p>
+              Here is a comprehensive side-by-side comparison of the old and new
+              APIs:
+            </p>
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Concept</th>
+                    <th>Old API (java.util)</th>
+                    <th>New API (java.time)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Current date</td>
+                    <td><code class="inline">new Date()</code></td>
+                    <td><code class="inline">LocalDate.now()</code></td>
+                  </tr>
+                  <tr>
+                    <td>Current date and time</td>
+                    <td>
+                      <code class="inline">new Date()</code> or
+                      <code class="inline">Calendar.getInstance()</code>
+                    </td>
+                    <td><code class="inline">LocalDateTime.now()</code></td>
+                  </tr>
+                  <tr>
+                    <td>Specific date</td>
+                    <td>
+                      <code class="inline"
+                        >new Date(year-1900, month-1, day)</code
+                      >
+                    </td>
+                    <td>
+                      <code class="inline">LocalDate.of(year, month, day)</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Date with timezone</td>
+                    <td>
+                      <code class="inline"
+                        >Calendar.getInstance(TimeZone.getTimeZone("..."))</code
+                      >
+                    </td>
+                    <td>
+                      <code class="inline"
+                        >ZonedDateTime.now(ZoneId.of("..."))</code
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Machine timestamp</td>
+                    <td>
+                      <code class="inline">System.currentTimeMillis()</code>
+                    </td>
+                    <td><code class="inline">Instant.now()</code></td>
+                  </tr>
+                  <tr>
+                    <td>Add days</td>
+                    <td>
+                      <code class="inline"
+                        >cal.add(Calendar.DAY_OF_MONTH, n)</code
+                      >
+                    </td>
+                    <td><code class="inline">date.plusDays(n)</code></td>
+                  </tr>
+                  <tr>
+                    <td>Subtract months</td>
+                    <td>
+                      <code class="inline">cal.add(Calendar.MONTH, -n)</code>
+                    </td>
+                    <td><code class="inline">date.minusMonths(n)</code></td>
+                  </tr>
+                  <tr>
+                    <td>Days between dates</td>
+                    <td>Manual subtraction of milliseconds</td>
+                    <td>
+                      <code class="inline"
+                        >ChronoUnit.DAYS.between(d1, d2)</code
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Date-based span</td>
+                    <td>No equivalent</td>
+                    <td><code class="inline">Period.between(d1, d2)</code></td>
+                  </tr>
+                  <tr>
+                    <td>Time-based span</td>
+                    <td>Millisecond arithmetic</td>
+                    <td>
+                      <code class="inline">Duration.between(t1, t2)</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Format date</td>
+                    <td>
+                      <code class="inline"
+                        >new SimpleDateFormat("...").format(date)</code
+                      >
+                    </td>
+                    <td>
+                      <code class="inline"
+                        >DateTimeFormatter.ofPattern("...").format(ldt)</code
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Parse string to date</td>
+                    <td>
+                      <code class="inline"
+                        >new SimpleDateFormat("...").parse(str)</code
+                      >
+                    </td>
+                    <td>
+                      <code class="inline"
+                        >LocalDate.parse(str, formatter)</code
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Thread safety</td>
+                    <td>Not thread-safe (SimpleDateFormat)</td>
+                    <td>Fully thread-safe (immutable)</td>
+                  </tr>
+                  <tr>
+                    <td>Mutability</td>
+                    <td>Mutable (setTime, set, etc.)</td>
+                    <td>Immutable (returns new objects)</td>
+                  </tr>
+                  <tr>
+                    <td>Month indexing</td>
+                    <td>0-indexed (Jan = 0)</td>
+                    <td>1-indexed (Jan = 1) — intuitive</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Prev / Next -->
+            <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+              <a href="./java-8-features.html" class="btn btn-outline-secondary"
+                >&larr; Java 8+ Features</a
+              >
+              <a href="../index.html#multithreading" class="btn btn-primary"
+                >Multithreading &rarr;</a
+              >
+            </div>
+          </article>
+        </div>
+        <!-- /col-lg-8 -->
+
+        <!-- Sticky TOC -->
+        <div class="col-lg-4 d-none d-lg-block">
+          <nav class="toc">
+            <h6>On This Page</h6>
+            <a href="#problems-old-api">1. Problems with the Old Date API</a>
+            <a href="#java-time-overview">2. Overview of java.time Package</a>
+            <a href="#localdate">3. LocalDate</a>
+            <a href="#localtime">4. LocalTime</a>
+            <a href="#localdatetime">5. LocalDateTime</a>
+            <a href="#zoneddatetime">6. ZonedDateTime</a>
+            <a href="#instant">7. Instant</a>
+            <a href="#duration">8. Duration</a>
+            <a href="#period">9. Period</a>
+            <a href="#datetimeformatter">10. DateTimeFormatter</a>
+            <a href="#old-vs-new-api">11. Comparison: Old vs New API</a>
+          </nav>
+        </div>
+      </div>
+      <!-- /row -->
+    </div>
+    <!-- /container-xl -->
+
+    <!-- Footer -->
+    <footer class="py-4 mt-4">
+      <div class="container-xl text-center">
+        <small>&copy; 2026 Java Codeex. All rights reserved.</small>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmk+GOFVeA//xwkFWEVflJ8ikO1y+k"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+
+

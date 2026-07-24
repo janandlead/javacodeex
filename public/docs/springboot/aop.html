@@ -1,0 +1,517 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Learn Spring Boot AOP including aspects, advice, pointcuts, join points, proxies, and practical examples."
+    />
+    <title>Spring Boot AOP Tutorial | Java Codeex</title>
+    <link rel="icon" href="../icons/javacodeex.jpg" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../site-theme.css" />
+    <link rel="stylesheet" href="./springboot.css" />
+  </head>
+  <body>
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" /></a>
+        <a class="topic-link" href="./index.html#basics"
+          >Overview</a
+        >
+        <a class="topic-link" href="https://javacodeex.com/springboot/project-structure.html"
+          >Project Structure</a
+        >
+        <a class="topic-link" href="./aop.html">AOP</a>
+        <a class="topic-link" href="./index.html#data-jpa">Data JPA</a>
+        <a class="topic-link" href="./index.html#security">Security</a>
+        <a class="topic-link" href="./index.html#exception-handling"
+          >Exceptions</a
+        >
+        <a class="topic-link" href="./index.html#rest-api">REST APIs</a>
+        <a class="topic-link" href="./validation.html">Validation</a>
+        <a class="topic-link" href="./index.html#testing">Testing</a>
+        <a class="topic-link" href="./index.html#actuator">Actuator</a>
+        <a class="topic-link" href="./index.html#deployment">Deployment</a>
+      </div>
+    </nav>
+    <section class="spring-hero">
+      <div class="container-xl">
+        <span class="spring-pill">Java Codeex</span>
+        <h1 class="mt-3">Aspect-Oriented Programming (AOP)</h1>
+        <p class="lead">
+          Keep cross-cutting concerns such as logging, security, transactions,
+          and timing separate from business logic.
+        </p>
+      </div>
+    </section>
+    <main class="container-xl py-5 aop-page">
+      <div class="spring-callout mb-4">
+        <strong>Simple idea:</strong> AOP lets you say â€œrun this behavior
+        around methods that match a ruleâ€ instead of copying the same code into
+        every method.
+      </div>
+      <h2 id="what-is-aop">What is AOP?</h2>
+      <p>
+        Some behavior affects many parts of an application. Logging,
+        authorization, transaction management, caching, and performance
+        measurement are called <strong>cross-cutting concerns</strong>. AOP
+        moves that repeated behavior into an aspect and applies it to selected
+        method executions.
+      </p>
+      <div class="concept-diagram">
+        <figcaption>How Spring AOP intercepts a method</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>Client</strong><small>Calls service method</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Proxy</strong><small>Runs advice</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Target bean</strong><small>Runs business logic</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Response</strong><small>Returns to client</small>
+          </div>
+        </div>
+      </div>
+      <h2 id="why-aop">Why use AOP?</h2>
+      <p>
+        Logging, authorization, transactions, auditing, caching, and performance
+        measurement affect many services. These are cross-cutting concerns. AOP
+        centralizes the repeated technical behavior so business methods stay
+        focused on business decisions.
+      </p>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Concern</th>
+              <th>AOP behavior</th>
+              <th>Real-world example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Logging</td>
+              <td>Record method and duration</td>
+              <td>Trace an order request</td>
+            </tr>
+            <tr>
+              <td>Security</td>
+              <td>Check an annotation</td>
+              <td>Protect refund approval</td>
+            </tr>
+            <tr>
+              <td>Transactions</td>
+              <td>Commit or roll back work</td>
+              <td>Save order and inventory together</td>
+            </tr>
+            <tr>
+              <td>Auditing</td>
+              <td>Record important changes</td>
+              <td>Track address updates</td>
+            </tr>
+            <tr>
+              <td>Performance</td>
+              <td>Measure execution time</td>
+              <td>Find slow service calls</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h2 id="aop-terminology">AOP Terminology</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Term</th>
+              <th>Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Aspect</strong></td>
+              <td>A class containing cross-cutting behavior.</td>
+            </tr>
+            <tr>
+              <td><strong>Join point</strong></td>
+              <td>
+                A point during execution where behavior could be applied; Spring
+                AOP mainly uses method execution.
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Pointcut</strong></td>
+              <td>
+                A rule that selects which join points should be intercepted.
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Advice</strong></td>
+              <td>
+                The action that runs before, after, or around the selected
+                method.
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Target</strong></td>
+              <td>The original bean containing the business method.</td>
+            </tr>
+            <tr>
+              <td><strong>Proxy</strong></td>
+              <td>
+                The Spring-created object that intercepts calls to the target.
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Weaving</strong></td>
+              <td>
+                The process of connecting an aspect to target behavior; Spring
+                commonly does this through runtime proxies.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h2 id="advice-types">Advice Types</h2>
+      <ul class="lh-lg">
+        <li><code>@Before</code> runs before the matched method.</li>
+        <li><code>@AfterReturning</code> runs after a successful return.</li>
+        <li>
+          <code>@AfterThrowing</code> runs when the method throws an exception.
+        </li>
+        <li>
+          <code>@After</code> runs after completion, whether successful or
+          failed.
+        </li>
+        <li>
+          <code>@Around</code> surrounds the method and can decide whether and
+          when to call it.
+        </li>
+      </ul>
+      <h3 id="advice-examples">Advice examples</h3>
+      <pre class="spring-code"><code>@Aspect
+@Component
+class AuditAspect {
+    @Before("execution(* com.javacodeex.orders.service..*(..))")
+    void beforeServiceCall(JoinPoint joinPoint) {
+        log.info("Starting {}", joinPoint.getSignature().toShortString());
+    }
+
+    @AfterReturning(
+            pointcut = "execution(* com.javacodeex.orders.service..*(..))",
+            returning = "result")
+    void afterSuccess(JoinPoint joinPoint, Object result) {
+        log.info("Completed {}", joinPoint.getSignature().toShortString());
+    }
+
+    @AfterThrowing(
+            pointcut = "execution(* com.javacodeex.orders.service..*(..))",
+            throwing = "error")
+    void afterFailure(JoinPoint joinPoint, Throwable error) {
+        log.warn("{} failed: {}", joinPoint.getSignature(), error.getMessage());
+    }
+}</code></pre>
+      <h3 id="around-advice">Around advice in detail</h3>
+      <p>
+        Around advice receives a <code>ProceedingJoinPoint</code>. Calling
+        <code>proceed()</code> runs the target method. A <code>finally</code>
+        block runs even when the target throws an exception.
+      </p>
+      <pre
+        class="spring-code"
+      ><code>@Around("execution(* com.javacodeex.orders.service..*(..))")
+Object measure(ProceedingJoinPoint joinPoint) throws Throwable {
+    long start = System.nanoTime();
+    try {
+        return joinPoint.proceed();
+    } catch (Throwable error) {
+        log.error("Failure in {}", joinPoint.getSignature(), error);
+        throw error;
+    } finally {
+        long elapsedMs = (System.nanoTime() - start) / 1_000_000;
+        log.info("{} took {} ms", joinPoint.getSignature(), elapsedMs);
+    }
+}</code></pre>
+      <div class="spring-callout">
+        <strong>Important:</strong> If an around advice does not call
+        <code>proceed()</code>, the target method does not run.
+      </div>
+      <h2 id="pointcuts">Pointcuts</h2>
+      <p>
+        A pointcut expression defines what should be intercepted. Keep pointcuts
+        narrow and readable so an aspect does not unexpectedly affect unrelated
+        code.
+      </p>
+      <pre class="spring-code"><code>// Any method in the service package
+@Pointcut("execution(* com.javacodeex.orders.service..*(..))")
+private void serviceMethods() { }
+
+// Only methods marked with an annotation
+@Pointcut("@annotation(com.javacodeex.orders.TrackTime)")
+private void trackedMethods() { }</code></pre>
+      <p>
+        The <code>execution</code> expression above matches methods inside the
+        service package. An annotation pointcut matches only methods explicitly
+        marked with a custom annotation.
+      </p>
+      <h3 id="join-points">Join points</h3>
+      <p>
+        A join point is a possible point where an aspect could run. Full AspectJ
+        supports more join point types, but Spring AOP is proxy-based and mainly
+        intercepts method execution on Spring-managed Beans.
+      </p>
+      <div class="concept-diagram">
+        <figcaption>How a pointcut selects join points</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>Bean methods</strong><small>Possible join points</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Pointcut rule</strong><small>Package or annotation</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node result">
+            <strong>Selected methods</strong><small>Advice runs here</small>
+          </div>
+        </div>
+      </div>
+      <h3 id="pointcut-designators">Common pointcut designators</h3>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Designator</th>
+              <th>Meaning</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>execution</code></td>
+              <td>Matches method signatures</td>
+              <td><code>execution(* service..*(..))</code></td>
+            </tr>
+            <tr>
+              <td><code>within</code></td>
+              <td>Matches types or packages</td>
+              <td><code>within(com.javacodeex.orders.service..*)</code></td>
+            </tr>
+            <tr>
+              <td><code>@annotation</code></td>
+              <td>Matches annotated methods</td>
+              <td><code>@annotation(TrackTime)</code></td>
+            </tr>
+            <tr>
+              <td><code>&amp;&amp;</code> and <code>||</code></td>
+              <td>Combines pointcut rules</td>
+              <td><code>serviceMethods() &amp;&amp; trackedMethods()</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h2 id="aspect-example">Logging Aspect Example</h2>
+      <pre class="spring-code"><code>@Aspect
+@Component
+class LoggingAspect {
+    private static final Logger log = LoggerFactory.getLogger(LoggingAspect.class);
+
+    @Around("execution(* com.javacodeex.orders.service..*(..))")
+    Object logCall(ProceedingJoinPoint joinPoint) throws Throwable {
+        long start = System.currentTimeMillis();
+        try {
+            return joinPoint.proceed();
+        } finally {
+            long time = System.currentTimeMillis() - start;
+            log.info("{} completed in {} ms", joinPoint.getSignature(), time);
+        }
+    }
+}</code></pre>
+      <p>
+        <code>ProceedingJoinPoint</code> represents the intercepted call.
+        <code>proceed()</code> invokes the real method; without it, an around
+        advice can prevent the target method from running.
+      </p>
+      <h3 id="real-time-logging">Real-time logging example</h3>
+      <p>
+        A production logging aspect should record method, status, correlation
+        ID, and duration without logging passwords, tokens, or full request
+        bodies.
+      </p>
+      <pre
+        class="spring-code"
+      ><code>@Around("@annotation(com.javacodeex.orders.Logged)")
+Object logOperation(ProceedingJoinPoint joinPoint) throws Throwable {
+    String operation = joinPoint.getSignature().toShortString();
+    Instant started = Instant.now();
+    try {
+        Object result = joinPoint.proceed();
+        log.info("operation={} status=success durationMs={}",
+                operation, Duration.between(started, Instant.now()).toMillis());
+        return result;
+    } catch (Throwable error) {
+        log.warn("operation={} status=failure type={}",
+                operation, error.getClass().getSimpleName());
+        throw error;
+    }
+}</code></pre>
+      <h3 id="authorization-example">Authorization and auditing</h3>
+      <p>
+        Spring Security uses method interception for annotations such as
+        <code>@PreAuthorize</code>. A custom aspect can add an audit event, but
+        it should complement the security filter chain rather than replace it.
+      </p>
+      <pre class="spring-code"><code>@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Audited { }
+
+@Audited
+@PreAuthorize("hasRole('MANAGER')")
+public void approveRefund(Long orderId) {
+    // Protected business operation
+}</code></pre>
+      <h3 id="caching-performance-example">Caching and performance</h3>
+      <p>
+        Caching and timing are common AOP use cases. Define cache keys and
+        invalidation rules carefully so an aspect does not return stale data.
+      </p>
+      <pre class="spring-code"><code>@Service
+class ProductService {
+    @Cacheable(cacheNames = "products", key = "#id")
+    public Product findById(Long id) {
+        return repository.findById(id).orElseThrow();
+    }
+}</code></pre>
+      <h2 id="custom-annotation">Custom Annotation AOP</h2>
+      <p>
+        Annotations make an aspect opt-in and easier to understand at the call
+        site.
+      </p>
+      <pre class="spring-code"><code>@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface TrackTime { }
+
+@TrackTime
+public Report createReport() {
+    return reportService.create();
+}</code></pre>
+      <p>
+        Use an annotation pointcut to apply timing only to methods marked with
+        <code>@TrackTime</code>.
+      </p>
+      <h2 id="aop-transactions">AOP and Transactions</h2>
+      <p>
+        <code>@Transactional</code> is a familiar Spring AOP use case. Spring
+        creates a proxy that opens a transaction before the method and commits
+        or rolls it back afterward.
+      </p>
+      <pre class="spring-code"><code>@Service
+class OrderService {
+    @Transactional
+    public void placeOrder(OrderRequest request) {
+        orderRepository.save(toOrder(request));
+        inventoryService.reserve(request.items());
+    }
+}</code></pre>
+      <div class="spring-callout">
+        <strong>Important proxy rule:</strong> A call from one method to another
+        method in the same object may bypass the proxy. Put transactional or
+        secured operations in a separate bean when proxy interception is
+        required.
+      </div>
+      <h2 id="proxy-limitations">Proxy limitations and common mistakes</h2>
+      <ul class="lh-lg">
+        <li>
+          <strong>Self-invocation:</strong> one method calling another method on
+          the same object can bypass the proxy.
+        </li>
+        <li>
+          <strong>Objects created with <code>new</code>:</strong> Spring cannot
+          apply advice to objects it does not manage.
+        </li>
+        <li>
+          <strong>Private and final methods:</strong> proxy-based Spring AOP may
+          not intercept them as expected.
+        </li>
+        <li>
+          <strong>Broad pointcuts:</strong> an overly broad rule can log health
+          checks or sensitive data unexpectedly.
+        </li>
+        <li>
+          <strong>Hidden behavior:</strong> keep important security and
+          transaction boundaries visible in design and tests.
+        </li>
+      </ul>
+      <h2 id="enable-aop">Enable AOP in Spring Boot</h2>
+      <p>
+        Add the AOP starter to enable the infrastructure required by
+        component-based aspects.
+      </p>
+      <pre class="spring-code"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-aop&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+      <h2 id="aop-use-cases">Good Use Cases and Pitfalls</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Good use</th>
+              <th>Be careful about</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Logging and timing</td>
+              <td>Do not log passwords, tokens, or sensitive payloads.</td>
+            </tr>
+            <tr>
+              <td>Authorization checks</td>
+              <td>Make security rules visible and test them.</td>
+            </tr>
+            <tr>
+              <td>Transactions</td>
+              <td>Understand proxy boundaries and rollback rules.</td>
+            </tr>
+            <tr>
+              <td>Auditing</td>
+              <td>Keep audit data reliable and avoid hidden side effects.</td>
+            </tr>
+            <tr>
+              <td>Caching</td>
+              <td>Define keys and invalidation behavior clearly.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <a class="btn btn-success" href="deployment.html">Next: Deployment â†’</a>
+    </main>
+    <footer class="py-4 text-center">
+      <p class="mb-0">&copy; 2026 Java Codeex</p>
+    </footer>
+    <script src="./springboot-nav.js"></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

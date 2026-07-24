@@ -1,0 +1,990 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Java Memory Management - Stack vs Heap memory, JVM memory areas, Garbage Collection algorithms, memory leaks detection and prevention best practices."
+    />
+    <meta
+      name="keywords"
+      content="Java memory management, stack heap Java, garbage collection Java, JVM memory, memory leaks Java, Java GC"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Java Codeex" />
+    <link rel="canonical" href="https://javacodeex.in/java/memory-allocation/" />
+    <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
+    <link
+      rel="shortcut icon"
+      href="../icons/javacodeex.jpg"
+      type="image/jpeg"
+    />
+    <link rel="apple-touch-icon" href="../icons/javacodeex.jpg" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta
+      property="og:title"
+      content="Java Memory Management - Stack, Heap and Garbage Collection | Java Codeex"
+    />
+    <meta
+      property="og:description"
+      content="Java Memory Management - Stack vs Heap memory, JVM memory areas, Garbage Collection algorithms, memory leaks detection and prevention best practices."
+    />
+    <meta
+      property="og:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta
+      property="og:url"
+      content="https://javacodeex.in/memory-allocation/"
+    />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Java Memory Management - Stack, Heap and Garbage Collection | Java Codeex"
+    />
+    <meta
+      name="twitter:description"
+      content="Java Memory Management - Stack vs Heap memory, JVM memory areas, Garbage Collection algorithms, memory leaks detection and prevention best practices."
+    />
+    <meta
+      name="twitter:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Java Memory Management - Stack, Heap and Garbage Collection | Java Codeex
+    </title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        scroll-behavior: smooth;
+        font-size: 1rem;
+        color: #222;
+      }
+      .navbar {
+        background-color: #1a1a2e;
+      }
+      .navbar-brand {
+        font-weight: 700;
+        color: #f8a100 !important;
+      }
+      .navbar-nav .nav-link {
+        color: #cdd6f4 !important;
+        font-size: 0.85rem;
+      }
+      .navbar-nav .nav-link:hover {
+        color: #f8a100 !important;
+      }
+      .page-hero {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 60%,
+          #0f3460 100%
+        );
+        color: #fff;
+        padding: 48px 0 36px;
+      }
+      .page-hero h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+      }
+      .breadcrumb-item a {
+        color: #f8a100;
+        text-decoration: none;
+      }
+      .breadcrumb-item.active {
+        color: #cdd6f4;
+      }
+      .breadcrumb-item + .breadcrumb-item::before {
+        color: #8a9bb3;
+      }
+      .content-wrapper {
+        max-width: 860px;
+      }
+      h2 {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: #0f3460;
+        border-left: 5px solid #f8a100;
+        padding-left: 12px;
+        margin-top: 2.2rem;
+        margin-bottom: 0.8rem;
+      }
+      h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #16213e;
+        margin-top: 1.6rem;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        line-height: 1.8;
+      }
+      pre {
+        background: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 1.2rem 1.4rem;
+        font-size: 0.88rem;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+      code.inline {
+        background: #eef2ff;
+        color: #0f3460;
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 0.88rem;
+      }
+      .output-box {
+        background: #0d1117;
+        color: #58d68d;
+        border-left: 4px solid #58d68d;
+        border-radius: 4px;
+        padding: 0.8rem 1.2rem;
+        font-family: monospace;
+        font-size: 0.92rem;
+        margin: 0.5rem 0 1rem;
+      }
+      .note-box {
+        background: #eaf4ff;
+        border-left: 5px solid #3b82f6;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .note-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .warn-box {
+        background: #fff8e1;
+        border-left: 5px solid #f8a100;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .warn-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .table thead th {
+        background: #0f3460;
+        color: #fff;
+      }
+      .table-hover tbody tr:hover {
+        background: #f0f6ff;
+      }
+      .toc {
+        background: #f8f9fc;
+        border: 1px solid #e0e7ef;
+        border-radius: 10px;
+        padding: 1.2rem 1.4rem;
+        position: sticky;
+        top: 72px;
+      }
+      .toc h6 {
+        font-weight: 700;
+        color: #0f3460;
+        margin-bottom: 0.8rem;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        letter-spacing: 0.05em;
+      }
+      .toc a {
+        display: block;
+        font-size: 0.87rem;
+        color: #444;
+        text-decoration: none;
+        padding: 3px 0 3px 8px;
+        border-left: 3px solid transparent;
+        transition: all 0.15s;
+      }
+      .toc a:hover {
+        color: #f8a100;
+        border-left-color: #f8a100;
+      }
+      footer {
+        background: #1a1a2e;
+        color: #8a9bb3;
+      }
+
+      /* === TECH BANNER HEADER === */
+      .brand-bar {
+        background: #1a1a2e;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .brand-link {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: #f8a100;
+        font-weight: 700;
+        font-size: 1.15rem;
+        gap: 10px;
+      }
+      .brand-link:hover {
+        opacity: 0.85;
+        color: #f8a100;
+      }
+      .tech-banner {
+        background: #16213e;
+        border-bottom: 2px solid rgba(248, 161, 0, 0.2);
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tech-banner::-webkit-scrollbar {
+        height: 3px;
+      }
+      .tech-banner::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .tech-banner .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .tech-tab {
+        display: inline-block;
+        color: #a6adc8;
+        text-decoration: none;
+        padding: 11px 22px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+        white-space: nowrap;
+      }
+      .tech-tab:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.06);
+        text-decoration: none;
+      }
+      .tech-tab.active {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        font-weight: 700;
+      }
+      .tech-tab.coming-soon {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .java-subnav {
+        background: #0f3460;
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+      }
+      .java-subnav::-webkit-scrollbar {
+        height: 3px;
+      }
+      .java-subnav::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .java-subnav .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .topic-link {
+        display: inline-block;
+        color: #cdd6f4;
+        text-decoration: none;
+        padding: 10px 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+      }
+      .topic-link:hover {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        text-decoration: none;
+      }
+    </style>
+    <link rel="stylesheet" href="../site-theme.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="topic-link" href="../index.html#basics">Basics</a>
+        <a class="topic-link" href="../index.html#methods">Methods</a>
+        <a class="topic-link" href="../index.html#arrays">Arrays</a>
+        <a class="topic-link" href="../index.html#strings">Strings</a>
+        <a class="topic-link" href="../index.html#oop">OOP</a>
+        <a class="topic-link" href="../index.html#interfaces">Interfaces</a>
+        <a class="topic-link" href="../index.html#exceptions">Exceptions</a>
+        <a class="topic-link" href="../index.html#regex">Regex</a>
+        <a class="topic-link" href="../index.html#memory">Memory</a>
+        <a class="topic-link" href="../index.html#generics">Generics</a>
+        <a class="topic-link" href="../index.html#collections">Collections</a>
+        <a class="topic-link" href="../index.html#java8">Java 8+</a>
+        <a class="topic-link" href="../index.html#datetime">Date &amp; Time</a>
+        <a class="topic-link" href="../index.html#multithreading"
+          >Multithreading</a
+        >
+        <a class="topic-link" href="../index.html#filehandling">Files</a>
+        <!-- <a class="topic-link" href="../index.html#networking">Networking</a> -->
+        <a class="topic-link" href="../index.html#jdbc">JDBC</a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="page-hero">
+      <div class="container-xl">
+        <nav aria-label="breadcrumb" class="mb-3">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a href="../index.html">Java Codeex</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="../index.html#memory">Memory Allocation</a>
+            </li>
+            <li class="breadcrumb-item active">Java Memory Management</li>
+          </ol>
+        </nav>
+        <h1 class="mb-2">Java Memory Management</h1>
+        <p class="mb-0" style="color: #cdd6f4; font-size: 1.08rem">
+          Understand how the JVM allocates and manages memory with Stack, Heap,
+          and Garbage Collection.
+        </p>
+      </div>
+    </section>
+    <aside class="topic-guide" aria-label="Learning guide">
+      <div class="topic-guide-step">
+        <span>01</span><strong>Understand memory</strong
+        ><small>Stack and method calls</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>02</span><strong>Understand memory</strong
+        ><small>Heap and objects</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>03</span><strong>Understand memory</strong
+        ><small>Garbage collection</small>
+      </div>
+      <p class="topic-guide-summary">
+        <strong>Learning goal:</strong> Knowing where values live helps explain
+        performance and common memory bugs.
+      </p>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="container-xl py-5">
+      <div class="row g-5">
+        <!-- Article -->
+        <div class="col-lg-8">
+          <article class="content-wrapper">
+            <!-- 1. Why Memory Management Matters -->
+            <h2 id="why-memory">1. Why Memory Management Matters</h2>
+            <p>
+              Every program needs memory to store data — variables, objects,
+              method call frames, and more. In languages like C and C++, the
+              developer is responsible for
+              <strong>manually allocating and freeing</strong> memory using
+              functions like <code class="inline">malloc()</code> and
+              <code class="inline">free()</code>. This approach is powerful but
+              error-prone:
+            </p>
+            <ul>
+              <li>
+                <strong>Memory leaks</strong> occur when allocated memory is
+                never freed, causing the program's memory footprint to grow
+                indefinitely.
+              </li>
+              <li>
+                <strong>Dangling pointers</strong> result when code accesses
+                memory that has already been freed.
+              </li>
+              <li>
+                <strong>Double-free bugs</strong> crash the program when the
+                same memory block is freed twice.
+              </li>
+            </ul>
+            <p>
+              Java takes a different approach: the
+              <strong>JVM manages memory automatically</strong>. Developers
+              allocate objects with the <code class="inline">new</code> keyword,
+              and the <strong>Garbage Collector (GC)</strong> automatically
+              reclaims memory that is no longer reachable. This eliminates most
+              memory bugs at the cost of some GC overhead and less deterministic
+              memory release timing.
+            </p>
+            <div class="note-box">
+              <p>
+                <strong>Key benefit:</strong> Java developers can focus on
+                business logic instead of memory bookkeeping. The JVM guarantees
+                that memory is recycled safely, preventing dangling pointer and
+                double-free bugs entirely.
+              </p>
+            </div>
+
+            <!-- 2. JVM Memory Areas -->
+            <h2 id="jvm-areas">2. JVM Memory Areas</h2>
+            <p>
+              The JVM divides its memory into distinct runtime data areas, each
+              serving a specific purpose.
+            </p>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Area</th>
+                  <th>Shared?</th>
+                  <th>Purpose</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Method Area</strong> (Metaspace in Java 8+)</td>
+                  <td>All threads</td>
+                  <td>
+                    Stores class metadata, static variables, constant pool, and
+                    method bytecode.
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Heap</strong></td>
+                  <td>All threads</td>
+                  <td>
+                    Dynamic storage for all object instances and arrays. Subject
+                    to garbage collection.
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Stack</strong> (JVM Stack)</td>
+                  <td>Per thread</td>
+                  <td>
+                    Holds stack frames for each method call: local variables,
+                    operand stack, return address.
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>PC Register</strong></td>
+                  <td>Per thread</td>
+                  <td>
+                    Stores the address of the currently executing JVM
+                    instruction for each thread.
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Native Method Stack</strong></td>
+                  <td>Per thread</td>
+                  <td>
+                    Supports native (non-Java) methods invoked via JNI (Java
+                    Native Interface).
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- 3. Stack Memory -->
+            <h2 id="stack-memory">3. Stack Memory</h2>
+            <p>
+              Each thread in Java has its own <strong>stack</strong> that
+              operates on a Last-In-First-Out (LIFO) basis. Every time a method
+              is called, a new <strong>stack frame</strong> is pushed onto the
+              stack. When the method returns, its frame is popped off and all
+              its local data is immediately discarded.
+            </p>
+            <p>A stack frame holds:</p>
+            <ul>
+              <li>
+                <strong>Local primitive variables</strong> —
+                <code class="inline">int</code>,
+                <code class="inline">double</code>,
+                <code class="inline">boolean</code>, etc. stored directly by
+                value.
+              </li>
+              <li>
+                <strong>Object references</strong> — variables that point to
+                objects on the heap (the reference itself lives on the stack).
+              </li>
+              <li>
+                <strong>Method return address</strong> — where execution resumes
+                after the method returns.
+              </li>
+              <li>
+                <strong>Operand stack</strong> — scratch space used during
+                expression evaluation.
+              </li>
+            </ul>
+            <pre>
+public class StackDemo {
+    public static void main(String[] args) {
+        int x = 10;         // x stored on stack
+        int y = compute(x); // new frame pushed for compute()
+        System.out.println(y);
+    }
+
+    static int compute(int n) {
+        int result = n * 2; // result stored in compute's frame
+        return result;      // frame popped after return
+    }
+}</pre>
+            <div class="output-box">20</div>
+            <div class="warn-box">
+              <p>
+                <strong>StackOverflowError:</strong> If method calls recurse too
+                deeply (e.g., infinite recursion), the stack runs out of space
+                and the JVM throws a
+                <code class="inline">StackOverflowError</code>.
+              </p>
+            </div>
+
+            <!-- 4. Heap Memory -->
+            <h2 id="heap-memory">4. Heap Memory</h2>
+            <p>
+              The <strong>heap</strong> is the JVM's largest memory area — a
+              single region shared by all threads where all object instances
+              live. The Garbage Collector manages the heap and organizes it into
+              <strong>generations</strong> to optimize collection frequency and
+              pause times.
+            </p>
+            <pre>
+  +---------------------------------------------------------+
+  ¦                         HEAP                            ¦
+  ¦  +----------------------+  +--------------------------+ ¦
+  ¦  ¦     Young Generation ¦  ¦    Old Generation        ¦ ¦
+  ¦  ¦  +----+ +----------+ ¦  ¦  (Tenured Space)         ¦ ¦
+  ¦  ¦  ¦Eden¦ ¦Survivor  ¦ ¦  ¦  Long-lived objects      ¦ ¦
+  ¦  ¦  ¦    ¦ ¦S0  ¦  S1 ¦ ¦  ¦  promoted from Young Gen ¦ ¦
+  ¦  ¦  +----+ +----------+ ¦  +--------------------------+ ¦
+  ¦  +----------------------+                               ¦
+  ¦  +--------------------------------------------------+   ¦
+  ¦  ¦   Metaspace (off-heap in Java 8+)                ¦   ¦
+  ¦  ¦   Class metadata, static fields, interned strings¦   ¦
+  ¦  +--------------------------------------------------+   ¦
+  +---------------------------------------------------------+</pre>
+            <ul>
+              <li>
+                <strong>Eden Space:</strong> Where new objects are initially
+                allocated.
+              </li>
+              <li>
+                <strong>Survivor Spaces (S0, S1):</strong> Objects that survive
+                a minor GC are moved here before promotion.
+              </li>
+              <li>
+                <strong>Old Generation:</strong> Objects that have survived
+                multiple GC cycles are promoted here. Collected less frequently.
+              </li>
+              <li>
+                <strong>Metaspace:</strong> Holds class metadata. Uses native
+                memory (not the Java heap), growing dynamically by default.
+              </li>
+            </ul>
+
+            <!-- 5. Stack vs Heap -->
+            <h2 id="stack-vs-heap">5. Stack vs Heap</h2>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Aspect</th>
+                  <th>Stack</th>
+                  <th>Heap</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Lifetime</strong></td>
+                  <td>Duration of the method call</td>
+                  <td>Until the object is garbage collected</td>
+                </tr>
+                <tr>
+                  <td><strong>Access Speed</strong></td>
+                  <td>Very fast (LIFO pointer arithmetic)</td>
+                  <td>Slower (dynamic allocation and GC overhead)</td>
+                </tr>
+                <tr>
+                  <td><strong>Thread Safety</strong></td>
+                  <td>Thread-private — no sharing</td>
+                  <td>Shared across all threads — synchronization needed</td>
+                </tr>
+                <tr>
+                  <td><strong>What's Stored</strong></td>
+                  <td>Local primitives and object references</td>
+                  <td>Object instances and arrays</td>
+                </tr>
+                <tr>
+                  <td><strong>Size</strong></td>
+                  <td>Small and fixed (typically 512 KB–1 MB)</td>
+                  <td>
+                    Large and configurable (<code class="inline">-Xmx</code>
+                    flag)
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Overflow Error</strong></td>
+                  <td><code class="inline">StackOverflowError</code></td>
+                  <td><code class="inline">OutOfMemoryError</code></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- 6. How Java Objects are Stored -->
+            <h2 id="object-storage">6. How Java Objects are Stored</h2>
+            <p>
+              When you write <code class="inline">new MyClass()</code>, the JVM
+              allocates space for the object on the <strong>heap</strong> and
+              returns a reference. The reference variable itself lives on the
+              <strong>stack</strong> (or inside another heap object).
+            </p>
+            <pre>
+public class ObjectStorage {
+    public static void main(String[] args) {
+        // 'name' reference lives on stack
+        // "Alice" String object lives on heap
+        String name = new String("Alice");
+
+        // 'p' reference lives on stack
+        // Person object lives on heap
+        Person p = new Person("Alice", 30);
+    }
+}
+
+class Person {
+    String name;  // reference field — lives inside Person object on heap
+    int age;      // primitive field — embedded in Person object on heap
+    Person(String n, int a) { name = n; age = a; }
+}</pre>
+            <pre>
+  STACK (main frame)          HEAP
+  +----------------+          +-----------------------+
+  ¦ name ----------+---------?¦ String "Alice"        ¦
+  ¦ p    ----------+----+     +-----------------------+
+  +----------------+    ¦     +-----------------------+
+                        +----?¦ Person object         ¦
+                              ¦   age  = 30           ¦
+                              ¦   name --------------?¦ String "Alice"
+                              +-----------------------+</pre>
+            <div class="note-box">
+              <p>
+                <strong>Primitives vs Objects:</strong> Primitive types (<code
+                  class="inline"
+                  >int</code
+                >, <code class="inline">double</code>, etc.) declared as local
+                variables live directly on the stack. When declared as fields of
+                an object, they are embedded within the object on the heap.
+              </p>
+            </div>
+
+            <!-- 7. Garbage Collection -->
+            <h2 id="garbage-collection">7. Garbage Collection</h2>
+            <p>
+              The <strong>Garbage Collector</strong> automatically identifies
+              and reclaims heap memory occupied by objects that are no longer
+              reachable from any live reference. An object becomes eligible for
+              GC when:
+            </p>
+            <ul>
+              <li>
+                <strong>Nulled reference:</strong> The reference is explicitly
+                set to <code class="inline">null</code>.
+              </li>
+              <li>
+                <strong>Out of scope:</strong> The reference variable goes out
+                of scope (method returns, block ends).
+              </li>
+              <li>
+                <strong>Island of isolation:</strong> A group of objects only
+                reference each other but are not reachable from any GC root
+                (thread stacks, static fields).
+              </li>
+              <li>
+                <strong>Re-assigned reference:</strong> A reference is
+                reassigned to point to a different object.
+              </li>
+            </ul>
+            <pre>
+public class GCDemo {
+    public static void main(String[] args) {
+        // Case 1: null assignment
+        Object a = new Object();
+        a = null;  // original Object now eligible for GC
+
+        // Case 2: re-assignment
+        String s = new String("hello");
+        s = new String("world");  // "hello" now eligible for GC
+
+        // Case 3: out of scope
+        {
+            Object b = new Object();
+        } // b is out of scope here — Object eligible for GC
+
+        // Suggest GC (no guarantee it will run immediately)
+        System.gc();
+    }
+}</pre>
+            <div class="warn-box">
+              <p>
+                <strong>System.gc():</strong> Calling
+                <code class="inline">System.gc()</code> is only a
+                <em>hint</em> to the JVM. The JVM may ignore it. Never rely on
+                explicit GC calls in production code; trust the JVM to manage
+                collection timing.
+              </p>
+            </div>
+
+            <!-- 8. GC Algorithms -->
+            <h2 id="gc-algorithms">8. GC Algorithms</h2>
+            <p>
+              The JVM ships with several garbage collector implementations, each
+              suited to different workloads.
+            </p>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>GC Algorithm</th>
+                  <th>JVM Flag</th>
+                  <th>Best For</th>
+                  <th>Pause Behavior</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Serial GC</strong></td>
+                  <td><code class="inline">-XX:+UseSerialGC</code></td>
+                  <td>Single-threaded apps, small heaps, client-side tools</td>
+                  <td>Stop-the-world; single thread</td>
+                </tr>
+                <tr>
+                  <td><strong>Parallel GC</strong></td>
+                  <td><code class="inline">-XX:+UseParallelGC</code></td>
+                  <td>Throughput-focused batch jobs; default in Java 8</td>
+                  <td>Stop-the-world; multiple threads</td>
+                </tr>
+                <tr>
+                  <td><strong>G1 GC</strong></td>
+                  <td><code class="inline">-XX:+UseG1GC</code></td>
+                  <td>
+                    Large heaps (&gt;4 GB), low-latency server apps; default in
+                    Java 9+
+                  </td>
+                  <td>Concurrent + short pauses</td>
+                </tr>
+                <tr>
+                  <td><strong>ZGC</strong></td>
+                  <td><code class="inline">-XX:+UseZGC</code></td>
+                  <td>
+                    Ultra-low latency; very large heaps (&gt;8 GB); Java 15+
+                    production
+                  </td>
+                  <td>Sub-millisecond pauses</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- 9. Memory Leaks in Java -->
+            <h2 id="memory-leaks">9. Memory Leaks in Java</h2>
+            <p>
+              Even though Java has a garbage collector, memory leaks are still
+              possible. A leak occurs when objects remain
+              <strong>reachable but are no longer needed</strong> — the GC
+              cannot collect them because there is still a live reference.
+            </p>
+
+            <h3>Common Causes</h3>
+            <ul>
+              <li>
+                <strong>Static collections:</strong> Storing objects in a
+                <code class="inline">static</code>
+                <code class="inline">List</code> or
+                <code class="inline">Map</code> without removing them. The
+                static field is always a GC root, so every entry stays reachable
+                forever.
+              </li>
+              <li>
+                <strong>Unclosed streams and connections:</strong>
+                <code class="inline">InputStream</code>,
+                <code class="inline">Connection</code>, or
+                <code class="inline">ResultSet</code> objects keep internal
+                buffers alive until explicitly closed.
+              </li>
+              <li>
+                <strong>Event listeners / callbacks:</strong> Registering a
+                listener without deregistering it keeps the listener and its
+                referenced objects reachable for the lifetime of the event
+                source.
+              </li>
+              <li>
+                <strong>ThreadLocal variables:</strong> Values stored in
+                <code class="inline">ThreadLocal</code> on thread-pool threads
+                are never cleaned up unless explicitly removed.
+              </li>
+              <li>
+                <strong>Inner class references:</strong> Anonymous and
+                non-static inner classes hold an implicit reference to their
+                enclosing class, preventing the outer object from being
+                collected.
+              </li>
+            </ul>
+
+            <h3>How to Detect Memory Leaks</h3>
+            <ul>
+              <li>
+                Use <strong>heap dump analysis</strong> with tools like Eclipse
+                MAT (Memory Analyzer Tool) or VisualVM.
+              </li>
+              <li>
+                Monitor <strong>heap usage over time</strong> — a continuously
+                growing heap that never drops after GC is a strong indicator of
+                a leak.
+              </li>
+              <li>
+                Use JVM flags like <code class="inline">-verbose:gc</code> or
+                <code class="inline">-XX:+PrintGCDetails</code> to observe GC
+                behavior.
+              </li>
+              <li>
+                Use profilers like <strong>YourKit</strong>,
+                <strong>JProfiler</strong>, or
+                <strong>Java Flight Recorder (JFR)</strong>.
+              </li>
+            </ul>
+
+            <!-- 10. Best Practices -->
+            <h2 id="best-practices">10. Best Practices</h2>
+
+            <h3>Close Resources with try-with-resources</h3>
+            <p>
+              Always use try-with-resources for objects that implement
+              <code class="inline">AutoCloseable</code> (streams, connections,
+              readers). This guarantees the resource is closed even if an
+              exception occurs.
+            </p>
+            <pre>
+// BAD: resource may never be closed if exception thrown
+FileInputStream fis = new FileInputStream("data.txt");
+int data = fis.read();
+fis.close();
+
+// GOOD: always closed automatically
+try (FileInputStream fis = new FileInputStream("data.txt")) {
+    int data = fis.read();
+} // fis.close() called here automatically</pre>
+
+            <h3>Avoid Unnecessary Object Creation</h3>
+            <p>
+              Prefer reusing objects over creating new ones in tight loops. For
+              example, use <code class="inline">StringBuilder</code> instead of
+              string concatenation inside a loop.
+            </p>
+            <pre>
+// BAD: creates a new String object on every iteration
+String result = "";
+for (int i = 0; i &lt; 1000; i++) {
+    result += i;  // O(n^2) allocations
+}
+
+// GOOD: single StringBuilder reused
+StringBuilder sb = new StringBuilder();
+for (int i = 0; i &lt; 1000; i++) {
+    sb.append(i);
+}
+String result2 = sb.toString();</pre>
+
+            <h3>Use Primitives Where Possible</h3>
+            <p>
+              Prefer <code class="inline">int</code> over
+              <code class="inline">Integer</code>,
+              <code class="inline">double</code> over
+              <code class="inline">Double</code>, etc. Autoboxing creates
+              wrapper objects on the heap. In performance-sensitive code,
+              accumulating millions of autoboxed values can cause significant GC
+              pressure.
+            </p>
+            <pre>
+// BAD: autoboxing creates Integer objects
+List&lt;Integer&gt; list = new ArrayList&lt;&gt;();
+for (int i = 0; i &lt; 1_000_000; i++) {
+    list.add(i);  // each 'i' is autoboxed to new Integer(i)
+}
+
+// BETTER: use primitive array when appropriate
+int[] arr = new int[1_000_000];
+for (int i = 0; i &lt; arr.length; i++) {
+    arr[i] = i;  // no object allocation
+}</pre>
+            <div class="note-box">
+              <p>
+                <strong>JVM Tuning:</strong> Set initial heap size with
+                <code class="inline">-Xms</code> and maximum heap with
+                <code class="inline">-Xmx</code>. For example,
+                <code class="inline">-Xms256m -Xmx2g</code> starts with 256 MB
+                and allows growth up to 2 GB. Setting them equal avoids costly
+                heap resize operations at runtime.
+              </p>
+            </div>
+
+            <!-- Prev / Next -->
+            <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+              <a href="./regex.html" class="btn btn-outline-secondary"
+                >&larr; Regex</a
+              >
+              <a href="./generics.html" class="btn btn-primary"
+                >Generics &rarr;</a
+              >
+            </div>
+          </article>
+        </div>
+
+        <!-- Sticky TOC -->
+        <div class="col-lg-4 d-none d-lg-block">
+          <div class="toc">
+            <h6>On This Page</h6>
+            <a href="#why-memory">1. Why Memory Management Matters</a>
+            <a href="#jvm-areas">2. JVM Memory Areas</a>
+            <a href="#stack-memory">3. Stack Memory</a>
+            <a href="#heap-memory">4. Heap Memory</a>
+            <a href="#stack-vs-heap">5. Stack vs Heap</a>
+            <a href="#object-storage">6. How Java Objects are Stored</a>
+            <a href="#garbage-collection">7. Garbage Collection</a>
+            <a href="#gc-algorithms">8. GC Algorithms</a>
+            <a href="#memory-leaks">9. Memory Leaks in Java</a>
+            <a href="#best-practices">10. Best Practices</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 mt-4">
+      <div class="container-xl text-center" style="font-size: 0.88rem">
+        &copy; 2024 Java Codeex &mdash; Java Memory Management Reference
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmk+GOFVeA//xwkFWEVflJ8ikO1y+k"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+
+

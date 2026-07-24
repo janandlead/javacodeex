@@ -1,0 +1,1462 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Java Interfaces tutorial - interface definition, implementation, functional interfaces, default methods, marker interfaces and nested interfaces explained."
+    />
+    <meta
+      name="keywords"
+      content="Java interface, functional interface, marker interface, default methods, nested interface, Java interface vs abstract class"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Java Codeex" />
+    <link rel="canonical" href="https://javacodeex.in/java/interfaces/" />
+    <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
+    <link
+      rel="shortcut icon"
+      href="../icons/javacodeex.jpg"
+      type="image/jpeg"
+    />
+    <link rel="apple-touch-icon" href="../icons/javacodeex.jpg" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta
+      property="og:title"
+      content="Java Interfaces - Functional, Marker and Nested Interfaces | Java Codeex"
+    />
+    <meta
+      property="og:description"
+      content="Java Interfaces tutorial - interface definition, implementation, functional interfaces, default methods, marker interfaces and nested interfaces explained."
+    />
+    <meta
+      property="og:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta property="og:url" content="https://javacodeex.in/interfaces/" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Java Interfaces - Functional, Marker and Nested Interfaces | Java Codeex"
+    />
+    <meta
+      name="twitter:description"
+      content="Java Interfaces tutorial - interface definition, implementation, functional interfaces, default methods, marker interfaces and nested interfaces explained."
+    />
+    <meta
+      name="twitter:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Java Interfaces - Functional, Marker and Nested Interfaces | Java Codeex
+    </title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        scroll-behavior: smooth;
+        font-size: 1rem;
+        color: #222;
+      }
+      .navbar {
+        background-color: #1a1a2e;
+      }
+      .navbar-brand {
+        font-weight: 700;
+        color: #f8a100 !important;
+      }
+      .navbar-nav .nav-link {
+        color: #cdd6f4 !important;
+        font-size: 0.85rem;
+      }
+      .navbar-nav .nav-link:hover {
+        color: #f8a100 !important;
+      }
+      .page-hero {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 60%,
+          #0f3460 100%
+        );
+        color: #fff;
+        padding: 48px 0 36px;
+      }
+      .page-hero h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+      }
+      .breadcrumb-item a {
+        color: #f8a100;
+        text-decoration: none;
+      }
+      .breadcrumb-item.active {
+        color: #cdd6f4;
+      }
+      .breadcrumb-item + .breadcrumb-item::before {
+        color: #8a9bb3;
+      }
+      .content-wrapper {
+        max-width: 860px;
+      }
+      h2 {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: #0f3460;
+        border-left: 5px solid #f8a100;
+        padding-left: 12px;
+        margin-top: 2.2rem;
+        margin-bottom: 0.8rem;
+      }
+      h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #16213e;
+        margin-top: 1.6rem;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        line-height: 1.8;
+      }
+      pre {
+        background: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 1.2rem 1.4rem;
+        font-size: 0.88rem;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+      code.inline {
+        background: #eef2ff;
+        color: #0f3460;
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 0.88rem;
+      }
+      .output-box {
+        background: #0d1117;
+        color: #58d68d;
+        border-left: 4px solid #58d68d;
+        border-radius: 4px;
+        padding: 0.8rem 1.2rem;
+        font-family: monospace;
+        font-size: 0.92rem;
+        margin: 0.5rem 0 1rem;
+      }
+      .note-box {
+        background: #eaf4ff;
+        border-left: 5px solid #3b82f6;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .note-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .warn-box {
+        background: #fff8e1;
+        border-left: 5px solid #f8a100;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .warn-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .success-box {
+        background: #e8f8f0;
+        border-left: 5px solid #28a745;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .success-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .table thead th {
+        background: #0f3460;
+        color: #fff;
+      }
+      .table-hover tbody tr:hover {
+        background: #f0f6ff;
+      }
+      .toc {
+        background: #f8f9fc;
+        border: 1px solid #e0e7ef;
+        border-radius: 10px;
+        padding: 1.2rem 1.4rem;
+        position: sticky;
+        top: 72px;
+      }
+      .toc h6 {
+        font-weight: 700;
+        color: #0f3460;
+        margin-bottom: 0.8rem;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        letter-spacing: 0.05em;
+      }
+      .toc a {
+        display: block;
+        font-size: 0.87rem;
+        color: #444;
+        text-decoration: none;
+        padding: 3px 0 3px 8px;
+        border-left: 3px solid transparent;
+        transition: all 0.15s;
+      }
+      .toc a:hover {
+        color: #f8a100;
+        border-left-color: #f8a100;
+      }
+      footer {
+        background: #1a1a2e;
+        color: #8a9bb3;
+      }
+
+      /* === TECH BANNER HEADER === */
+      .brand-bar {
+        background: #1a1a2e;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .brand-link {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: #f8a100;
+        font-weight: 700;
+        font-size: 1.15rem;
+        gap: 10px;
+      }
+      .brand-link:hover {
+        opacity: 0.85;
+        color: #f8a100;
+      }
+      .tech-banner {
+        background: #16213e;
+        border-bottom: 2px solid rgba(248, 161, 0, 0.2);
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tech-banner::-webkit-scrollbar {
+        height: 3px;
+      }
+      .tech-banner::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .tech-banner .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .tech-tab {
+        display: inline-block;
+        color: #a6adc8;
+        text-decoration: none;
+        padding: 11px 22px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+        white-space: nowrap;
+      }
+      .tech-tab:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.06);
+        text-decoration: none;
+      }
+      .tech-tab.active {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        font-weight: 700;
+      }
+      .tech-tab.coming-soon {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .java-subnav {
+        background: #0f3460;
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+      }
+      .java-subnav::-webkit-scrollbar {
+        height: 3px;
+      }
+      .java-subnav::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .java-subnav .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .topic-link {
+        display: inline-block;
+        color: #cdd6f4;
+        text-decoration: none;
+        padding: 10px 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+      }
+      .topic-link:hover {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        text-decoration: none;
+      }
+    </style>
+    <link rel="stylesheet" href="../site-theme.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg sticky-top shadow-sm">
+      <div class="container-xl">
+        <a class="navbar-brand" href="../index.html#courses"
+          ><img
+            src="../icons/javacodeex.jpg"
+            alt="Java Codeex"
+            style="
+              height: 32px;
+              width: 32px;
+              object-fit: cover;
+              border-radius: 6px;
+              margin-right: 8px;
+              vertical-align: middle;
+            "
+            loading="lazy"
+          />
+          Java Codeex</a
+        >
+        <button
+          class="navbar-toggler border-secondary"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navMenu"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+          <ul class="navbar-nav ms-auto flex-wrap gap-1">
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#basics">Basics</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#methods">Methods</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#arrays">Arrays</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#strings">Strings</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#oop">OOP</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#interfaces">Interfaces</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#exceptions">Exceptions</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#regex">Regex</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#memory">Memory</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#generics">Generics</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#collections"
+                >Collections</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#java8">Java 8+</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#datetime"
+                >Date &amp; Time</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#multithreading"
+                >Multithreading</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#filehandling">Files</a>
+            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="../index.html#networking">Networking</a>
+            </li> -->
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#jdbc">JDBC</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+      <div class="container-xl">
+        <nav aria-label="breadcrumb" class="mb-3">
+          <ol class="breadcrumb mb-0" style="background: none; padding: 0">
+            <li class="breadcrumb-item">
+              <a href="../index.html">Java Codeex</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="../index.html#interfaces">Interfaces</a>
+            </li>
+            <li class="breadcrumb-item active">Interfaces in Java</li>
+          </ol>
+        </nav>
+        <h1 class="mb-2">Interfaces in Java</h1>
+        <p class="mb-0" style="color: #cdd6f4; font-size: 1.08rem">
+          Understand how interfaces enable abstraction, multiple inheritance,
+          and contract-based design in Java.
+        </p>
+      </div>
+    </section>
+    <aside class="topic-guide" aria-label="Learning guide">
+      <div class="topic-guide-step">
+        <span>01</span><strong>Define a contract</strong
+        ><small>Declare required behavior</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>02</span><strong>Define a contract</strong
+        ><small>Implement the contract</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>03</span><strong>Define a contract</strong
+        ><small>Swap implementations</small>
+      </div>
+      <p class="topic-guide-summary">
+        <strong>Learning goal:</strong> Interfaces keep code flexible by
+        separating what from how.
+      </p>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="container-xl py-5">
+      <div class="row g-4">
+        <!-- Article -->
+        <div class="col-lg-8">
+          <article class="content-wrapper">
+            <!-- Section 1: What is an Interface? -->
+            <h2 id="what-is-interface">1. What is an Interface?</h2>
+            <p>
+              An <strong>interface</strong> in Java is a
+              <em>reference type</em> that defines a <strong>contract</strong>
+              — a set of method signatures that any implementing class must
+              fulfil. Think of it as an agreement: "Any class that says it
+              implements this interface promises to provide these behaviours."
+            </p>
+            <p>Key rules for interfaces (before Java 8):</p>
+            <ul>
+              <li>
+                All methods are implicitly
+                <code class="inline">public abstract</code>
+              </li>
+              <li>
+                All fields are implicitly
+                <code class="inline">public static final</code> (constants)
+              </li>
+              <li>Interfaces cannot be instantiated directly</li>
+              <li>A class can implement <em>multiple</em> interfaces</li>
+              <li>An interface can extend multiple interfaces</li>
+            </ul>
+            <div class="note-box">
+              <p>
+                <strong>Java 8+</strong> added
+                <code class="inline">default</code> and
+                <code class="inline">static</code> methods to interfaces.
+                <strong>Java 9+</strong> added
+                <code class="inline">private</code> methods. The core contract
+                concept remains unchanged.
+              </p>
+            </div>
+
+            <!-- Section 2: Defining and Implementing -->
+            <h2 id="define-implement">
+              2. Defining and Implementing an Interface
+            </h2>
+            <p>
+              Use the <code class="inline">interface</code> keyword to define
+              and <code class="inline">implements</code> to use it in a class.
+              The implementing class must provide a body for every abstract
+              method in the interface, or itself be declared
+              <code class="inline">abstract</code>.
+            </p>
+            <pre><code>// Define the interface
+public interface Drawable {
+    // public abstract — implicit; no need to write them
+    void draw();
+    void resize(double factor);
+
+    // Default method (Java 8+) — optional to override
+    default void printInfo() {
+        System.out.println("This is a Drawable object.");
+    }
+}
+
+// Implement the interface in a class
+public class Circle implements Drawable {
+    double radius;
+    String color;
+
+    public Circle(double radius, String color) {
+        this.radius = radius;
+        this.color  = color;
+    }
+
+    @Override
+    public void draw() {
+        System.out.println("Drawing a " + color + " circle with radius " + radius);
+    }
+
+    @Override
+    public void resize(double factor) {
+        radius *= factor;
+        System.out.println("Circle resized. New radius: " + radius);
+    }
+}
+
+public class Square implements Drawable {
+    double side;
+
+    public Square(double side) {
+        this.side = side;
+    }
+
+    @Override
+    public void draw() {
+        System.out.println("Drawing a square with side " + side);
+    }
+
+    @Override
+    public void resize(double factor) {
+        side *= factor;
+        System.out.println("Square resized. New side: " + side);
+    }
+
+    @Override
+    public void printInfo() {   // optionally override default method
+        System.out.println("Square: side = " + side);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Drawable c = new Circle(5.0, "red");  // interface reference
+        Drawable s = new Square(4.0);
+
+        c.draw();        // Drawing a red circle with radius 5.0
+        c.resize(2.0);   // Circle resized. New radius: 10.0
+        c.printInfo();   // This is a Drawable object.
+
+        s.draw();        // Drawing a square with side 4.0
+        s.printInfo();   // Square: side = 4.0  (overridden)
+    }
+}</code></pre>
+            <div class="output-box">
+              Drawing a red circle with radius 5.0<br />Circle resized. New
+              radius: 10.0<br />This is a Drawable object.<br />Drawing a square
+              with side 4.0<br />Square: side = 4.0
+            </div>
+
+            <!-- Section 3: Interface vs Abstract Class -->
+            <h2 id="interface-vs-abstract">3. Interface vs Abstract Class</h2>
+            <div class="table-responsive my-3">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>Interface</th>
+                    <th>Abstract Class</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Keyword</td>
+                    <td>
+                      <code class="inline">interface</code> /
+                      <code class="inline">implements</code>
+                    </td>
+                    <td>
+                      <code class="inline">abstract class</code> /
+                      <code class="inline">extends</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Instantiation</td>
+                    <td>Cannot be instantiated</td>
+                    <td>Cannot be instantiated</td>
+                  </tr>
+                  <tr>
+                    <td>Constructors</td>
+                    <td>No</td>
+                    <td>Yes</td>
+                  </tr>
+                  <tr>
+                    <td>Instance fields</td>
+                    <td>No (only <code>public static final</code>)</td>
+                    <td>Yes (any access modifier)</td>
+                  </tr>
+                  <tr>
+                    <td>Method types</td>
+                    <td>abstract, default, static (Java 8+)</td>
+                    <td>abstract + concrete</td>
+                  </tr>
+                  <tr>
+                    <td>Multiple inheritance</td>
+                    <td>A class can implement many interfaces</td>
+                    <td>A class can extend only one</td>
+                  </tr>
+                  <tr>
+                    <td>Access modifiers on methods</td>
+                    <td>Always <code>public</code> (implicit)</td>
+                    <td>Any access modifier</td>
+                  </tr>
+                  <tr>
+                    <td>Speed</td>
+                    <td>Slightly slower (extra lookup)</td>
+                    <td>Slightly faster</td>
+                  </tr>
+                  <tr>
+                    <td>Best used when</td>
+                    <td>
+                      Defining capabilities/contracts across unrelated classes
+                    </td>
+                    <td>
+                      Sharing common code &amp; state among related classes
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="success-box">
+              <p>
+                <strong>Rule of thumb:</strong> Prefer interfaces when you want
+                to define a <em>capability</em> (e.g.,
+                <code class="inline">Comparable</code>,
+                <code class="inline">Serializable</code>). Use abstract classes
+                when you want to share <em>code and state</em> among closely
+                related classes.
+              </p>
+            </div>
+
+            <!-- Section 4: Multiple Interface Implementation -->
+            <h2 id="multiple-interfaces">
+              4. Multiple Interface Implementation
+            </h2>
+            <p>
+              A Java class can implement
+              <strong>multiple interfaces</strong> simultaneously, separated by
+              commas. This is Java's approach to achieving multiple inheritance
+              of <em>type</em> without the complexity of multiple class
+              inheritance.
+            </p>
+            <pre><code>public interface Flyable {
+    void fly();
+    default String getMode() { return "flying"; }
+}
+
+public interface Swimmable {
+    void swim();
+    default String getMode() { return "swimming"; }
+}
+
+public interface Walkable {
+    void walk();
+}
+
+// Duck implements all three interfaces
+public class Duck implements Flyable, Swimmable, Walkable {
+
+    private String name;
+
+    public Duck(String name) { this.name = name; }
+
+    @Override
+    public void fly() {
+        System.out.println(name + " is flying!");
+    }
+
+    @Override
+    public void swim() {
+        System.out.println(name + " is swimming!");
+    }
+
+    @Override
+    public void walk() {
+        System.out.println(name + " is walking!");
+    }
+
+    // MUST override getMode() — both Flyable and Swimmable define it
+    // (this resolves the diamond problem for default methods)
+    @Override
+    public String getMode() {
+        return Flyable.super.getMode() + " and " + Swimmable.super.getMode();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Duck duck = new Duck("Donald");
+        duck.fly();
+        duck.swim();
+        duck.walk();
+        System.out.println("Duck modes: " + duck.getMode());
+
+        // Polymorphic references
+        Flyable   f = duck;  f.fly();
+        Swimmable s = duck;  s.swim();
+    }
+}</code></pre>
+            <div class="output-box">
+              Donald is flying!<br />Donald is swimming!<br />Donald is
+              walking!<br />Duck modes: flying and swimming<br />Donald is
+              flying!<br />Donald is swimming!
+            </div>
+            <div class="warn-box">
+              <p>
+                <strong>Diamond Problem:</strong> When two interfaces define the
+                same <code class="inline">default</code> method, the
+                implementing class <em>must</em> override it to resolve the
+                conflict. Use
+                <code class="inline">InterfaceName.super.methodName()</code> to
+                call a specific interface's default implementation.
+              </p>
+            </div>
+
+            <!-- Section 5: Default Methods -->
+            <h2 id="default-methods">5. Default Methods (Java 8+)</h2>
+            <p>
+              Java 8 introduced <strong>default methods</strong> — interface
+              methods with a body, declared with the
+              <code class="inline">default</code> keyword. They allow adding new
+              methods to existing interfaces
+              <em>without breaking all implementing classes</em>.
+            </p>
+            <pre><code>public interface Logger {
+    // Abstract method — must be implemented
+    void log(String message);
+
+    // Default method — implementation provided, can be overridden
+    default void logInfo(String message) {
+        log("[INFO] " + message);
+    }
+
+    default void logError(String message) {
+        log("[ERROR] " + message);
+    }
+
+    default void logWarning(String message) {
+        log("[WARN] " + message);
+    }
+}
+
+// Simple console logger — only needs to implement log()
+public class ConsoleLogger implements Logger {
+    @Override
+    public void log(String message) {
+        System.out.println(message);
+    }
+    // inherits logInfo, logError, logWarning for free
+}
+
+// File logger — overrides one default method
+public class FileLogger implements Logger {
+    private String filename;
+
+    public FileLogger(String filename) { this.filename = filename; }
+
+    @Override
+    public void log(String message) {
+        // In real code: write to file. Here we simulate:
+        System.out.println("[FILE:" + filename + "] " + message);
+    }
+
+    @Override
+    public void logError(String message) {
+        // Custom error handling — also alert
+        log("[ERROR] " + message);
+        System.out.println("*** ALERT: Error written to " + filename + " ***");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Logger console = new ConsoleLogger();
+        console.logInfo("Application started");
+        console.logWarning("Low memory");
+        console.logError("Null pointer detected");
+
+        System.out.println("---");
+
+        Logger file = new FileLogger("app.log");
+        file.logInfo("Application started");
+        file.logError("Disk full");   // uses overridden version
+    }
+}</code></pre>
+            <div class="output-box">
+              [INFO] Application started<br />[WARN] Low memory<br />[ERROR]
+              Null pointer detected<br />---<br />[FILE:app.log] [INFO]
+              Application started<br />[FILE:app.log] [ERROR] Disk full<br />***
+              ALERT: Error written to app.log ***
+            </div>
+            <div class="note-box">
+              <p>
+                <strong>Why default methods were added:</strong> Java 8 needed
+                to add new methods to
+                <code class="inline">java.util.Collection</code> (like
+                <code>forEach</code>, <code>stream</code>) without breaking the
+                thousands of existing classes that implement it.
+              </p>
+            </div>
+
+            <!-- Section 6: Static Methods -->
+            <h2 id="static-methods">
+              6. Static Methods in Interfaces (Java 8+)
+            </h2>
+            <p>
+              Interfaces can also define <strong>static methods</strong> —
+              utility or factory methods related to the interface. They belong
+              to the interface itself and are <em>not inherited</em> by
+              implementing classes. You call them via the interface name.
+            </p>
+            <pre><code>public interface MathUtils {
+    // Abstract
+    double calculate(double a, double b);
+
+    // Static utility methods — called as MathUtils.methodName()
+    static double square(double x) {
+        return x * x;
+    }
+
+    static double cube(double x) {
+        return x * x * x;
+    }
+
+    static boolean isPrime(int n) {
+        if (n < 2) return false;
+        for (int i = 2; i <= Math.sqrt(n); i++) {
+            if (n % i == 0) return false;
+        }
+        return true;
+    }
+
+    static double clamp(double value, double min, double max) {
+        return Math.max(min, Math.min(max, value));
+    }
+}
+
+public class Adder implements MathUtils {
+    @Override
+    public double calculate(double a, double b) { return a + b; }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Static methods called on the interface, not the class
+        System.out.println(MathUtils.square(5));      // 25.0
+        System.out.println(MathUtils.cube(3));        // 27.0
+        System.out.println(MathUtils.isPrime(17));    // true
+        System.out.println(MathUtils.isPrime(10));    // false
+        System.out.println(MathUtils.clamp(150, 0, 100)); // 100.0
+
+        // Instance method still works
+        Adder adder = new Adder();
+        System.out.println(adder.calculate(3, 4));    // 7.0
+
+        // adder.square(5);  // COMPILE ERROR — static methods not inherited
+    }
+}</code></pre>
+            <div class="output-box">
+              25.0<br />27.0<br />true<br />false<br />100.0<br />7.0
+            </div>
+
+            <!-- Section 7: Functional Interface -->
+            <h2 id="functional-interface">7. Functional Interface</h2>
+            <p>
+              A <strong>functional interface</strong> is an interface with
+              <em>exactly one abstract method</em>. It can have any number of
+              default or static methods. Annotate it with
+              <code class="inline">@FunctionalInterface</code> to let the
+              compiler enforce the one-abstract-method rule. Functional
+              interfaces are the foundation of
+              <strong>lambda expressions</strong> in Java 8+.
+            </p>
+            <pre><code>@FunctionalInterface
+public interface Transformer {
+    String transform(String input);  // the single abstract method
+
+    // default and static methods allowed
+    default Transformer andThen(Transformer after) {
+        return input -> after.transform(this.transform(input));
+    }
+
+    static Transformer identity() {
+        return input -> input;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Lambda — short form for implementing the single abstract method
+        Transformer upper = s -> s.toUpperCase();
+        Transformer trim  = s -> s.trim();
+        Transformer exclaim = s -> s + "!";
+
+        System.out.println(upper.transform("  hello  "));   // "  HELLO  "
+        System.out.println(trim.transform("  hello  "));    // "hello"
+
+        // Chaining with andThen (default method)
+        Transformer combined = trim.andThen(upper).andThen(exclaim);
+        System.out.println(combined.transform("  java  ")); // "JAVA!"
+
+        // Anonymous class — the old way before lambdas
+        Transformer reverse = new Transformer() {
+            @Override
+            public String transform(String input) {
+                return new StringBuilder(input).reverse().toString();
+            }
+        };
+        System.out.println(reverse.transform("Hello"));     // "olleH"
+
+        // Built-in functional interfaces from java.util.function
+        java.util.function.Predicate&lt;Integer&gt; isEven = n -> n % 2 == 0;
+        java.util.function.Function&lt;Integer, String&gt; intToStr = n -> "Value: " + n;
+
+        System.out.println(isEven.test(4));         // true
+        System.out.println(intToStr.apply(42));     // Value: 42
+    }
+}</code></pre>
+            <div class="output-box">
+              HELLO <br />hello<br />JAVA!<br />olleH<br />true<br />Value: 42
+            </div>
+            <div class="note-box">
+              <p>
+                Java's <code class="inline">java.util.function</code> package
+                ships with many ready-made functional interfaces:
+                <code class="inline">Predicate&lt;T&gt;</code>,
+                <code class="inline">Function&lt;T,R&gt;</code>,
+                <code class="inline">Consumer&lt;T&gt;</code>,
+                <code class="inline">Supplier&lt;T&gt;</code>,
+                <code class="inline">BiFunction&lt;T,U,R&gt;</code>, and more.
+              </p>
+            </div>
+
+            <!-- Section 8: Nested Interface -->
+            <h2 id="nested-interface">8. Nested Interface</h2>
+            <p>
+              An interface declared
+              <strong>inside a class or another interface</strong> is called a
+              nested interface. It is implicitly
+              <code class="inline">public static</code> when inside another
+              interface, and can have any access modifier when inside a class.
+            </p>
+            <pre><code>// Nested interface inside a class
+public class DataProcessor {
+
+    // Nested interface — accessed as DataProcessor.Validator
+    public interface Validator&lt;T&gt; {
+        boolean validate(T value);
+        default boolean isInvalid(T value) { return !validate(value); }
+    }
+
+    private Validator&lt;String&gt; validator;
+
+    public DataProcessor(Validator&lt;String&gt; validator) {
+        this.validator = validator;
+    }
+
+    public void process(String data) {
+        if (validator.validate(data)) {
+            System.out.println("Processing: " + data);
+        } else {
+            System.out.println("Rejected: '" + data + "' failed validation.");
+        }
+    }
+}
+
+// Interface nesting inside another interface
+public interface OuterInterface {
+    void outerMethod();
+
+    interface InnerInterface {       // implicitly public static
+        void innerMethod();
+    }
+}
+
+// Implementing nested interface
+class ConcreteOuter implements OuterInterface, OuterInterface.InnerInterface {
+    @Override public void outerMethod() { System.out.println("Outer method"); }
+    @Override public void innerMethod() { System.out.println("Inner method"); }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        // Use lambda to implement nested Validator
+        DataProcessor.Validator&lt;String&gt; nonEmpty = s -> s != null && !s.trim().isEmpty();
+        DataProcessor dp = new DataProcessor(nonEmpty);
+
+        dp.process("Hello World");   // Processing: Hello World
+        dp.process("");              // Rejected: '' failed validation.
+        dp.process("  ");            // Rejected: '  ' failed validation.
+
+        ConcreteOuter co = new ConcreteOuter();
+        co.outerMethod();            // Outer method
+        co.innerMethod();            // Inner method
+    }
+}</code></pre>
+            <div class="output-box">
+              Processing: Hello World<br />Rejected: '' failed validation.<br />Rejected:
+              ' ' failed validation.<br />Outer method<br />Inner method
+            </div>
+
+            <!-- Marker Interface content moved to marker-interface.html. -->
+            <!--
+            <h2 id="marker-interface">9. Marker Interface</h2>
+            <p>
+              A <strong>marker interface</strong> (also called a tagging
+              interface) is an interface with <em>no methods and no fields</em>.
+              It acts as a metadata tag that signals the JVM or frameworks about
+              special behaviour for implementing classes.
+            </p>
+            <pre>
+Marker interface
+        │
+        ├── contains no methods
+        ├── contains no fields
+        └── marks a class with a capability
+
+Object ──implements──&gt; Serializable
+                         │
+                         └── ObjectOutputStream may save it</pre>
+            <p>
+              The interface itself does not perform the work. Java code checks
+              whether an object has the marker and then enables a particular
+              operation. Two important examples are
+              <code class="inline">Serializable</code> and
+              <code class="inline">Cloneable</code>.
+            </p>
+            <pre><code>import java.io.Serializable;
+import java.io.ObjectOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+// java.io.Serializable is the most common marker interface
+// It has ZERO methods — just the tag
+public class Employee implements Serializable {
+    private static final long serialVersionUID = 1L;  // recommended for Serializable
+
+    private String name;
+    private double salary;
+    private transient String password;  // transient = not serialized
+
+    public Employee(String name, double salary, String password) {
+        this.name     = name;
+        this.salary   = salary;
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{name=" + name + ", salary=" + salary + "}";
+    }
+}
+
+// Custom marker interface
+public interface Auditable { }  // no methods — just a tag
+
+public class Order implements Auditable {
+    int id;
+    String item;
+
+    public Order(int id, String item) {
+        this.id   = id;
+        this.item = item;
+    }
+}
+
+public class AuditService {
+    public void audit(Object obj) {
+        if (obj instanceof Auditable) {
+            System.out.println("Auditing: " + obj.getClass().getSimpleName());
+        } else {
+            System.out.println("Object is not auditable.");
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        AuditService service = new AuditService();
+        service.audit(new Order(1, "Laptop"));   // Auditing: Order
+        service.audit("plain string");           // Object is not auditable.
+
+        // Serializable — the JVM checks for this marker at runtime
+        Employee emp = new Employee("Alice", 75000, "secret");
+        System.out.println("Employee implements Serializable: "
+            + (emp instanceof Serializable));    // true
+    }
+}</code></pre>
+            <div class="output-box">
+              Auditing: Order<br />Object is not auditable.<br />Employee
+              implements Serializable: true
+            </div>
+            <div class="note-box">
+              <p>
+                <strong>Common Marker Interfaces in Java:</strong>
+                <code class="inline">java.io.Serializable</code> (enables object
+                serialization),
+                <code class="inline">java.lang.Cloneable</code> (allows
+                <code>clone()</code> to work),
+                <code class="inline">java.util.RandomAccess</code> (signals O(1)
+                index access for lists).
+              </p>
+            </div>
+
+            <h3>Serializable: Saving an Object</h3>
+            <p>
+              <code class="inline">Serializable</code> tells Java that an
+              object may be converted into a byte stream. This process is
+              called <strong>serialization</strong>. The byte stream can be
+              stored in a file or sent over a network. Reading it back is
+              called <strong>deserialization</strong>.
+            </p>
+            <pre>
+import java.io.*;
+
+public class Employee implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    private final int id;
+    private final String name;
+    private final double salary;
+    private transient String password; // never saved
+
+    public Employee(int id, String name, double salary, String password) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return id + " " + name + " " + salary
+                + " password=" + password;
+    }
+}</pre>
+            <pre>
+Employee original =
+        new Employee(101, "Anand", 75000, "secret");
+
+try (ObjectOutputStream output =
+         new ObjectOutputStream(
+             new FileOutputStream("employee.ser"))) {
+    output.writeObject(original);
+}
+
+try (ObjectInputStream input =
+         new ObjectInputStream(
+             new FileInputStream("employee.ser"))) {
+    Employee copy = (Employee) input.readObject();
+    System.out.println(copy);
+    // password=null because it was marked transient
+} </pre>
+            <div class="output-box">
+              101 Anand 75000.0 password=null
+            </div>
+            <div class="warn-box">
+              <p>
+                <strong>Important:</strong> every non-transient field inside a
+                serializable object must also be serializable. Otherwise Java
+                throws <code class="inline">NotSerializableException</code>.
+                Never deserialize untrusted data in real applications because
+                Java serialization can create security risks.
+              </p>
+            </div>
+
+            <h3>Cloneable: Copying an Object</h3>
+            <p>
+              <code class="inline">Cloneable</code> is a marker interface that
+              signals that <code class="inline">Object.clone()</code> may make
+              a copy. It does not declare a
+              <code class="inline">clone()</code> method. Because
+              <code class="inline">Object.clone()</code> is protected, a class
+              normally exposes it through its own public method.
+            </p>
+            <pre>
+public class Employee implements Cloneable {
+    private int id;
+    private String name;
+
+    public Employee(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    @Override
+    public Employee clone() {
+        try {
+            return (Employee) super.clone();
+        } catch (CloneNotSupportedException exception) {
+            throw new AssertionError(exception);
+        }
+    }
+}</pre>
+            <pre>
+Employee first = new Employee(101, "Anand");
+Employee second = first.clone();
+
+System.out.println(first == second); // false: different objects
+System.out.println(first.name.equals(second.name)); // true
+
+// Without implements Cloneable, super.clone() throws
+// CloneNotSupportedException.</pre>
+            <div class="note-box">
+              <p>
+                <strong>Shallow copy:</strong> <code class="inline">clone()</code>
+                copies field values. Primitive values are copied, but a
+                reference field still points to the same nested object.
+                For a fully independent copy, manually copy nested mutable
+                objects too; this is called a <strong>deep copy</strong>.
+              </p>
+            </div>
+            <pre>
+Shallow copy
+original ──► Address object ◄── copy
+
+Deep copy
+original ──► Address object A
+copy     ──► Address object B</pre>
+
+            <h3>Serializable vs Cloneable</h3>
+            <table class="table table-bordered table-hover mb-4">
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  <th>Serializable</th>
+                  <th>Cloneable</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Purpose</td>
+                  <td>Save or transfer object state</td>
+                  <td>Create an object copy</td>
+                </tr>
+                <tr>
+                  <td>Package</td>
+                  <td><code class="inline">java.io</code></td>
+                  <td><code class="inline">java.lang</code></td>
+                </tr>
+                <tr>
+                  <td>Work performed by</td>
+                  <td><code class="inline">ObjectOutputStream</code></td>
+                  <td><code class="inline">Object.clone()</code></td>
+                </tr>
+                <tr>
+                  <td>Common risk</td>
+                  <td>Security and version compatibility</td>
+                  <td>Accidental shallow copies</td>
+                </tr>
+                <tr>
+                  <td>Modern alternative</td>
+                  <td>DTO/JSON mapping</td>
+                  <td>Copy constructor or factory method</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="success-box">
+              <p>
+                <strong>Beginner recommendation:</strong> Use a copy
+                constructor or a static factory for new code when possible.
+                Use <code class="inline">Serializable</code> only when the
+                storage or framework requires it, and use
+                <code class="inline">Cloneable</code> carefully because its
+                shallow-copy behavior is easy to misunderstand.
+              </p>
+            </div>
+
+            -->
+            <h2 id="marker-interface-link">9. Marker Interface</h2>
+            <p>
+              Marker interfaces add metadata or capabilities to a class.
+              Continue with the complete beginner-friendly guide covering
+              Serializable, deserialization, serialVersionUID, Externalizable,
+              and Cloneable.
+            </p>
+            <a class="btn btn-primary mb-4" href="./marker-interface.html">
+              Open Marker Interface Tutorial &rarr;
+            </a>
+
+            <!-- Section 10: Interface with Constants -->
+            <h2 id="interface-constants">10. Interface with Constants</h2>
+            <p>
+              All fields declared in an interface are implicitly
+              <code class="inline">public static final</code>, making them
+              constants. While this is a valid pattern, prefer using
+              <code class="inline">enum</code>
+              or dedicated constant classes in modern Java.
+            </p>
+            <pre><code>public interface AppConfig {
+    // All fields are implicitly public static final
+    String APP_NAME    = "MyJavaApp";
+    String VERSION     = "2.1.0";
+    int    MAX_RETRIES = 3;
+    double TIMEOUT_SEC = 30.0;
+
+    // Nested constants grouped by category
+    interface HttpStatus {
+        int OK                    = 200;
+        int CREATED               = 201;
+        int BAD_REQUEST           = 400;
+        int UNAUTHORIZED          = 401;
+        int NOT_FOUND             = 404;
+        int INTERNAL_SERVER_ERROR = 500;
+    }
+
+    interface DatabaseConfig {
+        String HOST     = "localhost";
+        int    PORT     = 5432;
+        String DB_NAME  = "mydb";
+    }
+
+    // Methods can also be declared
+    void initialize();
+}
+
+public class Application implements AppConfig {
+    @Override
+    public void initialize() {
+        System.out.println("Starting " + APP_NAME + " v" + VERSION);
+        System.out.println("Max retries: " + MAX_RETRIES);
+        System.out.println("Timeout: " + TIMEOUT_SEC + "s");
+    }
+
+    public void connect() {
+        System.out.println("Connecting to " + DatabaseConfig.HOST
+            + ":" + DatabaseConfig.PORT + "/" + DatabaseConfig.DB_NAME);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Application app = new Application();
+        app.initialize();
+        app.connect();
+
+        // Access constants directly via interface name
+        System.out.println("HTTP OK: " + AppConfig.HttpStatus.OK);
+        System.out.println("HTTP Not Found: " + AppConfig.HttpStatus.NOT_FOUND);
+
+        // Implementing class also gets direct access
+        System.out.println("App timeout: " + app.TIMEOUT_SEC + "s");
+    }
+}</code></pre>
+            <div class="output-box">
+              Starting MyJavaApp v2.1.0<br />Max retries: 3<br />Timeout:
+              30.0s<br />Connecting to localhost:5432/mydb<br />HTTP OK: 200<br />HTTP
+              Not Found: 404<br />App timeout: 30.0s
+            </div>
+            <div class="warn-box">
+              <p>
+                <strong>Constant Interface Anti-Pattern:</strong> Using
+                interfaces solely to hold constants (the "Constant Interface"
+                pattern) is considered bad practice by Josh Bloch in
+                <em>Effective Java</em>. Prefer
+                <code class="inline">enum</code> types or static utility classes
+                with <code class="inline">private</code> constructors for
+                constants.
+              </p>
+            </div>
+
+            <!-- Prev / Next Navigation -->
+            <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+              <a href="./oop-concepts.html" class="btn btn-outline-secondary"
+                >&larr; Prev: OOP Concepts</a
+              >
+              <a href="./exception-handling.html" class="btn btn-primary"
+                >Next: Exception Handling &rarr;</a
+              >
+            </div>
+          </article>
+        </div>
+
+        <!-- Sticky TOC -->
+        <div class="col-lg-4">
+          <div class="toc">
+            <h6>On This Page</h6>
+            <a href="#what-is-interface">1. What is an Interface?</a>
+            <a href="#define-implement">2. Defining and Implementing</a>
+            <a href="#interface-vs-abstract">3. Interface vs Abstract Class</a>
+            <a href="#multiple-interfaces"
+              >4. Multiple Interface Implementation</a
+            >
+            <a href="#default-methods">5. Default Methods (Java 8+)</a>
+            <a href="#static-methods">6. Static Methods in Interfaces</a>
+            <a href="#functional-interface">7. Functional Interface</a>
+            <a href="#nested-interface">8. Nested Interface</a>
+            <a href="./marker-interface.html">9. Marker Interface</a>
+            <a href="#interface-constants">10. Interface with Constants</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 mt-4">
+      <div class="container-xl text-center">
+        <p class="mb-1" style="font-size: 0.9rem">
+          Java Codeex &mdash; Interfaces
+        </p>
+        <p class="mb-0" style="font-size: 0.82rem">
+          Built with Bootstrap 5 &bull; For learning purposes
+        </p>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmk+GOFVeA//xwkFWEVflJ8ikO1y+k"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>

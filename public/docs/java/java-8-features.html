@@ -1,0 +1,1389 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Java 8+ Features - Lambda Expressions, Stream API, Optional class, Predicate, Consumer, Supplier, Method References and Collectors with practical examples."
+    />
+    <meta
+      name="keywords"
+      content="Java 8 features, lambda expressions Java, Stream API, Optional Java, Java 8 tutorial, method references Java"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Java Codeex" />
+    <link rel="canonical" href="https://javacodeex.in/java/java-8-features/" />
+    <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
+    <link
+      rel="shortcut icon"
+      href="../icons/javacodeex.jpg"
+      type="image/jpeg"
+    />
+    <link rel="apple-touch-icon" href="../icons/javacodeex.jpg" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta
+      property="og:title"
+      content="Java 8 Features - Lambda, Streams, Optional, Method References | Java Codeex"
+    />
+    <meta
+      property="og:description"
+      content="Java 8+ Features - Lambda Expressions, Stream API, Optional class, Predicate, Consumer, Supplier, Method References and Collectors with practical examples."
+    />
+    <meta
+      property="og:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta property="og:url" content="https://javacodeex.in/java-8-features/" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Java 8 Features - Lambda, Streams, Optional, Method References | Java Codeex"
+    />
+    <meta
+      name="twitter:description"
+      content="Java 8+ Features - Lambda Expressions, Stream API, Optional class, Predicate, Consumer, Supplier, Method References and Collectors with practical examples."
+    />
+    <meta
+      name="twitter:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Java 8 Features - Lambda, Streams, Optional, Method References | Java
+      Codeex
+    </title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        scroll-behavior: smooth;
+        font-size: 1rem;
+        color: #222;
+      }
+      .navbar {
+        background-color: #1a1a2e;
+      }
+      .navbar-brand {
+        font-weight: 700;
+        color: #f8a100 !important;
+      }
+      .navbar-nav .nav-link {
+        color: #cdd6f4 !important;
+        font-size: 0.85rem;
+      }
+      .navbar-nav .nav-link:hover {
+        color: #f8a100 !important;
+      }
+      .page-hero {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 60%,
+          #0f3460 100%
+        );
+        color: #fff;
+        padding: 48px 0 36px;
+      }
+      .page-hero h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+      }
+      .breadcrumb-item a {
+        color: #f8a100;
+        text-decoration: none;
+      }
+      .breadcrumb-item.active {
+        color: #cdd6f4;
+      }
+      .breadcrumb-item + .breadcrumb-item::before {
+        color: #8a9bb3;
+      }
+      .content-wrapper {
+        max-width: 860px;
+      }
+      h2 {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: #0f3460;
+        border-left: 5px solid #f8a100;
+        padding-left: 12px;
+        margin-top: 2.2rem;
+        margin-bottom: 0.8rem;
+      }
+      h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #16213e;
+        margin-top: 1.6rem;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        line-height: 1.8;
+      }
+      pre {
+        background: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 1.2rem 1.4rem;
+        font-size: 0.88rem;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+      code.inline {
+        background: #eef2ff;
+        color: #0f3460;
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 0.88rem;
+      }
+      .output-box {
+        background: #0d1117;
+        color: #58d68d;
+        border-left: 4px solid #58d68d;
+        border-radius: 4px;
+        padding: 0.8rem 1.2rem;
+        font-family: monospace;
+        font-size: 0.92rem;
+        margin: 0.5rem 0 1rem;
+      }
+      .note-box {
+        background: #eaf4ff;
+        border-left: 5px solid #3b82f6;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .note-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .warn-box {
+        background: #fff8e1;
+        border-left: 5px solid #f8a100;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .warn-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .table thead th {
+        background: #0f3460;
+        color: #fff;
+      }
+      .table-hover tbody tr:hover {
+        background: #f0f6ff;
+      }
+      .toc {
+        background: #f8f9fc;
+        border: 1px solid #e0e7ef;
+        border-radius: 10px;
+        padding: 1.2rem 1.4rem;
+        position: sticky;
+        top: 72px;
+      }
+      .toc h6 {
+        font-weight: 700;
+        color: #0f3460;
+        margin-bottom: 0.8rem;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        letter-spacing: 0.05em;
+      }
+      .toc a {
+        display: block;
+        font-size: 0.87rem;
+        color: #444;
+        text-decoration: none;
+        padding: 3px 0 3px 8px;
+        border-left: 3px solid transparent;
+        transition: all 0.15s;
+      }
+      .toc a:hover {
+        color: #f8a100;
+        border-left-color: #f8a100;
+      }
+      footer {
+        background: #1a1a2e;
+        color: #8a9bb3;
+      }
+
+      /* === TECH BANNER HEADER === */
+      .brand-bar {
+        background: #1a1a2e;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .brand-link {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: #f8a100;
+        font-weight: 700;
+        font-size: 1.15rem;
+        gap: 10px;
+      }
+      .brand-link:hover {
+        opacity: 0.85;
+        color: #f8a100;
+      }
+      .tech-banner {
+        background: #16213e;
+        border-bottom: 2px solid rgba(248, 161, 0, 0.2);
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tech-banner::-webkit-scrollbar {
+        height: 3px;
+      }
+      .tech-banner::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .tech-banner .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .tech-tab {
+        display: inline-block;
+        color: #a6adc8;
+        text-decoration: none;
+        padding: 11px 22px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+        white-space: nowrap;
+      }
+      .tech-tab:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.06);
+        text-decoration: none;
+      }
+      .tech-tab.active {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        font-weight: 700;
+      }
+      .tech-tab.coming-soon {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .java-subnav {
+        background: #0f3460;
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+      }
+      .java-subnav::-webkit-scrollbar {
+        height: 3px;
+      }
+      .java-subnav::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .java-subnav .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .topic-link {
+        display: inline-block;
+        color: #cdd6f4;
+        text-decoration: none;
+        padding: 10px 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+      }
+      .topic-link:hover {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        text-decoration: none;
+      }
+    </style>
+    <link rel="stylesheet" href="../site-theme.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="topic-link" href="../index.html#basics">Basics</a>
+        <a class="topic-link" href="../index.html#methods">Methods</a>
+        <a class="topic-link" href="../index.html#arrays">Arrays</a>
+        <a class="topic-link" href="../index.html#strings">Strings</a>
+        <a class="topic-link" href="../index.html#oop">OOP</a>
+        <a class="topic-link" href="../index.html#interfaces">Interfaces</a>
+        <a class="topic-link" href="../index.html#exceptions">Exceptions</a>
+        <a class="topic-link" href="../index.html#regex">Regex</a>
+        <a class="topic-link" href="../index.html#memory">Memory</a>
+        <a class="topic-link" href="../index.html#generics">Generics</a>
+        <a class="topic-link" href="../index.html#collections">Collections</a>
+        <a class="topic-link" href="../index.html#java8">Java 8+</a>
+        <a class="topic-link" href="../index.html#datetime">Date &amp; Time</a>
+        <a class="topic-link" href="../index.html#multithreading"
+          >Multithreading</a
+        >
+        <a class="topic-link" href="../index.html#filehandling">Files</a>
+        <!-- <a class="topic-link" href="../index.html#networking">Networking</a> -->
+        <a class="topic-link" href="../index.html#jdbc">JDBC</a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="page-hero">
+      <div class="container-xl">
+        <nav aria-label="breadcrumb" class="mb-3">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="../index.html">Java Codeex</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="../index.html#java8">Java 8+ Features</a>
+            </li>
+            <li class="breadcrumb-item active">Java 8+ Features</li>
+          </ol>
+        </nav>
+        <h1>Java 8+ Features</h1>
+        <p class="mb-0" style="color: #cdd6f4; font-size: 1.1rem">
+          Explore the most important modern Java features: Lambdas, Streams,
+          Optional, and more.
+        </p>
+      </div>
+    </section>
+    <aside class="topic-guide" aria-label="Learning guide">
+      <div class="topic-guide-step">
+        <span>01</span><strong>Write modern Java</strong
+        ><small>Use lambdas</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>02</span><strong>Write modern Java</strong
+        ><small>Process streams</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>03</span><strong>Write modern Java</strong
+        ><small>Handle optional values</small>
+      </div>
+      <p class="topic-guide-summary">
+        <strong>Learning goal:</strong> Java 8 features make common
+        data-processing code more expressive.
+      </p>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="container-xl py-5">
+      <div class="row g-5">
+        <!-- Article -->
+        <div class="col-lg-8">
+          <article class="content-wrapper">
+            <!-- Section 1 -->
+            <h2 id="overview-java8">1. Overview of Java 8</h2>
+            <p>
+              Java 8, released in March 2014, was one of the most significant
+              releases since Java 5. It fundamentally changed the way Java
+              developers write code by introducing functional programming
+              concepts into the language. Before Java 8, Java was purely
+              object-oriented; after Java 8, it became a multi-paradigm language
+              supporting functional-style programming.
+            </p>
+            <h3>Key Features Introduced in Java 8</h3>
+            <ul>
+              <li>
+                <strong>Lambda Expressions</strong> — concise anonymous function
+                syntax
+              </li>
+              <li>
+                <strong>Functional Interfaces</strong> — single-abstract-method
+                interfaces
+              </li>
+              <li>
+                <strong>Stream API</strong> — declarative data processing
+                pipeline
+              </li>
+              <li>
+                <strong>Optional&lt;T&gt;</strong> — null-safe container type
+              </li>
+              <li>
+                <strong>Method References</strong> — shorthand for lambdas
+                calling existing methods
+              </li>
+              <li>
+                <strong>Default and Static Interface Methods</strong> —
+                interface evolution without breaking implementations
+              </li>
+              <li>
+                <strong>New Date and Time API (java.time)</strong> — immutable,
+                thread-safe date/time classes
+              </li>
+              <li>
+                <strong>Collectors</strong> — powerful reduction operations for
+                streams
+              </li>
+              <li>
+                <strong>Nashorn JavaScript Engine</strong> — embedded JS engine
+                (later removed)
+              </li>
+              <li>
+                <strong>Base64 Encoding/Decoding</strong> — built-in
+                java.util.Base64
+              </li>
+            </ul>
+            <div class="note-box">
+              <p>
+                <strong>Impact:</strong> Java 8 made Java competitive with
+                functional languages like Scala and Haskell while retaining full
+                backward compatibility.
+              </p>
+            </div>
+
+            <!-- Section 2 -->
+            <h2 id="lambda-expressions">2. Lambda Expressions</h2>
+            <p>
+              A lambda expression is a concise way to represent an anonymous
+              function — a block of code that can be passed around as a value.
+              Lambdas enable you to treat functionality as a method argument and
+              eliminate verbose anonymous class boilerplate.
+            </p>
+            <h3>Syntax</h3>
+            <pre>
+(parameters) -> expression
+(parameters) -> { statements; }</pre>
+            <pre>
+import java.util.*;
+
+public class LambdaDemo {
+    public static void main(String[] args) {
+
+        // Example 1: Replacing anonymous Runnable
+        // Before Java 8
+        Runnable oldWay = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("Old way: anonymous class");
+            }
+        };
+
+        // Java 8 lambda
+        Runnable newWay = () -> System.out.println("New way: lambda");
+        oldWay.run();
+        newWay.run();
+
+        // Example 2: Replacing anonymous Comparator
+        List&lt;String&gt; names = Arrays.asList("Charlie", "Alice", "Bob");
+
+        // Before Java 8
+        Collections.sort(names, new Comparator&lt;String&gt;() {
+            @Override
+            public int compare(String a, String b) {
+                return a.compareTo(b);
+            }
+        });
+        System.out.println("Sorted (old): " + names);
+
+        // Java 8 lambda
+        names.sort((a, b) -> b.compareTo(a));  // reverse
+        System.out.println("Sorted (lambda): " + names);
+
+        // Example 3: Lambda with block body and multiple statements
+        List&lt;Integer&gt; nums = Arrays.asList(1, 2, 3, 4, 5);
+        nums.forEach(n -> {
+            int square = n * n;
+            System.out.println(n + " squared = " + square);
+        });
+    }
+}</pre>
+            <div class="output-box">
+              Old way: anonymous class<br />
+              New way: lambda<br />
+              Sorted (old): [Alice, Bob, Charlie]<br />
+              Sorted (lambda): [Charlie, Bob, Alice]<br />
+              1 squared = 1<br />
+              2 squared = 4<br />
+              3 squared = 9<br />
+              4 squared = 16<br />
+              5 squared = 25
+            </div>
+
+            <!-- Section 3 -->
+            <h2 id="functional-interfaces">3. Functional Interfaces</h2>
+            <p>
+              A functional interface is an interface with
+              <strong>exactly one abstract method</strong>. Lambda expressions
+              are instances of functional interfaces — the compiler infers which
+              abstract method the lambda implements. The
+              <code class="inline">@FunctionalInterface</code> annotation is
+              optional but recommended: it causes a compile error if the
+              interface accidentally gets a second abstract method.
+            </p>
+            <pre>
+import java.util.concurrent.Callable;
+
+// Custom functional interface
+@FunctionalInterface
+interface Transformer {
+    String transform(String input);
+    // Adding a second abstract method here would cause a compile error
+}
+
+public class FunctionalInterfaceDemo {
+    public static void main(String[] args) {
+
+        // Runnable — no args, no return value
+        Runnable r = () -> System.out.println("Running!");
+        r.run();
+
+        // Comparator — two args, returns int
+        java.util.Comparator&lt;String&gt; comp =
+            (s1, s2) -> s1.length() - s2.length();
+        System.out.println("Compare: " + comp.compare("Hi", "Hello"));
+
+        // Callable — no args, returns value, can throw
+        Callable&lt;Integer&gt; callable = () -> 42;
+        try {
+            System.out.println("Callable result: " + callable.call());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Custom functional interface
+        Transformer upper = s -> s.toUpperCase();
+        Transformer shout = s -> s.toUpperCase() + "!!!";
+        System.out.println(upper.transform("hello world"));
+        System.out.println(shout.transform("hello world"));
+    }
+}</pre>
+            <div class="output-box">
+              Running!<br />
+              Compare: -3<br />
+              Callable result: 42<br />
+              HELLO WORLD<br />
+              HELLO WORLD!!!
+            </div>
+
+            <!-- Section 4 -->
+            <h2 id="predicate">4. Predicate&lt;T&gt;</h2>
+            <p>
+              <code class="inline">Predicate&lt;T&gt;</code> (in
+              <code class="inline">java.util.function</code>) represents a
+              boolean-valued function of one argument. Its single abstract
+              method is <code class="inline">boolean test(T t)</code>.
+              Predicates can be composed using
+              <code class="inline">and()</code>,
+              <code class="inline">or()</code>, and
+              <code class="inline">negate()</code>.
+            </p>
+            <pre>
+import java.util.*;
+import java.util.function.Predicate;
+
+public class PredicateDemo {
+    public static void main(String[] args) {
+        List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+        Predicate&lt;Integer&gt; isEven    = n -> n % 2 == 0;
+        Predicate&lt;Integer&gt; isGreater5 = n -> n > 5;
+
+        // test
+        System.out.println("4 is even? " + isEven.test(4));
+        System.out.println("7 is even? " + isEven.test(7));
+
+        // and — both conditions must be true
+        Predicate&lt;Integer&gt; evenAndGreater5 = isEven.and(isGreater5);
+        System.out.print("Even AND > 5: ");
+        numbers.stream()
+               .filter(evenAndGreater5)
+               .forEach(n -> System.out.print(n + " "));
+        System.out.println();
+
+        // or — at least one condition true
+        Predicate&lt;Integer&gt; evenOrGreater5 = isEven.or(isGreater5);
+        System.out.print("Even OR > 5:  ");
+        numbers.stream()
+               .filter(evenOrGreater5)
+               .forEach(n -> System.out.print(n + " "));
+        System.out.println();
+
+        // negate — opposite condition
+        System.out.print("NOT even:     ");
+        numbers.stream()
+               .filter(isEven.negate())
+               .forEach(n -> System.out.print(n + " "));
+        System.out.println();
+
+        // Filtering a list of strings
+        List&lt;String&gt; words = Arrays.asList("apple", "ant", "banana", "avocado", "cherry");
+        Predicate&lt;String&gt; startsWithA = s -> s.startsWith("a");
+        Predicate&lt;String&gt; longerThan5 = s -> s.length() > 5;
+        System.out.print("Starts with 'a' and longer than 5: ");
+        words.stream()
+             .filter(startsWithA.and(longerThan5))
+             .forEach(s -> System.out.print(s + " "));
+        System.out.println();
+    }
+}</pre>
+            <div class="output-box">
+              4 is even? true<br />
+              7 is even? false<br />
+              Even AND > 5: 6 8 10<br />
+              Even OR > 5: 2 4 6 7 8 9 10<br />
+              NOT even: 1 3 5 7 9<br />
+              Starts with 'a' and longer than 5: avocado
+            </div>
+
+            <!-- Section 5 -->
+            <h2 id="consumer">5. Consumer&lt;T&gt;</h2>
+            <p>
+              <code class="inline">Consumer&lt;T&gt;</code> represents an
+              operation that accepts a single input argument and returns no
+              result. Its abstract method is
+              <code class="inline">void accept(T t)</code>. Use
+              <code class="inline">andThen()</code> to chain multiple consumers
+              so they execute sequentially.
+            </p>
+            <pre>
+import java.util.*;
+import java.util.function.Consumer;
+
+public class ConsumerDemo {
+    public static void main(String[] args) {
+
+        Consumer&lt;String&gt; printUpper = s -> System.out.println(s.toUpperCase());
+        Consumer&lt;String&gt; printLen   = s -> System.out.println("Length: " + s.length());
+
+        // accept — execute the consumer
+        printUpper.accept("hello");
+        printLen.accept("hello");
+
+        // andThen — chain consumers (both execute in order)
+        Consumer&lt;String&gt; combined = printUpper.andThen(printLen);
+        System.out.println("--- Combined ---");
+        combined.accept("lambda");
+
+        // forEach with Consumer
+        List&lt;Integer&gt; nums = Arrays.asList(10, 20, 30, 40);
+        Consumer&lt;Integer&gt; printSquare = n -> System.out.println(n + " -> " + (n * n));
+        System.out.println("--- Squares ---");
+        nums.forEach(printSquare);
+
+        // BiConsumer example (two inputs, no result)
+        java.util.function.BiConsumer&lt;String, Integer&gt; printRepeat =
+            (str, times) -> System.out.println(str.repeat(times));
+        printRepeat.accept("Ha", 3);
+    }
+}</pre>
+            <div class="output-box">
+              HELLO<br />
+              Length: 5<br />
+              --- Combined ---<br />
+              LAMBDA<br />
+              Length: 6<br />
+              --- Squares ---<br />
+              10 -> 100<br />
+              20 -> 400<br />
+              30 -> 900<br />
+              40 -> 1600<br />
+              HaHaHa
+            </div>
+
+            <!-- Section 6 -->
+            <h2 id="supplier">6. Supplier&lt;T&gt;</h2>
+            <p>
+              <code class="inline">Supplier&lt;T&gt;</code> represents a
+              supplier of results. Its abstract method is
+              <code class="inline">T get()</code>. It takes no arguments and
+              returns a value. It is useful for lazy initialization — the value
+              is only computed when <code class="inline">get()</code> is called,
+              not when the Supplier is created.
+            </p>
+            <pre>
+import java.util.function.Supplier;
+import java.util.*;
+
+public class SupplierDemo {
+    public static void main(String[] args) {
+
+        // Simple value supplier
+        Supplier&lt;String&gt; greeting = () -> "Hello, World!";
+        System.out.println(greeting.get());
+
+        // Lazy initialization — expensive object created only when needed
+        Supplier&lt;List&lt;String&gt;&gt; listSupplier = () -> {
+            System.out.println("(Creating list...)");
+            return new ArrayList&lt;&gt;(Arrays.asList("A", "B", "C"));
+        };
+        System.out.println("Supplier created, list not yet created.");
+        List&lt;String&gt; list = listSupplier.get(); // list created here
+        System.out.println("List: " + list);
+
+        // Supplier for random values
+        Supplier&lt;Integer&gt; randomInt = () -> new Random().nextInt(100);
+        System.out.println("Random 1: " + randomInt.get());
+        System.out.println("Random 2: " + randomInt.get());
+
+        // Supplier used in Optional.orElseGet (lazy — only called if empty)
+        Optional&lt;String&gt; empty = Optional.empty();
+        String result = empty.orElseGet(() -> "Default from Supplier");
+        System.out.println("orElseGet result: " + result);
+    }
+}</pre>
+            <div class="output-box">
+              Hello, World!<br />
+              Supplier created, list not yet created.<br />
+              (Creating list...)<br />
+              List: [A, B, C]<br />
+              Random 1: 47<br />
+              Random 2: 83<br />
+              orElseGet result: Default from Supplier
+            </div>
+
+            <!-- Section 7 -->
+            <h2 id="function-method-refs">
+              7. Function&lt;T,R&gt; and Method References
+            </h2>
+            <p>
+              <code class="inline">Function&lt;T,R&gt;</code> represents a
+              function that accepts one argument of type T and returns a result
+              of type R. Its abstract method is
+              <code class="inline">R apply(T t)</code>. You can compose
+              functions using <code class="inline">andThen()</code> (apply this
+              then the next) and <code class="inline">compose()</code> (apply
+              other first, then this).
+            </p>
+            <h3>Method References (:: operator)</h3>
+            <p>
+              Method references are a shorthand notation for lambdas that call
+              an existing method. There are four kinds:
+            </p>
+            <pre>
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
+
+public class FunctionMethodRefDemo {
+    static String staticToUpper(String s) { return s.toUpperCase(); }
+    String instanceToLower(String s) { return s.toLowerCase(); }
+
+    public static void main(String[] args) {
+        // Function apply + andThen
+        Function&lt;String, Integer&gt; strLen = s -> s.length();
+        Function&lt;Integer, String&gt; intToStr = i -> "Length: " + i;
+        Function&lt;String, String&gt; combined = strLen.andThen(intToStr);
+        System.out.println(combined.apply("Java 8"));
+
+        // --- 4 types of method references ---
+
+        // 1. Static method reference:  ClassName::staticMethod
+        Function&lt;String, String&gt; upperRef = FunctionMethodRefDemo::staticToUpper;
+        System.out.println("Static ref: " + upperRef.apply("hello"));
+
+        // 2. Instance method of a specific object:  instance::instanceMethod
+        FunctionMethodRefDemo obj = new FunctionMethodRefDemo();
+        Function&lt;String, String&gt; lowerRef = obj::instanceToLower;
+        System.out.println("Instance ref: " + lowerRef.apply("WORLD"));
+
+        // 3. Instance method of an arbitrary object of a type:  ClassName::instanceMethod
+        // (first argument becomes the receiver)
+        List&lt;String&gt; words = Arrays.asList("banana", "apple", "cherry");
+        words.sort(String::compareTo);  // String::compareTo is a BiFunction-style ref
+        System.out.println("Sorted: " + words);
+
+        // 4. Constructor reference:  ClassName::new
+        Supplier&lt;ArrayList&lt;String&gt;&gt; listFactory = ArrayList::new;
+        ArrayList&lt;String&gt; newList = listFactory.get();
+        newList.add("created via constructor ref");
+        System.out.println("Constructor ref: " + newList);
+
+        // Common use with streams
+        List&lt;String&gt; names = Arrays.asList("alice", "bob", "charlie");
+        List&lt;String&gt; uppered = names.stream()
+                                    .map(String::toUpperCase)  // method ref
+                                    .collect(Collectors.toList());
+        System.out.println("Uppered: " + uppered);
+
+        // Printing with method reference
+        System.out.println("--- forEach method ref ---");
+        uppered.forEach(System.out::println);
+    }
+}</pre>
+            <div class="output-box">
+              Length: 6<br />
+              Static ref: HELLO<br />
+              Instance ref: world<br />
+              Sorted: [apple, banana, cherry]<br />
+              Constructor ref: [created via constructor ref]<br />
+              Uppered: [ALICE, BOB, CHARLIE]<br />
+              --- forEach method ref ---<br />
+              ALICE<br />
+              BOB<br />
+              CHARLIE
+            </div>
+
+            <!-- Section 8 -->
+            <h2 id="stream-api">8. Stream API</h2>
+            <p>
+              The Stream API (in <code class="inline">java.util.stream</code>)
+              enables functional-style operations on sequences of elements. A
+              stream is <em>not a data structure</em> — it does not store
+              elements. It is a pipeline that processes data from a source
+              (collection, array, I/O channel).
+            </p>
+            <p><strong>Key characteristics:</strong></p>
+            <ul>
+              <li>
+                <strong>Lazy evaluation</strong> — intermediate operations are
+                not executed until a terminal operation is invoked.
+              </li>
+              <li>
+                <strong>Single use</strong> — a stream can only be consumed
+                once.
+              </li>
+              <li>
+                <strong>Non-mutating</strong> — stream operations do not modify
+                the source collection.
+              </li>
+              <li>
+                <strong>Potentially parallelizable</strong> — switch to parallel
+                with <code class="inline">.parallelStream()</code>.
+              </li>
+            </ul>
+            <h3>Intermediate vs Terminal Operations</h3>
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Operations</th>
+                    <th>Returns</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Intermediate (lazy)</td>
+                    <td>
+                      filter, map, flatMap, sorted, distinct, limit, skip, peek
+                    </td>
+                    <td>Stream&lt;T&gt;</td>
+                  </tr>
+                  <tr>
+                    <td>Terminal (triggers execution)</td>
+                    <td>
+                      forEach, collect, count, reduce, findFirst, anyMatch,
+                      allMatch, noneMatch, min, max, toList
+                    </td>
+                    <td>Result or void</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <pre>
+import java.util.*;
+import java.util.stream.*;
+
+public class StreamBasics {
+    public static void main(String[] args) {
+        // Create streams from various sources
+        Stream&lt;String&gt; fromCollection = List.of("a", "b", "c").stream();
+        Stream&lt;Integer&gt; fromArray     = Arrays.stream(new Integer[]{1, 2, 3});
+        Stream&lt;String&gt; ofStream       = Stream.of("x", "y", "z");
+        Stream&lt;Integer&gt; generated     = Stream.iterate(0, n -> n + 2).limit(5);
+
+        System.out.print("Generated even numbers: ");
+        generated.forEach(n -> System.out.print(n + " "));
+        System.out.println();
+
+        // Lazy evaluation demo
+        System.out.println("--- Lazy Evaluation ---");
+        List.of(1, 2, 3, 4, 5)
+            .stream()
+            .filter(n -> { System.out.println("filter: " + n); return n % 2 == 0; })
+            .map(n -> { System.out.println("map: " + n); return n * 10; })
+            .findFirst()  // terminal — stops as soon as first match found
+            .ifPresent(n -> System.out.println("Result: " + n));
+    }
+}</pre>
+            <div class="output-box">
+              Generated even numbers: 0 2 4 6 8<br />
+              --- Lazy Evaluation ---<br />
+              filter: 1<br />
+              filter: 2<br />
+              map: 2<br />
+              Result: 20
+            </div>
+
+            <!-- Section 9 -->
+            <h2 id="stream-operations">9. Common Stream Operations</h2>
+            <p>
+              Here is a comprehensive walkthrough of the most-used stream
+              operations, each with a working example.
+            </p>
+            <pre>
+import java.util.*;
+import java.util.stream.*;
+
+public class StreamOperations {
+    public static void main(String[] args) {
+        List&lt;Integer&gt; nums = Arrays.asList(5, 3, 8, 1, 9, 2, 7, 4, 6, 3, 8);
+        List&lt;String&gt; names = Arrays.asList("Alice", "Bob", "Charlie", "David", "Eve", "Bob");
+
+        // filter — keep elements matching predicate
+        System.out.print("filter (even): ");
+        nums.stream().filter(n -> n % 2 == 0)
+            .forEach(n -> System.out.print(n + " "));
+        System.out.println();
+
+        // map — transform each element
+        System.out.print("map (x2): ");
+        nums.stream().distinct().sorted().map(n -> n * 2)
+            .forEach(n -> System.out.print(n + " "));
+        System.out.println();
+
+        // sorted — natural order
+        System.out.print("sorted: ");
+        nums.stream().sorted().forEach(n -> System.out.print(n + " "));
+        System.out.println();
+
+        // distinct — remove duplicates
+        System.out.print("distinct: ");
+        nums.stream().distinct().sorted()
+            .forEach(n -> System.out.print(n + " "));
+        System.out.println();
+
+        // limit — take first N elements
+        System.out.print("limit(4): ");
+        nums.stream().sorted().limit(4)
+            .forEach(n -> System.out.print(n + " "));
+        System.out.println();
+
+        // count — terminal: number of elements
+        long evenCount = nums.stream().filter(n -> n % 2 == 0).count();
+        System.out.println("count (even): " + evenCount);
+
+        // collect — gather into a List
+        List&lt;Integer&gt; evenList = nums.stream()
+            .filter(n -> n % 2 == 0)
+            .collect(Collectors.toList());
+        System.out.println("collect toList: " + evenList);
+
+        // reduce — combine elements into single result
+        int sum = nums.stream().reduce(0, Integer::sum);
+        System.out.println("reduce (sum): " + sum);
+
+        Optional&lt;Integer&gt; product = nums.stream().distinct()
+            .reduce((a, b) -> a * b);
+        System.out.println("reduce (product of distinct): " + product.orElse(0));
+
+        // min and max
+        Optional&lt;Integer&gt; min = nums.stream().min(Comparator.naturalOrder());
+        Optional&lt;Integer&gt; max = nums.stream().max(Comparator.naturalOrder());
+        System.out.println("min: " + min.get() + ", max: " + max.get());
+
+        // anyMatch / allMatch / noneMatch — boolean terminal ops
+        System.out.println("anyMatch >8: "  + nums.stream().anyMatch(n -> n > 8));
+        System.out.println("allMatch >0: "  + nums.stream().allMatch(n -> n > 0));
+        System.out.println("noneMatch <0: " + nums.stream().noneMatch(n -> n < 0));
+
+        // map on strings
+        System.out.print("names uppercase: ");
+        names.stream().distinct().map(String::toUpperCase)
+            .forEach(s -> System.out.print(s + " "));
+        System.out.println();
+
+        // flatMap — flatten nested lists
+        List&lt;List&lt;Integer&gt;&gt; nested = Arrays.asList(
+            Arrays.asList(1, 2, 3),
+            Arrays.asList(4, 5),
+            Arrays.asList(6, 7, 8, 9)
+        );
+        List&lt;Integer&gt; flat = nested.stream()
+            .flatMap(Collection::stream)
+            .collect(Collectors.toList());
+        System.out.println("flatMap: " + flat);
+    }
+}</pre>
+            <div class="output-box">
+              filter (even): 8 2 4 6 8<br />
+              map (x2): 2 4 6 8 10 12 14 16 18<br />
+              sorted: 1 2 3 3 4 5 6 7 8 8 9<br />
+              distinct: 1 2 3 4 5 6 7 8 9<br />
+              limit(4): 1 2 3 3<br />
+              count (even): 5<br />
+              collect toList: [8, 2, 4, 6, 8]<br />
+              reduce (sum): 56<br />
+              reduce (product of distinct): 362880<br />
+              min: 1, max: 9<br />
+              anyMatch >8: true<br />
+              allMatch >0: true<br />
+              noneMatch &lt;0: true<br />
+              names uppercase: ALICE BOB CHARLIE DAVID EVE<br />
+              flatMap: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+            </div>
+
+            <!-- Section 10 -->
+            <h2 id="optional">10. Optional&lt;T&gt;</h2>
+            <p>
+              <code class="inline">Optional&lt;T&gt;</code> is a container that
+              may or may not hold a non-null value. It forces the developer to
+              explicitly handle the "no value" case, eliminating unexpected
+              <code class="inline">NullPointerException</code>s. It was designed
+              to be used as a <em>return type</em> — not as a field type or
+              method parameter.
+            </p>
+            <pre>
+import java.util.*;
+
+public class OptionalDemo {
+    // Return Optional instead of null
+    static Optional&lt;String&gt; findUser(int id) {
+        Map&lt;Integer, String&gt; db = Map.of(1, "Alice", 2, "Bob");
+        return Optional.ofNullable(db.get(id));
+    }
+
+    public static void main(String[] args) {
+        // Creating Optionals
+        Optional&lt;String&gt; present = Optional.of("Hello");
+        Optional&lt;String&gt; empty   = Optional.empty();
+        Optional&lt;String&gt; nullable = Optional.ofNullable(null); // same as empty
+
+        // isPresent and isEmpty
+        System.out.println("present.isPresent(): " + present.isPresent());
+        System.out.println("empty.isEmpty(): "     + empty.isEmpty());
+
+        // get — throws NoSuchElementException if empty; always check first
+        System.out.println("present.get(): " + present.get());
+
+        // orElse — default value if empty
+        System.out.println("empty.orElse: " + empty.orElse("Default"));
+
+        // orElseGet — lazy default via Supplier
+        System.out.println("empty.orElseGet: " + empty.orElseGet(() -> "Lazy Default"));
+
+        // orElseThrow — throw custom exception if empty
+        try {
+            empty.orElseThrow(() -> new IllegalStateException("Value required"));
+        } catch (IllegalStateException e) {
+            System.out.println("Caught: " + e.getMessage());
+        }
+
+        // map — transform value if present
+        Optional&lt;Integer&gt; length = present.map(String::length);
+        System.out.println("map length: " + length.orElse(0));
+
+        // filter — keep value if predicate matches
+        Optional&lt;String&gt; filtered = present.filter(s -> s.startsWith("H"));
+        System.out.println("filter result: " + filtered.orElse("No match"));
+
+        // ifPresent — run action if value present
+        present.ifPresent(s -> System.out.println("ifPresent: " + s));
+
+        // findUser example
+        System.out.println("User 1: " + findUser(1).orElse("Not found"));
+        System.out.println("User 9: " + findUser(9).orElse("Not found"));
+
+        // Chaining Optionals safely
+        String result = findUser(1)
+            .map(String::toUpperCase)
+            .filter(s -> s.length() > 3)
+            .orElse("Too short or not found");
+        System.out.println("Chained: " + result);
+    }
+}</pre>
+            <div class="output-box">
+              present.isPresent(): true<br />
+              empty.isEmpty(): true<br />
+              present.get(): Hello<br />
+              empty.orElse: Default<br />
+              empty.orElseGet: Lazy Default<br />
+              Caught: Value required<br />
+              map length: 5<br />
+              filter result: Hello<br />
+              ifPresent: Hello<br />
+              User 1: Alice<br />
+              User 9: Not found<br />
+              Chained: ALICE
+            </div>
+            <div class="warn-box">
+              <p>
+                <strong>Warning:</strong> Never call
+                <code class="inline">optional.get()</code> without first
+                checking <code class="inline">isPresent()</code>. Prefer
+                <code class="inline">orElse</code>,
+                <code class="inline">orElseGet</code>, or
+                <code class="inline">ifPresent</code> for safer code.
+              </p>
+            </div>
+
+            <!-- Section 11 -->
+            <h2 id="collectors">11. Collectors</h2>
+            <p>
+              <code class="inline">Collectors</code> (in
+              <code class="inline">java.util.stream</code>) is a utility class
+              providing implementations of the
+              <code class="inline">Collector</code> interface for common
+              reduction operations. They are used with
+              <code class="inline">stream.collect()</code>.
+            </p>
+            <pre>
+import java.util.*;
+import java.util.stream.*;
+import java.util.function.Function;
+
+public class CollectorsDemo {
+    public static void main(String[] args) {
+        List&lt;String&gt; fruits = Arrays.asList(
+            "Apple", "Banana", "Cherry", "Avocado", "Blueberry", "Apricot"
+        );
+        List&lt;Integer&gt; nums = Arrays.asList(1, 2, 3, 4, 5);
+
+        // toList
+        List&lt;String&gt; aFruits = fruits.stream()
+            .filter(f -> f.startsWith("A"))
+            .collect(Collectors.toList());
+        System.out.println("toList: " + aFruits);
+
+        // toSet
+        Set&lt;Integer&gt; numSet = nums.stream().collect(Collectors.toSet());
+        System.out.println("toSet: " + numSet);
+
+        // toMap — key: fruit name, value: its length
+        Map&lt;String, Integer&gt; fruitLengths = fruits.stream()
+            .collect(Collectors.toMap(Function.identity(), String::length));
+        System.out.println("toMap (sample): Apple=" + fruitLengths.get("Apple")
+            + ", Banana=" + fruitLengths.get("Banana"));
+
+        // groupingBy — group fruits by first letter
+        Map&lt;Character, List&lt;String&gt;&gt; grouped = fruits.stream()
+            .collect(Collectors.groupingBy(s -> s.charAt(0)));
+        grouped.forEach((k, v) -> System.out.println("Group " + k + ": " + v));
+
+        // groupingBy with counting downstream
+        Map&lt;Character, Long&gt; countByLetter = fruits.stream()
+            .collect(Collectors.groupingBy(s -> s.charAt(0), Collectors.counting()));
+        System.out.println("countByLetter: " + countByLetter);
+
+        // joining — concatenate strings
+        String joined = fruits.stream().collect(Collectors.joining(", ", "[", "]"));
+        System.out.println("joining: " + joined);
+
+        // counting
+        long count = fruits.stream()
+            .filter(f -> f.length() > 5)
+            .collect(Collectors.counting());
+        System.out.println("counting (len>5): " + count);
+
+        // summarizingInt
+        IntSummaryStatistics stats = nums.stream()
+            .collect(Collectors.summarizingInt(Integer::intValue));
+        System.out.println("sum=" + stats.getSum()
+            + " avg=" + stats.getAverage()
+            + " min=" + stats.getMin()
+            + " max=" + stats.getMax());
+    }
+}</pre>
+            <div class="output-box">
+              toList: [Apple, Avocado, Apricot]<br />
+              toSet: [1, 2, 3, 4, 5]<br />
+              toMap (sample): Apple=5, Banana=6<br />
+              Group A: [Apple, Avocado, Apricot]<br />
+              Group B: [Banana, Blueberry]<br />
+              Group C: [Cherry]<br />
+              countByLetter: {A=3, B=2, C=1}<br />
+              joining: [Apple, Banana, Cherry, Avocado, Blueberry, Apricot]<br />
+              counting (len&gt;5): 4<br />
+              sum=15 avg=3.0 min=1 max=5
+            </div>
+
+            <!-- Section 12 -->
+            <h2 id="java9-21-highlights">12. Java 9–21 Highlights</h2>
+            <p>
+              Java has continued to evolve since Java 8. Here are four landmark
+              features from subsequent versions:
+            </p>
+
+            <h3>var — Local Variable Type Inference (Java 10)</h3>
+            <p>
+              The <code class="inline">var</code> keyword lets the compiler
+              infer the type of a local variable from the initializer. It
+              reduces verbosity without sacrificing type safety — the type is
+              still static and known at compile time.
+            </p>
+            <pre>
+// Java 10+
+var list = new ArrayList&lt;String&gt;();  // inferred as ArrayList&lt;String&gt;
+var map  = new HashMap&lt;String, Integer&gt;();
+list.add("Hello");
+map.put("one", 1);
+
+var name = "Java 10";  // inferred as String
+// name = 42;  // compile error — type is String, not int
+
+// Useful in for-each loops
+for (var entry : map.entrySet()) {
+    System.out.println(entry.getKey() + " = " + entry.getValue());
+}</pre>
+            <div class="note-box">
+              <p>
+                <code class="inline">var</code> can only be used for local
+                variables with initializers. It cannot be used for fields,
+                method parameters, or return types.
+              </p>
+            </div>
+
+            <h3>Records (Java 16)</h3>
+            <p>
+              Records are concise immutable data classes. The compiler
+              automatically generates the constructor, accessors (<code
+                class="inline"
+                >name()</code
+              >, <code class="inline">age()</code>),
+              <code class="inline">equals()</code>,
+              <code class="inline">hashCode()</code>, and
+              <code class="inline">toString()</code>.
+            </p>
+            <pre>
+// Java 16+
+record Person(String name, int age) {}
+
+// Usage
+Person p = new Person("Alice", 30);
+System.out.println(p.name());   // Alice
+System.out.println(p.age());    // 30
+System.out.println(p);          // Person[name=Alice, age=30]
+
+// Records are immutable — no setters
+// p.name = "Bob";  // compile error</pre>
+
+            <h3>Sealed Classes (Java 17)</h3>
+            <p>
+              Sealed classes restrict which other classes can extend or
+              implement them. This gives the author of a class hierarchy
+              explicit control over all permitted subtypes — a prerequisite for
+              exhaustive pattern matching.
+            </p>
+            <pre>
+// Java 17+
+sealed interface Shape permits Circle, Rectangle, Triangle {}
+
+record Circle(double radius)             implements Shape {}
+record Rectangle(double w, double h)     implements Shape {}
+record Triangle(double base, double ht)  implements Shape {}
+
+// Pattern matching switch (exhaustive — no default needed)
+static double area(Shape s) {
+    return switch (s) {
+        case Circle    c -> Math.PI * c.radius() * c.radius();
+        case Rectangle r -> r.w() * r.h();
+        case Triangle  t -> 0.5 * t.base() * t.ht();
+    };
+}</pre>
+
+            <h3>Virtual Threads (Java 21)</h3>
+            <p>
+              Virtual threads are lightweight threads managed by the JVM rather
+              than the OS. They allow writing simple, synchronous-looking code
+              that scales to millions of concurrent tasks — previously only
+              achievable with complex reactive/async frameworks.
+            </p>
+            <pre>
+// Java 21+
+// Creating a virtual thread
+Thread vt = Thread.ofVirtual().start(() -> {
+    System.out.println("Running in virtual thread: "
+        + Thread.currentThread().isVirtual());
+});
+vt.join();
+
+// Using ExecutorService with virtual threads
+try (var executor = java.util.concurrent.Executors.newVirtualThreadPerTaskExecutor()) {
+    for (int i = 0; i < 10; i++) {
+        final int taskId = i;
+        executor.submit(() -> System.out.println("Task " + taskId));
+    }
+}
+// Output: Task 0 through Task 9 (order may vary)</pre>
+            <div class="note-box">
+              <p>
+                <strong>Key benefit:</strong> Virtual threads are not pinned to
+                platform (OS) threads during blocking I/O. You can run millions
+                of them simultaneously with minimal memory overhead — each uses
+                only a few kilobytes, versus ~1 MB for a platform thread.
+              </p>
+            </div>
+
+            <!-- Prev / Next -->
+            <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+              <a href="./collections.html" class="btn btn-outline-secondary"
+                >&larr; Collections</a
+              >
+              <a href="./date-and-time-api.html" class="btn btn-primary"
+                >Date and Time API &rarr;</a
+              >
+            </div>
+          </article>
+        </div>
+        <!-- /col-lg-8 -->
+
+        <!-- Sticky TOC -->
+        <div class="col-lg-4 d-none d-lg-block">
+          <nav class="toc">
+            <h6>On This Page</h6>
+            <a href="#overview-java8">1. Overview of Java 8</a>
+            <a href="#lambda-expressions">2. Lambda Expressions</a>
+            <a href="#functional-interfaces">3. Functional Interfaces</a>
+            <a href="#predicate">4. Predicate&lt;T&gt;</a>
+            <a href="#consumer">5. Consumer&lt;T&gt;</a>
+            <a href="#supplier">6. Supplier&lt;T&gt;</a>
+            <a href="#function-method-refs"
+              >7. Function&lt;T,R&gt; and Method References</a
+            >
+            <a href="#stream-api">8. Stream API</a>
+            <a href="#stream-operations">9. Common Stream Operations</a>
+            <a href="#optional">10. Optional&lt;T&gt;</a>
+            <a href="#collectors">11. Collectors</a>
+            <a href="#java9-21-highlights">12. Java 9–21 Highlights</a>
+          </nav>
+        </div>
+      </div>
+      <!-- /row -->
+    </div>
+    <!-- /container-xl -->
+
+    <!-- Footer -->
+    <footer class="py-4 mt-4">
+      <div class="container-xl text-center">
+        <small>&copy; 2026 Java Codeex. All rights reserved.</small>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmk+GOFVeA//xwkFWEVflJ8ikO1y+k"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+
+

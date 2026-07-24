@@ -1,0 +1,1065 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Java Networking tutorial - TCP/UDP socket programming, ServerSocket class, URL class, HttpURLConnection with complete client-server application examples."
+    />
+    <meta
+      name="keywords"
+      content="Java networking, socket programming Java, TCP UDP Java, ServerSocket, Java URL class, HttpURLConnection"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Java Codeex" />
+    <link rel="canonical" href="https://javacodeex.in/java/networking/" />
+    <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
+    <link
+      rel="shortcut icon"
+      href="../icons/javacodeex.jpg"
+      type="image/jpeg"
+    />
+    <link rel="apple-touch-icon" href="../icons/javacodeex.jpg" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta
+      property="og:title"
+      content="Java Networking - Socket Programming, TCP and UDP | Java Codeex"
+    />
+    <meta
+      property="og:description"
+      content="Java Networking tutorial - TCP/UDP socket programming, ServerSocket class, URL class, HttpURLConnection with complete client-server application examples."
+    />
+    <meta
+      property="og:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta property="og:url" content="https://javacodeex.in/networking/" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Java Networking - Socket Programming, TCP and UDP | Java Codeex"
+    />
+    <meta
+      name="twitter:description"
+      content="Java Networking tutorial - TCP/UDP socket programming, ServerSocket class, URL class, HttpURLConnection with complete client-server application examples."
+    />
+    <meta
+      name="twitter:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Java Networking - Socket Programming, TCP and UDP | Java Codeex
+    </title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        scroll-behavior: smooth;
+        font-size: 1rem;
+        color: #222;
+      }
+      .navbar {
+        background-color: #1a1a2e;
+      }
+      .navbar-brand {
+        font-weight: 700;
+        color: #f8a100 !important;
+      }
+      .navbar-nav .nav-link {
+        color: #cdd6f4 !important;
+        font-size: 0.85rem;
+      }
+      .navbar-nav .nav-link:hover {
+        color: #f8a100 !important;
+      }
+      .page-hero {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 60%,
+          #0f3460 100%
+        );
+        color: #fff;
+        padding: 48px 0 36px;
+      }
+      .page-hero h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+      }
+      .breadcrumb-item a {
+        color: #f8a100;
+        text-decoration: none;
+      }
+      .breadcrumb-item.active {
+        color: #cdd6f4;
+      }
+      .breadcrumb-item + .breadcrumb-item::before {
+        color: #8a9bb3;
+      }
+      .content-wrapper {
+        max-width: 860px;
+      }
+      h2 {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: #0f3460;
+        border-left: 5px solid #f8a100;
+        padding-left: 12px;
+        margin-top: 2.2rem;
+        margin-bottom: 0.8rem;
+      }
+      h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #16213e;
+        margin-top: 1.6rem;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        line-height: 1.8;
+      }
+      pre {
+        background: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 1.2rem 1.4rem;
+        font-size: 0.88rem;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+      code.inline {
+        background: #eef2ff;
+        color: #0f3460;
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 0.88rem;
+      }
+      .output-box {
+        background: #0d1117;
+        color: #58d68d;
+        border-left: 4px solid #58d68d;
+        border-radius: 4px;
+        padding: 0.8rem 1.2rem;
+        font-family: monospace;
+        font-size: 0.92rem;
+        margin: 0.5rem 0 1rem;
+      }
+      .note-box {
+        background: #eaf4ff;
+        border-left: 5px solid #3b82f6;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .note-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .warn-box {
+        background: #fff8e1;
+        border-left: 5px solid #f8a100;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .warn-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .table thead th {
+        background: #0f3460;
+        color: #fff;
+      }
+      .table-hover tbody tr:hover {
+        background: #f0f6ff;
+      }
+      .toc {
+        background: #f8f9fc;
+        border: 1px solid #e0e7ef;
+        border-radius: 10px;
+        padding: 1.2rem 1.4rem;
+        position: sticky;
+        top: 72px;
+      }
+      .toc h6 {
+        font-weight: 700;
+        color: #0f3460;
+        margin-bottom: 0.8rem;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        letter-spacing: 0.05em;
+      }
+      .toc a {
+        display: block;
+        font-size: 0.87rem;
+        color: #444;
+        text-decoration: none;
+        padding: 3px 0 3px 8px;
+        border-left: 3px solid transparent;
+        transition: all 0.15s;
+      }
+      .toc a:hover {
+        color: #f8a100;
+        border-left-color: #f8a100;
+      }
+      footer {
+        background: #1a1a2e;
+        color: #8a9bb3;
+      }
+
+      /* === TECH BANNER HEADER === */
+      .brand-bar {
+        background: #1a1a2e;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .brand-link {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: #f8a100;
+        font-weight: 700;
+        font-size: 1.15rem;
+        gap: 10px;
+      }
+      .brand-link:hover {
+        opacity: 0.85;
+        color: #f8a100;
+      }
+      .tech-banner {
+        background: #16213e;
+        border-bottom: 2px solid rgba(248, 161, 0, 0.2);
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tech-banner::-webkit-scrollbar {
+        height: 3px;
+      }
+      .tech-banner::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .tech-banner .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .tech-tab {
+        display: inline-block;
+        color: #a6adc8;
+        text-decoration: none;
+        padding: 11px 22px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+        white-space: nowrap;
+      }
+      .tech-tab:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.06);
+        text-decoration: none;
+      }
+      .tech-tab.active {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        font-weight: 700;
+      }
+      .tech-tab.coming-soon {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .java-subnav {
+        background: #0f3460;
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+      }
+      .java-subnav::-webkit-scrollbar {
+        height: 3px;
+      }
+      .java-subnav::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .java-subnav .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .topic-link {
+        display: inline-block;
+        color: #cdd6f4;
+        text-decoration: none;
+        padding: 10px 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+      }
+      .topic-link:hover {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        text-decoration: none;
+      }
+    </style>
+    <link rel="stylesheet" href="../site-theme.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="topic-link" href="../index.html#basics">Basics</a>
+        <a class="topic-link" href="../index.html#methods">Methods</a>
+        <a class="topic-link" href="../index.html#arrays">Arrays</a>
+        <a class="topic-link" href="../index.html#strings">Strings</a>
+        <a class="topic-link" href="../index.html#oop">OOP</a>
+        <a class="topic-link" href="../index.html#interfaces">Interfaces</a>
+        <a class="topic-link" href="../index.html#exceptions">Exceptions</a>
+        <a class="topic-link" href="../index.html#regex">Regex</a>
+        <a class="topic-link" href="../index.html#memory">Memory</a>
+        <a class="topic-link" href="../index.html#generics">Generics</a>
+        <a class="topic-link" href="../index.html#collections">Collections</a>
+        <a class="topic-link" href="../index.html#java8">Java 8+</a>
+        <a class="topic-link" href="../index.html#datetime">Date &amp; Time</a>
+        <a class="topic-link" href="../index.html#multithreading"
+          >Multithreading</a
+        >
+        <a class="topic-link" href="../index.html#filehandling">Files</a>
+        <a class="topic-link" href="../index.html#networking">Networking</a>
+        <a class="topic-link" href="../index.html#jdbc">JDBC</a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="page-hero">
+      <div class="container-xl">
+        <nav aria-label="breadcrumb" class="mb-3">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a href="../index.html">Java Codeex</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="../index.html#networking">Networking</a>
+            </li>
+            <li class="breadcrumb-item active">Networking in Java</li>
+          </ol>
+        </nav>
+        <h1>Networking in Java</h1>
+        <p class="mb-0" style="color: #cdd6f4; font-size: 1.08rem">
+          Build client-server applications using Java's networking APIs for TCP
+          and UDP communication.
+        </p>
+      </div>
+    </section>
+    <aside class="topic-guide" aria-label="Learning guide">
+      <div class="topic-guide-step">
+        <span>01</span><strong>Communicate over a network</strong
+        ><small>Open a socket</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>02</span><strong>Communicate over a network</strong
+        ><small>Send and receive bytes</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>03</span><strong>Communicate over a network</strong
+        ><small>Close the connection</small>
+      </div>
+      <p class="topic-guide-summary">
+        <strong>Learning goal:</strong> Networking lets Java programs exchange
+        data with other systems.
+      </p>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="container-xl py-5">
+      <div class="row g-5">
+        <!-- Article -->
+        <div class="col-lg-8">
+          <div class="content-wrapper">
+            <!-- 1 -->
+            <h2 id="networking-overview">1. Java Networking Overview</h2>
+            <p>
+              Java's <code class="inline">java.net</code> package provides
+              classes for network communication. The two primary transport
+              protocols are TCP and UDP:
+            </p>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  <th>TCP</th>
+                  <th>UDP</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Connection</td>
+                  <td>Connection-oriented (handshake required)</td>
+                  <td>Connectionless</td>
+                </tr>
+                <tr>
+                  <td>Reliability</td>
+                  <td>Guaranteed delivery, ordered packets</td>
+                  <td>No guarantee; packets may be lost or reordered</td>
+                </tr>
+                <tr>
+                  <td>Speed</td>
+                  <td>Slower (overhead for reliability)</td>
+                  <td>Faster (minimal overhead)</td>
+                </tr>
+                <tr>
+                  <td>Use cases</td>
+                  <td>HTTP, FTP, email, database queries</td>
+                  <td>DNS, video streaming, online gaming</td>
+                </tr>
+                <tr>
+                  <td>Java class</td>
+                  <td>
+                    <code class="inline">Socket</code> /
+                    <code class="inline">ServerSocket</code>
+                  </td>
+                  <td>
+                    <code class="inline">DatagramSocket</code> /
+                    <code class="inline">DatagramPacket</code>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p><strong>Key classes in java.net:</strong></p>
+            <ul>
+              <li>
+                <code class="inline">InetAddress</code> — represents an IP
+                address.
+              </li>
+              <li><code class="inline">Socket</code> — TCP client endpoint.</li>
+              <li>
+                <code class="inline">ServerSocket</code> — TCP server endpoint;
+                listens for connections.
+              </li>
+              <li>
+                <code class="inline">DatagramSocket</code> — UDP socket (client
+                and server).
+              </li>
+              <li>
+                <code class="inline">DatagramPacket</code> — UDP data container.
+              </li>
+              <li>
+                <code class="inline">URL</code> — represents a Uniform Resource
+                Locator.
+              </li>
+              <li>
+                <code class="inline">HttpURLConnection</code> — makes HTTP
+                requests.
+              </li>
+            </ul>
+
+            <!-- 2 -->
+            <h2 id="inetaddress">2. InetAddress</h2>
+            <p>
+              <code class="inline">InetAddress</code> resolves hostnames to IP
+              addresses and vice versa. It supports both IPv4 and IPv6.
+            </p>
+            <pre>
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+public class InetAddressDemo {
+    public static void main(String[] args) throws UnknownHostException {
+        // Resolve a hostname to IP
+        InetAddress google = InetAddress.getByName("www.google.com");
+        System.out.println("Host name:    " + google.getHostName());
+        System.out.println("Host address: " + google.getHostAddress());
+        System.out.println("Is reachable: " + google.isReachable(3000)); // 3s timeout - requires try/catch
+
+        // Get all IP addresses for a hostname (load-balanced services)
+        InetAddress[] addresses = InetAddress.getAllByName("www.google.com");
+        System.out.println("\nAll IPs for www.google.com:");
+        for (InetAddress addr : addresses) {
+            System.out.println("  " + addr.getHostAddress());
+        }
+
+        // Get local machine information
+        InetAddress localhost = InetAddress.getLocalHost();
+        System.out.println("\nLocal host name: " + localhost.getHostName());
+        System.out.println("Local IP:        " + localhost.getHostAddress());
+
+        // Get loopback address
+        InetAddress loopback = InetAddress.getLoopbackAddress();
+        System.out.println("Loopback: " + loopback.getHostAddress()); // 127.0.0.1
+
+        // Create from raw IP bytes
+        byte[] ipBytes = {(byte)192, (byte)168, 1, 1};
+        InetAddress custom = InetAddress.getByAddress(ipBytes);
+        System.out.println("Custom IP: " + custom.getHostAddress()); // 192.168.1.1
+    }
+}</pre>
+            <div class="output-box">
+              Host name: www.google.com<br />Host address: 142.250.80.4<br />Local
+              host name: MyPC<br />Local IP: 192.168.1.5<br />Loopback:
+              127.0.0.1<br />Custom IP: 192.168.1.1
+            </div>
+
+            <!-- 3 -->
+            <h2 id="tcp-intro">3. Socket Programming — TCP</h2>
+            <p>
+              TCP (Transmission Control Protocol) is connection-oriented. Before
+              data flows, a three-way handshake establishes a reliable,
+              bidirectional connection between client and server. Java models
+              this with two classes:
+            </p>
+            <ul>
+              <li>
+                <strong>Server side:</strong>
+                <code class="inline">ServerSocket</code> binds to a port and
+                waits via <code class="inline">accept()</code>.
+              </li>
+              <li>
+                <strong>Client side:</strong>
+                <code class="inline">Socket</code> connects to the server's host
+                and port.
+              </li>
+            </ul>
+            <p>
+              Once connected, both ends communicate through
+              <code class="inline">InputStream</code> and
+              <code class="inline">OutputStream</code> obtained from the socket
+              — just like reading and writing a file.
+            </p>
+            <div class="note-box">
+              <p>
+                <strong>Port numbers:</strong> Well-known ports are 0–1023
+                (HTTP=80, HTTPS=443). Use ports 1024–65535 for your own servers.
+                Both server and client must agree on the same port number.
+              </p>
+            </div>
+
+            <!-- 4 -->
+            <h2 id="server-socket">4. ServerSocket</h2>
+            <p>
+              The server binds to a port, accepts incoming connections in a
+              loop, and typically spawns a new thread per client to handle
+              multiple clients concurrently.
+            </p>
+            <pre>
+import java.net.*;
+import java.io.*;
+
+public class EchoServer {
+    private static final int PORT = 9090;
+
+    public static void main(String[] args) throws IOException {
+        System.out.println("Server starting on port " + PORT + "...");
+
+        // Bind to port; backlog of 5 queued connections
+        try (ServerSocket serverSocket = new ServerSocket(PORT, 5)) {
+            System.out.println("Server listening. Waiting for client...");
+
+            while (true) { // keep accepting connections
+                Socket clientSocket = serverSocket.accept(); // BLOCKS until a client connects
+                System.out.println("Client connected: "
+                    + clientSocket.getInetAddress().getHostAddress());
+
+                // Handle each client in a separate thread
+                new Thread(() -> handleClient(clientSocket)).start();
+            }
+        }
+    }
+
+    private static void handleClient(Socket socket) {
+        try (socket;
+             BufferedReader in  = new BufferedReader(
+                 new InputStreamReader(socket.getInputStream()));
+             PrintWriter   out  = new PrintWriter(
+                 socket.getOutputStream(), true)) {  // autoFlush=true
+
+            String line;
+            while ((line = in.readLine()) != null) {
+                System.out.println("Received: " + line);
+                out.println("ECHO: " + line); // echo back to client
+                if ("bye".equalsIgnoreCase(line)) break;
+            }
+        } catch (IOException e) {
+            System.err.println("Client error: " + e.getMessage());
+        }
+        System.out.println("Client disconnected.");
+    }
+}</pre>
+
+            <!-- 5 -->
+            <h2 id="socket-client">5. Socket (Client)</h2>
+            <p>
+              The client creates a <code class="inline">Socket</code> with the
+              server's hostname and port. This triggers the TCP handshake. The
+              client then communicates through streams.
+            </p>
+            <pre>
+import java.net.*;
+import java.io.*;
+
+public class EchoClient {
+    public static void main(String[] args) throws IOException {
+        String host = "localhost";
+        int port    = 9090;
+
+        System.out.println("Connecting to " + host + ":" + port);
+
+        try (Socket socket = new Socket(host, port);
+             PrintWriter  out = new PrintWriter(
+                 socket.getOutputStream(), true);
+             BufferedReader in = new BufferedReader(
+                 new InputStreamReader(socket.getInputStream()));
+             BufferedReader keyboard = new BufferedReader(
+                 new InputStreamReader(System.in))) {
+
+            System.out.println("Connected! Type messages (type 'bye' to quit):");
+            String userInput;
+            while ((userInput = keyboard.readLine()) != null) {
+                out.println(userInput);           // send to server
+                String response = in.readLine();  // read server response
+                System.out.println("Server: " + response);
+                if ("bye".equalsIgnoreCase(userInput)) break;
+            }
+        }
+        System.out.println("Connection closed.");
+    }
+}</pre>
+            <div class="output-box">
+              Connecting to localhost:9090<br />Connected! Type messages (type
+              'bye' to quit):<br />&gt; Hello Server<br />Server: ECHO: Hello
+              Server<br />&gt; bye<br />Server: ECHO: bye<br />Connection
+              closed.
+            </div>
+
+            <!-- 6 -->
+            <h2 id="tcp-full-example">6. Complete TCP Client-Server Example</h2>
+            <p>
+              Here is a self-contained example showing both server and client.
+              Run the server first in one terminal, then the client in another.
+            </p>
+            <h3>Server — TimeServer.java</h3>
+            <pre>
+import java.net.*;
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class TimeServer {
+    public static void main(String[] args) throws IOException {
+        try (ServerSocket server = new ServerSocket(8080)) {
+            System.out.println("TimeServer running on port 8080...");
+            while (true) {
+                try (Socket client = server.accept();
+                     PrintWriter out = new PrintWriter(
+                         client.getOutputStream(), true)) {
+                    String time = LocalDateTime.now()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                    out.println("Current server time: " + time);
+                    System.out.println("Served time to: "
+                        + client.getInetAddress().getHostAddress());
+                }
+            }
+        }
+    }
+}</pre>
+            <h3>Client — TimeClient.java</h3>
+            <pre>
+import java.net.*;
+import java.io.*;
+
+public class TimeClient {
+    public static void main(String[] args) throws IOException {
+        try (Socket socket = new Socket("localhost", 8080);
+             BufferedReader in = new BufferedReader(
+                 new InputStreamReader(socket.getInputStream()))) {
+            System.out.println(in.readLine()); // prints server time
+        }
+    }
+}</pre>
+            <div class="output-box">
+              -- Terminal 1 (Server) --<br />TimeServer running on port
+              8080...<br />Served time to: 127.0.0.1<br /><br />-- Terminal 2
+              (Client) --<br />Current server time: 2026-07-23 10:30:45
+            </div>
+
+            <!-- 7 -->
+            <h2 id="udp">7. UDP with DatagramSocket</h2>
+            <p>
+              UDP is connectionless — you send a packet and the receiver may or
+              may not get it. Each message is a
+              <code class="inline">DatagramPacket</code>. There is no stream;
+              each send/receive is independent.
+            </p>
+            <pre>
+import java.net.*;
+
+// UDP Server
+public class UDPServer {
+    public static void main(String[] args) throws Exception {
+        DatagramSocket serverSocket = new DatagramSocket(9999);
+        byte[] receiveBuffer = new byte[1024];
+
+        System.out.println("UDP Server listening on port 9999...");
+        while (true) {
+            DatagramPacket receivePacket =
+                new DatagramPacket(receiveBuffer, receiveBuffer.length);
+            serverSocket.receive(receivePacket); // blocks until packet arrives
+
+            String message = new String(receivePacket.getData(), 0,
+                                        receivePacket.getLength());
+            System.out.println("Received: " + message);
+
+            // Send response back to sender
+            InetAddress clientAddr = receivePacket.getAddress();
+            int clientPort = receivePacket.getPort();
+            String reply = "ACK: " + message;
+            byte[] sendBuffer = reply.getBytes();
+            DatagramPacket sendPacket =
+                new DatagramPacket(sendBuffer, sendBuffer.length,
+                                   clientAddr, clientPort);
+            serverSocket.send(sendPacket);
+        }
+    }
+}
+
+// UDP Client
+public class UDPClient {
+    public static void main(String[] args) throws Exception {
+        DatagramSocket clientSocket = new DatagramSocket();
+        InetAddress serverAddr = InetAddress.getByName("localhost");
+
+        String message = "Hello UDP Server!";
+        byte[] sendBuffer = message.getBytes();
+
+        // Send the packet
+        DatagramPacket sendPacket =
+            new DatagramPacket(sendBuffer, sendBuffer.length, serverAddr, 9999);
+        clientSocket.send(sendPacket);
+        System.out.println("Sent: " + message);
+
+        // Receive the response
+        byte[] receiveBuffer = new byte[1024];
+        DatagramPacket receivePacket =
+            new DatagramPacket(receiveBuffer, receiveBuffer.length);
+        clientSocket.receive(receivePacket);
+
+        String response = new String(receivePacket.getData(), 0,
+                                     receivePacket.getLength());
+        System.out.println("Response: " + response);
+
+        clientSocket.close();
+    }
+}</pre>
+            <div class="output-box">
+              -- UDP Client output --<br />Sent: Hello UDP Server!<br />Response:
+              ACK: Hello UDP Server!
+            </div>
+
+            <!-- 8 -->
+            <h2 id="url-class">8. URL Class</h2>
+            <p>
+              The <code class="inline">URL</code> class represents a Uniform
+              Resource Locator and can open a connection to read content from
+              it. This is the simplest way to fetch web content.
+            </p>
+            <pre>
+import java.net.*;
+import java.io.*;
+
+public class URLDemo {
+    public static void main(String[] args) throws Exception {
+        URL url = new URL("https://jsonplaceholder.typicode.com/posts/1");
+
+        System.out.println("Protocol: " + url.getProtocol()); // https
+        System.out.println("Host:     " + url.getHost());     // jsonplaceholder...
+        System.out.println("Port:     " + url.getPort());     // -1 (default)
+        System.out.println("Path:     " + url.getPath());     // /posts/1
+
+        // Open connection and read content
+        System.out.println("\nFetching content...");
+        try (BufferedReader reader = new BufferedReader(
+                 new InputStreamReader(url.openStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        }
+    }
+}</pre>
+            <div class="output-box">
+              Protocol: https<br />Host: jsonplaceholder.typicode.com<br />Path:
+              /posts/1<br /><br />Fetching content...<br />{<br />
+              "userId": 1,<br />
+              "id": 1,<br />
+              "title": "sunt aut facere..."<br />}
+            </div>
+
+            <!-- 9 -->
+            <h2 id="http-url-connection">9. HttpURLConnection</h2>
+            <p>
+              <code class="inline">HttpURLConnection</code> provides control
+              over HTTP method, headers, request body, and response codes —
+              needed for REST API calls and form submissions.
+            </p>
+            <h3>GET Request</h3>
+            <pre>
+import java.net.*;
+import java.io.*;
+
+public class HttpGetDemo {
+    public static void main(String[] args) throws Exception {
+        URL url = new URL("https://jsonplaceholder.typicode.com/users/1");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Accept", "application/json");
+        conn.setConnectTimeout(5000); // 5s connect timeout
+        conn.setReadTimeout(5000);    // 5s read timeout
+
+        int responseCode = conn.getResponseCode();
+        System.out.println("Response Code: " + responseCode); // 200
+
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            try (BufferedReader reader = new BufferedReader(
+                     new InputStreamReader(conn.getInputStream()))) {
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line).append("\n");
+                }
+                System.out.println("Response body:\n" + response);
+            }
+        }
+        conn.disconnect();
+    }
+}</pre>
+            <h3>POST Request</h3>
+            <pre>
+import java.net.*;
+import java.io.*;
+
+public class HttpPostDemo {
+    public static void main(String[] args) throws Exception {
+        URL url = new URL("https://jsonplaceholder.typicode.com/posts");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+        conn.setRequestProperty("Accept", "application/json");
+        conn.setDoOutput(true); // enable sending a request body
+
+        // Write JSON request body
+        String jsonBody = "{\"title\":\"Java Post\",\"body\":\"Hello World\",\"userId\":1}";
+        try (OutputStream os = conn.getOutputStream();
+             OutputStreamWriter writer = new OutputStreamWriter(os, "UTF-8")) {
+            writer.write(jsonBody);
+            writer.flush();
+        }
+
+        int responseCode = conn.getResponseCode();
+        System.out.println("POST Response Code: " + responseCode); // 201
+
+        try (BufferedReader reader = new BufferedReader(
+                 new InputStreamReader(conn.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        }
+        conn.disconnect();
+    }
+}</pre>
+            <div class="output-box">
+              Response Code: 200<br />POST Response Code: 201<br />{<br />
+              "id": 101,<br />
+              "title": "Java Post",<br />
+              "body": "Hello World",<br />
+              "userId": 1<br />}
+            </div>
+            <div class="note-box">
+              <p>
+                <strong>Modern alternative:</strong> Java 11 introduced
+                <code class="inline">java.net.http.HttpClient</code> which is
+                more modern, supports HTTP/2, and has a cleaner API. Prefer it
+                for new projects targeting Java 11+.
+              </p>
+            </div>
+
+            <!-- 10 -->
+            <h2 id="networking-exceptions">10. Common Networking Exceptions</h2>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Exception</th>
+                  <th>When It Occurs</th>
+                  <th>Handling</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="inline">UnknownHostException</code></td>
+                  <td>
+                    Hostname cannot be resolved via DNS (typo, no internet, DNS
+                    failure).
+                  </td>
+                  <td>
+                    Validate input; show user-friendly message; check
+                    connectivity.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">ConnectException</code></td>
+                  <td>
+                    Connection refused — server is not running or the port is
+                    closed.
+                  </td>
+                  <td>
+                    Check that server is running; verify port number; firewall
+                    rules.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">SocketTimeoutException</code></td>
+                  <td>
+                    Connection or read exceeded the timeout set via
+                    <code class="inline">setSoTimeout()</code>.
+                  </td>
+                  <td>
+                    Retry with backoff; increase timeout; inform user of slow
+                    response.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">BindException</code></td>
+                  <td>
+                    Server cannot bind to a port (already in use, or no
+                    permission for port &lt; 1024).
+                  </td>
+                  <td>
+                    Try a different port; check running processes with
+                    <code class="inline">netstat</code>.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">SocketException</code></td>
+                  <td>
+                    General socket error — connection reset, broken pipe,
+                    network unreachable.
+                  </td>
+                  <td>
+                    Parent of many network exceptions; log the message;
+                    gracefully close socket.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <pre>
+import java.net.*;
+import java.io.*;
+
+public class RobustClientDemo {
+    public static void fetchData(String host, int port) {
+        try {
+            Socket socket = new Socket();
+            socket.connect(new InetSocketAddress(host, port), 3000); // 3s timeout
+            socket.setSoTimeout(5000); // 5s read timeout
+
+            try (socket;
+                 BufferedReader in = new BufferedReader(
+                     new InputStreamReader(socket.getInputStream()))) {
+                System.out.println("Connected: " + in.readLine());
+            }
+        } catch (UnknownHostException e) {
+            System.err.println("Cannot resolve host: " + host);
+        } catch (ConnectException e) {
+            System.err.println("Connection refused on " + host + ":" + port);
+        } catch (SocketTimeoutException e) {
+            System.err.println("Timed out connecting to " + host);
+        } catch (IOException e) {
+            System.err.println("Network error: " + e.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+        fetchData("localhost", 8080);
+        fetchData("nonexistent.invalid", 80);
+        fetchData("localhost", 9999); // nothing running
+    }
+}</pre>
+
+            <!-- Prev / Next -->
+            <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+              <a href="./file-handling.html" class="btn btn-outline-secondary"
+                >&larr; File Handling</a
+              >
+              <a href="./jdbc.html" class="btn btn-primary">JDBC &rarr;</a>
+            </div>
+          </div>
+          <!-- content-wrapper -->
+        </div>
+        <!-- col-lg-8 -->
+
+        <!-- TOC -->
+        <div class="col-lg-4">
+          <div class="toc">
+            <h6>On This Page</h6>
+            <a href="#networking-overview">1. Java Networking Overview</a>
+            <a href="#inetaddress">2. InetAddress</a>
+            <a href="#tcp-intro">3. Socket Programming — TCP</a>
+            <a href="#server-socket">4. ServerSocket</a>
+            <a href="#socket-client">5. Socket (Client)</a>
+            <a href="#tcp-full-example">6. Complete TCP Example</a>
+            <a href="#udp">7. UDP with DatagramSocket</a>
+            <a href="#url-class">8. URL Class</a>
+            <a href="#http-url-connection">9. HttpURLConnection</a>
+            <a href="#networking-exceptions"
+              >10. Common Networking Exceptions</a
+            >
+          </div>
+        </div>
+      </div>
+      <!-- row -->
+    </div>
+    <!-- container -->
+
+    <!-- Footer -->
+    <footer class="py-4 mt-5">
+      <div class="container-xl text-center">
+        <p class="mb-0">
+          &copy; 2026 Java Codeex. Built with HTML5 &amp; Bootstrap 5.
+        </p>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmk+GOFVeA//xwkFWEVflJ8ikO1y+k"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+
+
+

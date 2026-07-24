@@ -1,0 +1,1147 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Java File Handling guide - FileInputStream, FileReader, BufferedReader, BufferedWriter, Java NIO Path and Files API with practical read and write examples."
+    />
+    <meta
+      name="keywords"
+      content="Java file handling, Java IO, FileReader, BufferedReader, Java NIO, read write files Java, Java file tutorial"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Java Codeex" />
+    <link rel="canonical" href="https://javacodeex.in/java/file-handling/" />
+    <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
+    <link
+      rel="shortcut icon"
+      href="../icons/javacodeex.jpg"
+      type="image/jpeg"
+    />
+    <link rel="apple-touch-icon" href="../icons/javacodeex.jpg" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta
+      property="og:title"
+      content="Java File Handling - Read and Write Files with IO and NIO | Java Codeex"
+    />
+    <meta
+      property="og:description"
+      content="Java File Handling guide - FileInputStream, FileReader, BufferedReader, BufferedWriter, Java NIO Path and Files API with practical read and write examples."
+    />
+    <meta
+      property="og:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta property="og:url" content="https://javacodeex.in/file-handling/" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Java File Handling - Read and Write Files with IO and NIO | Java Codeex"
+    />
+    <meta
+      name="twitter:description"
+      content="Java File Handling guide - FileInputStream, FileReader, BufferedReader, BufferedWriter, Java NIO Path and Files API with practical read and write examples."
+    />
+    <meta
+      name="twitter:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Java File Handling - Read and Write Files with IO and NIO | Java Codeex
+    </title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        scroll-behavior: smooth;
+        font-size: 1rem;
+        color: #222;
+      }
+      .navbar {
+        background-color: #1a1a2e;
+      }
+      .navbar-brand {
+        font-weight: 700;
+        color: #f8a100 !important;
+      }
+      .navbar-nav .nav-link {
+        color: #cdd6f4 !important;
+        font-size: 0.85rem;
+      }
+      .navbar-nav .nav-link:hover {
+        color: #f8a100 !important;
+      }
+      .page-hero {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 60%,
+          #0f3460 100%
+        );
+        color: #fff;
+        padding: 48px 0 36px;
+      }
+      .page-hero h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+      }
+      .breadcrumb-item a {
+        color: #f8a100;
+        text-decoration: none;
+      }
+      .breadcrumb-item.active {
+        color: #cdd6f4;
+      }
+      .breadcrumb-item + .breadcrumb-item::before {
+        color: #8a9bb3;
+      }
+      .content-wrapper {
+        max-width: 860px;
+      }
+      h2 {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: #0f3460;
+        border-left: 5px solid #f8a100;
+        padding-left: 12px;
+        margin-top: 2.2rem;
+        margin-bottom: 0.8rem;
+      }
+      h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #16213e;
+        margin-top: 1.6rem;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        line-height: 1.8;
+      }
+      pre {
+        background: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 1.2rem 1.4rem;
+        font-size: 0.88rem;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+      code.inline {
+        background: #eef2ff;
+        color: #0f3460;
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 0.88rem;
+      }
+      .output-box {
+        background: #0d1117;
+        color: #58d68d;
+        border-left: 4px solid #58d68d;
+        border-radius: 4px;
+        padding: 0.8rem 1.2rem;
+        font-family: monospace;
+        font-size: 0.92rem;
+        margin: 0.5rem 0 1rem;
+      }
+      .note-box {
+        background: #eaf4ff;
+        border-left: 5px solid #3b82f6;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .note-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .warn-box {
+        background: #fff8e1;
+        border-left: 5px solid #f8a100;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .warn-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .table thead th {
+        background: #0f3460;
+        color: #fff;
+      }
+      .table-hover tbody tr:hover {
+        background: #f0f6ff;
+      }
+      .toc {
+        background: #f8f9fc;
+        border: 1px solid #e0e7ef;
+        border-radius: 10px;
+        padding: 1.2rem 1.4rem;
+        position: sticky;
+        top: 72px;
+      }
+      .toc h6 {
+        font-weight: 700;
+        color: #0f3460;
+        margin-bottom: 0.8rem;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        letter-spacing: 0.05em;
+      }
+      .toc a {
+        display: block;
+        font-size: 0.87rem;
+        color: #444;
+        text-decoration: none;
+        padding: 3px 0 3px 8px;
+        border-left: 3px solid transparent;
+        transition: all 0.15s;
+      }
+      .toc a:hover {
+        color: #f8a100;
+        border-left-color: #f8a100;
+      }
+      footer {
+        background: #1a1a2e;
+        color: #8a9bb3;
+      }
+
+      /* === TECH BANNER HEADER === */
+      .brand-bar {
+        background: #1a1a2e;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .brand-link {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: #f8a100;
+        font-weight: 700;
+        font-size: 1.15rem;
+        gap: 10px;
+      }
+      .brand-link:hover {
+        opacity: 0.85;
+        color: #f8a100;
+      }
+      .tech-banner {
+        background: #16213e;
+        border-bottom: 2px solid rgba(248, 161, 0, 0.2);
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tech-banner::-webkit-scrollbar {
+        height: 3px;
+      }
+      .tech-banner::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .tech-banner .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .tech-tab {
+        display: inline-block;
+        color: #a6adc8;
+        text-decoration: none;
+        padding: 11px 22px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+        white-space: nowrap;
+      }
+      .tech-tab:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.06);
+        text-decoration: none;
+      }
+      .tech-tab.active {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        font-weight: 700;
+      }
+      .tech-tab.coming-soon {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .java-subnav {
+        background: #0f3460;
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+      }
+      .java-subnav::-webkit-scrollbar {
+        height: 3px;
+      }
+      .java-subnav::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .java-subnav .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .topic-link {
+        display: inline-block;
+        color: #cdd6f4;
+        text-decoration: none;
+        padding: 10px 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+      }
+      .topic-link:hover {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        text-decoration: none;
+      }
+    </style>
+    <link rel="stylesheet" href="../site-theme.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="topic-link" href="../index.html#basics">Basics</a>
+        <a class="topic-link" href="../index.html#methods">Methods</a>
+        <a class="topic-link" href="../index.html#arrays">Arrays</a>
+        <a class="topic-link" href="../index.html#strings">Strings</a>
+        <a class="topic-link" href="../index.html#oop">OOP</a>
+        <a class="topic-link" href="../index.html#interfaces">Interfaces</a>
+        <a class="topic-link" href="../index.html#exceptions">Exceptions</a>
+        <a class="topic-link" href="../index.html#regex">Regex</a>
+        <a class="topic-link" href="../index.html#memory">Memory</a>
+        <a class="topic-link" href="../index.html#generics">Generics</a>
+        <a class="topic-link" href="../index.html#collections">Collections</a>
+        <a class="topic-link" href="../index.html#java8">Java 8+</a>
+        <a class="topic-link" href="../index.html#datetime">Date &amp; Time</a>
+        <a class="topic-link" href="../index.html#multithreading"
+          >Multithreading</a
+        >
+        <a class="topic-link" href="../index.html#filehandling">Files</a>
+        <!-- <a class="topic-link" href="../index.html#networking">Networking</a> -->
+        <a class="topic-link" href="../index.html#jdbc">JDBC</a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="page-hero">
+      <div class="container-xl">
+        <nav aria-label="breadcrumb" class="mb-3">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a href="../index.html">Java Codeex</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="../index.html#filehandling">File Handling</a>
+            </li>
+            <li class="breadcrumb-item active">File Handling in Java</li>
+          </ol>
+        </nav>
+        <h1>File Handling in Java</h1>
+        <p class="mb-0" style="color: #cdd6f4; font-size: 1.08rem">
+          Read, write, and manage files in Java using java.io and java.nio
+          packages.
+        </p>
+      </div>
+    </section>
+    <aside class="topic-guide" aria-label="Learning guide">
+      <div class="topic-guide-step">
+        <span>01</span><strong>Work with files</strong
+        ><small>Build a Path</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>02</span><strong>Work with files</strong
+        ><small>Read or write data</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>03</span><strong>Work with files</strong
+        ><small>Close resources safely</small>
+      </div>
+      <p class="topic-guide-summary">
+        <strong>Learning goal:</strong> File handling connects Java programs to
+        information stored on disk.
+      </p>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="container-xl py-5">
+      <div class="row g-5">
+        <!-- Article -->
+        <div class="col-lg-8">
+          <div class="content-wrapper">
+            <!-- 1 -->
+            <h2 id="io-overview">1. Java IO Overview</h2>
+            <p>
+              Java's file I/O is built on the concept of
+              <strong>streams</strong> — sequences of data flowing between a
+              source and a destination. There are two fundamental categories:
+            </p>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Base Classes</th>
+                  <th>Unit</th>
+                  <th>Use For</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Byte Streams</td>
+                  <td>
+                    <code class="inline">InputStream</code> /
+                    <code class="inline">OutputStream</code>
+                  </td>
+                  <td>byte (8-bit)</td>
+                  <td>Binary files: images, audio, video</td>
+                </tr>
+                <tr>
+                  <td>Character Streams</td>
+                  <td>
+                    <code class="inline">Reader</code> /
+                    <code class="inline">Writer</code>
+                  </td>
+                  <td>char (16-bit Unicode)</td>
+                  <td>Text files: .txt, .csv, .xml</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>
+              The <code class="inline">java.io</code> package contains the
+              traditional I/O classes. The
+              <code class="inline">java.nio</code> package (New I/O, Java 7+)
+              provides the modern <code class="inline">Path</code>/<code
+                class="inline"
+                >Files</code
+              >
+              API which is more powerful and concise.
+            </p>
+            <div class="note-box">
+              <p>
+                <strong>Best practice:</strong> Prefer
+                <code class="inline">java.nio.file.Files</code> for new code.
+                Use <code class="inline">java.io</code> classes when working
+                with older APIs or when wrapping with buffered streams.
+              </p>
+            </div>
+
+            <!-- 2 -->
+            <h2 id="file-class">2. File Class</h2>
+            <p>
+              The <code class="inline">java.io.File</code> class represents a
+              file or directory path. It does <em>not</em> read or write content
+              — it manages metadata and filesystem operations.
+            </p>
+            <pre>
+import java.io.File;
+
+public class FileClassDemo {
+    public static void main(String[] args) throws Exception {
+        File file = new File("example.txt");
+
+        // Create a new file
+        if (file.createNewFile()) {
+            System.out.println("File created: " + file.getName());
+        } else {
+            System.out.println("File already exists.");
+        }
+
+        // File metadata
+        System.out.println("Absolute path: " + file.getAbsolutePath());
+        System.out.println("Exists?  " + file.exists());
+        System.out.println("Is file? " + file.isFile());
+        System.out.println("Is dir?  " + file.isDirectory());
+        System.out.println("Size:    " + file.length() + " bytes");
+        System.out.println("Readable? " + file.canRead());
+        System.out.println("Writable? " + file.canWrite());
+
+        // Directory operations
+        File dir = new File("myFolder");
+        dir.mkdir();          // create single directory
+        // dir.mkdirs();      // create parent directories too
+
+        File dir2 = new File("parent/child/grandchild");
+        dir2.mkdirs();
+
+        // List directory contents
+        File currentDir = new File(".");
+        String[] contents = currentDir.list();
+        System.out.println("Files in current directory:");
+        if (contents != null) {
+            for (String name : contents) {
+                System.out.println("  " + name);
+            }
+        }
+
+        // Delete the file
+        if (file.delete()) {
+            System.out.println("File deleted.");
+        }
+    }
+}</pre>
+            <div class="output-box">
+              File created: example.txt<br />Absolute path:
+              C:\projects\example.txt<br />Exists? true<br />Is file? true<br />Is
+              dir? false<br />Size: 0 bytes
+            </div>
+
+            <!-- 3 -->
+            <h2 id="file-streams">3. FileInputStream and FileOutputStream</h2>
+            <p>
+              These byte-stream classes read and write raw bytes. Always close
+              them in a <code class="inline">finally</code> block or use
+              try-with-resources to prevent resource leaks.
+            </p>
+            <pre>
+import java.io.*;
+
+public class ByteStreamDemo {
+    public static void main(String[] args) {
+        // Write bytes to a file
+        try (FileOutputStream fos = new FileOutputStream("data.bin")) {
+            byte[] data = {72, 101, 108, 108, 111}; // "Hello" in ASCII
+            fos.write(data);
+            fos.write('!');
+            System.out.println("Bytes written successfully.");
+        } catch (IOException e) {
+            System.err.println("Write error: " + e.getMessage());
+        }
+
+        // Read bytes from a file
+        try (FileInputStream fis = new FileInputStream("data.bin")) {
+            int byteValue;
+            System.out.print("Read bytes: ");
+            while ((byteValue = fis.read()) != -1) {
+                System.out.print((char) byteValue);
+            }
+            System.out.println();
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found: " + e.getMessage());
+        } catch (IOException e) {
+            System.err.println("Read error: " + e.getMessage());
+        }
+
+        // Copy a file using byte streams
+        try (FileInputStream in  = new FileInputStream("data.bin");
+             FileOutputStream out = new FileOutputStream("data_copy.bin")) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = in.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+            }
+            System.out.println("File copied successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}</pre>
+            <div class="output-box">
+              Bytes written successfully.<br />Read bytes: Hello!<br />File
+              copied successfully.
+            </div>
+
+            <!-- 4 -->
+            <h2 id="file-reader-writer">4. FileReader and FileWriter</h2>
+            <p>
+              Character-based streams that read and write text files using the
+              platform's default charset (or a specified one). Ideal for plain
+              text content.
+            </p>
+            <pre>
+import java.io.*;
+
+public class CharStreamDemo {
+    public static void main(String[] args) {
+        // Write characters to a text file
+        try (FileWriter fw = new FileWriter("notes.txt")) {
+            fw.write("Java File Handling\n");
+            fw.write("Line 2: FileWriter example\n");
+            fw.write("Line 3: Written with try-with-resources\n");
+            System.out.println("Text written to notes.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Read characters from a text file
+        try (FileReader fr = new FileReader("notes.txt")) {
+            int ch;
+            System.out.println("File contents:");
+            while ((ch = fr.read()) != -1) {
+                System.out.print((char) ch);
+            }
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found: " + e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Append to an existing file (second argument = true)
+        try (FileWriter fw = new FileWriter("notes.txt", true)) {
+            fw.write("Line 4: Appended line\n");
+            System.out.println("Appended successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}</pre>
+            <div class="output-box">
+              Text written to notes.txt<br />File contents:<br />Java File
+              Handling<br />Line 2: FileWriter example<br />Line 3: Written with
+              try-with-resources<br />Appended successfully.
+            </div>
+
+            <!-- 5 -->
+            <h2 id="buffered-streams">5. BufferedReader and BufferedWriter</h2>
+            <p>
+              Wrapping <code class="inline">FileReader</code>/<code
+                class="inline"
+                >FileWriter</code
+              >
+              in <code class="inline">BufferedReader</code>/<code class="inline"
+                >BufferedWriter</code
+              >
+              adds an in-memory buffer, dramatically reducing the number of disk
+              reads and writes. <code class="inline">readLine()</code> makes
+              line-by-line reading trivial.
+            </p>
+            <pre>
+import java.io.*;
+
+public class BufferedStreamDemo {
+    public static void main(String[] args) throws IOException {
+        // Buffered writing
+        try (BufferedWriter bw = new BufferedWriter(
+                new FileWriter("buffered.txt"))) {
+            bw.write("First line");
+            bw.newLine();          // OS-independent line separator
+            bw.write("Second line");
+            bw.newLine();
+            bw.write("Third line");
+            System.out.println("Buffered write complete.");
+        }
+
+        // Buffered reading — line by line
+        try (BufferedReader br = new BufferedReader(
+                new FileReader("buffered.txt"))) {
+            String line;
+            int lineNum = 1;
+            while ((line = br.readLine()) != null) {
+                System.out.println("Line " + lineNum++ + ": " + line);
+            }
+        }
+    }
+}</pre>
+            <div class="output-box">
+              Buffered write complete.<br />Line 1: First line<br />Line 2:
+              Second line<br />Line 3: Third line
+            </div>
+            <div class="note-box">
+              <p>
+                <strong>Performance:</strong> Always wrap FileReader/FileWriter
+                with Buffered versions for real applications. Unbuffered reads
+                hit the disk once per character — buffered reads load a chunk at
+                a time.
+              </p>
+            </div>
+
+            <!-- 6 -->
+            <h2 id="read-line-by-line">6. Reading a File Line by Line</h2>
+            <p>Three common approaches, each suited to different scenarios:</p>
+            <h3>Method 1: BufferedReader (classic, memory-efficient)</h3>
+            <pre>
+import java.io.*;
+
+try (BufferedReader br = new BufferedReader(new FileReader("data.txt"))) {
+    String line;
+    while ((line = br.readLine()) != null) {
+        System.out.println(line);
+    }
+}</pre>
+            <h3>Method 2: Scanner (flexible tokenizing)</h3>
+            <pre>
+import java.util.Scanner;
+import java.io.File;
+
+try (Scanner sc = new Scanner(new File("data.txt"))) {
+    while (sc.hasNextLine()) {
+        String line = sc.nextLine();
+        System.out.println(line);
+    }
+}</pre>
+            <h3>
+              Method 3: Files.readAllLines (NIO — simplest, loads all into
+              memory)
+            </h3>
+            <pre>
+import java.nio.file.*;
+import java.util.List;
+
+List&lt;String&gt; lines = Files.readAllLines(Paths.get("data.txt"));
+for (String line : lines) {
+    System.out.println(line);
+}
+
+// Java 8+ stream approach (lazy — great for large files)
+Files.lines(Paths.get("data.txt"))
+     .filter(l -> l.startsWith("ERROR"))
+     .forEach(System.out::println);</pre>
+            <div class="warn-box">
+              <p>
+                <strong>Memory warning:</strong>
+                <code class="inline">Files.readAllLines()</code> loads the
+                entire file into a <code class="inline">List</code>. For large
+                files (hundreds of MB), use
+                <code class="inline">BufferedReader</code> or
+                <code class="inline">Files.lines()</code> (which is lazy)
+                instead.
+              </p>
+            </div>
+
+            <!-- 7 -->
+            <h2 id="writing-to-file">7. Writing to a File</h2>
+            <p>Several options exist depending on your needs:</p>
+            <h3>FileWriter with Append Mode</h3>
+            <pre>
+import java.io.*;
+
+// Overwrite (default)
+try (FileWriter fw = new FileWriter("log.txt")) {
+    fw.write("Session started\n");
+}
+
+// Append mode
+try (FileWriter fw = new FileWriter("log.txt", true)) {
+    fw.write("New entry added\n");
+}</pre>
+            <h3>PrintWriter (formatted output)</h3>
+            <pre>
+import java.io.*;
+
+try (PrintWriter pw = new PrintWriter(new FileWriter("report.txt"))) {
+    pw.println("Report Title");
+    pw.printf("Value: %.2f%n", 3.14159);
+    pw.println("Done.");
+    System.out.println("PrintWriter write complete.");
+}</pre>
+            <h3>Files.write (NIO — simplest)</h3>
+            <pre>
+import java.nio.file.*;
+import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
+
+// Write list of lines (overwrites)
+Files.write(Paths.get("output.txt"),
+    Arrays.asList("Line A", "Line B", "Line C"),
+    StandardCharsets.UTF_8);
+
+// Append to existing file
+Files.write(Paths.get("output.txt"),
+    Arrays.asList("Appended line"),
+    StandardCharsets.UTF_8,
+    StandardOpenOption.APPEND,
+    StandardOpenOption.CREATE);</pre>
+            <div class="output-box">PrintWriter write complete.</div>
+
+            <!-- 8 -->
+            <h2 id="permission-descriptor">
+              8. FilePermission and FileDescriptor
+            </h2>
+            <p>
+              <code class="inline">FilePermission</code> (from
+              <code class="inline">java.io</code>) is used in conjunction with
+              Java's security manager to control which files a program can
+              access. It defines a target path and a set of allowed actions
+              (<code class="inline">read</code>,
+              <code class="inline">write</code>,
+              <code class="inline">execute</code>,
+              <code class="inline">delete</code>).
+            </p>
+            <pre>
+import java.io.FilePermission;
+
+// Grant read permission on a specific file
+FilePermission readPerm = new FilePermission("/data/config.txt", "read");
+
+// Grant read and write on all files in /logs
+FilePermission logPerm = new FilePermission("/logs/*", "read,write");
+
+// Check if one permission implies another
+System.out.println(logPerm.implies(readPerm)); // false (different path)</pre>
+            <p>
+              <code class="inline">FileDescriptor</code> is a low-level handle
+              to an underlying OS file, socket, or other resource. The JVM uses
+              it internally; you rarely need it directly. The three standard
+              constants are:
+            </p>
+            <pre>
+import java.io.FileDescriptor;
+
+FileDescriptor stdin  = FileDescriptor.in;   // standard input
+FileDescriptor stdout = FileDescriptor.out;  // standard output
+FileDescriptor stderr = FileDescriptor.err;  // standard error
+
+// Force OS to flush data from kernel buffers to disk
+try (java.io.FileOutputStream fos = new java.io.FileOutputStream("critical.txt")) {
+    fos.write("important data".getBytes());
+    fos.getFD().sync(); // flush all OS buffers — ensures data is on disk
+}</pre>
+            <div class="note-box">
+              <p>
+                <strong>When they matter:</strong>
+                <code class="inline">FilePermission</code> is relevant in
+                enterprise applications with a security manager enforcing policy
+                files. <code class="inline">FileDescriptor.sync()</code> matters
+                in financial or transactional code where data must survive a
+                power failure.
+              </p>
+            </div>
+
+            <!-- 9 -->
+            <h2 id="nio-path-files">9. Java NIO — Path and Files</h2>
+            <p>
+              The <code class="inline">java.nio.file</code> package (Java 7+)
+              provides a modern, expressive API.
+              <code class="inline">Path</code> is the NIO equivalent of
+              <code class="inline">File</code>, and
+              <code class="inline">Files</code> provides utility methods for
+              common operations.
+            </p>
+            <pre>
+import java.nio.file.*;
+import java.nio.charset.StandardCharsets;
+
+public class NIODemo {
+    public static void main(String[] args) throws Exception {
+        Path path = Paths.get("nio_example.txt");
+
+        // Check existence
+        System.out.println("Exists: " + Files.exists(path));
+
+        // Write content
+        Files.writeString(path, "Hello from NIO!\nSecond line.\n",
+                          StandardCharsets.UTF_8);
+
+        // Read all bytes
+        byte[] bytes = Files.readAllBytes(path);
+        System.out.println("Bytes read: " + bytes.length);
+
+        // Read as string (Java 11+)
+        String content = Files.readString(path);
+        System.out.println("Content:\n" + content);
+
+        // File metadata
+        System.out.println("Size: " + Files.size(path) + " bytes");
+        System.out.println("Last modified: " + Files.getLastModifiedTime(path));
+
+        // Copy a file
+        Path dest = Paths.get("nio_copy.txt");
+        Files.copy(path, dest, StandardCopyOption.REPLACE_EXISTING);
+        System.out.println("Copied to: " + dest);
+
+        // Move (rename) a file
+        Path moved = Paths.get("nio_moved.txt");
+        Files.move(dest, moved, StandardCopyOption.REPLACE_EXISTING);
+        System.out.println("Moved to: " + moved);
+
+        // Delete files
+        Files.deleteIfExists(path);
+        Files.deleteIfExists(moved);
+        System.out.println("Cleanup done.");
+    }
+}</pre>
+            <div class="output-box">
+              Exists: false<br />Bytes read: 28<br />Content:<br />Hello from
+              NIO!<br />Second line.<br />Size: 28 bytes<br />Copied to:
+              nio_copy.txt<br />Moved to: nio_moved.txt<br />Cleanup done.
+            </div>
+
+            <!-- 10 -->
+            <h2 id="walking-directory">10. Walking a Directory</h2>
+            <p>
+              <code class="inline">Files.walk()</code> traverses a directory
+              tree recursively. <code class="inline">Files.list()</code> returns
+              only the immediate children of a directory (non-recursive).
+            </p>
+            <pre>
+import java.nio.file.*;
+import java.io.IOException;
+
+public class DirectoryWalkDemo {
+    public static void main(String[] args) throws IOException {
+        Path startDir = Paths.get("C:/myproject");
+
+        System.out.println("=== All files recursively (Files.walk) ===");
+        try (java.util.stream.Stream&lt;Path&gt; stream = Files.walk(startDir)) {
+            stream.filter(Files::isRegularFile)
+                  .forEach(p -> System.out.println(p));
+        }
+
+        System.out.println("\n=== Only Java files ===");
+        try (java.util.stream.Stream&lt;Path&gt; stream = Files.walk(startDir)) {
+            stream.filter(p -> p.toString().endsWith(".java"))
+                  .forEach(p -> System.out.println(p.getFileName()));
+        }
+
+        System.out.println("\n=== Immediate children only (Files.list) ===");
+        try (java.util.stream.Stream&lt;Path&gt; stream = Files.list(startDir)) {
+            stream.forEach(p -> System.out.println(
+                p.getFileName() + (Files.isDirectory(p) ? " [DIR]" : " [FILE]")));
+        }
+
+        // Count total files
+        long count;
+        try (java.util.stream.Stream&lt;Path&gt; stream = Files.walk(startDir)) {
+            count = stream.filter(Files::isRegularFile).count();
+        }
+        System.out.println("\nTotal files: " + count);
+    }
+}</pre>
+            <div class="output-box">
+              === All files recursively (Files.walk) ===<br />C:\myproject\src\Main.java<br />C:\myproject\src\Utils.java<br />C:\myproject\pom.xml<br /><br />===
+              Only Java files ===<br />Main.java<br />Utils.java<br /><br />Total
+              files: 3
+            </div>
+
+            <!-- 11 -->
+            <h2 id="try-with-resources">11. try-with-resources for IO</h2>
+            <p>
+              Introduced in Java 7, try-with-resources automatically closes any
+              <code class="inline">AutoCloseable</code> resource at the end of
+              the block — even if an exception is thrown. This is the preferred
+              way to handle all I/O resources and eliminates boilerplate
+              <code class="inline">finally</code> blocks.
+            </p>
+            <pre>
+import java.io.*;
+
+public class TryWithResourcesDemo {
+
+    // Old way — verbose and error-prone
+    public static void oldWay(String path) {
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(path));
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try { br.close(); }
+                catch (IOException e) { e.printStackTrace(); }
+            }
+        }
+    }
+
+    // Modern way — clean and safe
+    public static void modernWay(String path) {
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // br is automatically closed here
+    }
+
+    // Multiple resources — closed in reverse order
+    public static void copyFile(String src, String dst) {
+        try (BufferedReader br = new BufferedReader(new FileReader(src));
+             BufferedWriter bw = new BufferedWriter(new FileWriter(dst))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                bw.write(line);
+                bw.newLine();
+            }
+            System.out.println("File copied with try-with-resources.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}</pre>
+            <div class="note-box">
+              <p>
+                <strong>Rule:</strong> Any class implementing
+                <code class="inline">AutoCloseable</code> (including all java.io
+                streams, JDBC connections, and NIO channels) should be used in
+                try-with-resources. This is non-negotiable in production code.
+              </p>
+            </div>
+
+            <!-- 12 -->
+            <h2 id="io-exceptions">12. Common IO Exceptions</h2>
+            <p>
+              Knowing which exception signals which problem helps you write
+              better error handling:
+            </p>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Exception</th>
+                  <th>When It Occurs</th>
+                  <th>Handling Tip</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="inline">FileNotFoundException</code></td>
+                  <td>
+                    File does not exist, or path is a directory, or no read
+                    permission.
+                  </td>
+                  <td>
+                    Subclass of IOException. Check
+                    <code class="inline">file.exists()</code> first or show a
+                    user-friendly message.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">IOException</code></td>
+                  <td>
+                    General I/O failure: disk full, network drive disconnected,
+                    corrupted stream.
+                  </td>
+                  <td>
+                    Catch separately after more specific exceptions; log the
+                    full stack trace.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">SecurityException</code></td>
+                  <td>Security manager denies read/write access.</td>
+                  <td>
+                    Rare in modern apps; check security policy if running in a
+                    sandboxed environment.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">EOFException</code></td>
+                  <td>
+                    Reached end of file unexpectedly (common with
+                    <code class="inline">DataInputStream</code>).
+                  </td>
+                  <td>
+                    Use <code class="inline">read() == -1</code> checks instead
+                    of letting EOF throw.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <pre>
+import java.io.*;
+
+public class ExceptionHandlingDemo {
+    public static void readFile(String path) {
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (FileNotFoundException e) {
+            // Specific: file doesn't exist
+            System.err.println("ERROR: File not found at path: " + path);
+            System.err.println("Please check the file path and try again.");
+        } catch (IOException e) {
+            // General: disk error, permission denied, etc.
+            System.err.println("ERROR: Failed to read file: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        readFile("exists.txt");          // reads fine
+        readFile("nonexistent.txt");     // FileNotFoundException
+    }
+}</pre>
+
+            <!-- Prev / Next -->
+            <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+              <a href="./multithreading.html" class="btn btn-outline-secondary"
+                >&larr; Multithreading</a
+              >
+            </div>
+          </div>
+          <!-- content-wrapper -->
+        </div>
+        <!-- col-lg-8 -->
+
+        <!-- TOC -->
+        <div class="col-lg-4">
+          <div class="toc">
+            <h6>On This Page</h6>
+            <a href="#io-overview">1. Java IO Overview</a>
+            <a href="#file-class">2. File Class</a>
+            <a href="#file-streams"
+              >3. FileInputStream &amp; FileOutputStream</a
+            >
+            <a href="#file-reader-writer">4. FileReader &amp; FileWriter</a>
+            <a href="#buffered-streams"
+              >5. BufferedReader &amp; BufferedWriter</a
+            >
+            <a href="#read-line-by-line">6. Reading Line by Line</a>
+            <a href="#writing-to-file">7. Writing to a File</a>
+            <a href="#permission-descriptor"
+              >8. FilePermission &amp; FileDescriptor</a
+            >
+            <a href="#nio-path-files">9. Java NIO — Path and Files</a>
+            <a href="#walking-directory">10. Walking a Directory</a>
+            <a href="#try-with-resources">11. try-with-resources for IO</a>
+            <a href="#io-exceptions">12. Common IO Exceptions</a>
+          </div>
+        </div>
+      </div>
+      <!-- row -->
+    </div>
+    <!-- container -->
+
+    <!-- Footer -->
+    <footer class="py-4 mt-5">
+      <div class="container-xl text-center">
+        <p class="mb-0">
+          &copy; 2026 Java Codeex. Built with HTML5 &amp; Bootstrap 5.
+        </p>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmk+GOFVeA//xwkFWEVflJ8ikO1y+k"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+

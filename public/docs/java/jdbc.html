@@ -1,0 +1,1346 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Java JDBC complete guide - database connection, Statement, PreparedStatement, ResultSet, transactions, connection pooling with MySQL examples."
+    />
+    <meta
+      name="keywords"
+      content="Java JDBC, JDBC tutorial, PreparedStatement Java, ResultSet Java, Java database connection, JDBC MySQL, connection pooling"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Java Codeex" />
+    <link rel="canonical" href="https://javacodeex.in/java/jdbc/" />
+    <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
+    <link
+      rel="shortcut icon"
+      href="../icons/javacodeex.jpg"
+      type="image/jpeg"
+    />
+    <link rel="apple-touch-icon" href="../icons/javacodeex.jpg" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta
+      property="og:title"
+      content="Java JDBC - Database Connection, PreparedStatement and ResultSet | Java Codeex"
+    />
+    <meta
+      property="og:description"
+      content="Java JDBC complete guide - database connection, Statement, PreparedStatement, ResultSet, transactions, connection pooling with MySQL examples."
+    />
+    <meta
+      property="og:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta property="og:url" content="https://javacodeex.in/jdbc/" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Java JDBC - Database Connection, PreparedStatement and ResultSet | Java Codeex"
+    />
+    <meta
+      name="twitter:description"
+      content="Java JDBC complete guide - database connection, Statement, PreparedStatement, ResultSet, transactions, connection pooling with MySQL examples."
+    />
+    <meta
+      name="twitter:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Java JDBC - Database Connection, PreparedStatement and ResultSet | Java
+      Codeex
+    </title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        scroll-behavior: smooth;
+        font-size: 1rem;
+        color: #222;
+      }
+      .navbar {
+        background-color: #1a1a2e;
+      }
+      .navbar-brand {
+        font-weight: 700;
+        color: #f8a100 !important;
+      }
+      .navbar-nav .nav-link {
+        color: #cdd6f4 !important;
+        font-size: 0.85rem;
+      }
+      .navbar-nav .nav-link:hover {
+        color: #f8a100 !important;
+      }
+      .page-hero {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 60%,
+          #0f3460 100%
+        );
+        color: #fff;
+        padding: 48px 0 36px;
+      }
+      .page-hero h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+      }
+      .breadcrumb-item a {
+        color: #f8a100;
+        text-decoration: none;
+      }
+      .breadcrumb-item.active {
+        color: #cdd6f4;
+      }
+      .breadcrumb-item + .breadcrumb-item::before {
+        color: #8a9bb3;
+      }
+      .content-wrapper {
+        max-width: 860px;
+      }
+      h2 {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: #0f3460;
+        border-left: 5px solid #f8a100;
+        padding-left: 12px;
+        margin-top: 2.2rem;
+        margin-bottom: 0.8rem;
+      }
+      h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #16213e;
+        margin-top: 1.6rem;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        line-height: 1.8;
+      }
+      pre {
+        background: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 1.2rem 1.4rem;
+        font-size: 0.88rem;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+      code.inline {
+        background: #eef2ff;
+        color: #0f3460;
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 0.88rem;
+      }
+      .output-box {
+        background: #0d1117;
+        color: #58d68d;
+        border-left: 4px solid #58d68d;
+        border-radius: 4px;
+        padding: 0.8rem 1.2rem;
+        font-family: monospace;
+        font-size: 0.92rem;
+        margin: 0.5rem 0 1rem;
+      }
+      .note-box {
+        background: #eaf4ff;
+        border-left: 5px solid #3b82f6;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .note-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .warn-box {
+        background: #fff8e1;
+        border-left: 5px solid #f8a100;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .warn-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .table thead th {
+        background: #0f3460;
+        color: #fff;
+      }
+      .table-hover tbody tr:hover {
+        background: #f0f6ff;
+      }
+      .toc {
+        background: #f8f9fc;
+        border: 1px solid #e0e7ef;
+        border-radius: 10px;
+        padding: 1.2rem 1.4rem;
+        position: sticky;
+        top: 72px;
+      }
+      .toc h6 {
+        font-weight: 700;
+        color: #0f3460;
+        margin-bottom: 0.8rem;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        letter-spacing: 0.05em;
+      }
+      .toc a {
+        display: block;
+        font-size: 0.87rem;
+        color: #444;
+        text-decoration: none;
+        padding: 3px 0 3px 8px;
+        border-left: 3px solid transparent;
+        transition: all 0.15s;
+      }
+      .toc a:hover {
+        color: #f8a100;
+        border-left-color: #f8a100;
+      }
+      footer {
+        background: #1a1a2e;
+        color: #8a9bb3;
+      }
+
+      /* === TECH BANNER HEADER === */
+      .brand-bar {
+        background: #1a1a2e;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .brand-link {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: #f8a100;
+        font-weight: 700;
+        font-size: 1.15rem;
+        gap: 10px;
+      }
+      .brand-link:hover {
+        opacity: 0.85;
+        color: #f8a100;
+      }
+      .tech-banner {
+        background: #16213e;
+        border-bottom: 2px solid rgba(248, 161, 0, 0.2);
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tech-banner::-webkit-scrollbar {
+        height: 3px;
+      }
+      .tech-banner::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .tech-banner .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .tech-tab {
+        display: inline-block;
+        color: #a6adc8;
+        text-decoration: none;
+        padding: 11px 22px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+        white-space: nowrap;
+      }
+      .tech-tab:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.06);
+        text-decoration: none;
+      }
+      .tech-tab.active {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        font-weight: 700;
+      }
+      .tech-tab.coming-soon {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .java-subnav {
+        background: #0f3460;
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+      }
+      .java-subnav::-webkit-scrollbar {
+        height: 3px;
+      }
+      .java-subnav::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .java-subnav .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .topic-link {
+        display: inline-block;
+        color: #cdd6f4;
+        text-decoration: none;
+        padding: 10px 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+      }
+      .topic-link:hover {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        text-decoration: none;
+      }
+    </style>
+    <link rel="stylesheet" href="../site-theme.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="topic-link" href="../index.html#basics">Basics</a>
+        <a class="topic-link" href="../index.html#methods">Methods</a>
+        <a class="topic-link" href="../index.html#arrays">Arrays</a>
+        <a class="topic-link" href="../index.html#strings">Strings</a>
+        <a class="topic-link" href="../index.html#oop">OOP</a>
+        <a class="topic-link" href="../index.html#interfaces">Interfaces</a>
+        <a class="topic-link" href="../index.html#exceptions">Exceptions</a>
+        <a class="topic-link" href="../index.html#regex">Regex</a>
+        <a class="topic-link" href="../index.html#memory">Memory</a>
+        <a class="topic-link" href="../index.html#generics">Generics</a>
+        <a class="topic-link" href="../index.html#collections">Collections</a>
+        <a class="topic-link" href="../index.html#java8">Java 8+</a>
+        <a class="topic-link" href="../index.html#datetime">Date &amp; Time</a>
+        <a class="topic-link" href="../index.html#multithreading"
+          >Multithreading</a
+        >
+        <a class="topic-link" href="../index.html#filehandling">Files</a>
+        <!-- <a class="topic-link" href="../index.html#networking">Networking</a> -->
+        <a class="topic-link" href="../index.html#jdbc">JDBC</a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="page-hero">
+      <div class="container-xl">
+        <nav aria-label="breadcrumb" class="mb-3">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a href="../index.html">Java Codeex</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="../index.html#jdbc">JDBC</a>
+            </li>
+            <li class="breadcrumb-item active">
+              Java Database Connectivity (JDBC)
+            </li>
+          </ol>
+        </nav>
+        <h1>Java Database Connectivity (JDBC)</h1>
+        <p class="mb-0" style="color: #cdd6f4; font-size: 1.08rem">
+          Connect Java applications to databases and perform CRUD operations
+          using JDBC.
+        </p>
+      </div>
+    </section>
+    <aside class="topic-guide" aria-label="Learning guide">
+      <div class="topic-guide-step">
+        <span>01</span><strong>Connect to data</strong
+        ><small>Open a connection</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>02</span><strong>Connect to data</strong
+        ><small>Run a safe query</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>03</span><strong>Connect to data</strong
+        ><small>Read and close results</small>
+      </div>
+      <p class="topic-guide-summary">
+        <strong>Learning goal:</strong> JDBC gives Java applications a standard
+        way to communicate with databases.
+      </p>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="container-xl py-5">
+      <div class="row g-5">
+        <!-- Article -->
+        <div class="col-lg-8">
+          <div class="content-wrapper">
+            <!-- 1 -->
+            <h2 id="what-is-jdbc">1. What is JDBC?</h2>
+            <p>
+              <strong>JDBC (Java Database Connectivity)</strong> is a standard
+              Java API that defines how Java applications communicate with
+              relational databases. It is part of the Java SE platform (<code
+                class="inline"
+                >java.sql</code
+              >
+              and <code class="inline">javax.sql</code> packages).
+            </p>
+            <p>Key characteristics:</p>
+            <ul>
+              <li>
+                <strong>Database-agnostic:</strong> The same Java code works
+                with MySQL, PostgreSQL, Oracle, SQLite, and more — you only
+                change the driver and connection URL.
+              </li>
+              <li>
+                <strong>Driver-based:</strong> Each database vendor provides a
+                JDBC driver (a JAR file) that translates JDBC calls into
+                database-specific wire protocol.
+              </li>
+              <li>
+                <strong>SQL-based:</strong> You write standard SQL — JDBC sends
+                it to the database and returns results as Java objects.
+              </li>
+            </ul>
+            <div class="note-box">
+              <p>
+                <strong>When to use JDBC:</strong> JDBC is the foundation layer.
+                Higher-level frameworks like Spring Data JPA and Hibernate are
+                built on top of it. Understanding JDBC is essential for
+                debugging, performance tuning, and situations where you need
+                fine-grained SQL control.
+              </p>
+            </div>
+
+            <!-- 2 -->
+            <h2 id="jdbc-architecture">2. JDBC Architecture</h2>
+            <p>
+              JDBC follows a layered architecture that decouples your
+              application code from any specific database:
+            </p>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Layer</th>
+                  <th>Component</th>
+                  <th>Role</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Java Application</td>
+                  <td>Your code — calls JDBC API interfaces.</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>JDBC API</td>
+                  <td>
+                    Interfaces: <code class="inline">Connection</code>,
+                    <code class="inline">Statement</code>,
+                    <code class="inline">ResultSet</code>, etc.
+                  </td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>DriverManager</td>
+                  <td>
+                    Manages registered drivers; creates
+                    <code class="inline">Connection</code> objects.
+                  </td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>JDBC Driver</td>
+                  <td>
+                    Vendor-specific JAR that translates JDBC calls to database
+                    protocol.
+                  </td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>Database</td>
+                  <td>MySQL, PostgreSQL, Oracle, SQLite, etc.</td>
+                </tr>
+              </tbody>
+            </table>
+            <pre>
+// The 5-step JDBC workflow
+// 1. Load the driver (automatic since JDBC 4.0)
+// 2. Establish a connection
+Connection conn = DriverManager.getConnection(url, user, pass);
+
+// 3. Create a statement
+Statement stmt = conn.createStatement();
+
+// 4. Execute SQL and get results
+ResultSet rs = stmt.executeQuery("SELECT * FROM employees");
+
+// 5. Process results and close resources
+while (rs.next()) { System.out.println(rs.getString("name")); }
+rs.close(); stmt.close(); conn.close();</pre>
+
+            <!-- 3 -->
+            <h2 id="driver-types">3. JDBC Driver Types</h2>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Use Today?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Type 1</td>
+                  <td>JDBC-ODBC Bridge</td>
+                  <td>
+                    Converts JDBC calls to ODBC calls. Requires ODBC driver
+                    installed on client.
+                  </td>
+                  <td>No — removed in Java 8.</td>
+                </tr>
+                <tr>
+                  <td>Type 2</td>
+                  <td>Native-API Driver</td>
+                  <td>
+                    Uses database-specific native libraries. Requires native
+                    install on client.
+                  </td>
+                  <td>Rare.</td>
+                </tr>
+                <tr>
+                  <td>Type 3</td>
+                  <td>Network Protocol Driver</td>
+                  <td>
+                    Sends JDBC calls over network to a middleware server that
+                    talks to the DB.
+                  </td>
+                  <td>Rare.</td>
+                </tr>
+                <tr>
+                  <td><strong>Type 4</strong></td>
+                  <td><strong>Thin Driver (Pure Java)</strong></td>
+                  <td>
+                    Pure Java driver that communicates directly with the
+                    database using its native network protocol. No native
+                    libraries needed.
+                  </td>
+                  <td><strong>Yes — standard choice.</strong></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="note-box">
+              <p>
+                <strong>In practice:</strong> Always use Type 4 drivers. MySQL
+                Connector/J, PostgreSQL JDBC Driver, and Oracle Thin JDBC are
+                all Type 4. Add the driver JAR to your classpath or declare it
+                as a Maven/Gradle dependency.
+              </p>
+            </div>
+
+            <!-- 4 -->
+            <h2 id="setup">4. Setting Up JDBC</h2>
+            <p>
+              Add the database driver to your project. With Maven, add to
+              <code class="inline">pom.xml</code>:
+            </p>
+            <pre>
+&lt;!-- MySQL --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+    &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+    &lt;version&gt;8.3.0&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;!-- PostgreSQL --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+    &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+    &lt;version&gt;42.7.3&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;!-- SQLite (great for learning, no server required) --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.xerial&lt;/groupId&gt;
+    &lt;artifactId&gt;sqlite-jdbc&lt;/artifactId&gt;
+    &lt;version&gt;3.45.1.0&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+            <p>
+              Since JDBC 4.0 (Java 6+), drivers are
+              <strong>auto-loaded</strong> via the Service Provider mechanism —
+              no <code class="inline">Class.forName()</code> is needed. For
+              legacy code you may still see:
+            </p>
+            <pre>
+// Legacy: manually load driver class (not needed since JDBC 4.0)
+Class.forName("com.mysql.cj.jdbc.Driver");      // MySQL
+Class.forName("org.postgresql.Driver");          // PostgreSQL
+Class.forName("oracle.jdbc.driver.OracleDriver"); // Oracle</pre>
+
+            <!-- 5 -->
+            <h2 id="connection">5. Establishing a Connection</h2>
+            <p>
+              <code class="inline"
+                >DriverManager.getConnection(url, user, password)</code
+              >
+              creates a <code class="inline">Connection</code> object. The JDBC
+              URL format varies by database:
+            </p>
+            <pre>
+import java.sql.*;
+
+public class ConnectionDemo {
+    // MySQL connection URL format:
+    // jdbc:mysql://host:port/database?parameters
+    static final String MYSQL_URL =
+        "jdbc:mysql://localhost:3306/mydb?useSSL=false&amp;serverTimezone=UTC";
+
+    // PostgreSQL:
+    // static final String PG_URL = "jdbc:postgresql://localhost:5432/mydb";
+
+    // SQLite (file-based, no server needed):
+    // static final String SQLITE_URL = "jdbc:sqlite:mydb.sqlite";
+
+    public static void main(String[] args) {
+        try (Connection conn = DriverManager.getConnection(
+                MYSQL_URL, "root", "password")) {
+
+            System.out.println("Connected to: " + conn.getMetaData().getURL());
+            System.out.println("Driver:       "
+                + conn.getMetaData().getDriverName());
+            System.out.println("Auto-commit:  " + conn.getAutoCommit());
+            System.out.println("DB Product:   "
+                + conn.getMetaData().getDatabaseProductName() + " "
+                + conn.getMetaData().getDatabaseProductVersion());
+
+        } catch (SQLException e) {
+            System.err.println("Connection failed!");
+            System.err.println("SQL State: " + e.getSQLState());
+            System.err.println("Error Code: " + e.getErrorCode());
+            System.err.println("Message: " + e.getMessage());
+        }
+    }
+}</pre>
+            <div class="output-box">
+              Connected to: jdbc:mysql://localhost:3306/mydb<br />Driver: MySQL
+              Connector/J<br />Auto-commit: true<br />DB Product: MySQL 8.0.35
+            </div>
+
+            <!-- 6 -->
+            <h2 id="statement">6. Statement</h2>
+            <p>
+              <code class="inline">Statement</code> is used for executing static
+              SQL queries with no parameters. Use
+              <code class="inline">executeQuery()</code> for SELECT and
+              <code class="inline">executeUpdate()</code> for INSERT, UPDATE,
+              DELETE, and DDL.
+            </p>
+            <pre>
+import java.sql.*;
+
+public class StatementDemo {
+    public static void main(String[] args) throws SQLException {
+        String url = "jdbc:mysql://localhost:3306/mydb";
+
+        try (Connection conn = DriverManager.getConnection(url, "root", "password");
+             Statement stmt = conn.createStatement()) {
+
+            // DDL — create a table
+            stmt.executeUpdate("""
+                CREATE TABLE IF NOT EXISTS products (
+                    id    INT AUTO_INCREMENT PRIMARY KEY,
+                    name  VARCHAR(100) NOT NULL,
+                    price DOUBLE NOT NULL
+                )
+            """);
+            System.out.println("Table created.");
+
+            // DML — insert rows
+            int rows = stmt.executeUpdate(
+                "INSERT INTO products (name, price) VALUES ('Laptop', 999.99)");
+            System.out.println("Rows inserted: " + rows);
+
+            stmt.executeUpdate(
+                "INSERT INTO products (name, price) VALUES ('Mouse', 29.99)");
+
+            // DQL — select rows
+            ResultSet rs = stmt.executeQuery("SELECT * FROM products");
+            while (rs.next()) {
+                System.out.printf("ID: %d | Name: %-10s | Price: %.2f%n",
+                    rs.getInt("id"), rs.getString("name"), rs.getDouble("price"));
+            }
+            rs.close();
+        }
+    }
+}</pre>
+            <div class="output-box">
+              Table created.<br />Rows inserted: 1<br />ID: 1 | Name: Laptop |
+              Price: 999.99<br />ID: 2 | Name: Mouse | Price: 29.99
+            </div>
+            <div class="warn-box">
+              <p>
+                <strong>Security risk:</strong> Never concatenate user input
+                into a <code class="inline">Statement</code> SQL string — this
+                opens your app to SQL injection attacks. Always use
+                <code class="inline">PreparedStatement</code> for any query with
+                parameters.
+              </p>
+            </div>
+
+            <!-- 7 -->
+            <h2 id="prepared-statement">7. PreparedStatement</h2>
+            <p>
+              <code class="inline">PreparedStatement</code> is pre-compiled SQL
+              with placeholders (<code class="inline">?</code>) filled in at
+              runtime. It is the correct tool for any query with parameters
+              because:
+            </p>
+            <ul>
+              <li>
+                <strong>Prevents SQL injection</strong> — parameters are always
+                treated as data, never as SQL code.
+              </li>
+              <li>
+                <strong>Better performance</strong> — the query is compiled once
+                and can be reused many times.
+              </li>
+              <li>
+                <strong>Cleaner code</strong> — no string concatenation of SQL
+                fragments.
+              </li>
+            </ul>
+            <pre>
+import java.sql.*;
+
+public class PreparedStatementDemo {
+    public static void main(String[] args) throws SQLException {
+        String url = "jdbc:mysql://localhost:3306/mydb";
+
+        try (Connection conn = DriverManager.getConnection(url, "root", "password")) {
+
+            // INSERT with PreparedStatement
+            String insertSQL = "INSERT INTO products (name, price) VALUES (?, ?)";
+            try (PreparedStatement ps = conn.prepareStatement(insertSQL)) {
+                ps.setString(1, "Keyboard"); // parameter index starts at 1
+                ps.setDouble(2, 79.99);
+                int rows = ps.executeUpdate();
+                System.out.println("Inserted rows: " + rows);
+
+                // Reuse the same statement with different values
+                ps.setString(1, "Monitor");
+                ps.setDouble(2, 349.99);
+                ps.executeUpdate();
+
+                ps.setString(1, "Webcam");
+                ps.setDouble(2, 59.99);
+                ps.executeUpdate();
+                System.out.println("All products inserted.");
+            }
+
+            // SELECT with parameters
+            String selectSQL = "SELECT * FROM products WHERE price &lt; ? ORDER BY price";
+            try (PreparedStatement ps = conn.prepareStatement(selectSQL)) {
+                ps.setDouble(1, 200.00); // find products under $200
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    System.out.println("\nProducts under $200:");
+                    while (rs.next()) {
+                        System.out.printf("  %-10s $%.2f%n",
+                            rs.getString("name"), rs.getDouble("price"));
+                    }
+                }
+            }
+
+            // UPDATE with parameters
+            String updateSQL = "UPDATE products SET price = ? WHERE name = ?";
+            try (PreparedStatement ps = conn.prepareStatement(updateSQL)) {
+                ps.setDouble(1, 89.99);
+                ps.setString(2, "Keyboard");
+                int updated = ps.executeUpdate();
+                System.out.println("\nRows updated: " + updated);
+            }
+        }
+    }
+}</pre>
+            <div class="output-box">
+              Inserted rows: 1<br />All products inserted.<br /><br />Products
+              under $200:<br />
+              Webcam $59.99<br />
+              Keyboard $79.99<br /><br />Rows updated: 1
+            </div>
+
+            <!-- 8 -->
+            <h2 id="callable-statement">8. CallableStatement</h2>
+            <p>
+              <code class="inline">CallableStatement</code> executes stored
+              procedures defined in the database. It supports IN parameters
+              (input), OUT parameters (output), and INOUT parameters.
+            </p>
+            <pre>
+import java.sql.*;
+
+public class CallableStatementDemo {
+    public static void main(String[] args) throws SQLException {
+        String url = "jdbc:mysql://localhost:3306/mydb";
+
+        // Assume this stored procedure exists in MySQL:
+        // CREATE PROCEDURE get_product_count(IN min_price DOUBLE, OUT total INT)
+        // BEGIN
+        //   SELECT COUNT(*) INTO total FROM products WHERE price >= min_price;
+        // END
+
+        try (Connection conn = DriverManager.getConnection(url, "root", "password")) {
+
+            // Call stored procedure: {call procedure_name(?, ?)}
+            try (CallableStatement cs = conn.prepareCall(
+                    "{call get_product_count(?, ?)}")) {
+
+                // Set IN parameter
+                cs.setDouble(1, 50.00);
+
+                // Register OUT parameter — specify SQL type
+                cs.registerOutParameter(2, Types.INTEGER);
+
+                cs.execute();
+
+                // Retrieve the OUT parameter value
+                int count = cs.getInt(2);
+                System.out.println("Products with price >= $50: " + count);
+            }
+
+            // Stored procedure with only IN params that returns a ResultSet
+            // CREATE PROCEDURE get_products_by_price(IN max_price DOUBLE)
+            // BEGIN
+            //   SELECT * FROM products WHERE price &lt;= max_price;
+            // END
+            try (CallableStatement cs = conn.prepareCall(
+                    "{call get_products_by_price(?)}")) {
+                cs.setDouble(1, 100.00);
+                try (ResultSet rs = cs.executeQuery()) {
+                    while (rs.next()) {
+                        System.out.println(rs.getString("name")
+                            + ": $" + rs.getDouble("price"));
+                    }
+                }
+            }
+        }
+    }
+}</pre>
+
+            <!-- 9 -->
+            <h2 id="result-set">9. ResultSet</h2>
+            <p>
+              A <code class="inline">ResultSet</code> is a cursor pointing to
+              the rows returned by a SELECT query. Initially it points before
+              the first row. Call <code class="inline">next()</code> to advance
+              one row at a time. Retrieve column values by name or index.
+            </p>
+            <pre>
+import java.sql.*;
+
+public class ResultSetDemo {
+    public static void main(String[] args) throws SQLException {
+        String url = "jdbc:mysql://localhost:3306/mydb";
+
+        try (Connection conn = DriverManager.getConnection(url, "root", "password");
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(
+                 "SELECT id, name, price FROM products ORDER BY price DESC")) {
+
+            System.out.println("=== Product Catalog ===");
+
+            // Iterate all rows
+            while (rs.next()) {
+                int    id    = rs.getInt("id");        // by column name
+                String name  = rs.getString(2);         // by column index (1-based)
+                double price = rs.getDouble("price");
+
+                // Check for SQL NULL
+                if (rs.wasNull()) {
+                    System.out.println("Price is NULL for: " + name);
+                } else {
+                    System.out.printf("%-3d  %-12s  $%8.2f%n", id, name, price);
+                }
+            }
+
+            System.out.println("=======================");
+
+            // Scrollable ResultSet — can move backwards
+            Statement scrollStmt = conn.createStatement(
+                ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_READ_ONLY);
+            ResultSet scrollRs = scrollStmt.executeQuery("SELECT * FROM products");
+
+            scrollRs.last();  // move to last row
+            System.out.println("Total rows: " + scrollRs.getRow());
+
+            scrollRs.first(); // move back to first row
+            System.out.println("First product: " + scrollRs.getString("name"));
+
+            scrollRs.close();
+            scrollStmt.close();
+        }
+    }
+}</pre>
+            <div class="output-box">
+              === Product Catalog ===<br />1 Laptop $ 999.99<br />4 Monitor $
+              349.99<br />3 Keyboard $ 89.99<br />5 Webcam $ 59.99<br />2 Mouse
+              $ 29.99<br />=======================<br />Total rows: 5<br />First
+              product: Laptop
+            </div>
+
+            <!-- 10 -->
+            <h2 id="crud-example">10. CRUD Example</h2>
+            <p>
+              A complete Create, Read, Update, Delete example using
+              <code class="inline">PreparedStatement</code> and
+              try-with-resources throughout:
+            </p>
+            <pre>
+import java.sql.*;
+
+public class CRUDDemo {
+    static final String URL  = "jdbc:mysql://localhost:3306/mydb";
+    static final String USER = "root";
+    static final String PASS = "password";
+
+    // CREATE
+    public static int createEmployee(String name, String dept, double salary)
+            throws SQLException {
+        String sql = "INSERT INTO employees (name, department, salary) VALUES (?, ?, ?)";
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
+             PreparedStatement ps = conn.prepareStatement(sql,
+                 Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, name);
+            ps.setString(2, dept);
+            ps.setDouble(3, salary);
+            ps.executeUpdate();
+            try (ResultSet keys = ps.getGeneratedKeys()) {
+                if (keys.next()) {
+                    int id = keys.getInt(1);
+                    System.out.println("Created employee ID: " + id);
+                    return id;
+                }
+            }
+        }
+        return -1;
+    }
+
+    // READ
+    public static void readEmployees() throws SQLException {
+        String sql = "SELECT * FROM employees ORDER BY id";
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            System.out.println("\n--- All Employees ---");
+            while (rs.next()) {
+                System.out.printf("  [%d] %-15s %-12s $%.2f%n",
+                    rs.getInt("id"), rs.getString("name"),
+                    rs.getString("department"), rs.getDouble("salary"));
+            }
+        }
+    }
+
+    // UPDATE
+    public static void updateSalary(int id, double newSalary) throws SQLException {
+        String sql = "UPDATE employees SET salary = ? WHERE id = ?";
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDouble(1, newSalary);
+            ps.setInt(2, id);
+            int rows = ps.executeUpdate();
+            System.out.println("Updated " + rows + " row(s) for ID: " + id);
+        }
+    }
+
+    // DELETE
+    public static void deleteEmployee(int id) throws SQLException {
+        String sql = "DELETE FROM employees WHERE id = ?";
+        try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            int rows = ps.executeUpdate();
+            System.out.println("Deleted " + rows + " row(s) for ID: " + id);
+        }
+    }
+
+    public static void main(String[] args) throws SQLException {
+        int id1 = createEmployee("Alice Smith", "Engineering", 95000.0);
+        int id2 = createEmployee("Bob Jones",  "Marketing",   72000.0);
+        int id3 = createEmployee("Carol White","Engineering", 88000.0);
+
+        readEmployees();
+
+        updateSalary(id1, 102000.0);
+        readEmployees();
+
+        deleteEmployee(id3);
+        readEmployees();
+    }
+}</pre>
+            <div class="output-box">
+              Created employee ID: 1<br />Created employee ID: 2<br />Created
+              employee ID: 3<br /><br />--- All Employees ---<br />
+              [1] Alice Smith Engineering $95000.00<br />
+              [2] Bob Jones Marketing $72000.00<br />
+              [3] Carol White Engineering $88000.00<br /><br />Updated 1 row(s)
+              for ID: 1<br />Deleted 1 row(s) for ID: 3
+            </div>
+
+            <!-- 11 -->
+            <h2 id="transactions">11. Transactions</h2>
+            <p>
+              By default, JDBC operates in <strong>auto-commit</strong> mode —
+              every statement is committed immediately. For operations that must
+              succeed or fail together (e.g., transferring money between
+              accounts), disable auto-commit and manage the transaction
+              manually.
+            </p>
+            <pre>
+import java.sql.*;
+
+public class TransactionDemo {
+    public static void transferFunds(Connection conn, int fromId,
+                                     int toId, double amount)
+            throws SQLException {
+        conn.setAutoCommit(false); // begin transaction
+
+        try {
+            // Step 1: Debit from source account
+            String debit = "UPDATE accounts SET balance = balance - ? WHERE id = ?";
+            try (PreparedStatement ps = conn.prepareStatement(debit)) {
+                ps.setDouble(1, amount);
+                ps.setInt(2, fromId);
+                int rows = ps.executeUpdate();
+                if (rows == 0) throw new SQLException("Source account not found: " + fromId);
+            }
+
+            // Step 2: Check for sufficient funds
+            String check = "SELECT balance FROM accounts WHERE id = ?";
+            try (PreparedStatement ps = conn.prepareStatement(check)) {
+                ps.setInt(1, fromId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next() &amp;&amp; rs.getDouble("balance") &lt; 0) {
+                        throw new SQLException("Insufficient funds in account: " + fromId);
+                    }
+                }
+            }
+
+            // Step 3: Credit to destination account
+            String credit = "UPDATE accounts SET balance = balance + ? WHERE id = ?";
+            try (PreparedStatement ps = conn.prepareStatement(credit)) {
+                ps.setDouble(1, amount);
+                ps.setInt(2, toId);
+                int rows = ps.executeUpdate();
+                if (rows == 0) throw new SQLException("Destination account not found: " + toId);
+            }
+
+            conn.commit(); // ALL steps succeeded — commit
+            System.out.println("Transfer of $" + amount + " completed successfully.");
+
+        } catch (SQLException e) {
+            conn.rollback(); // ANY step failed — rollback everything
+            System.err.println("Transfer failed! Transaction rolled back: " + e.getMessage());
+            throw e; // re-throw so caller knows it failed
+        } finally {
+            conn.setAutoCommit(true); // restore default behavior
+        }
+    }
+
+    public static void main(String[] args) {
+        String url = "jdbc:mysql://localhost:3306/mydb";
+        try (Connection conn = DriverManager.getConnection(url, "root", "password")) {
+            transferFunds(conn, 1, 2, 500.00); // transfer $500 from account 1 to 2
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}</pre>
+
+            <!-- 12 -->
+            <h2 id="result-set-metadata">12. ResultSetMetaData</h2>
+            <p>
+              <code class="inline">ResultSetMetaData</code> describes the
+              structure of a <code class="inline">ResultSet</code> — number of
+              columns, their names, types, and more. Useful for building generic
+              database utilities that work with any table.
+            </p>
+            <pre>
+import java.sql.*;
+
+public class MetaDataDemo {
+    public static void printTable(Connection conn, String tableName)
+            throws SQLException {
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(
+                 "SELECT * FROM " + tableName + " LIMIT 10")) {
+
+            ResultSetMetaData meta = rs.getMetaData();
+            int colCount = meta.getColumnCount();
+
+            System.out.println("Table: " + tableName);
+            System.out.println("Columns: " + colCount);
+            System.out.println();
+
+            // Print column headers dynamically
+            for (int i = 1; i &lt;= colCount; i++) {
+                System.out.printf("%-15s", meta.getColumnName(i));
+                System.out.println("  [" + meta.getColumnTypeName(i)
+                    + "(" + meta.getColumnDisplaySize(i) + ")]");
+            }
+
+            System.out.println("---");
+
+            // Print data rows
+            while (rs.next()) {
+                for (int i = 1; i &lt;= colCount; i++) {
+                    System.out.printf("%-15s", rs.getString(i));
+                }
+                System.out.println();
+            }
+        }
+    }
+
+    public static void main(String[] args) throws SQLException {
+        String url = "jdbc:mysql://localhost:3306/mydb";
+        try (Connection conn = DriverManager.getConnection(url, "root", "password")) {
+            printTable(conn, "products");
+        }
+    }
+}</pre>
+            <div class="output-box">
+              Table: products<br />Columns: 3<br /><br />id [INT(11)]<br />name
+              [VARCHAR(100)]<br />price [DOUBLE(22)]<br />---<br />1 Laptop
+              999.99<br />2 Mouse 29.99
+            </div>
+
+            <!-- 13 -->
+            <h2 id="connection-pooling">13. Connection Pooling</h2>
+            <p>
+              Opening a raw <code class="inline">DriverManager</code> connection
+              for every request is expensive — it involves a TCP handshake,
+              authentication, and setup on each call. In production
+              applications, a <strong>connection pool</strong> maintains a set
+              of pre-opened connections that are reused, dramatically improving
+              throughput.
+            </p>
+            <p>
+              <strong>HikariCP</strong> is the fastest, most widely used
+              connection pool for Java. Add the dependency:
+            </p>
+            <pre>
+&lt;!-- Maven --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.zaxxer&lt;/groupId&gt;
+    &lt;artifactId&gt;HikariCP&lt;/artifactId&gt;
+    &lt;version&gt;5.1.0&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+            <pre>
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import java.sql.*;
+
+public class ConnectionPoolDemo {
+    private static HikariDataSource dataSource;
+
+    static {
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/mydb");
+        config.setUsername("root");
+        config.setPassword("password");
+
+        // Pool settings
+        config.setMaximumPoolSize(10);       // max 10 concurrent connections
+        config.setMinimumIdle(2);            // keep 2 idle connections ready
+        config.setConnectionTimeout(30000);  // wait up to 30s for a connection
+        config.setIdleTimeout(600000);       // close idle after 10 min
+        config.setMaxLifetime(1800000);      // retire connections after 30 min
+        config.setPoolName("MyAppPool");
+
+        dataSource = new HikariDataSource(config);
+        System.out.println("Connection pool initialized.");
+    }
+
+    public static void queryWithPool() throws SQLException {
+        // getConnection() borrows from pool; close() returns it
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(
+                 "SELECT COUNT(*) AS total FROM products");
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                System.out.println("Total products: " + rs.getInt("total"));
+            }
+        }
+        // Connection is returned to pool here — NOT closed
+    }
+
+    public static void main(String[] args) throws Exception {
+        // Simulate multiple concurrent requests reusing pool connections
+        for (int i = 0; i &lt; 5; i++) {
+            queryWithPool();
+        }
+        dataSource.close(); // shutdown pool on app exit
+    }
+}</pre>
+            <div class="note-box">
+              <p>
+                <strong>DataSource vs DriverManager:</strong> Use
+                <code class="inline">DataSource</code> (from a pool) in all
+                production code.
+                <code class="inline">DriverManager.getConnection()</code> is
+                fine for learning and small scripts but creates a new physical
+                connection every time it is called.
+              </p>
+            </div>
+
+            <!-- 14 -->
+            <h2 id="best-practices">14. JDBC Best Practices</h2>
+            <ul>
+              <li>
+                <strong>Always use PreparedStatement</strong> — never
+                concatenate user input into SQL strings. This is the single most
+                important rule for security.
+              </li>
+              <li>
+                <strong>Always use try-with-resources</strong> —
+                <code class="inline">Connection</code>,
+                <code class="inline">Statement</code>, and
+                <code class="inline">ResultSet</code> all implement
+                <code class="inline">AutoCloseable</code>. Failing to close them
+                causes connection leaks and crashes in production.
+              </li>
+              <li>
+                <strong>Use a connection pool</strong> — never call
+                <code class="inline">DriverManager.getConnection()</code> on
+                every request in production. Use HikariCP, Apache DBCP, or c3p0.
+              </li>
+              <li>
+                <strong>Handle SQLException properly</strong> — log
+                <code class="inline">getSQLState()</code> and
+                <code class="inline">getErrorCode()</code> alongside the message
+                for meaningful diagnostics.
+              </li>
+              <li>
+                <strong>Use transactions for multi-step operations</strong> —
+                set <code class="inline">autoCommit(false)</code>,
+                <code class="inline">commit()</code> on success, and
+                <code class="inline">rollback()</code> in the catch block.
+              </li>
+              <li>
+                <strong>Never store credentials in source code</strong> — use
+                environment variables, a secrets manager, or an application
+                config file outside version control.
+              </li>
+              <li>
+                <strong>Use batch updates for bulk inserts</strong> —
+                <code class="inline">addBatch()</code> +
+                <code class="inline">executeBatch()</code> sends multiple rows
+                in one round trip, massively reducing latency.
+              </li>
+            </ul>
+            <pre>
+// Batch insert example
+String sql = "INSERT INTO logs (level, message) VALUES (?, ?)";
+try (Connection conn = dataSource.getConnection();
+     PreparedStatement ps = conn.prepareStatement(sql)) {
+    conn.setAutoCommit(false);
+
+    for (int i = 0; i &lt; 10000; i++) {
+        ps.setString(1, "INFO");
+        ps.setString(2, "Log message " + i);
+        ps.addBatch(); // queue the row
+
+        if (i % 500 == 0) {        // flush every 500 rows
+            ps.executeBatch();
+            ps.clearBatch();
+        }
+    }
+    ps.executeBatch(); // flush remaining rows
+    conn.commit();
+    System.out.println("10,000 rows inserted in batch.");
+}</pre>
+            <div class="output-box">10,000 rows inserted in batch.</div>
+
+            <!-- Prev / Next -->
+            <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+              <a href="../index.html" class="btn btn-primary"
+                >Back to Tutorial Home &rarr;</a
+              >
+            </div>
+          </div>
+          <!-- content-wrapper -->
+        </div>
+        <!-- col-lg-8 -->
+
+        <!-- TOC -->
+        <div class="col-lg-4">
+          <div class="toc">
+            <h6>On This Page</h6>
+            <a href="#what-is-jdbc">1. What is JDBC?</a>
+            <a href="#jdbc-architecture">2. JDBC Architecture</a>
+            <a href="#driver-types">3. JDBC Driver Types</a>
+            <a href="#setup">4. Setting Up JDBC</a>
+            <a href="#connection">5. Establishing a Connection</a>
+            <a href="#statement">6. Statement</a>
+            <a href="#prepared-statement">7. PreparedStatement</a>
+            <a href="#callable-statement">8. CallableStatement</a>
+            <a href="#result-set">9. ResultSet</a>
+            <a href="#crud-example">10. CRUD Example</a>
+            <a href="#transactions">11. Transactions</a>
+            <a href="#result-set-metadata">12. ResultSetMetaData</a>
+            <a href="#connection-pooling">13. Connection Pooling</a>
+            <a href="#best-practices">14. JDBC Best Practices</a>
+          </div>
+        </div>
+      </div>
+      <!-- row -->
+    </div>
+    <!-- container -->
+
+    <!-- Footer -->
+    <footer class="py-4 mt-5">
+      <div class="container-xl text-center">
+        <p class="mb-0">
+          &copy; 2026 Java Codeex. Built with HTML5 &amp; Bootstrap 5.
+        </p>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmk+GOFVeA//xwkFWEVflJ8ikO1y+k"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+

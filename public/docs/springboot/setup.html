@@ -1,0 +1,688 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Set up Java, Maven or Gradle, and create a Spring Boot project."
+    />
+    <title>Spring Boot Setup | Java Codeex</title>
+    <link rel="icon" href="../icons/javacodeex.jpg" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../site-theme.css" />
+    <link rel="stylesheet" href="./springboot.css" />
+  </head>
+  <body>
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" /></a>
+        <a class="topic-link" href="./index.html#basics"
+          >Overview</a
+        >
+        <a class="topic-link" href="https://javacodeex.com/springboot/project-structure.html"
+          >Project Structure</a
+        >
+        <a class="topic-link" href="./aop.html">AOP</a>
+        <a class="topic-link" href="./index.html#data-jpa">Data JPA</a>
+        <a class="topic-link" href="./index.html#security">Security</a>
+        <a class="topic-link" href="./index.html#exception-handling"
+          >Exceptions</a
+        >
+        <a class="topic-link" href="./index.html#rest-api">REST APIs</a>
+        <a class="topic-link" href="./validation.html">Validation</a>
+        <a class="topic-link" href="./index.html#testing">Testing</a>
+        <a class="topic-link" href="./index.html#actuator">Actuator</a>
+        <a class="topic-link" href="./index.html#deployment">Deployment</a>
+      </div>
+    </nav>
+    <section class="spring-hero">
+      <div class="container-xl">
+        <span class="spring-pill">Java Codeex</span>
+        <h1 class="mt-3">Setup and Installation</h1>
+        <p class="lead">
+          Prepare your machine and generate a clean Spring Boot project.
+        </p>
+      </div>
+    </section>
+    <main class="container-xl py-5">
+      <div class="spring-callout mb-4">
+        <strong>In simple terms:</strong> Getting set up is a one-time cost
+        &mdash; install a JDK, pick a build tool, generate a project with Spring
+        Initializr, and confirm it runs before writing any application code.
+      </div>
+      <h2 id="prerequisites">Prerequisites</h2>
+      <ul class="lh-lg">
+        <li>
+          Install a supported JDK, preferably an LTS release such as Java 17 or
+          21.
+        </li>
+        <li>Install an IDE such as IntelliJ IDEA, Eclipse, or VS Code.</li>
+        <li>Choose Maven or Gradle as the build tool.</li>
+        <li>
+          Have a terminal and Git available for running the wrapper scripts and
+          cloning samples.
+        </li>
+      </ul>
+
+      <h2 id="install-jdk">Installing the JDK</h2>
+      <p>
+        Spring Boot needs a Java Development Kit, not just a runtime. Any recent
+        LTS distribution (Temurin, Amazon Corretto, Microsoft Build of OpenJDK,
+        Oracle) works the same way from Spring Boot's point of view &mdash; pick
+        one and install it consistently across your team.
+      </p>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Platform</th>
+              <th>Common install method</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Windows</td>
+              <td>
+                MSI installer or a version manager (e.g.
+                <code>winget install EclipseAdoptium.Temurin.21.JDK</code>)
+              </td>
+              <td>
+                Ensure <code>JAVA_HOME</code> and
+                <code>%JAVA_HOME%\bin</code> are on <code>PATH</code>.
+              </td>
+            </tr>
+            <tr>
+              <td>macOS</td>
+              <td>
+                <code>brew install temurin@21</code> or an installer package
+              </td>
+              <td>
+                Homebrew manages <code>JAVA_HOME</code> for you when you shell
+                out via <code>/usr/libexec/java_home</code>.
+              </td>
+            </tr>
+            <tr>
+              <td>Linux</td>
+              <td>
+                Distro package manager (<code>apt</code>, <code>dnf</code>) or
+                SDKMAN!
+              </td>
+              <td>
+                SDKMAN! (<code>sdk install java 21-tem</code>) makes switching
+                versions easy.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        After installing, verify the JDK is on your <code>PATH</code> and is the
+        version you expect:
+      </p>
+      <pre class="spring-code"><code>java -version
+javac -version</code></pre>
+      <div class="spring-callout">
+        <strong>Tip:</strong> If <code>java -version</code> prints an older
+        release than you just installed, another JDK is earlier on your
+        <code>PATH</code> or <code>JAVA_HOME</code> still points at it. Fix the
+        environment variable rather than uninstalling anything.
+      </div>
+
+      <h2 id="maven-vs-gradle">Maven vs Gradle</h2>
+      <p>
+        Both build tools compile your code, run tests, resolve dependencies, and
+        package a runnable JAR. Spring Initializr supports either, and Boot
+        works identically on top of them &mdash; the choice is mostly about
+        syntax preference and existing team conventions.
+      </p>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Maven</th>
+              <th>Gradle</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Syntax style</td>
+              <td>Declarative XML (<code>pom.xml</code>)</td>
+              <td>
+                Groovy or Kotlin DSL (<code>build.gradle</code> /
+                <code>build.gradle.kts</code>)
+              </td>
+            </tr>
+            <tr>
+              <td>Wrapper file</td>
+              <td><code>mvnw</code> / <code>mvnw.cmd</code></td>
+              <td><code>gradlew</code> / <code>gradlew.bat</code></td>
+            </tr>
+            <tr>
+              <td>Build command</td>
+              <td><code>./mvnw clean package</code></td>
+              <td><code>./gradlew build</code></td>
+            </tr>
+            <tr>
+              <td>Run command</td>
+              <td><code>./mvnw spring-boot:run</code></td>
+              <td><code>./gradlew bootRun</code></td>
+            </tr>
+            <tr>
+              <td>Typical use</td>
+              <td>Teams that want explicit, convention-heavy configuration</td>
+              <td>
+                Teams that want faster incremental builds and a scriptable DSL
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="spring-callout">
+        <strong>Tip:</strong> Whichever you choose, commit the wrapper files
+        (<code>mvnw</code>, <code>gradlew</code>, and their supporting
+        <code>.mvn</code>/<code>gradle/wrapper</code> folders) so every teammate
+        and CI runner builds with the exact same tool version.
+      </div>
+
+      <h2 id="spring-initializr">Create a project with Spring Initializr</h2>
+      <p>
+        Open <strong>start.spring.io</strong> and fill in a few fields before
+        generating the project ZIP. Each choice affects the generated files:
+      </p>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Field</th>
+              <th>What it affects</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Project</td>
+              <td>
+                Maven or Gradle &mdash; determines whether you get
+                <code>pom.xml</code> or <code>build.gradle(.kts)</code> plus the
+                matching wrapper.
+              </td>
+            </tr>
+            <tr>
+              <td>Language</td>
+              <td>
+                Java, Kotlin, or Groovy source files and the compiler plugin
+                used.
+              </td>
+            </tr>
+            <tr>
+              <td>Spring Boot version</td>
+              <td>
+                The parent/BOM version, which pins compatible library versions
+                for every starter you add.
+              </td>
+            </tr>
+            <tr>
+              <td>Group / Artifact</td>
+              <td>
+                Your base package name and the generated JAR's artifact id and
+                default class name.
+              </td>
+            </tr>
+            <tr>
+              <td>Packaging</td>
+              <td>
+                Jar (embedded server, run directly) vs War (deploy to an
+                external servlet container).
+              </td>
+            </tr>
+            <tr>
+              <td>Java version</td>
+              <td>
+                The source/target bytecode level and language features available
+                to you.
+              </td>
+            </tr>
+            <tr>
+              <td>Dependencies</td>
+              <td>
+                Which starters are added to the build file &mdash; this drives
+                which auto-configuration classes can activate later.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="concept-diagram">
+        <figcaption>Project setup flow</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>Choose</strong><small>JDK and build tool</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Generate</strong><small>Select dependencies</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Open</strong><small>Import the project</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Run</strong><small>Start the main class</small>
+          </div>
+        </div>
+      </div>
+
+      <h2 id="ide-setup">IDE setup</h2>
+      <ul class="lh-lg">
+        <li>
+          <strong>IntelliJ IDEA:</strong> <em>File &rarr; Open</em>, select the
+          extracted project folder, and let it auto-import the Maven/Gradle
+          model.
+        </li>
+        <li>
+          <strong>VS Code:</strong> install the "Extension Pack for Java" and
+          "Spring Boot Extension Pack", then <em>File &rarr; Open Folder</em> on
+          the project.
+        </li>
+        <li>
+          <strong>Eclipse:</strong> use
+          <em>File &rarr; Import &rarr; Existing Maven/Gradle Project</em> and
+          point it at the folder containing <code>pom.xml</code> or
+          <code>build.gradle</code>.
+        </li>
+      </ul>
+
+      <h2 id="run-from-terminal">Run from the terminal</h2>
+      <pre class="spring-code"><code>./mvnw spring-boot:run
+
+# Or build and run a JAR
+./mvnw clean package
+java -jar target/demo-0.0.1-SNAPSHOT.jar</code></pre>
+      <div class="spring-callout">
+        <strong>Tip:</strong> Use the project wrapper (<code>mvnw</code> or
+        <code>gradlew</code>) so everyone uses the project's expected build-tool
+        version.
+      </div>
+
+      <h2 id="verify-setup">Verify your setup</h2>
+      <p>
+        A successful start prints an ASCII banner, the active profile, and a
+        line confirming the embedded server is listening. Look for output
+        similar to this:
+      </p>
+      <pre class="spring-code"><code>  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.3.0)
+
+Starting DemoApplication using Java 21
+Tomcat initialized with port(s): 8080 (http)
+Tomcat started on port(s): 8080 (http)
+Started DemoApplication in 1.284 seconds (process running for 1.6)</code></pre>
+      <p>
+        If you see <code>Tomcat started on port(s): 8080</code> (or another port
+        you configured), the embedded server is up and the application context
+        finished loading successfully.
+      </p>
+
+      <h2 id="verify-jdk-setup">Verify JDK Setup More Thoroughly</h2>
+      <p>After installation, verify everything is working correctly:</p>
+      <pre class="spring-code"><code>java -version
+javac -version
+echo $JAVA_HOME  # On Windows: echo %JAVA_HOME%
+</code></pre>
+      <p>
+        All three commands should show the same Java version (e.g., 21.0.1). If
+        they show different versions or can't be found, your PATH or JAVA_HOME
+        needs adjustment.
+      </p>
+
+      <h2 id="first-project-detailed">
+        Creating Your First Project - Step by Step
+      </h2>
+      <h3>Step 1: Visit Spring Initializr</h3>
+      <ol class="lh-lg">
+        <li>Go to <strong>https://start.spring.io</strong></li>
+        <li>You'll see a form with several fields</li>
+        <li>This tool generates a new Spring Boot project with your choices</li>
+      </ol>
+
+      <h3>Step 2: Fill in the Form</h3>
+      <div
+        style="
+          background: #f5f5f5;
+          padding: 20px;
+          border-radius: 4px;
+          margin: 20px 0;
+        "
+      >
+        <h4 style="margin-top: 0">For a beginner learning REST APIs:</h4>
+        <ul class="lh-lg">
+          <li><strong>Project:</strong> Select "Maven" (if unsure)</li>
+          <li><strong>Language:</strong> Select "Java"</li>
+          <li>
+            <strong>Spring Boot version:</strong> Select latest stable (e.g.,
+            3.3.0)
+          </li>
+          <li><strong>Group:</strong> com.example (or your company domain)</li>
+          <li>
+            <strong>Artifact:</strong> tutorial-app (or your project name)
+          </li>
+          <li><strong>Name:</strong> Tutorial App</li>
+          <li><strong>Description:</strong> My first Spring Boot app</li>
+          <li><strong>Package name:</strong> com.example.tutorialapp</li>
+          <li><strong>Packaging:</strong> Jar</li>
+          <li><strong>Java version:</strong> 21</li>
+        </ul>
+      </div>
+
+      <h3>Step 3: Add Dependencies</h3>
+      <p>Click "Add Dependencies" and search for these (click to add each):</p>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Dependency</th>
+              <th>Why you need it</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Spring Web</strong></td>
+              <td>Enables REST API and web server</td>
+            </tr>
+            <tr>
+              <td><strong>Spring Data JPA</strong></td>
+              <td>Database access and ORM</td>
+            </tr>
+            <tr>
+              <td><strong>H2 Database</strong></td>
+              <td>In-memory database for testing</td>
+            </tr>
+            <tr>
+              <td><strong>Lombok</strong></td>
+              <td>Reduces boilerplate (getters/setters/toString)</td>
+            </tr>
+            <tr>
+              <td><strong>Spring Boot DevTools</strong></td>
+              <td>Auto-restart during development</td>
+            </tr>
+            <tr>
+              <td><strong>Spring Boot Starter Test</strong></td>
+              <td>Testing framework (automatically included)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Step 4: Generate and Download</h3>
+      <ol class="lh-lg">
+        <li>Click the green "GENERATE" button</li>
+        <li>A ZIP file downloads</li>
+        <li>
+          Extract it to a convenient location (e.g., ~/projects/tutorial-app)
+        </li>
+      </ol>
+
+      <h2 id="first-project-structure">Project Structure Explained</h2>
+      <div
+        style="
+          background: #f5f5f5;
+          padding: 20px;
+          border-radius: 4px;
+          margin: 20px 0;
+        "
+      >
+        <pre style="font-size: 13px; line-height: 1.6">
+tutorial-app/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/example/tutorialapp/
+│   │   │       └── TutorialAppApplication.java  ← Main class, run this!
+│   │   └── resources/
+│   │       └── application.properties            ← Configuration here
+│   └── test/
+│       └── java/                                 ← Write tests here
+├── target/                                       ← Build output (ignore)
+├── pom.xml                                       ← Dependencies defined here
+└── mvnw                                          ← Run Maven (wrapper)
+</pre>
+      </div>
+
+      <h2 id="running-first-project">Running Your First Project</h2>
+
+      <h3>Option 1: From IDE (Recommended for beginners)</h3>
+      <ol class="lh-lg">
+        <li>Open the project in IntelliJ IDEA or VS Code</li>
+        <li>Find the TutorialAppApplication.java file in src/main/java</li>
+        <li>Right-click on it and select "Run" or press Ctrl+Shift+F10</li>
+        <li>Watch the console for the "Started" message</li>
+        <li>
+          Visit http://localhost:8080 in your browser (you should see an error
+          page - that's normal!)
+        </li>
+      </ol>
+
+      <h3>Option 2: From Command Line</h3>
+      <pre class="spring-code"><code># Navigate to project directory
+cd tutorial-app
+
+# Run using Maven
+./mvnw spring-boot:run
+
+# Or build first, then run the JAR
+./mvnw clean package
+java -jar target/tutorial-app-0.0.1-SNAPSHOT.jar
+</code></pre>
+
+      <h2 id="what-running-means">What It Means When Your App is Running</h2>
+      <div
+        style="
+          background: #d4edda;
+          padding: 20px;
+          border-radius: 4px;
+          border-left: 4px solid #28a745;
+          margin: 20px 0;
+        "
+      >
+        <h4 style="margin-top: 0">
+          ✅ Success signs (look for these in console):
+        </h4>
+        <ul style="margin-bottom: 0; font-size: 14px; line-height: 1.8">
+          <li><code>Spring Boot :: (v3.3.0)</code> - Spring Boot version</li>
+          <li>
+            <code>Tomcat initialized with port(s): 8080 (http)</code> - Server
+            starting
+          </li>
+          <li>
+            <code>Tomcat started on port(s): 8080 (http)</code> - Server ready ✓
+          </li>
+          <li>
+            <code>Started TutorialAppApplication in 2.345 seconds</code> - App
+            fully loaded
+          </li>
+        </ul>
+      </div>
+
+      <h2 id="next-steps-after-setup">Next Steps After Setup</h2>
+      <ol class="lh-lg">
+        <li>
+          <strong>Write your first controller:</strong> Create a REST endpoint
+          that returns "Hello, World!"
+        </li>
+        <li>
+          <strong>Add a database entity:</strong> Create a User or Product class
+          mapped to a table
+        </li>
+        <li>
+          <strong>Create a repository:</strong> Define a JpaRepository for
+          database access
+        </li>
+        <li>
+          <strong>Build a complete CRUD API:</strong> Create, Read, Update,
+          Delete operations
+        </li>
+        <li>
+          <strong>Add validation:</strong> Ensure incoming data is correct
+          before saving
+        </li>
+        <li>
+          <strong>Add error handling:</strong> Return meaningful error messages
+          to clients
+        </li>
+      </ol>
+
+      <h2 id="development-tips">Development Tips</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Tip</th>
+              <th>Benefit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                Use <strong>Spring Boot DevTools</strong> (included in
+                dependencies)
+              </td>
+              <td>Auto-restart your app when you save code changes</td>
+            </tr>
+            <tr>
+              <td>Use <strong>IDE Run button</strong> instead of terminal</td>
+              <td>Faster, better console output, easier debugging</td>
+            </tr>
+            <tr>
+              <td>Read <strong>application startup logs</strong> carefully</td>
+              <td>Error messages tell you what's misconfigured</td>
+            </tr>
+            <tr>
+              <td>Use <strong>H2 Database Console</strong> for testing</td>
+              <td>Visit http://localhost:8080/h2-console to see test data</td>
+            </tr>
+            <tr>
+              <td>Keep <strong>application.properties minimal</strong></td>
+              <td>Use Spring Boot defaults, override only what's necessary</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="troubleshooting">Troubleshooting</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Problem</th>
+              <th>Cause</th>
+              <th>Solution</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>javac: 'release' version 21 not supported</code></td>
+              <td>JDK version mismatch</td>
+              <td>
+                Run <code>java -version</code>. Install JDK 21 or higher, or
+                change project's Java version in pom.xml
+              </td>
+            </tr>
+            <tr>
+              <td><code>Address already in use</code></td>
+              <td>Port 8080 taken</td>
+              <td>
+                Add to application.properties: <code>server.port=8081</code>
+              </td>
+            </tr>
+            <tr>
+              <td><code>Permission denied: ./mvnw</code></td>
+              <td>Script not executable (macOS/Linux)</td>
+              <td>Run: <code>chmod +x mvnw</code></td>
+            </tr>
+            <tr>
+              <td><code>BUILD SUCCESS but app doesn't start</code></td>
+              <td>Missing main class</td>
+              <td>Ensure @SpringBootApplication is on your main class</td>
+            </tr>
+            <tr>
+              <td>
+                <code>Cannot find symbol: class SpringBootApplication</code>
+              </td>
+              <td>Dependencies not downloaded</td>
+              <td>Run <code>./mvnw clean install</code> and restart IDE</td>
+            </tr>
+            <tr>
+              <td>IDE shows red squigglies everywhere</td>
+              <td>IDE not recognizing project structure</td>
+              <td>
+                Reload project: Right-click project → Maven → Reload Project
+              </td>
+            </tr>
+            <tr>
+              <td><code>Error: Could not find or load main class</code></td>
+              <td>Project not compiled</td>
+              <td>Run <code>./mvnw clean compile</code> first</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="ide-tips">IDE-Specific Tips</h2>
+
+      <h3>IntelliJ IDEA</h3>
+      <ul class="lh-lg">
+        <li>Right-click pom.xml → "Add as Maven Project"</li>
+        <li>Use Run → Edit Configurations to customize how the app starts</li>
+        <li>View → Tool Windows → Terminal to open built-in terminal</li>
+      </ul>
+
+      <h3>VS Code</h3>
+      <ul class="lh-lg">
+        <li>Install "Extension Pack for Java"</li>
+        <li>Install "Spring Boot Extension Pack"</li>
+        <li>Use command palette: Ctrl+Shift+P → "Java: Debug"</li>
+      </ul>
+
+      <h3>Eclipse</h3>
+      <ul class="lh-lg">
+        <li>File → Import → Maven → Existing Maven Projects</li>
+        <li>
+          Right-click project → Run As → Maven Build... (Goal: spring-boot:run)
+        </li>
+      </ul>
+
+      <a class="btn btn-success" href="project-structure.html"
+        >Next: Project Structure &rarr;</a
+      >
+    </main>
+    <footer class="py-4 text-center">
+      <p class="mb-0">&copy; 2026 Java Codeex</p>
+    </footer>
+    <script src="./springboot-nav.js"></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

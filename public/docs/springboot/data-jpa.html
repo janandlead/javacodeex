@@ -1,0 +1,1827 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Spring Boot Data JPA | Java Codeex</title>
+    <link rel="icon" href="../icons/javacodeex.jpg" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../site-theme.css" />
+    <link rel="stylesheet" href="./springboot.css" />
+  </head>
+  <body>
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" /></a>
+        <a class="topic-link" href="./index.html#basics">Overview</a>
+        <a class="topic-link" href="https://javacodeex.com/springboot/project-structure.html"
+          >Project Structure</a
+        >
+        <a class="topic-link" href="./aop.html">AOP</a>
+        <a class="topic-link" href="./index.html#data-jpa">Data JPA</a>
+        <a class="topic-link" href="./index.html#security">Security</a>
+        <a class="topic-link" href="./index.html#exception-handling"
+          >Exceptions</a
+        >
+        <a class="topic-link" href="./index.html#rest-api">REST APIs</a>
+        <a class="topic-link" href="./validation.html">Validation</a>
+        <a class="topic-link" href="./index.html#testing">Testing</a>
+        <a class="topic-link" href="./index.html#actuator">Actuator</a>
+        <a class="topic-link" href="./index.html#deployment">Deployment</a>
+      </div>
+    </nav>
+    <section class="spring-hero">
+      <div class="container-xl">
+        <span class="spring-pill">Java Codeex</span>
+        <h1 class="mt-3">Spring Data JPA</h1>
+        <p class="lead">
+          Map Java objects to relational tables and access them through
+          repositories, without writing repetitive SQL.
+        </p>
+      </div>
+    </section>
+    <main class="container-xl py-5">
+      <div class="spring-callout mb-4">
+        <strong>In simple terms:</strong> Spring Data JPA generates the
+        repository implementation for you at runtime &mdash; you declare an
+        interface, and Spring wires up the SQL.
+      </div>
+      <h2 id="real-world-domain">Real-world domain example</h2>
+      <p>
+        We will use an employee-management application to connect the main JPA
+        ideas. An employee belongs to a department, may have one profile, and
+        can work on many projects. Customers place orders containing products.
+        These are common relationship patterns in business systems.
+      </p>
+      <div class="concept-diagram">
+        <figcaption>Employee and commerce domain</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>Department</strong><small>has many Employees</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Employee</strong><small>has one Profile</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Project</strong><small>many Employees</small>
+          </div>
+        </div>
+      </div>
+      <h2 id="jpa-dependencies">Required dependencies</h2>
+      <pre class="spring-code"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;!-- Choose one relational database driver --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+    &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;
+
+&lt;!-- Or use MySQL instead of PostgreSQL --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+    &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+      <p>
+        The application normally uses one relational driver for a deployment. Do
+        not add PostgreSQL and MySQL as competing runtime databases unless you
+        have deliberately configured separate data sources.
+      </p>
+      <h2 id="entity-and-repository">Entity and Repository</h2>
+      <pre class="spring-code"><code>@Entity
+class Product {
+    @Id @GeneratedValue
+    private Long id;
+    private String name;
+    private BigDecimal price;
+}
+
+interface ProductRepository extends JpaRepository&lt;Product, Long&gt; {
+    List&lt;Product&gt; findByNameContainingIgnoreCase(String name);
+}</code></pre>
+      <p>
+        JPA maps the entity to a table. A repository provides common operations
+        such as save, findById, findAll, and delete without writing basic SQL.
+        Spring Data also parses method names like
+        <code>findByNameContainingIgnoreCase</code> into a query automatically.
+      </p>
+
+      <h2 id="domain-entities">Employee, Department, Customer, and Product</h2>
+      <p>
+        Entities represent relational tables. Keep entity classes focused on
+        persistence and use DTOs at the API boundary. The following simplified
+        model uses <code>com.javacodeex.orders</code> as the application
+        package.
+      </p>
+      <pre class="spring-code"><code>@Entity
+public class Department {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
+    private List&lt;Employee&gt; employees = new ArrayList&lt;&gt;();
+}
+
+@Entity
+public class Employee {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String email;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    private Department department;
+}
+
+@Entity
+public class Customer {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private String email;
+}
+
+@Entity
+public class Product {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private BigDecimal price;
+    private int stockQuantity;
+}</code></pre>
+      <h2 id="entity-relationships">Entity Relationships</h2>
+      <p>
+        Real schemas are rarely a single table. A common pattern is a parent
+        entity with many child rows &mdash; for example, an
+        <code>Order</code> that has many <code>OrderItem</code> rows. Model this
+        with <code>@OneToMany</code> on the parent and
+        <code>@ManyToOne</code> on the child.
+      </p>
+      <pre class="spring-code"><code>@Entity
+class Order {
+    @Id @GeneratedValue
+    private Long id;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List&lt;OrderItem&gt; items = new ArrayList&lt;&gt;();
+}
+
+@Entity
+class OrderItem {
+    @Id @GeneratedValue
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+    private String productName;
+    private int quantity;
+}</code></pre>
+      <p>
+        The <code>@ManyToOne</code> side is the <strong>owning side</strong> of
+        the relationship because it holds the foreign key column
+        (<code>order_id</code>). The <code>@OneToMany</code> side uses
+        <code>mappedBy</code> to say &ldquo;the other entity already manages
+        this column, I am just the inverse view.&rdquo; Only the owning
+        side&rsquo;s changes are written to the foreign key.
+      </p>
+      <p>
+        <code>cascade = CascadeType.ALL</code> means operations on the
+        <code>Order</code> (persist, remove, merge) propagate to its
+        <code>OrderItem</code> rows &mdash; convenient for a true parent/child
+        relationship, but dangerous on relationships that are merely a reference
+        (you would not want deleting a <code>Product</code> to cascade-delete
+        every <code>OrderItem</code> that ever referenced it).
+        <code>fetch = FetchType.LAZY</code> defers loading the collection until
+        it is actually accessed; <code>@ManyToOne</code> defaults to
+        <code>EAGER</code> in plain JPA, so it is common to set it to
+        <code>LAZY</code> explicitly to avoid loading data you do not need.
+      </p>
+      <div class="spring-callout">
+        <strong>Tip:</strong> Default to <code>LAZY</code> for collections and
+        large associations, and only fetch eagerly when a specific query needs
+        the related data. You can always widen a query with
+        <code>JOIN FETCH</code> or <code>@EntityGraph</code> when you do need
+        it.
+      </div>
+
+      <h2 id="relationship-end-to-end">Relationship end-to-end examples</h2>
+      <p>
+        The examples below use the employee-management domain. In a real
+        application, expose DTOs instead of directly accepting entities so
+        clients cannot accidentally change relationships or create recursive
+        JSON responses.
+      </p>
+      <h3 id="one-to-many-e2e">One-to-many: Department to Employees</h3>
+      <p>
+        One department can have many employees. The foreign key is stored in the
+        employee table, so the employee side owns the relationship.
+      </p>
+      <pre class="spring-code"><code>@Entity
+class Department {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+
+    @OneToMany(mappedBy = "department",
+               cascade = CascadeType.ALL,
+               orphanRemoval = true)
+    private List&lt;Employee&gt; employees = new ArrayList&lt;&gt;();
+
+    public void addEmployee(Employee employee) {
+        employees.add(employee);
+        employee.setDepartment(this);
+    }
+}</code></pre>
+      <pre class="spring-code"><code>@RestController
+@RequestMapping("/api/departments")
+class DepartmentController {
+    private final DepartmentService service;
+
+    @PostMapping
+    DepartmentResponse create(
+            @Valid @RequestBody CreateDepartmentRequest request) {
+        return service.create(request);
+    }
+
+    @GetMapping("/{id}/employees")
+    List&lt;EmployeeResponse&gt; employees(@PathVariable Long id) {
+        return service.findEmployees(id);
+    }
+}</code></pre>
+      <pre class="spring-code"><code>POST /api/departments
+{ "name": "Engineering" }
+
+POST /api/employees
+{ "name": "Anand", "email": "anand@example.com", "departmentId": 1 }
+
+GET /api/departments/1/employees</code></pre>
+      <h3 id="many-to-one-e2e">Many-to-one: Employees to Department</h3>
+      <p>
+        Many employees can reference one department. This is the owning side
+        because it contains the <code>department_id</code> foreign key.
+      </p>
+      <pre class="spring-code"><code>@Entity
+class Employee {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "department_id", nullable = false)
+    private Department department;
+}</code></pre>
+      <pre class="spring-code"><code>@Service
+class EmployeeService {
+    private final EmployeeRepository employees;
+    private final DepartmentRepository departments;
+
+    @Transactional
+    EmployeeResponse create(CreateEmployeeRequest request) {
+        Department department = departments.findById(request.departmentId())
+                .orElseThrow(DepartmentNotFoundException::new);
+        Employee employee = new Employee();
+        employee.setName(request.name());
+        employee.setDepartment(department);
+        return EmployeeResponse.from(employees.save(employee));
+    }
+}</code></pre>
+      <p>
+        Keep this association lazy and fetch the department only for queries
+        that need it. Use <code>JOIN FETCH</code> or <code>@EntityGraph</code>
+        for an employee list that must include department names.
+      </p>
+      <h3 id="one-to-one-e2e">One-to-one: Employee to Employee Profile</h3>
+      <p>
+        Store a unique foreign key on the dependent profile table when each
+        employee has one profile.
+      </p>
+      <pre class="spring-code"><code>@Entity
+class EmployeeProfile {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String phoneNumber;
+    private String address;
+
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "employee_id", nullable = false, unique = true)
+    private Employee employee;
+}
+
+interface EmployeeProfileRepository
+        extends JpaRepository&lt;EmployeeProfile, Long&gt; {
+    Optional&lt;EmployeeProfile&gt; findByEmployeeId(Long employeeId);
+}</code></pre>
+      <pre class="spring-code"><code>PUT /api/employees/10/profile
+{ "phoneNumber": "+91-9876543210", "address": "Hyderabad" }
+
+GET /api/employees/10/profile</code></pre>
+      <h3 id="many-to-many-e2e">Many-to-many: Employees to Projects</h3>
+      <p>
+        Many employees can work on many projects. A join table stores the two
+        foreign keys. For role or assignment date, create an explicit
+        <code>EmployeeProject</code> entity instead.
+      </p>
+      <pre class="spring-code"><code>@Entity
+class Project {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+
+    @ManyToMany
+    @JoinTable(
+        name = "employee_project",
+        joinColumns = @JoinColumn(name = "project_id"),
+        inverseJoinColumns = @JoinColumn(name = "employee_id"))
+    private Set&lt;Employee&gt; employees = new HashSet&lt;&gt;();
+}
+
+interface ProjectRepository
+        extends JpaRepository&lt;Project, Long&gt; { }</code></pre>
+      <pre class="spring-code"><code>PUT /api/projects/4/employees/10
+GET /api/projects/4/employees
+DELETE /api/projects/4/employees/10</code></pre>
+      <div class="spring-callout">
+        <strong>Relationship rule:</strong> Decide which side owns the foreign
+        key or join table, update both sides with helper methods, and fetch
+        relationships deliberately to avoid N+1 queries.
+      </div>
+      <h3 id="one-to-one">One-to-one relationship</h3>
+      <p>
+        Use one-to-one when one row has exactly one related row, such as an
+        employee and an employee profile. The foreign key normally belongs on
+        the dependent table.
+      </p>
+      <pre class="spring-code"><code>@Entity
+class EmployeeProfile {
+    @Id @GeneratedValue
+    private Long id;
+    private String phoneNumber;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id", unique = true)
+    private Employee employee;
+}</code></pre>
+      <h3 id="many-to-many">Many-to-many relationship</h3>
+      <p>
+        Use a join table when employees can work on many projects and each
+        project can have many employees. In large systems, an explicit
+        <code>EmployeeProject</code> entity is often better because it can store
+        assignment date, role, or hours.
+      </p>
+      <pre class="spring-code"><code>@Entity
+class Project {
+    @Id @GeneratedValue
+    private Long id;
+    private String name;
+
+    @ManyToMany
+    @JoinTable(name = "employee_project",
+        joinColumns = @JoinColumn(name = "project_id"),
+        inverseJoinColumns = @JoinColumn(name = "employee_id"))
+    private Set&lt;Employee&gt; employees = new HashSet&lt;&gt;();
+}</code></pre>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Relationship</th>
+              <th>Example</th>
+              <th>Database shape</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>@OneToOne</code></td>
+              <td>Employee - Profile</td>
+              <td>Foreign key with a unique constraint</td>
+            </tr>
+            <tr>
+              <td><code>@OneToMany</code></td>
+              <td>Department - Employees</td>
+              <td>Foreign key on the employee table</td>
+            </tr>
+            <tr>
+              <td><code>@ManyToOne</code></td>
+              <td>Employee - Department</td>
+              <td>Owning side contains <code>department_id</code></td>
+            </tr>
+            <tr>
+              <td><code>@ManyToMany</code></td>
+              <td>Employee - Project</td>
+              <td>Separate join table</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h2 id="crud-operations">Complete CRUD operations</h2>
+      <p>
+        A normal CRUD flow separates the HTTP controller, business service,
+        repository, and persistence entity. The same pattern works for
+        employees, departments, customers, and products.
+      </p>
+      <pre class="spring-code"><code>public record CreateEmployeeRequest(
+        @NotBlank String name,
+        @Email String email,
+        @NotNull Long departmentId) { }
+
+public record EmployeeResponse(
+        Long id, String name, String email, String departmentName) { }
+
+@Repository
+interface EmployeeRepository extends JpaRepository&lt;Employee, Long&gt; { }
+
+@Service
+class EmployeeService {
+    private final EmployeeRepository employees;
+    private final DepartmentRepository departments;
+
+    EmployeeService(EmployeeRepository employees,
+                    DepartmentRepository departments) {
+        this.employees = employees;
+        this.departments = departments;
+    }
+
+    EmployeeResponse create(CreateEmployeeRequest request) {
+        Department department = departments.findById(request.departmentId())
+                .orElseThrow(DepartmentNotFoundException::new);
+        Employee employee = new Employee(request.name(), request.email(), department);
+        Employee saved = employees.save(employee);
+        return toResponse(saved);
+    }
+
+    EmployeeResponse findById(Long id) {
+        return employees.findById(id)
+                .map(this::toResponse)
+                .orElseThrow(EmployeeNotFoundException::new);
+    }
+
+    EmployeeResponse update(Long id, CreateEmployeeRequest request) {
+        Employee employee = employees.findById(id)
+                .orElseThrow(EmployeeNotFoundException::new);
+        employee.setName(request.name());
+        employee.setEmail(request.email());
+        return toResponse(employees.save(employee));
+    }
+
+    void delete(Long id) {
+        if (!employees.existsById(id)) {
+            throw new EmployeeNotFoundException();
+        }
+        employees.deleteById(id);
+    }
+}</code></pre>
+      <pre class="spring-code"><code>@RestController
+@RequestMapping("/api/employees")
+class EmployeeController {
+    private final EmployeeService service;
+
+    EmployeeController(EmployeeService service) {
+        this.service = service;
+    }
+
+    @PostMapping
+    ResponseEntity&lt;EmployeeResponse&gt; create(
+            @Valid @RequestBody CreateEmployeeRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(service.create(request));
+    }
+
+    @GetMapping("/{id}")
+    EmployeeResponse find(@PathVariable Long id) {
+        return service.findById(id);
+    }
+
+    @PutMapping("/{id}")
+    EmployeeResponse update(@PathVariable Long id,
+                            @Valid @RequestBody CreateEmployeeRequest request) {
+        return service.update(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void delete(@PathVariable Long id) {
+        service.delete(id);
+    }
+}</code></pre>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Operation</th>
+              <th>HTTP endpoint</th>
+              <th>Repository method</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Create</td>
+              <td><code>POST /api/employees</code></td>
+              <td><code>save(entity)</code></td>
+            </tr>
+            <tr>
+              <td>Read one</td>
+              <td><code>GET /api/employees/{id}</code></td>
+              <td><code>findById(id)</code></td>
+            </tr>
+            <tr>
+              <td>Read all</td>
+              <td><code>GET /api/employees</code></td>
+              <td><code>findAll(pageable)</code></td>
+            </tr>
+            <tr>
+              <td>Update</td>
+              <td><code>PUT /api/employees/{id}</code></td>
+              <td><code>save(entity)</code></td>
+            </tr>
+            <tr>
+              <td>Delete</td>
+              <td><code>DELETE /api/employees/{id}</code></td>
+              <td><code>deleteById(id)</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 id="customer-product-crud">Customer and Product CRUD</h3>
+      <p>
+        The same repository pattern can expose departments, customers, and
+        products. Keep one service per business area so validation and rules do
+        not accumulate in one large service.
+      </p>
+      <pre class="spring-code"><code>@Repository
+interface DepartmentRepository
+        extends JpaRepository&lt;Department, Long&gt; { }
+
+@Repository
+interface CustomerRepository
+        extends JpaRepository&lt;Customer, Long&gt; {
+    Optional&lt;Customer&gt; findByEmailIgnoreCase(String email);
+}
+
+@Repository
+interface ProductRepository
+        extends JpaRepository&lt;Product, Long&gt; {
+    Page&lt;Product&gt; findByNameContainingIgnoreCase(
+            String name, Pageable pageable);
+}
+
+// Typical endpoints
+POST   /api/departments
+GET    /api/departments/{id}
+PUT    /api/departments/{id}
+DELETE /api/departments/{id}
+
+POST   /api/customers
+GET    /api/customers/{id}
+PUT    /api/customers/{id}
+DELETE /api/customers/{id}
+
+POST   /api/products
+GET    /api/products/{id}
+PUT    /api/products/{id}
+DELETE /api/products/{id}</code></pre>
+      <p>
+        For PostgreSQL and MySQL, these endpoints can use the same Java code.
+        Only the active database profile and driver normally change. For
+        MongoDB, create equivalent <code>MongoRepository</code> interfaces and
+        document models rather than JPA entities.
+      </p>
+      <h2 id="end-to-end-use-cases">End-to-end use cases</h2>
+      <p>
+        An end-to-end feature follows the complete path from an HTTP request to
+        the database and back to a response:
+      </p>
+      <div class="concept-diagram">
+        <figcaption>Complete Spring Data request flow</figcaption>
+        <div class="flowchart">
+          <div class="flowchart-node">POST /api/employees</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">Controller validates DTO</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">Service applies business rules</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">
+            Repository executes SQL or document query
+          </div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node result">Response DTO returns JSON</div>
+        </div>
+      </div>
+      <h3 id="employee-department-e2e">Use case 1: Employee and Department</h3>
+      <p>
+        A department can contain many employees. The employee owns the foreign
+        key, so the service first verifies the department and then saves the
+        employee.
+      </p>
+      <pre class="spring-code"><code>@RestController
+@RequestMapping("/api/employees")
+class EmployeeController {
+    private final EmployeeService service;
+
+    EmployeeController(EmployeeService service) {
+        this.service = service;
+    }
+
+    @PostMapping
+    ResponseEntity&lt;EmployeeResponse&gt; create(
+            @Valid @RequestBody CreateEmployeeRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(service.create(request));
+    }
+
+    @GetMapping("/{id}")
+    EmployeeResponse find(@PathVariable Long id) {
+        return service.find(id);
+    }
+
+    @GetMapping
+    Page&lt;EmployeeResponse&gt; findAll(Pageable pageable) {
+        return service.findAll(pageable);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void delete(@PathVariable Long id) {
+        service.delete(id);
+    }
+}</code></pre>
+      <pre class="spring-code"><code>@Service
+class EmployeeService {
+    private final EmployeeRepository employees;
+    private final DepartmentRepository departments;
+
+    @Transactional
+    EmployeeResponse create(CreateEmployeeRequest request) {
+        Department department = departments.findById(request.departmentId())
+                .orElseThrow(DepartmentNotFoundException::new);
+
+        Employee employee = new Employee(
+                request.name(), request.email(), department);
+        return EmployeeResponse.from(employees.save(employee));
+    }
+
+    @Transactional(readOnly = true)
+    Page&lt;EmployeeResponse&gt; findAll(Pageable pageable) {
+        return employees.findAll(pageable)
+                .map(EmployeeResponse::from);
+    }
+
+    @Transactional
+    void delete(Long id) {
+        if (!employees.existsById(id)) {
+            throw new EmployeeNotFoundException();
+        }
+        employees.deleteById(id);
+    }
+}</code></pre>
+      <p>Test the complete flow with HTTP requests:</p>
+      <pre class="spring-code"><code>POST http://localhost:8080/api/employees
+Content-Type: application/json
+
+{
+  "name": "Anand",
+  "email": "anand@example.com",
+  "departmentId": 1
+}
+
+GET http://localhost:8080/api/employees?page=0&size=10&sort=name,asc
+
+DELETE http://localhost:8080/api/employees/10</code></pre>
+      <h3 id="customer-product-e2e">Use case 2: Customer and Product</h3>
+      <p>
+        Customers and products are usually separate aggregates. A product
+        service can create, update, search, and delete products, while a
+        customer service owns customer email uniqueness and profile rules.
+      </p>
+      <pre class="spring-code"><code>@Repository
+interface ProductRepository extends JpaRepository&lt;Product, Long&gt; {
+    Page&lt;Product&gt; findByNameContainingIgnoreCase(
+            String name, Pageable pageable);
+}
+
+@Service
+class ProductService {
+    private final ProductRepository products;
+
+    ProductService(ProductRepository products) {
+        this.products = products;
+    }
+
+    Product create(Product product) {
+        return products.save(product);
+    }
+
+    Page&lt;Product&gt; search(String name, Pageable pageable) {
+        return products.findByNameContainingIgnoreCase(name, pageable);
+    }
+
+    Product update(Long id, Product changes) {
+        Product current = products.findById(id)
+                .orElseThrow(ProductNotFoundException::new);
+        current.setName(changes.getName());
+        current.setPrice(changes.getPrice());
+        current.setStockQuantity(changes.getStockQuantity());
+        return products.save(current);
+    }
+}</code></pre>
+      <pre class="spring-code"><code>POST   /api/products
+GET    /api/products?name=laptop&page=0&size=20
+GET    /api/products/5
+PUT    /api/products/5
+DELETE /api/products/5
+
+POST   /api/customers
+GET    /api/customers/20
+PUT    /api/customers/20
+DELETE /api/customers/20</code></pre>
+      <h3 id="postgresql-e2e">Use case 3: PostgreSQL deployment</h3>
+      <p>
+        The employee, department, customer, and product code can run against
+        PostgreSQL by adding the driver and activating a production profile.
+      </p>
+      <pre class="spring-code"><code># pom.xml
+&lt;dependency&gt;
+    &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+    &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;
+
+# application-prod.properties
+spring.datasource.url=${POSTGRES_URL}
+spring.datasource.username=${POSTGRES_USER}
+spring.datasource.password=${POSTGRES_PASSWORD}
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.open-in-view=false
+spring.flyway.enabled=true</code></pre>
+      <pre
+        class="spring-code"
+      ><code>java -jar order-service.jar --spring.profiles.active=prod
+
+curl -X POST http://localhost:8080/api/products +  -H "Content-Type: application/json" +  -d '{"name":"Laptop","price":75000,"stockQuantity":12}'</code></pre>
+      <h3 id="mysql-e2e">Use case 4: MySQL deployment</h3>
+      <p>
+        MySQL uses the same entity and repository code. Change the runtime
+        driver and profile properties, then run the same REST requests.
+      </p>
+      <pre class="spring-code"><code># pom.xml
+&lt;dependency&gt;
+    &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+    &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;
+
+# application-mysql.properties
+spring.datasource.url=jdbc:mysql://localhost:3306/orders?serverTimezone=UTC
+spring.datasource.username=${MYSQL_USER}
+spring.datasource.password=${MYSQL_PASSWORD}
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.open-in-view=false</code></pre>
+      <pre
+        class="spring-code"
+      ><code>java -jar order-service.jar --spring.profiles.active=mysql
+
+curl http://localhost:8080/api/employees?page=0&size=10</code></pre>
+      <h3 id="mongodb-e2e">Use case 5: MongoDB product catalog</h3>
+      <p>
+        Use MongoDB when product attributes vary by category or when a
+        document-shaped catalog is more natural than a fixed relational schema.
+        This flow uses a document, Mongo repository, service, and controller.
+      </p>
+      <pre class="spring-code"><code>@Document("products")
+record ProductDocument(
+        @Id String id,
+        String name,
+        BigDecimal price,
+        Map&lt;String, Object&gt; attributes) { }
+
+interface ProductMongoRepository
+        extends MongoRepository&lt;ProductDocument, String&gt; {
+    List&lt;ProductDocument&gt; findByNameContainingIgnoreCase(String name);
+}
+
+@RestController
+@RequestMapping("/api/catalog/products")
+class ProductCatalogController {
+    private final ProductMongoRepository products;
+
+    @GetMapping
+    List&lt;ProductDocument&gt; search(
+            @RequestParam String name) {
+        return products.findByNameContainingIgnoreCase(name);
+    }
+
+    @PostMapping
+    ProductDocument create(@RequestBody ProductDocument product) {
+        return products.save(product);
+    }
+}</code></pre>
+      <pre class="spring-code"><code># application-mongo.properties
+spring.data.mongodb.uri=${MONGODB_URI:mongodb://localhost:27017/catalog}
+
+curl -X POST http://localhost:8080/api/catalog/products +  -H "Content-Type: application/json" +  -d '{"name":"Laptop","price":75000,
+       "attributes":{"ram":"16GB","screen":"15 inch"}}'
+
+curl "http://localhost:8080/api/catalog/products?name=laptop"</code></pre>
+      <div class="spring-callout">
+        <strong>Database choice:</strong> Use PostgreSQL or MySQL for strongly
+        relational employee, department, customer, order, and inventory data.
+        Use MongoDB for flexible documents such as product catalogs and event
+        records. Do not use JPA annotations on MongoDB documents.
+      </div>
+      <h2 id="mongodb-end-to-end">MongoDB end-to-end example</h2>
+      <p>
+        In this example, we build a product catalog API. A request enters the
+        controller, the service applies business rules, the repository talks to
+        MongoDB, and the saved document is returned as JSON.
+      </p>
+      <div class="concept-diagram">
+        <figcaption>MongoDB request flow</figcaption>
+        <div class="flowchart">
+          <div class="flowchart-node">POST /api/products</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">ProductController</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">ProductService</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">ProductMongoRepository</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node result">products collection</div>
+        </div>
+      </div>
+      <h3 id="mongodb-database-structure">MongoDB database structure</h3>
+      <p>
+        MongoDB does not use tables and rows in the relational sense. It uses a
+        database, collections, and documents:
+      </p>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Relational idea</th>
+              <th>MongoDB equivalent</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Database</td>
+              <td>Database</td>
+              <td><code>catalog</code></td>
+            </tr>
+            <tr>
+              <td>Table</td>
+              <td>Collection</td>
+              <td><code>products</code></td>
+            </tr>
+            <tr>
+              <td>Row</td>
+              <td>Document</td>
+              <td>One product JSON document</td>
+            </tr>
+            <tr>
+              <td>Column</td>
+              <td>Document field</td>
+              <td><code>price</code>, <code>attributes</code></td>
+            </tr>
+            <tr>
+              <td>Primary key</td>
+              <td><code>_id</code></td>
+              <td>MongoDB-generated ObjectId</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <pre class="spring-code"><code>catalog
+└── products
+    └── {
+          "_id": "65f1a8...",
+          "name": "Laptop",
+          "price": 75000,
+          "stockQuantity": 12,
+          "attributes": {
+            "ram": "16GB",
+            "screen": "15 inch"
+          }
+        }</code></pre>
+      <h3 id="mongodb-document">1. Create the document model</h3>
+      <pre class="spring-code"><code>@Document(collection = "products")
+public class ProductDocument {
+    @Id
+    private String id;
+
+    @NotBlank
+    private String name;
+
+    @Positive
+    private BigDecimal price;
+
+    @PositiveOrZero
+    private int stockQuantity;
+
+    private Map&lt;String, Object&gt; attributes = new HashMap&lt;&gt;();
+
+    // constructors, getters, and setters
+}</code></pre>
+      <p>
+        <code>@Document</code> maps the Java class to the
+        <code>products</code> collection. MongoDB can store different fields in
+        different documents, but a consistent document shape is easier to
+        validate and maintain.
+      </p>
+      <h3 id="mongodb-repository">2. Create the repository</h3>
+      <pre class="spring-code"><code>public interface ProductMongoRepository
+        extends MongoRepository&lt;ProductDocument, String&gt; {
+
+    Page&lt;ProductDocument&gt; findByNameContainingIgnoreCase(
+            String name, Pageable pageable);
+
+    List&lt;ProductDocument&gt; findByStockQuantityLessThan(int quantity);
+}</code></pre>
+      <p>
+        Spring Data creates the repository implementation. The first method
+        searches product names and supports pagination; the second finds
+        products that need restocking.
+      </p>
+      <h3 id="mongodb-service">3. Create the service</h3>
+      <pre class="spring-code"><code>@Service
+public class ProductCatalogService {
+    private final ProductMongoRepository repository;
+
+    public ProductCatalogService(ProductMongoRepository repository) {
+        this.repository = repository;
+    }
+
+    public ProductDocument create(ProductDocument product) {
+        return repository.save(product);
+    }
+
+    public ProductDocument findById(String id) {
+        return repository.findById(id)
+                .orElseThrow(ProductNotFoundException::new);
+    }
+
+    public Page&lt;ProductDocument&gt; search(
+            String name, Pageable pageable) {
+        return repository.findByNameContainingIgnoreCase(name, pageable);
+    }
+
+    public ProductDocument update(
+            String id, ProductDocument changes) {
+        ProductDocument current = findById(id);
+        current.setName(changes.getName());
+        current.setPrice(changes.getPrice());
+        current.setStockQuantity(changes.getStockQuantity());
+        current.setAttributes(changes.getAttributes());
+        return repository.save(current);
+    }
+
+    public void delete(String id) {
+        if (!repository.existsById(id)) {
+            throw new ProductNotFoundException();
+        }
+        repository.deleteById(id);
+    }
+}</code></pre>
+      <h3 id="mongodb-controller">4. Create the controller</h3>
+      <pre class="spring-code"><code>@RestController
+@RequestMapping("/api/mongo/products")
+public class ProductCatalogController {
+    private final ProductCatalogService service;
+
+    public ProductCatalogController(
+            ProductCatalogService service) {
+        this.service = service;
+    }
+
+    @PostMapping
+    ResponseEntity&lt;ProductDocument&gt; create(
+            @Valid @RequestBody ProductDocument product) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(service.create(product));
+    }
+
+    @GetMapping("/{id}")
+    ProductDocument find(@PathVariable String id) {
+        return service.findById(id);
+    }
+
+    @GetMapping
+    Page&lt;ProductDocument&gt; search(
+            @RequestParam(defaultValue = "") String name,
+            @PageableDefault(size = 20) Pageable pageable) {
+        return service.search(name, pageable);
+    }
+
+    @PutMapping("/{id}")
+    ProductDocument update(@PathVariable String id,
+                           @Valid @RequestBody ProductDocument product) {
+        return service.update(id, product);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void delete(@PathVariable String id) {
+        service.delete(id);
+    }
+}</code></pre>
+      <h3 id="mongodb-configuration">5. Configure the connection</h3>
+      <pre class="spring-code"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-mongodb&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+# application-mongo.properties
+spring.data.mongodb.uri=${MONGODB_URI:mongodb://localhost:27017/catalog}
+spring.data.mongodb.auto-index-creation=false</code></pre>
+      <p>
+        The URI can point to local MongoDB, Docker, MongoDB Atlas, or a managed
+        cloud deployment. Keep credentials in environment variables or a secret
+        manager.
+      </p>
+      <h3 id="mongodb-crud-testing">6. Test all CRUD operations</h3>
+      <pre class="spring-code"><code># Create
+curl -X POST http://localhost:8080/api/mongo/products +  -H "Content-Type: application/json" +  -d '{"name":"Laptop","price":75000,"stockQuantity":12,
+       "attributes":{"ram":"16GB","screen":"15 inch"}}'
+
+# Read one
+curl http://localhost:8080/api/mongo/products/65f1a8
+
+# Search with pagination
+curl "http://localhost:8080/api/mongo/products?name=laptop&page=0&size=10"
+
+# Update
+curl -X PUT http://localhost:8080/api/mongo/products/65f1a8 +  -H "Content-Type: application/json" +  -d '{"name":"Business Laptop","price":82000,"stockQuantity":8}'
+
+# Delete
+curl -X DELETE http://localhost:8080/api/mongo/products/65f1a8</code></pre>
+      <p>
+        The repository converts these operations into MongoDB insert, find,
+        update, and delete commands. The controller does not know how MongoDB
+        stores the document, and the service remains the right place for
+        validation and business rules.
+      </p>
+      <h2 id="derived-query-methods">Derived Query Methods</h2>
+      <p>
+        Spring Data JPA reads the repository method name and builds a query from
+        it. This avoids boilerplate for straightforward lookups.
+      </p>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Method pattern</th>
+              <th>Behaves like</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>findByLastName(String lastName)</code></td>
+              <td><code>WHERE last_name = ?</code></td>
+            </tr>
+            <tr>
+              <td>
+                <code>findByLastNameAndFirstName(String a, String b)</code>
+              </td>
+              <td><code>WHERE last_name = ? AND first_name = ?</code></td>
+            </tr>
+            <tr>
+              <td><code>findByNameContainingIgnoreCase(String name)</code></td>
+              <td><code>WHERE LOWER(name) LIKE LOWER('%?%')</code></td>
+            </tr>
+            <tr>
+              <td><code>findByPriceGreaterThan(BigDecimal price)</code></td>
+              <td><code>WHERE price &gt; ?</code></td>
+            </tr>
+            <tr>
+              <td><code>existsByEmail(String email)</code></td>
+              <td><code>SELECT COUNT(*) &gt; 0 ... WHERE email = ?</code></td>
+            </tr>
+            <tr>
+              <td><code>countByStatus(String status)</code></td>
+              <td><code>SELECT COUNT(*) ... WHERE status = ?</code></td>
+            </tr>
+            <tr>
+              <td><code>deleteByStatus(String status)</code></td>
+              <td><code>DELETE ... WHERE status = ?</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        These patterns compose well for simple filters, but once you need joins,
+        subqueries, aggregation, or conditional logic that does not map cleanly
+        to a method name, switch to <code>@Query</code>.
+      </p>
+
+      <h2 id="query-annotation">Using @Query</h2>
+      <p>
+        Reach for <code>@Query</code> when the query is too complex for a
+        derived method name, when you want a specific projection instead of the
+        full entity, or when you need native SQL features that JPQL does not
+        expose (window functions, database-specific syntax, hints).
+      </p>
+      <pre
+        class="spring-code"
+      ><code>// JPQL - works against entity names and fields, database-independent
+@Query("select o from Order o where o.status = :status order by o.createdDate desc")
+List&lt;Order&gt; findRecentByStatus(@Param("status") String status);
+
+// Native SQL - works against actual table and column names
+@Query(value = "select * from orders where total_amount &gt; :min", nativeQuery = true)
+List&lt;Order&gt; findAboveAmount(@Param("min") BigDecimal min);</code></pre>
+      <p>
+        Prefer JPQL when possible because it stays portable across databases and
+        understands entity relationships. Fall back to native SQL only when you
+        need a database-specific feature or a hand-tuned query.
+      </p>
+
+      <h2 id="pagination-and-sorting">Pagination and Sorting</h2>
+      <p>
+        Loading an entire table for a listing page does not scale.
+        <code>Pageable</code> and <code>Sort</code> let the repository ask the
+        database for one page of rows in a given order, and
+        <code>Page&lt;T&gt;</code> carries back the content plus paging
+        metadata.
+      </p>
+      <pre
+        class="spring-code"
+      ><code>Pageable pageable = PageRequest.of(0, 20, Sort.by("name").ascending());
+Page&lt;Product&gt; page = productRepository.findAll(pageable);
+
+page.getContent();       // the 20 products on this page
+page.getTotalElements(); // total rows across all pages
+page.getTotalPages();    // total number of pages</code></pre>
+      <p>
+        Any repository method can also accept a trailing
+        <code>Pageable</code> or <code>Sort</code> parameter, including derived
+        query methods, e.g.
+        <code>findByStatus(String status, Pageable pageable)</code>.
+      </p>
+
+      <h3 id="pagination-sorting-use-case">
+        End-to-end example: employee directory
+      </h3>
+      <p>
+        Imagine an HR application with thousands of employees. The employee
+        directory must show 20 employees at a time and allow users to sort by
+        name, joining date, or salary. Returning every employee in one response
+        wastes memory and makes the page slow. The API should ask the database
+        for only the requested slice of data.
+      </p>
+
+      <div class="concept-diagram">
+        <figcaption>Request flow</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>Client</strong><small>page=0&amp;size=20</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Controller</strong><small>validates request</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Service</strong><small>creates Pageable</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Database</strong><small>LIMIT/OFFSET + ORDER BY</small>
+          </div>
+        </div>
+      </div>
+
+      <h3 id="pagination-entity">1. Create the employee entity</h3>
+      <pre class="spring-code"><code>@Entity
+@Table(name = "employees")
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private LocalDate joiningDate;
+
+    @Column(nullable = false, precision = 12, scale = 2)
+    private BigDecimal salary;
+
+    // constructors, getters, and setters
+}</code></pre>
+
+      <h3 id="pagination-repository">2. Add repository methods</h3>
+      <p>
+        Extending <code>JpaRepository</code> gives the application the standard
+        <code>findAll(Pageable)</code> method. A derived query can also be
+        paginated by adding <code>Pageable</code> as the last parameter.
+      </p>
+      <pre class="spring-code"><code>public interface EmployeeRepository
+        extends JpaRepository&lt;Employee, Long&gt; {
+
+    Page&lt;Employee&gt; findByDepartmentId(
+            Long departmentId,
+            Pageable pageable);
+
+    Page&lt;Employee&gt; findByNameContainingIgnoreCase(
+            String name,
+            Pageable pageable);
+}</code></pre>
+
+      <h3 id="pagination-response">3. Return a small API response</h3>
+      <p>
+        Returning the JPA <code>Page</code> object directly can expose internal
+        entity details. A response DTO keeps the API contract stable and sends
+        only the fields required by the employee list.
+      </p>
+      <pre class="spring-code"><code>public record EmployeeSummary(
+        Long id,
+        String name,
+        String email,
+        LocalDate joiningDate,
+        BigDecimal salary) {
+}
+
+public record PageResponse&lt;T&gt;(
+        List&lt;T&gt; content,
+        int page,
+        int size,
+        long totalElements,
+        int totalPages,
+        boolean first,
+        boolean last,
+        String sortBy,
+        String direction) {
+}</code></pre>
+
+      <h3 id="pagination-service">4. Implement the service</h3>
+      <p>
+        Page numbers are zero-based: <code>page=0</code> is the first page. The
+        service caps the page size and allows only approved fields for sorting.
+        This prevents clients from requesting an expensive unlimited result or
+        sorting by an unexpected database property.
+      </p>
+      <pre class="spring-code"><code>@Service
+@Transactional(readOnly = true)
+public class EmployeeService {
+
+    private static final int MAX_PAGE_SIZE = 100;
+
+    private static final Set&lt;String&gt; ALLOWED_SORT_FIELDS = Set.of(
+            "name", "joiningDate", "salary");
+
+    private final EmployeeRepository employeeRepository;
+
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
+
+    public PageResponse&lt;EmployeeSummary&gt; search(
+            int page,
+            int size,
+            String sortBy,
+            String direction,
+            String name) {
+
+        if (page &lt; 0) {
+            throw new IllegalArgumentException("Page cannot be negative");
+        }
+
+        int safeSize = Math.min(Math.max(size, 1), MAX_PAGE_SIZE);
+        String safeSortBy = ALLOWED_SORT_FIELDS.contains(sortBy)
+                ? sortBy : "name";
+
+        Sort.Direction sortDirection =
+                "desc".equalsIgnoreCase(direction)
+                        ? Sort.Direction.DESC
+                        : Sort.Direction.ASC;
+
+        Pageable pageable = PageRequest.of(
+                page,
+                safeSize,
+                Sort.by(sortDirection, safeSortBy));
+
+        Page&lt;Employee&gt; employees = name == null || name.isBlank()
+                ? employeeRepository.findAll(pageable)
+                : employeeRepository
+                        .findByNameContainingIgnoreCase(name, pageable);
+
+        Page&lt;EmployeeSummary&gt; summaries = employees.map(employee -&gt;
+                new EmployeeSummary(
+                        employee.getId(),
+                        employee.getName(),
+                        employee.getEmail(),
+                        employee.getJoiningDate(),
+                        employee.getSalary()));
+
+        return new PageResponse&lt;&gt;(
+                summaries.getContent(),
+                summaries.getNumber(),
+                summaries.getSize(),
+                summaries.getTotalElements(),
+                summaries.getTotalPages(),
+                summaries.isFirst(),
+                summaries.isLast(),
+                safeSortBy,
+                sortDirection.name());
+    }
+}</code></pre>
+
+      <h3 id="pagination-controller">5. Create the REST controller</h3>
+      <pre class="spring-code"><code>@RestController
+@RequestMapping("/api/employees")
+public class EmployeeController {
+
+    private final EmployeeService employeeService;
+
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
+    }
+
+    @GetMapping
+    public PageResponse&lt;EmployeeSummary&gt; search(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(defaultValue = "name") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction,
+            @RequestParam(required = false) String name) {
+
+        return employeeService.search(
+                page, size, sortBy, direction, name);
+    }
+}</code></pre>
+
+      <h3 id="pagination-requests">6. Test the API</h3>
+      <p>Get the first page, containing up to 20 employees:</p>
+      <pre
+        class="spring-code"
+      ><code>GET /api/employees?page=0&amp;size=20&amp;sortBy=name&amp;direction=asc</code></pre>
+      <p>Get the third page, sorted by highest salary first:</p>
+      <pre
+        class="spring-code"
+      ><code>GET /api/employees?page=2&amp;size=10&amp;sortBy=salary&amp;direction=desc</code></pre>
+      <p>Search employees whose names contain <code>an</code>:</p>
+      <pre
+        class="spring-code"
+      ><code>GET /api/employees?name=an&amp;page=0&amp;size=20&amp;sortBy=joiningDate&amp;direction=desc</code></pre>
+
+      <h3 id="pagination-response-example">Example JSON response</h3>
+      <pre class="spring-code"><code>{
+  "content": [
+    {
+      "id": 42,
+      "name": "Anand Kumar",
+      "email": "anand@example.com",
+      "joiningDate": "2024-06-10",
+      "salary": 85000.00
+    }
+  ],
+  "page": 0,
+  "size": 20,
+  "totalElements": 247,
+  "totalPages": 13,
+  "first": true,
+  "last": false,
+  "sortBy": "name",
+  "direction": "ASC"
+}</code></pre>
+
+      <h3 id="pagination-sql">What SQL does Hibernate execute?</h3>
+      <p>
+        For a page request, Hibernate normally sends a data query with
+        <code>ORDER BY</code>, <code>LIMIT</code>, and <code>OFFSET</code>, plus
+        a count query to calculate the metadata.
+      </p>
+      <pre
+        class="spring-code"
+      ><code>select e.id, e.name, e.email, e.joining_date, e.salary
+from employees e
+order by e.name asc
+limit 20 offset 0;
+
+select count(e.id)
+from employees e;</code></pre>
+
+      <h3 id="pagination-best-practices">Production best practices</h3>
+      <ul>
+        <li>
+          Use a stable sort, especially when records can be inserted during
+          paging. Add <code>id</code> as a tie-breaker when needed.
+        </li>
+        <li>Set a maximum page size such as 50 or 100.</li>
+        <li>
+          Whitelist sortable fields instead of passing arbitrary property names
+          to <code>Sort</code>.
+        </li>
+        <li>
+          Add database indexes for frequently filtered and sorted columns such
+          as <code>name</code>, <code>department_id</code>, and
+          <code>joining_date</code>.
+        </li>
+        <li>
+          Use <code>Slice&lt;T&gt;</code> when total-page counts are
+          unnecessary; it avoids the count query.
+        </li>
+        <li>
+          Use keyset or cursor pagination for very large tables where high
+          offset values become slow.
+        </li>
+        <li>Use DTO projections when the list needs only a few columns.</li>
+      </ul>
+
+      <h2 id="fetch-strategies">Lazy loading and eager loading</h2>
+      <p>
+        <strong>Lazy loading</strong> loads an association only when code
+        accesses it. It reduces the first query size and is usually the safer
+        default for collections. <strong>Eager loading</strong> loads the
+        association immediately, which can be useful for a small always-needed
+        relationship but can create large joins and unexpected queries.
+      </p>
+      <pre class="spring-code"><code>@ManyToOne(fetch = FetchType.LAZY)
+private Department department;
+
+@OneToMany(fetch = FetchType.LAZY, mappedBy = "department")
+private List&lt;Employee&gt; employees;
+
+// Fetch only for this query when the API needs the department
+@EntityGraph(attributePaths = "department")
+Optional&lt;Employee&gt; findWithDepartmentById(Long id);</code></pre>
+      <p>
+        Do not switch every relationship to <code>EAGER</code> to fix a lazy
+        loading exception. Fetch the required graph in a repository query, map
+        the result inside a transaction, and return a DTO.
+      </p>
+      <h2 id="pagination-api">Pagination in a REST API</h2>
+      <pre class="spring-code"><code>@GetMapping
+Page&lt;EmployeeResponse&gt; findEmployees(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "20") int size,
+        @RequestParam(defaultValue = "name") String sort) {
+    Pageable pageable = PageRequest.of(
+            page, Math.min(size, 100), Sort.by(sort).ascending());
+    return employeeService.findAll(pageable);
+}</code></pre>
+      <p>
+        Limit the maximum page size, whitelist sortable fields, and return
+        metadata such as total elements, total pages, current page, and page
+        size. For very large tables, consider keyset pagination instead of
+        increasingly expensive offsets.
+      </p>
+      <h2 id="n-plus-one">The N+1 Query Problem</h2>
+      <p>
+        The N+1 problem happens when you fetch a list of N parent rows, and
+        then, because an association is lazily loaded, the application triggers
+        one extra query <em>per row</em> to fetch each parent&rsquo;s related
+        data &mdash; N+1 queries instead of one. It is easy to miss in
+        development with small datasets and painful in production with large
+        ones.
+      </p>
+      <h3 id="n-plus-one-cause">Why does N+1 happen?</h3>
+      <p>
+        Suppose the database contains 100 orders. The application first runs one
+        query to load the orders. A loop then calls
+        <code>order.getItems()</code> for every order. Because the collection is
+        lazy, Hibernate sends one additional query for each order:
+      </p>
+      <pre class="spring-code"><code>-- Query 1: load the parent rows
+select * from orders;
+
+-- Query 2 through Query 101: one query for every order
+select * from order_items where order_id = 1;
+select * from order_items where order_id = 2;
+select * from order_items where order_id = 3;
+-- ... repeated for every order</code></pre>
+      <p>
+        The result is <strong>1 + N queries</strong>. With 100 orders, the
+        application may execute 101 queries instead of one or two. Each query
+        adds database network latency, connection-pool usage, CPU work, and
+        object-mapping overhead.
+      </p>
+      <h3 id="n-plus-one-example">Typical code that causes it</h3>
+      <pre class="spring-code"><code>@Transactional(readOnly = true)
+List&lt;OrderResponse&gt; listOrders() {
+    List&lt;Order&gt; orders = orderRepository.findAll();
+
+    return orders.stream()
+            .map(order -&gt; new OrderResponse(
+                    order.getId(),
+                    order.getItems().size())) // lazy query per order
+            .toList();
+}</code></pre>
+      <p>
+        The problem is not lazy loading by itself. Lazy loading is useful when
+        related data is not always needed. The problem occurs when lazy data is
+        accessed repeatedly inside a loop or after the persistence context has
+        closed.
+      </p>
+      <div class="concept-diagram">
+        <figcaption>How the N+1 problem happens</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>1 query</strong><small>Load all orders</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Loop over orders</strong
+            ><small>Access order.getItems()</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>N queries</strong><small>One per order, lazily</small>
+          </div>
+        </div>
+      </div>
+      <p>Two common fixes:</p>
+      <pre
+        class="spring-code"
+      ><code>// 1. JOIN FETCH in JPQL - loads the association in the same query
+@Query("select o from Order o join fetch o.items where o.status = :status")
+List&lt;Order&gt; findWithItemsByStatus(@Param("status") String status);
+
+// 2. @EntityGraph - declare which associations to fetch eagerly for this call
+@EntityGraph(attributePaths = "items")
+List&lt;Order&gt; findByStatus(String status);</code></pre>
+      <p>
+        Both approaches turn the N extra queries into a single query with a
+        join. <code>JOIN FETCH</code> is explicit and lives with the query;
+        <code>@EntityGraph</code> keeps the derived query method but lets you
+        opt in to eager loading only for that call, without changing the
+        entity&rsquo;s default fetch type.
+      </p>
+      <h3 id="n-plus-one-solutions">Ways to resolve N+1</h3>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Solution</th>
+              <th>How it works</th>
+              <th>Advantages</th>
+              <th>Disadvantages</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>JOIN FETCH</code></td>
+              <td>Fetches the relationship in a JPQL join.</td>
+              <td>Explicit, fast, and easy to understand.</td>
+              <td>
+                Can duplicate parent rows and complicate pagination on
+                collections.
+              </td>
+            </tr>
+            <tr>
+              <td><code>@EntityGraph</code></td>
+              <td>
+                Defines the relationships to fetch for one repository method.
+              </td>
+              <td>Reusable and keeps the entity default lazy.</td>
+              <td>Large graphs can still create expensive joins.</td>
+            </tr>
+            <tr>
+              <td>DTO projection</td>
+              <td>Selects only the fields required by the response.</td>
+              <td>
+                Small responses, efficient SQL, no lazy serialization issue.
+              </td>
+              <td>Requires query and DTO maintenance for each view.</td>
+            </tr>
+            <tr>
+              <td>Batch fetching</td>
+              <td>Groups lazy loads into fewer <code>IN</code> queries.</td>
+              <td>Useful when relationships are optional or large.</td>
+              <td>Usually produces more than one query and needs tuning.</td>
+            </tr>
+            <tr>
+              <td>Eager loading</td>
+              <td>Loads the relationship whenever the entity is loaded.</td>
+              <td>Simple for a small, always-required relationship.</td>
+              <td>
+                Can cause over-fetching and new performance problems globally.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 id="n-plus-one-dto">DTO projection example</h3>
+      <p>
+        A DTO query is often the best choice for an API list because it selects
+        exactly the columns required by the response.
+      </p>
+      <pre class="spring-code"><code>public record OrderSummary(
+        Long id, String customerName, long itemCount) { }
+
+@Query("""
+       select new com.javacodeex.orders.OrderSummary(
+           o.id, o.customerName, count(i))
+       from Order o
+       left join o.items i
+       group by o.id, o.customerName
+       """)
+Page&lt;OrderSummary&gt; findOrderSummaries(Pageable pageable);</code></pre>
+      <h3 id="n-plus-one-batch">Batch fetching example</h3>
+      <p>
+        Batch fetching keeps lazy loading but asks Hibernate to load several
+        relationships together. The exact batch size should be measured for your
+        workload.
+      </p>
+      <pre
+        class="spring-code"
+      ><code>@OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+@BatchSize(size = 25)
+private List&lt;OrderItem&gt; items;
+
+# application.properties
+spring.jpa.properties.hibernate.default_batch_fetch_size=25</code></pre>
+      <h3 id="n-plus-one-detection">How to detect N+1</h3>
+      <ul class="lh-lg">
+        <li>Enable SQL logging temporarily in development.</li>
+        <li>Count SQL statements in repository integration tests.</li>
+        <li>
+          Use Hibernate statistics or a JDBC proxy such as datasource-proxy.
+        </li>
+        <li>
+          Inspect slow requests with application metrics and database
+          monitoring.
+        </li>
+        <li>
+          Check list endpoints with realistic data, not only one or two rows.
+        </li>
+      </ul>
+      <pre
+        class="spring-code"
+      ><code># Development only: do not use verbose SQL logging as a production default
+spring.jpa.show-sql=true
+logging.level.org.hibernate.SQL=DEBUG
+logging.level.org.hibernate.orm.jdbc.bind=TRACE</code></pre>
+      <div class="spring-callout">
+        <strong>Best practice:</strong> Keep relationships lazy by default,
+        choose the fetch plan per use case, return DTOs from API boundaries, and
+        verify query counts with realistic integration tests. Changing every
+        relationship to eager loading hides the symptom but can make the whole
+        application slower.
+      </div>
+
+      <h2 id="postgresql-configuration">PostgreSQL configuration</h2>
+      <p>
+        PostgreSQL is a strong default for production relational applications.
+        Use environment variables for credentials and let Flyway or Liquibase
+        manage schema changes.
+      </p>
+      <pre class="spring-code"><code># application-prod.properties
+spring.datasource.url=${POSTGRES_URL:jdbc:postgresql://localhost:5432/orders}
+spring.datasource.username=${POSTGRES_USER:orders_app}
+spring.datasource.password=${POSTGRES_PASSWORD}
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto=validate
+spring.flyway.enabled=true</code></pre>
+      <h2 id="mysql-configuration">MySQL configuration</h2>
+      <p>
+        MySQL uses the same JPA entities and repository interfaces. Normally
+        only the JDBC URL, driver, dialect, and a few database settings change.
+      </p>
+      <pre class="spring-code"><code># application-mysql.properties
+spring.datasource.url=jdbc:mysql://localhost:3306/orders?serverTimezone=UTC
+spring.datasource.username=orders_app
+spring.datasource.password=${MYSQL_PASSWORD}
+spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
+spring.jpa.hibernate.ddl-auto=validate</code></pre>
+      <p>
+        Keep database-specific differences in profiles. The controller, service,
+        entity, and repository code should remain portable whenever possible.
+      </p>
+      <h2 id="multiple-relational-databases">
+        Using multiple relational databases
+      </h2>
+      <p>
+        Supporting PostgreSQL and MySQL as alternative deployments is simple:
+        activate a different profile. Connecting to both at the same time is a
+        separate multi-data-source design requiring two data sources, two
+        entity-manager factories, and separate repository packages.
+      </p>
+      <pre class="spring-code"><code># Run with PostgreSQL
+java -jar order-service.jar --spring.profiles.active=prod
+
+# Run the same application with MySQL
+java -jar order-service.jar --spring.profiles.active=mysql</code></pre>
+      <h2 id="mongodb-example">MongoDB with Spring Data MongoDB</h2>
+      <p>
+        MongoDB is not a JPA database. It stores documents rather than
+        relational tables, so use Spring Data MongoDB repositories and
+        <code>@Document</code> instead of <code>@Entity</code>. MongoDB is a
+        good fit for flexible product catalogs, activity events, or document
+        shaped customer preferences.
+      </p>
+      <pre class="spring-code"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-mongodb&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+# application-mongo.properties
+spring.data.mongodb.uri=${MONGODB_URI:mongodb://localhost:27017/orders}</code></pre>
+      <pre class="spring-code"><code>@Document("products")
+public class ProductDocument {
+    @Id
+    private String id;
+    private String name;
+    private BigDecimal price;
+    private Map&lt;String, Object&gt; attributes;
+}
+
+public interface ProductMongoRepository
+        extends MongoRepository&lt;ProductDocument, String&gt; {
+    List&lt;ProductDocument&gt; findByNameContainingIgnoreCase(String name);
+}</code></pre>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Database</th>
+              <th>Spring Boot module</th>
+              <th>Modeling style</th>
+              <th>Good examples</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>PostgreSQL</td>
+              <td>Spring Data JPA + PostgreSQL driver</td>
+              <td>Entities and relationships</td>
+              <td>Employees, departments, orders</td>
+            </tr>
+            <tr>
+              <td>MySQL</td>
+              <td>Spring Data JPA + MySQL driver</td>
+              <td>Entities and relationships</td>
+              <td>Customers, products, inventory</td>
+            </tr>
+            <tr>
+              <td>MongoDB</td>
+              <td>Spring Data MongoDB</td>
+              <td>Documents and collections</td>
+              <td>Product attributes, events, catalogs</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h2 id="auditing-and-schema">Auditing and Schema Management</h2>
+      <p>
+        Spring Data can stamp entities with creation and modification metadata
+        automatically once auditing is enabled with
+        <code>@EnableJpaAuditing</code> on a configuration class.
+      </p>
+      <pre
+        class="spring-code"
+      ><code>@EntityListeners(AuditingEntityListener.class)
+@Entity
+class Order {
+    @CreatedDate
+    private Instant createdDate;
+
+    @LastModifiedDate
+    private Instant lastModifiedDate;
+}</code></pre>
+      <div class="spring-callout">
+        <strong>Warning:</strong> Hibernate&rsquo;s
+        <code>ddl-auto=update</code> is convenient for local development, but it
+        should not manage your schema in production. Use a versioned migration
+        tool such as Flyway or Liquibase so schema changes are reviewed,
+        repeatable, and rollback-friendly.
+      </div>
+      <a class="btn btn-success" href="security-comprehensive.html"
+        >Next: Spring Security &rarr;</a
+      >
+    </main>
+    <footer class="py-4 text-center">
+      <p class="mb-0">&copy; 2026 Java Codeex</p>
+    </footer>
+    <script src="./springboot-nav.js"></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

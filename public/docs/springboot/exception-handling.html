@@ -1,0 +1,402 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Spring Boot Exception Handling | Java Codeex</title>
+    <link rel="icon" href="../icons/javacodeex.jpg" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../site-theme.css" />
+    <link rel="stylesheet" href="./springboot.css" />
+  </head>
+  <body>
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" /></a>
+        <a class="topic-link" href="./index.html#basics">Overview</a>
+        <a class="topic-link" href="https://javacodeex.com/springboot/project-structure.html"
+          >Project Structure</a
+        >
+        <a class="topic-link" href="./aop.html">AOP</a>
+        <a class="topic-link" href="./index.html#data-jpa">Data JPA</a>
+        <a class="topic-link" href="./index.html#security">Security</a>
+        <a class="topic-link" href="./index.html#exception-handling"
+          >Global Exception Handling</a
+        >
+        <a class="topic-link" href="./index.html#rest-api">REST APIs</a>
+        <a class="topic-link" href="./validation.html">Validation</a>
+        <a class="topic-link" href="./index.html#testing">Testing</a>
+        <a class="topic-link" href="./index.html#actuator">Actuator</a>
+        <a class="topic-link" href="./index.html#deployment">Deployment</a>
+      </div>
+    </nav>
+    <section class="spring-hero">
+      <div class="container-xl">
+        <span class="spring-pill">Java Codeex</span>
+        <h1 class="mt-3">Exception Handling</h1>
+        <p class="lead">
+          Turn failures into predictable, useful HTTP responses.
+        </p>
+      </div>
+    </section>
+    <main class="container-xl py-5">
+      <p>
+        In a real REST API, failures are normal: a product may not exist, a
+        request may contain invalid data, or a database may be temporarily
+        unavailable. Global exception handling converts these failures into
+        clear, consistent JSON responses for the frontend or API client.
+      </p>
+
+      <div class="concept-diagram">
+        <figcaption>Request and exception flow</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>Client</strong><small>REST request</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Controller</strong><small>Calls service</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Service</strong><small>Throws meaningful exception</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Advice</strong><small>Returns safe error JSON</small>
+          </div>
+        </div>
+      </div>
+
+      <h2 id="error-response">Choose the correct HTTP status</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Situation</th>
+              <th>Status</th>
+              <th>Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Invalid JSON or validation failure</td>
+              <td>400 Bad Request</td>
+              <td>Client must correct the request</td>
+            </tr>
+            <tr>
+              <td>Missing or invalid login token</td>
+              <td>401 Unauthorized</td>
+              <td>Authentication is required</td>
+            </tr>
+            <tr>
+              <td>Authenticated user lacks permission</td>
+              <td>403 Forbidden</td>
+              <td>Access is not allowed</td>
+            </tr>
+            <tr>
+              <td>Product or employee does not exist</td>
+              <td>404 Not Found</td>
+              <td>Requested resource is missing</td>
+            </tr>
+            <tr>
+              <td>Duplicate email or business conflict</td>
+              <td>409 Conflict</td>
+              <td>Request conflicts with current data</td>
+            </tr>
+            <tr>
+              <td>Unexpected server or database failure</td>
+              <td>500 Internal Server Error</td>
+              <td>Server failed safely</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="global-handler">What is a global exception handler?</h2>
+      <p>
+        A global handler catches exceptions after they leave a controller and
+        converts them into one predictable response format. Controllers stay
+        focused on successful requests instead of repeating
+        <code>try/catch</code>
+        blocks.
+      </p>
+
+      <h2 id="rest-controller-advice">@RestControllerAdvice</h2>
+      <p>
+        <code>@RestControllerAdvice</code> applies to all REST controllers in
+        the application. It combines controller advice with response-body
+        behavior, so handler methods automatically return JSON.
+      </p>
+      <pre class="spring-code"><code>@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity&lt;ApiError&gt; productNotFound(
+            ProductNotFoundException ex,
+            HttpServletRequest request) {
+
+        ApiError error = new ApiError(
+                Instant.now(),
+                404,
+                "Product Not Found",
+                ex.getMessage(),
+                request.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+}</code></pre>
+
+      <h2 id="api-error-response">Create one consistent error response</h2>
+      <pre class="spring-code"><code>public record ApiError(
+        Instant timestamp,
+        int status,
+        String error,
+        String message,
+        String path) {
+}
+</code></pre>
+      <p>The client always receives the same shape, for example:</p>
+      <pre class="spring-code"><code>{
+  "timestamp": "2026-07-24T10:15:30Z",
+  "status": 404,
+  "error": "Product Not Found",
+  "message": "Product 42 was not found",
+  "path": "/api/products/42"
+}</code></pre>
+
+      <h2 id="exception-handler">@ExceptionHandler</h2>
+      <p>
+        <code>@ExceptionHandler</code> maps one or more exception types to a
+        handler method. Handle specific, expected exceptions first, then use a
+        final generic handler for unexpected failures.
+      </p>
+      <pre class="spring-code"><code>@ExceptionHandler({
+        ProductNotFoundException.class,
+        EmployeeNotFoundException.class
+})
+public ResponseEntity&lt;ApiError&gt; resourceNotFound(
+        RuntimeException ex,
+        HttpServletRequest request) {
+    return error(HttpStatus.NOT_FOUND, "Resource Not Found",
+            ex.getMessage(), request.getRequestURI());
+}</code></pre>
+
+      <h2 id="custom-exceptions">Create business exceptions</h2>
+      <p>
+        A custom exception gives a business failure a clear name. It is better
+        than throwing a generic <code>RuntimeException</code> because the global
+        handler can map it to the correct status code.
+      </p>
+      <pre class="spring-code"><code>public class ProductNotFoundException
+        extends RuntimeException {
+
+    public ProductNotFoundException(Long id) {
+        super("Product " + id + " was not found");
+    }
+}
+
+public class DuplicateEmailException
+        extends RuntimeException {
+
+    public DuplicateEmailException(String email) {
+        super("Email is already registered: " + email);
+    }
+}</code></pre>
+
+      <h2 id="end-to-end-exception-example">End-to-end product API example</h2>
+      <p>
+        This flow loads a product from a repository. If the product is missing,
+        the service throws <code>ProductNotFoundException</code>; the controller
+        does not need to catch it because the advice handles it globally.
+      </p>
+
+      <h3 id="exception-repository">1. Repository</h3>
+      <pre class="spring-code"><code>public interface ProductRepository
+        extends JpaRepository&lt;Product, Long&gt; {
+}
+</code></pre>
+
+      <h3 id="exception-service">2. Service</h3>
+      <pre class="spring-code"><code>@Service
+public class ProductService {
+    private final ProductRepository repository;
+
+    public ProductService(ProductRepository repository) {
+        this.repository = repository;
+    }
+
+    @Transactional(readOnly = true)
+    public Product findById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -&gt; new ProductNotFoundException(id));
+    }
+}
+</code></pre>
+
+      <h3 id="exception-controller">3. REST controller</h3>
+      <pre class="spring-code"><code>@RestController
+@RequestMapping("/api/products")
+public class ProductController {
+    private final ProductService service;
+
+    public ProductController(ProductService service) {
+        this.service = service;
+    }
+
+    @GetMapping("/{id}")
+    public Product findById(@PathVariable Long id) {
+        return service.findById(id);
+    }
+}
+</code></pre>
+
+      <h3 id="exception-handler-complete">4. Complete global handler</h3>
+      <pre class="spring-code"><code>@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity&lt;ApiError&gt; notFound(
+            ProductNotFoundException ex,
+            HttpServletRequest request) {
+        return error(HttpStatus.NOT_FOUND, "Product Not Found",
+                ex.getMessage(), request.getRequestURI());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity&lt;ValidationError&gt; validation(
+            MethodArgumentNotValidException ex) {
+        Map&lt;String, String&gt; fields = new LinkedHashMap&lt;&gt;();
+        ex.getBindingResult().getFieldErrors().forEach(field -&gt;
+                fields.put(field.getField(), field.getDefaultMessage()));
+        return ResponseEntity.badRequest().body(
+                new ValidationError(400, "Validation Failed", fields));
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity&lt;ApiError&gt; conflict(
+            DataIntegrityViolationException ex,
+            HttpServletRequest request) {
+        return error(HttpStatus.CONFLICT, "Data Conflict",
+                "The request conflicts with existing data",
+                request.getRequestURI());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity&lt;ApiError&gt; unexpected(
+            Exception ex, HttpServletRequest request) {
+        log.error("Unexpected error for {}", request.getRequestURI(), ex);
+        return error(HttpStatus.INTERNAL_SERVER_ERROR,
+                "Internal Server Error",
+                "Something went wrong. Try again later.",
+                request.getRequestURI());
+    }
+
+    private ResponseEntity&lt;ApiError&gt; error(
+            HttpStatus status, String title, String message, String path) {
+        return ResponseEntity.status(status).body(new ApiError(
+                Instant.now(), status.value(), title, message, path));
+    }
+}</code></pre>
+
+      <h2 id="validation-errors">Handle validation errors</h2>
+      <p>
+        Add validation annotations to the request DTO and use
+        <code>@Valid</code> in the controller. The handler returns field-level
+        messages that a frontend can display beside each input.
+      </p>
+      <pre class="spring-code"><code>public record CreateProductRequest(
+        @NotBlank(message = "Name is required") String name,
+        @Positive(message = "Price must be greater than zero")
+        BigDecimal price) {
+}
+
+@PostMapping
+public Product create(
+        @Valid @RequestBody CreateProductRequest request) {
+    return service.create(request);
+}
+
+public record ValidationError(
+        int status,
+        String error,
+        Map&lt;String, String&gt; fields) {
+}</code></pre>
+
+      <h2 id="security-and-framework-errors">
+        Handle framework and security errors
+      </h2>
+      <p>
+        Some errors happen before a controller is called. For example, Spring
+        Security uses an <code>AuthenticationEntryPoint</code> for 401 responses
+        and an <code>AccessDeniedHandler</code> for 403 responses. Configure
+        both to return the same JSON style as the rest of the API.
+      </p>
+      <pre class="spring-code"><code>@Bean
+SecurityFilterChain securityFilterChain(HttpSecurity http)
+        throws Exception {
+    http.exceptionHandling(exceptions -&gt; exceptions
+        .authenticationEntryPoint((request, response, ex) -&gt;
+            response.sendError(401, "Authentication required"))
+        .accessDeniedHandler((request, response, ex) -&gt;
+            response.sendError(403, "Access denied")));
+    return http.build();
+}</code></pre>
+
+      <h2 id="logging-errors">Log errors safely</h2>
+      <p>
+        Log technical details on the server with a request or correlation ID.
+        Return a safe message to the client. Never expose stack traces, SQL,
+        passwords, JWTs, or internal file paths in a production response.
+      </p>
+      <pre class="spring-code"><code>private static final Logger log =
+        LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+log.error("Unexpected error for requestId={}", requestId, ex);</code></pre>
+
+      <h2 id="exception-best-practices">Best practices</h2>
+      <ul class="lh-lg">
+        <li>Use one consistent error response shape across endpoints.</li>
+        <li>
+          Map expected business exceptions to intentional HTTP status codes.
+        </li>
+        <li>
+          Keep public messages safe and put technical details in server logs.
+        </li>
+        <li>
+          Do not catch <code>Exception</code> everywhere; handle failures where
+          you can add useful context.
+        </li>
+        <li>Do not return <code>200 OK</code> for an error.</li>
+        <li>Test successful responses and error responses separately.</li>
+        <li>Use a correlation ID to trace one request across services.</li>
+      </ul>
+      <div class="spring-callout">
+        <strong>Simple rule:</strong> The controller handles success, the
+        service explains the business failure, and the global handler decides
+        how that failure is represented to the client.
+      </div>
+      <a class="btn btn-success" href="data-jpa.html">Next: Spring Data JPA</a>
+    </main>
+    <footer class="py-4 text-center">
+      <p class="mb-0">&copy; 2026 Java Codeex</p>
+    </footer>
+    <script src="./springboot-nav.js"></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

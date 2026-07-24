@@ -1,0 +1,1005 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A beginner-friendly Spring Boot tutorial covering REST APIs, configuration, data access, security, testing, and deployment."
+    />
+    <link rel="canonical" href="https://javacodeex.com/springboot/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta property="og:title" content="Spring Boot Tutorial | Java Codeex" />
+    <meta
+      property="og:description"
+      content="Learn Spring Boot with practical tutorials covering REST APIs, JPA, security, testing, monitoring, and deployment."
+    />
+    <meta property="og:url" content="https://javacodeex.com/springboot/" />
+    <meta property="og:image" content="https://javacodeex.com/icons/javacodeex.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>Spring Boot Tutorial | Java Codeex</title>
+    <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../site-theme.css" />
+    <link rel="stylesheet" href="./springboot.css" />
+  </head>
+  <body class="spring-overview-page">
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a
+          class="course-home-link"
+          href="https://javacodeex.com/index.html#courses"
+          title="Back to courses"
+          aria-label="Back to courses"
+          ><img src="../icons/javacodeex.jpg" alt="Back to courses"
+        /></a>
+        <a class="topic-link" href="https://javacodeex.com/springboot/index.html#basics">Overview</a>
+        <a class="topic-link" href="https://javacodeex.com/springboot/project-structure.html"
+          >Project Structure</a
+        >
+        <a class="topic-link" href="https://javacodeex.com/springboot/index.html#aop">AOP</a>
+        <a class="topic-link" href="https://javacodeex.com/springboot/index.html#data-jpa">Data JPA</a>
+        <a class="topic-link" href="https://javacodeex.com/springboot/index.html#security">Security</a>
+        <a class="topic-link" href="https://javacodeex.com/springboot/index.html#exception-handling"
+          >Global Exception Handling</a
+        >
+        <a class="topic-link" href="https://javacodeex.com/springboot/index.html#rest-api">REST APIs</a>
+        <a class="topic-link" href="https://javacodeex.com/springboot/index.html#validation">Validation</a>
+        <a class="topic-link" href="https://javacodeex.com/springboot/index.html#testing">Testing</a>
+        <a class="topic-link" href="https://javacodeex.com/springboot/index.html#actuator">Actuator</a>
+        <a class="topic-link" href="https://javacodeex.com/springboot/index.html#deployment">Deployment</a>
+      </div>
+    </nav>
+    <section class="spring-hero">
+      <div class="container-xl">
+        <h1>Spring Boot</h1>
+        <p class="mb-3">
+          <span class="badge badge-date">Last Updated: 24 Jul, 2026</span>
+        </p>
+        <p class="lead mb-2">
+          Spring Boot is a Java framework used to build production-ready web
+          applications, REST APIs, microservices, and enterprise backend systems
+          with less configuration.
+        </p>
+        <p>
+          Spring Boot simplifies Spring development through auto-configuration,
+          starter dependencies, embedded servers, and a clear application
+          structure. It helps developers create, test, secure, and deploy
+          reliable Java applications faster.
+        </p>
+      </div>
+    </section>
+    <main class="container-xl py-5">
+      <div class="spring-callout mb-5">
+        <strong>How to use this course:</strong> Start with setup and project
+        structure, then build a REST API, connect a database, add validation and
+        security, and finish with testing and deployment.
+      </div>
+      <!-- 1. Spring Boot Core -->
+      <div id="basics" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Spring Boot Core</h2>
+        <p class="text-muted mb-3">
+          Understand the Spring Boot foundation: application startup,
+          auto-configuration, starters, beans, dependency injection, scopes, and
+          configuration.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./introduction.html">Introduction to Spring Boot</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction.html#what-is-spring-boot"
+              >What is Spring Boot?</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./setup.html">Setup and Spring Initializr</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction.html#application-context"
+              >Application Context</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction.html#auto-configuration"
+              >Auto-Configuration</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction.html#starters">Spring Boot Starters</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction.html#component-scanning"
+              >Component Scanning</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction.html#dependency-injection"
+              >Dependency Injection</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./dependency-injection.html"
+              >Dependency Injection in Practice</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction.html#autowiring">Autowiring</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction.html#bean-scope">Bean Scopes</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction.html#bean-lifecycle">Bean Lifecycle</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction.html#configuration-properties"
+              >Configuration Properties</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction.html#configuration-properties"
+              >Spring Boot Configuration</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction.html#profiles">Profiles</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction.html#conditional-beans"
+              >Conditional Beans</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./setup.html">Create Your First Spring Boot Project</a>
+          </li>
+        </ul>
+      </div>
+      <!-- 2. AOP -->
+      <div id="aop" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Aspect-Oriented Programming (AOP)</h2>
+        <p class="text-muted mb-3">
+          Learn how Spring separates cross-cutting concerns such as logging,
+          transactions, security, caching, and performance monitoring from
+          business logic.
+        </p>
+        <ul class="list-group list-group-flush mb-3">
+          <li class="list-group-item">
+            <a href="https://javacodeex.com/springboot/index.html#aop">Introduction to AOP</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./aop.html#aop-terminology">AOP Terminology</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./aop.html#advice-types">Advice Types</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./aop.html#pointcuts">Pointcuts</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./aop.html#aspect-example">Logging Aspect Example</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./aop.html#custom-annotation">Custom Annotation AOP</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./aop.html#aop-transactions">AOP and Transactions</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./aop.html#aop-use-cases">Use Cases and Pitfalls</a>
+          </li>
+        </ul>
+      </div>
+      <!-- 3. Data JPA -->
+      <div id="data-jpa" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Spring Data JPA</h2>
+        <p class="text-muted mb-3">
+          Learn how Spring Boot maps Java objects to database tables and
+          provides clean, reliable data-access operations.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./data-jpa.html">Introduction to Spring Data JPA</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#real-world-domain">Real-world Domain</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#jpa-dependencies">Required Dependencies</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#entity-and-repository"
+              >Entities and Repositories</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#domain-entities"
+              >Employee, Department, Customer, Product</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#entity-relationships"
+              >Entity Relationships</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#relationship-end-to-end"
+              >Relationship End-to-End Examples</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#one-to-many-e2e"
+              >One-to-many: Department to Employees</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#many-to-one-e2e"
+              >Many-to-one: Employees to Department</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#one-to-one-e2e"
+              >One-to-one: Employee Profile</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#many-to-many-e2e"
+              >Many-to-many: Employees to Projects</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#crud-operations"
+              >Complete CRUD Operations</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#customer-product-crud"
+              >Customer and Product CRUD</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#end-to-end-use-cases"
+              >End-to-End Use Cases</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#employee-department-e2e"
+              >Employee and Department API</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#customer-product-e2e"
+              >Customer and Product API</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#derived-query-methods"
+              >Derived Query Methods</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#query-annotation">Using @Query</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#pagination-and-sorting"
+              >Pagination and Sorting</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#fetch-strategies"
+              >Lazy and Eager Loading</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#pagination-api">Pagination in REST API</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#n-plus-one">The N+1 Query Problem</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#n-plus-one-solutions"
+              >N+1 Resolution Strategies</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#n-plus-one-detection">Detecting N+1</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#postgresql-configuration"
+              >PostgreSQL Configuration</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#mysql-configuration"
+              >MySQL Configuration</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#multiple-relational-databases"
+              >Multiple Relational Databases</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#postgresql-e2e">PostgreSQL End-to-End</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#mysql-e2e">MySQL End-to-End</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#mongodb-example"
+              >MongoDB with Spring Data</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#mongodb-end-to-end">MongoDB End-to-End</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#mongodb-database-structure"
+              >MongoDB Database Structure</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./data-jpa.html#auditing-and-schema"
+              >Auditing and Schema Management</a
+            >
+          </li>
+        </ul>
+      </div>
+      <!-- 4. Security -->
+      <div id="security" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Spring Security</h2>
+        <p class="text-muted mb-3">
+          Learn how Spring Security authenticates users, protects endpoints, and
+          applies authorization rules.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./security-comprehensive.html"
+              >Introduction to Spring Security</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a
+              href="./security-comprehensive.html#authentication-vs-authorization"
+              >Authentication and Authorization</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./security-comprehensive.html#security-filter-chain"
+              >Security Filter Chain</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./security-comprehensive.html#password-encoding"
+              >Password Encoding</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./security-comprehensive.html#roles-permissions"
+              >Roles and Permissions</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./security-comprehensive.html#csrf-cors">CSRF and CORS</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./security-comprehensive.html#jwt-authentication"
+              >JWT Authentication</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./security-comprehensive.html#jwt-end-to-end"
+              >End-to-End JWT Implementation</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./security-comprehensive.html#method-security"
+              >Method Security</a
+            >
+          </li>
+        </ul>
+      </div>
+      <!-- 5. Global Exception Handling -->
+      <div id="exception-handling" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Global Exception Handling</h2>
+        <p class="text-muted mb-3">
+          Create one consistent error-handling layer for your REST API instead
+          of repeating try/catch blocks in every controller.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./exception-handling.html"
+              >Introduction to Exception Handling</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./exception-handling.html#global-handler"
+              >Global Exception Handler</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./exception-handling.html#rest-controller-advice"
+              >@RestControllerAdvice</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./exception-handling.html#exception-handler"
+              >@ExceptionHandler</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./exception-handling.html#custom-exceptions"
+              >Custom Exceptions</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./exception-handling.html#error-response"
+              >Consistent Error Responses</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./exception-handling.html#validation-errors"
+              >Validation Errors</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./exception-handling.html#logging-errors"
+              >Logging Errors Safely</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./exception-handling.html#exception-best-practices"
+              >Best Practices</a
+            >
+          </li>
+        </ul>
+      </div>
+      <!-- 6. REST APIs -->
+      <div id="rest-api" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">REST APIs</h2>
+        <p class="text-muted mb-3">
+          Build clean HTTP APIs with controllers, resources, status codes,
+          request data, DTOs, pagination, and versioning.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./rest-api.html">Introduction to REST APIs</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#http-design-basics">HTTP Design Basics</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#http-methods-explained"
+              >HTTP Methods Explained</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#get-method">GET: Read Resources</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#post-method">POST: Create Resources</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#put-method">PUT: Replace Resources</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#patch-method">PATCH: Partial Updates</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#delete-method">DELETE: Remove Resources</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#crud-walkthrough">Complete CRUD Example</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#product-api-end-to-end"
+              >End-to-End Product API</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#product-api-entity"
+              >Entity and Request DTOs</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#product-api-repository"
+              >Repository Layer</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#product-api-service">Service Layer</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#product-api-controller"
+              >Controller Layer</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#product-api-testing">Testing the API</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#path-variables-and-parameters"
+              >Path Variables, Query Parameters, and Request Body</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#request-input-choice"
+              >Choosing the Correct Request Annotation</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#path-variable-use-case"
+              >When to Use @PathVariable</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#request-param-use-case"
+              >When to Use @RequestParam</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#request-body-use-case"
+              >When to Use @RequestBody</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#json-request-end-to-end"
+              >End-to-End JSON Request Processing</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#response-shape"
+              >ResponseEntity and Response Shape</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#pagination-and-sorting"
+              >Pagination and Sorting</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#api-versioning">API Versioning</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./rest-api.html#dto-mapping">DTO Mapping</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./validation.html">Request Validation</a>
+          </li>
+        </ul>
+      </div>
+      <!-- 7. Validation -->
+      <div id="validation" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Validation</h2>
+        <p class="text-muted mb-3">
+          Validate request data, entity fields, business rules, nested objects,
+          and database constraints before invalid data reaches the application.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./validation.html">Introduction to Validation</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./validation.html#validation-dependency"
+              >Validation Dependency</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./validation.html#validation-constraints"
+              >Common Validation Annotations</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./validation.html#request-validation"
+              >Request DTO Validation</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./validation.html#valid-annotation">Using @Valid</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./validation.html#path-query-validation"
+              >Path and Query Parameter Validation</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./validation.html#nested-validation"
+              >Nested Object and Collection Validation</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./validation.html#entity-validation"
+              >Entity Field Validation</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./validation.html#service-validation"
+              >Business Rule Validation</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./validation.html#cross-field-validation"
+              >Cross-Field Validation</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./validation.html#custom-validator">Custom Validators</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./validation.html#method-validation"
+              >Service Method Validation</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./validation.html#database-validation"
+              >Database Validation and Uniqueness</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./validation.html#validation-errors"
+              >Validation Error Responses</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./validation.html#validation-end-to-end"
+              >End-to-End Registration Validation</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./validation.html#validation-best-practices"
+              >Validation Best Practices</a
+            >
+          </li>
+        </ul>
+      </div>
+      <!-- 8. Testing -->
+      <div id="testing" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Testing</h2>
+        <p class="text-muted mb-3">
+          Verify controllers, services, repositories, and complete application
+          flows with reliable Spring Boot tests.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./testing.html">Introduction to Spring Boot Testing</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./testing.html#testing-levels">Testing Levels</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./testing.html#employee-domain"
+              >Employee and Department Example</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./testing.html#mockito-annotations">Mockito Annotations</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./testing.html#basic-mockito-test">Mockito Unit Testing</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./testing.html#stubbing">Stubbing Mock Behavior</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./testing.html#verification">Mockito Verification</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./testing.html#argument-matchers">Argument Matchers</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./testing.html#argument-captor">ArgumentCaptor</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./testing.html#spy-and-inorder">Spy and InOrder</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./testing.html#department-service-test"
+              >Department Service Test</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./testing.html#web-mvc-test">@WebMvcTest</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./testing.html#data-jpa-test">@DataJpaTest</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./testing.html#spring-boot-test">@SpringBootTest</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./testing.html#mockito-best-practices"
+              >Mockito Best Practices</a
+            >
+          </li>
+        </ul>
+      </div>
+      <!-- 8. Actuator -->
+      <div id="actuator" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Actuator and Monitoring</h2>
+        <p class="text-muted mb-3">
+          Monitor application health, metrics, information, and operational
+          behavior safely in production.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./actuator.html">Introduction to Actuator</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./actuator.html#dependency">Actuator Dependency</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./actuator.html#health">Health Endpoint</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./actuator.html#liveness-readiness"
+              >Liveness and Readiness</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./actuator.html#info">Info Endpoint</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./actuator.html#metrics">Metrics</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./actuator.html#exposure">Endpoint Exposure</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./actuator.html#security">Actuator Security</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./actuator.html#custom-health">Custom Health Indicators</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./actuator.html#custom-info">Custom Application Info</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./actuator.html#prometheus">Prometheus and Grafana</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./actuator.html#logging">Actuator Logging</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./actuator.html#custom-endpoint"
+              >Custom Actuator Endpoint</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./actuator.html#real-world-monitoring"
+              >Real-World Monitoring Incident</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./actuator.html#docker-kubernetes-monitoring"
+              >Docker and Kubernetes Monitoring</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./actuator.html#monitoring-best-practices"
+              >Monitoring Best Practices</a
+            >
+          </li>
+        </ul>
+      </div>
+      <!-- 9. Deployment -->
+      <div id="deployment" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Deployment</h2>
+        <p class="text-muted mb-3">
+          Package, configure, containerize, and operate a Spring Boot
+          application reliably in production.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./deployment.html">Introduction to Deployment</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./deployment.html#jar-deployment">Executable JAR</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./deployment.html#environment-configuration"
+              >Production Configuration</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./deployment.html#docker-deployment">Docker Image</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./deployment.html#deployment-health">Health Checks</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./deployment.html#deployment-logging"
+              >Logging and Monitoring</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./deployment.html#checklist">Production Checklist</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./deployment.html#compose-example">Docker Compose</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./deployment.html#kubernetes-deployment">Kubernetes</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./deployment.html#ci-cd">CI/CD Deployment Flow</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./deployment.html#rollback"
+              >Rollback and Troubleshooting</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="spring-topic-nav">
+        <a href="#basics">Spring Boot Core</a><a href="#aop">AOP</a
+        ><a href="#data-jpa">Data JPA</a><a href="#security">Security</a
+        ><a href="#exception-handling">Exception Handling</a
+        ><a href="#rest-api">REST APIs</a><a href="#testing">Testing</a
+        ><a href="#actuator">Actuator</a><a href="#deployment">Deployment</a>
+      </div>
+      <div class="spring-subtopic-nav" aria-label="Spring Boot subtopics">
+        <div class="spring-subtopic-group">
+          <span class="spring-subtopic-group-title">Spring Boot Core</span
+          ><a
+            class="spring-subtopic-pill"
+            href="./introduction.html#what-is-spring-boot"
+            >What is Spring Boot?</a
+          ><a
+            class="spring-subtopic-pill"
+            href="./introduction.html#auto-configuration"
+            >Auto-Configuration</a
+          ><a class="spring-subtopic-pill" href="./introduction.html#starters"
+            >Starters</a
+          ><a
+            class="spring-subtopic-pill"
+            href="./introduction.html#dependency-injection"
+            >Dependency Injection</a
+          ><a
+            class="spring-subtopic-pill"
+            href="./introduction.html#bean-lifecycle"
+            >Bean Lifecycle</a
+          ><a
+            class="spring-subtopic-pill"
+            href="./introduction.html#configuration-properties"
+            >Configuration Properties</a
+          ><a class="spring-subtopic-pill" href="./introduction.html#profiles"
+            >Profiles</a
+          >
+        </div>
+        <div class="spring-subtopic-group">
+          <span class="spring-subtopic-group-title">AOP</span
+          ><a class="spring-subtopic-pill" href="./aop.html#aop-terminology"
+            >Terminology</a
+          ><a class="spring-subtopic-pill" href="./aop.html#advice-types"
+            >Advice Types</a
+          ><a class="spring-subtopic-pill" href="./aop.html#pointcuts"
+            >Pointcuts</a
+          ><a class="spring-subtopic-pill" href="./aop.html#aspect-example"
+            >Logging Aspect</a
+          >
+        </div>
+        <div class="spring-subtopic-group">
+          <span class="spring-subtopic-group-title">Spring Data JPA</span>
+          <a
+            class="spring-subtopic-pill"
+            href="./data-jpa.html#real-world-domain"
+            >Real-world Domain</a
+          >
+          <a
+            class="spring-subtopic-pill"
+            href="./data-jpa.html#jpa-dependencies"
+            >JPA Dependencies</a
+          >
+          <a
+            class="spring-subtopic-pill"
+            href="./data-jpa.html#entity-and-repository"
+            >Entities and Repositories</a
+          >
+          <a class="spring-subtopic-pill" href="./data-jpa.html#domain-entities"
+            >Employee, Department, Customer, Product</a
+          >
+          <a
+            class="spring-subtopic-pill"
+            href="./data-jpa.html#entity-relationships"
+            >Entity Relationships</a
+          >
+          <a
+            class="spring-subtopic-pill"
+            href="./data-jpa.html#relationship-end-to-end"
+            >Relationship Examples</a
+          >
+          <a class="spring-subtopic-pill" href="./data-jpa.html#crud-operations"
+            >Complete CRUD</a
+          >
+          <a
+            class="spring-subtopic-pill"
+            href="./data-jpa.html#derived-query-methods"
+            >Derived Queries</a
+          >
+          <a
+            class="spring-subtopic-pill"
+            href="./data-jpa.html#query-annotation"
+            >@Query</a
+          >
+          <a
+            class="spring-subtopic-pill"
+            href="./data-jpa.html#pagination-and-sorting"
+            >Pagination and Sorting</a
+          >
+          <a
+            class="spring-subtopic-pill"
+            href="./data-jpa.html#fetch-strategies"
+            >Lazy and Eager Loading</a
+          >
+          <a class="spring-subtopic-pill" href="./data-jpa.html#n-plus-one"
+            >N+1 Query Problem</a
+          >
+          <a
+            class="spring-subtopic-pill"
+            href="./data-jpa.html#postgresql-configuration"
+            >PostgreSQL</a
+          >
+          <a
+            class="spring-subtopic-pill"
+            href="./data-jpa.html#mysql-configuration"
+            >MySQL</a
+          >
+          <a
+            class="spring-subtopic-pill"
+            href="./data-jpa.html#mongodb-end-to-end"
+            >MongoDB End-to-End</a
+          >
+          <a
+            class="spring-subtopic-pill"
+            href="./data-jpa.html#auditing-and-schema"
+            >Auditing and Schema</a
+          >
+        </div>
+        <div class="spring-subtopic-group">
+          <span class="spring-subtopic-group-title">Security and APIs</span>
+          <a
+            class="spring-subtopic-pill"
+            href="./security-comprehensive.html#authentication-vs-authorization"
+            >Authentication</a
+          >
+          <a
+            class="spring-subtopic-pill"
+            href="./security-comprehensive.html#jwt-authentication"
+            >JWT</a
+          >
+          <a
+            class="spring-subtopic-pill"
+            href="./rest-api.html#crud-walkthrough"
+            >CRUD API</a
+          >
+          <a class="spring-subtopic-pill" href="./validation.html"
+            >Validation</a
+          >
+        </div>
+        <div class="spring-subtopic-group">
+          <span class="spring-subtopic-group-title">Quality and Operations</span
+          ><a
+            class="spring-subtopic-pill"
+            href="./exception-handling.html#global-handler"
+            >Global Exceptions</a
+          ><a class="spring-subtopic-pill" href="./testing.html">Testing</a
+          ><a class="spring-subtopic-pill" href="./actuator.html#health"
+            >Health Checks</a
+          ><a class="spring-subtopic-pill" href="./deployment.html#docker"
+            >Docker</a
+          ><a class="spring-subtopic-pill" href="./deployment.html#checklist"
+            >Production Checklist</a
+          >
+        </div>
+      </div>
+    </main>
+    <footer class="py-4 text-center">
+      <p class="mb-0">&copy; 2026 Java Codeex. Spring Boot learning path.</p>
+    </footer>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>

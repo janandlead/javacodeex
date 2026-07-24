@@ -1,1 +1,143 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --app-primary: #1e3a8a;
+  --app-accent: #06b6d4;
+  --app-text: #334155;
+  --app-surface: #f8fafc;
+  --app-muted: #64748b;
+  --app-radius: 0.75rem;
+  --app-content-width: 82.5rem;
+}
+
+html { scroll-behavior: smooth; font-size: 100%; }
+body {
+  margin: 0;
+  background: var(--app-surface);
+  color: var(--app-text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+a, button { transition: color .15s ease, background-color .15s ease, border-color .15s ease, box-shadow .15s ease, transform .15s ease; }
+button, input, textarea, select { font: inherit; }
+:focus-visible { outline: 3px solid #f59e0b; outline-offset: 3px; }
+h1, h2, h3, h4, h5, h6 { margin-top: 0; color: var(--app-primary); font-weight: 700; letter-spacing: -.02em; line-height: 1.2; }
+h1 { font-size: clamp(2rem, 4vw, 3.5rem); }
+h2 { font-size: clamp(1.5rem, 2.5vw, 2.25rem); }
+h3 { font-size: clamp(1.2rem, 2vw, 1.5rem); }
+p, ul, ol { margin-top: 0; }
+p { max-width: 70ch; }
+.container-xl { width: min(100% - 2rem, var(--app-content-width)); }
+.btn { min-height: 2.75rem; font-weight: 700; }
+.text-muted { color: var(--app-muted) !important; }
+.legacy-document .document-body :where(.page-hero, .hero) { width: 100% !important; margin-left: 0 !important; margin-right: 0 !important; }
+.document-body p { max-width: none; }
+.legacy-document .section-card, .course-document .section-card { width: 100%; margin-bottom: 3rem; border: 1px solid rgba(226,232,240,.9); border-radius: 1.125rem; background: #fff; box-shadow: 0 .75rem 2rem rgba(16,24,40,.08); }
+.legacy-document .section-title, .course-document .section-title { color: #1e3a8a; border-left: 5px solid #06b6d4; padding-left: .75rem; font-size: clamp(1.35rem, 2.4vw, 1.75rem); }
+.legacy-document .section-card .list-group-item, .course-document .section-card .list-group-item { padding: .7rem 0; border-color: #eef2f7; background: transparent; line-height: 1.6; }
+.legacy-document .section-card .list-group-item a, .course-document .section-card .list-group-item a { color: #1d4ed8; font-weight: 600; text-decoration: none; }
+.legacy-document .section-card .list-group-item a:hover, .course-document .section-card .list-group-item a:hover { color: #0891b2; text-decoration: underline; }
+.course-document .spring-hero { width: 100%; margin-bottom: 1.5rem; padding: 2rem 2.5rem; border-radius: 1rem; color: #fff; background: radial-gradient(circle at 85% 10%, rgba(34,211,238,.18), transparent 28%), linear-gradient(135deg,#0b1220,#172554 62%,#164e63); box-shadow: 0 .75rem 2rem rgba(15,23,42,.12); }
+.course-document .spring-hero h1 { margin-bottom: .5rem; color: #fff; font-size: clamp(1.75rem, 3.5vw, 2.75rem); }
+.course-document .spring-hero p { margin-bottom: 0; color: #dbeafe !important; font-size: .95rem; line-height: 1.6; }
+.course-document .document-body :where(.page-hero, .hero) { margin-bottom: 1.5rem; padding: 2rem 2.5rem; }
+.course-document .document-body :where(.page-hero, .hero) h1,
+.course-document .document-body > .container-xl > h1 { margin-bottom: .5rem; font-size: clamp(1.75rem, 3.5vw, 2.75rem); }
+.course-document .document-body :where(.page-hero, .hero) p { margin-bottom: 0; font-size: .95rem; line-height: 1.6; }
+@media (max-width: 767.98px) { .course-document .document-body :where(.page-hero, .hero), .course-document .spring-hero { padding: 1.5rem; } }
+.course-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0 0; padding-top: 1.5rem; border-top: 1px solid #dbeafe; }
+.category-card .lesson-card + .lesson-card { margin-top: .5rem; }
+.patterns-overview .subheading { display: block; margin-top: 1rem; color: #86198f; font-size: .8rem; }
+.patterns-overview .pattern-list { display: grid; gap: .2rem; margin: .45rem 0 0; padding-left: 1.1rem; color: #475569; font-size: .82rem; line-height: 1.45; }
+.patterns-overview .pattern-list li::marker { color: #0369a1; }
+.patterns-overview .use-cases { margin-bottom: .2rem; }
+.behavioral-page .pattern-hero { background: radial-gradient(circle at 85% 10%, rgba(244,114,182,.22), transparent 28%), linear-gradient(135deg,#1e1033,#4a154d 58%,#164e63); box-shadow: 0 1rem 2.5rem rgba(30,16,51,.18); }
+.behavioral-page .eyebrow { color: #f9a8d4; }
+.behavioral-page .pattern-toc { border-color: #fbcfe8; }
+.behavioral-page .pattern-toc p { color: #86198f; }
+.behavioral-page .pattern-toc a:hover { color: #be185d; background: #fdf2f8; }
+.behavioral-page .intro-card { border-color: #fbcfe8; background: linear-gradient(135deg,#fff,#fdf2f8); }
+.behavioral-page .section-icon { color: #be185d; background: #fce7f3; }
+.behavioral-page .key-takeaway { border-color: #fbcfe8; background: #fdf2f8; }
+.behavioral-page .key-takeaway>i { color: #be185d; }
+.behavioral-page .key-takeaway strong { color: #86198f; }
+.pattern-page .pattern-hero, .factory-page .factory-hero, .creational-page .pattern-hero, .structural-page .pattern-hero, .behavioral-page .pattern-hero { color: #fff; background: radial-gradient(circle at 85% 10%, rgba(34,211,238,.18), transparent 28%), linear-gradient(135deg,#0b1220,#172554 62%,#164e63); }
+.pattern-page .eyebrow, .factory-page .eyebrow, .creational-page .eyebrow, .structural-page .eyebrow, .behavioral-page .eyebrow { color: #67e8f9; }
+.pattern-page .hero-tags span, .factory-page .hero-tags span, .creational-page .hero-tags span, .structural-page .hero-tags span, .behavioral-page .hero-tags span { border-color: rgba(103,232,249,.35); color: #dbeafe; }
+.pattern-page .hero-tags i, .factory-page .hero-tags i, .creational-page .hero-tags i, .structural-page .hero-tags i, .behavioral-page .hero-tags i { color: #67e8f9; }
+.pattern-page .pattern-toc, .factory-page .factory-toc, .creational-page .pattern-toc, .structural-page .pattern-toc, .behavioral-page .pattern-toc { border-color: #dbeafe; }
+.pattern-page .pattern-toc p, .factory-page .factory-toc p, .creational-page .pattern-toc p, .structural-page .pattern-toc p, .behavioral-page .pattern-toc p { color: #1e3a8a; }
+.pattern-page .pattern-toc a:hover, .factory-page .factory-toc a:hover, .creational-page .pattern-toc a:hover, .structural-page .pattern-toc a:hover, .behavioral-page .pattern-toc a:hover { color: #0e7490; background: #ecfeff; }
+.pattern-page .intro-card, .factory-page .intro-card, .creational-page .intro-card, .structural-page .intro-card, .behavioral-page .intro-card { border-color: #dbeafe; background: linear-gradient(135deg,#fff,#eff6ff); }
+.pattern-page .section-icon, .factory-page .section-icon, .creational-page .section-icon, .structural-page .section-icon, .behavioral-page .section-icon { color: #1e3a8a; background: #e0f2fe; }
+.pattern-page .content-section h3, .factory-page .content-section h3, .creational-page .content-section h3 { color: #0e7490; }
+.pattern-page .key-takeaway, .factory-page .key-takeaway, .creational-page .key-takeaway, .structural-page .key-takeaway, .behavioral-page .key-takeaway { border-color: #bae6fd; background: #eff6ff; }
+.pattern-page .key-takeaway>i, .factory-page .key-takeaway>i, .creational-page .key-takeaway>i, .structural-page .key-takeaway>i, .behavioral-page .key-takeaway>i { color: #0284c7; }
+.pattern-page .key-takeaway strong, .factory-page .key-takeaway strong, .creational-page .key-takeaway strong, .structural-page .key-takeaway strong, .behavioral-page .key-takeaway strong { color: #0c4a6e; }
+.patterns-overview .overview-hero { background: radial-gradient(circle at 85% 10%, rgba(34,211,238,.18), transparent 28%), linear-gradient(135deg,#0b1220,#172554 62%,#164e63); }
+.patterns-overview .eyebrow, .patterns-overview .category-label { color: #0891b2; }
+.patterns-overview .catalog { border-color: #dbeafe; background: linear-gradient(135deg,#fff,#eff6ff); }
+.patterns-overview .category-card { border-color: #dbeafe; background: #fff; }
+.patterns-overview .category-icon { color: #1e3a8a; background: #e0f2fe; }
+.patterns-overview .subheading { color: #1e3a8a; }
+.patterns-overview .pattern-list li::marker { color: #06b6d4; }
+.patterns-overview .lesson-card { border-color: #dbeafe; }
+.patterns-overview .lesson-card:hover { border-color: #06b6d4; color: #0e7490; background: #ecfeff; }
+.patterns-overview .lesson-icon { color: #1e3a8a; background: #e0f2fe; }
+.patterns-overview { color: #334155; font-family: inherit; }
+.patterns-overview .catalog-heading>i { color: #0891b2; }
+.patterns-overview .catalog-eyebrow { color: #1e3a8a !important; }
+.patterns-overview .category-card { border-color: #dbeafe !important; border-radius: 1rem; background: #fff !important; box-shadow: 0 .5rem 1.25rem rgba(15,23,42,.06); }
+.patterns-overview .category-icon { color: #1e3a8a !important; background: linear-gradient(135deg,#eff6ff,#ecfeff) !important; }
+.patterns-overview .category-label, .patterns-overview .subheading { color: #1e3a8a !important; }
+.patterns-overview .category-card details { border-color: #dbeafe; }
+.patterns-overview .category-card summary { color: #1e3a8a; }
+.patterns-overview .category-card summary i { color: #0891b2; }
+.patterns-overview .coming { color: #64748b; background: #f8fafc; }
+.patterns-overview .category-card details { counter-reset: lesson; }
+.patterns-overview .category-card .lesson-card { position: relative; min-height: 3.25rem; margin-top: .5rem; padding: .65rem .75rem .65rem 3rem; border-color: #dbeafe; border-radius: .65rem; background: #fff; box-shadow: 0 .2rem .6rem rgba(15,23,42,.04); }
+.patterns-overview .category-card .lesson-card::before { position: absolute; top: 50%; left: .75rem; display: grid; width: 1.55rem; height: 1.55rem; place-items: center; border-radius: 50%; color: #1e3a8a; background: linear-gradient(135deg,#eff6ff,#ecfeff); content: counter(lesson); counter-increment: lesson; font-size: .7rem; font-weight: 800; transform: translateY(-50%); }
+.patterns-overview .category-card .lesson-card:hover, .patterns-overview .category-card .lesson-card:focus-visible { border-color: #06b6d4; background: #ecfeff; box-shadow: 0 .35rem .9rem rgba(6,182,212,.12); transform: translateY(-1px); }
+.patterns-overview .category-card .lesson-card strong { color: #1e3a8a; }
+.patterns-overview .category-card .lesson-card small { color: #64748b; }
+.patterns-overview .category-card .lesson-icon { background: linear-gradient(135deg,#eff6ff,#ecfeff); }
+.patterns-overview .category-card .lesson-card:hover .lesson-icon, .patterns-overview .category-card .lesson-card:focus-visible .lesson-icon { background: #cffafe; }
+.patterns-overview .category-card .lesson-card { padding-left: .75rem; }
+.patterns-overview .category-card .lesson-card::before, .patterns-overview .category-card .lesson-icon { display: none; }
+.pattern-page .lesson-actions, .factory-page .lesson-actions, .creational-page .lesson-actions, .structural-page .lesson-actions, .behavioral-page .lesson-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0 0; padding: 1.5rem 0 0; border-top: 1px solid #dbeafe; }
+.pattern-page .lesson-actions a, .factory-page .lesson-actions a, .creational-page .lesson-actions a, .structural-page .lesson-actions a, .behavioral-page .lesson-actions a { display: flex; min-height: 5.5rem; flex-direction: column; justify-content: center; padding: 1rem 1.25rem; border: 1px solid #dbeafe; border-radius: 1rem; color: #1e3a8a; background: #fff; text-align: left; text-decoration: none; box-shadow: 0 .5rem 1.25rem rgba(15,23,42,.06); }
+.pattern-page .lesson-actions a:hover, .factory-page .lesson-actions a:hover, .creational-page .lesson-actions a:hover, .structural-page .lesson-actions a:hover, .behavioral-page .lesson-actions a:hover { border-color: #06b6d4; background: #f0f9ff; box-shadow: 0 .75rem 1.5rem rgba(6,182,212,.14); transform: translateY(-2px); }
+.pattern-page .lesson-actions a i, .factory-page .lesson-actions a i, .creational-page .lesson-actions a i, .structural-page .lesson-actions a i, .behavioral-page .lesson-actions a i { color: #0891b2; }
+.pattern-page .lesson-actions a strong, .factory-page .lesson-actions a strong, .creational-page .lesson-actions a strong, .structural-page .lesson-actions a strong, .behavioral-page .lesson-actions a strong { margin-top: .35rem; font-size: 1rem; }
+.pattern-page .lesson-actions a:last-child, .factory-page .lesson-actions a:last-child, .creational-page .lesson-actions a:last-child, .structural-page .lesson-actions a:last-child, .behavioral-page .lesson-actions a:last-child { text-align: right; }
+@media (max-width: 575.98px) { .pattern-page .lesson-actions, .factory-page .lesson-actions, .creational-page .lesson-actions, .structural-page .lesson-actions, .behavioral-page .lesson-actions { grid-template-columns: 1fr; } .pattern-page .lesson-actions a:last-child, .factory-page .lesson-actions a:last-child, .creational-page .lesson-actions a:last-child, .structural-page .lesson-actions a:last-child, .behavioral-page .lesson-actions a:last-child { text-align: left; } }
+.patterns-overview .category-card, .pattern-page .intro-card, .pattern-page .content-section, .factory-page .intro-card, .factory-page .content-section, .creational-page .intro-card, .creational-page .content-section, .structural-page .intro-card, .structural-page .content-section, .behavioral-page .intro-card, .behavioral-page .content-section { border: 1px solid rgba(226,232,240,.9); border-radius: 1.125rem; background: #fff; box-shadow: 0 .75rem 2rem rgba(16,24,40,.08); }
+.patterns-overview .category-card { min-height: 18rem; }
+.patterns-overview .category-card .category-icon { color: #1e3a8a !important; background: linear-gradient(135deg,#eff6ff,#ecfeff) !important; }
+.patterns-overview .category-card .category-label, .patterns-overview .category-card .subheading { color: #1e3a8a !important; }
+.patterns-overview .category-card .coming { border: 1px solid #dbeafe; color: #64748b; background: #f8fafc; }
+.patterns-overview .catalog-heading p { font-size: 1rem; line-height: 1.6; }
+.patterns-overview .category-card h3 { font-size: 1.3rem; }
+.patterns-overview .category-card>p { font-size: .98rem; line-height: 1.65; }
+.patterns-overview .category-card .subheading { font-size: .88rem; }
+.patterns-overview .category-card .pattern-list { font-size: .92rem; line-height: 1.55; }
+.patterns-overview .category-card .lesson-card strong { font-size: .92rem; }
+.patterns-overview .category-card .lesson-card small { font-size: .8rem; line-height: 1.45; }
+.pager-heading { margin: 2rem 0 .75rem; color: #1e3a8a; font-size: .9rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.pager-link { display: flex; min-height: 5.5rem; flex-direction: column; justify-content: center; padding: 1rem 1.25rem; border: 1px solid #dbeafe; border-radius: 1rem; color: #1e3a8a; background: #fff; text-decoration: none; box-shadow: 0 .5rem 1.25rem rgba(15,23,42,.06); }
+.pager-link:hover { transform: translateY(-2px); border-color: #06b6d4; background: #f0f9ff; box-shadow: 0 .75rem 1.5rem rgba(6,182,212,.14); }
+.pager-link.next { text-align: right; }
+.pager-direction { margin-bottom: .35rem; color: #0891b2; font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.pager-link strong { font-size: 1rem; }
+@media (max-width: 575.98px) { .course-pager { grid-template-columns: 1fr; } .pager-link.next { text-align: left; } }
+
+@media (min-width: 768px) {
+  .container-xl { width: min(100% - 3rem, var(--app-content-width)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}

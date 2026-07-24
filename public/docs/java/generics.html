@@ -1,0 +1,1006 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Java Generics tutorial - generic classes, methods, interfaces, wildcards, bounded type parameters and type erasure explained with practical examples."
+    />
+    <meta
+      name="keywords"
+      content="Java generics, generic class Java, wildcards Java, bounded types, type erasure, Java generics tutorial"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Java Codeex" />
+    <link rel="canonical" href="https://javacodeex.in/java/generics/" />
+    <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
+    <link
+      rel="shortcut icon"
+      href="../icons/javacodeex.jpg"
+      type="image/jpeg"
+    />
+    <link rel="apple-touch-icon" href="../icons/javacodeex.jpg" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta
+      property="og:title"
+      content="Java Generics - Generic Classes, Wildcards and Type Erasure | Java Codeex"
+    />
+    <meta
+      property="og:description"
+      content="Java Generics tutorial - generic classes, methods, interfaces, wildcards, bounded type parameters and type erasure explained with practical examples."
+    />
+    <meta
+      property="og:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta property="og:url" content="https://javacodeex.in/generics/" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Java Generics - Generic Classes, Wildcards and Type Erasure | Java Codeex"
+    />
+    <meta
+      name="twitter:description"
+      content="Java Generics tutorial - generic classes, methods, interfaces, wildcards, bounded type parameters and type erasure explained with practical examples."
+    />
+    <meta
+      name="twitter:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Java Generics - Generic Classes, Wildcards and Type Erasure | Java Codeex
+    </title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        scroll-behavior: smooth;
+        font-size: 1rem;
+        color: #222;
+      }
+      .navbar {
+        background-color: #1a1a2e;
+      }
+      .navbar-brand {
+        font-weight: 700;
+        color: #f8a100 !important;
+      }
+      .navbar-nav .nav-link {
+        color: #cdd6f4 !important;
+        font-size: 0.85rem;
+      }
+      .navbar-nav .nav-link:hover {
+        color: #f8a100 !important;
+      }
+      .page-hero {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 60%,
+          #0f3460 100%
+        );
+        color: #fff;
+        padding: 48px 0 36px;
+      }
+      .page-hero h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+      }
+      .breadcrumb-item a {
+        color: #f8a100;
+        text-decoration: none;
+      }
+      .breadcrumb-item.active {
+        color: #cdd6f4;
+      }
+      .breadcrumb-item + .breadcrumb-item::before {
+        color: #8a9bb3;
+      }
+      .content-wrapper {
+        max-width: 860px;
+      }
+      h2 {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: #0f3460;
+        border-left: 5px solid #f8a100;
+        padding-left: 12px;
+        margin-top: 2.2rem;
+        margin-bottom: 0.8rem;
+      }
+      h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #16213e;
+        margin-top: 1.6rem;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        line-height: 1.8;
+      }
+      pre {
+        background: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 1.2rem 1.4rem;
+        font-size: 0.88rem;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+      code.inline {
+        background: #eef2ff;
+        color: #0f3460;
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 0.88rem;
+      }
+      .output-box {
+        background: #0d1117;
+        color: #58d68d;
+        border-left: 4px solid #58d68d;
+        border-radius: 4px;
+        padding: 0.8rem 1.2rem;
+        font-family: monospace;
+        font-size: 0.92rem;
+        margin: 0.5rem 0 1rem;
+      }
+      .note-box {
+        background: #eaf4ff;
+        border-left: 5px solid #3b82f6;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .note-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .warn-box {
+        background: #fff8e1;
+        border-left: 5px solid #f8a100;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .warn-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .table thead th {
+        background: #0f3460;
+        color: #fff;
+      }
+      .table-hover tbody tr:hover {
+        background: #f0f6ff;
+      }
+      .toc {
+        background: #f8f9fc;
+        border: 1px solid #e0e7ef;
+        border-radius: 10px;
+        padding: 1.2rem 1.4rem;
+        position: sticky;
+        top: 72px;
+      }
+      .toc h6 {
+        font-weight: 700;
+        color: #0f3460;
+        margin-bottom: 0.8rem;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        letter-spacing: 0.05em;
+      }
+      .toc a {
+        display: block;
+        font-size: 0.87rem;
+        color: #444;
+        text-decoration: none;
+        padding: 3px 0 3px 8px;
+        border-left: 3px solid transparent;
+        transition: all 0.15s;
+      }
+      .toc a:hover {
+        color: #f8a100;
+        border-left-color: #f8a100;
+      }
+      footer {
+        background: #1a1a2e;
+        color: #8a9bb3;
+      }
+
+      /* === TECH BANNER HEADER === */
+      .brand-bar {
+        background: #1a1a2e;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .brand-link {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: #f8a100;
+        font-weight: 700;
+        font-size: 1.15rem;
+        gap: 10px;
+      }
+      .brand-link:hover {
+        opacity: 0.85;
+        color: #f8a100;
+      }
+      .tech-banner {
+        background: #16213e;
+        border-bottom: 2px solid rgba(248, 161, 0, 0.2);
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tech-banner::-webkit-scrollbar {
+        height: 3px;
+      }
+      .tech-banner::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .tech-banner .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .tech-tab {
+        display: inline-block;
+        color: #a6adc8;
+        text-decoration: none;
+        padding: 11px 22px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+        white-space: nowrap;
+      }
+      .tech-tab:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.06);
+        text-decoration: none;
+      }
+      .tech-tab.active {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        font-weight: 700;
+      }
+      .tech-tab.coming-soon {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .java-subnav {
+        background: #0f3460;
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+      }
+      .java-subnav::-webkit-scrollbar {
+        height: 3px;
+      }
+      .java-subnav::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .java-subnav .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .topic-link {
+        display: inline-block;
+        color: #cdd6f4;
+        text-decoration: none;
+        padding: 10px 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+      }
+      .topic-link:hover {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        text-decoration: none;
+      }
+    </style>
+    <link rel="stylesheet" href="../site-theme.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="topic-link" href="../index.html#basics">Basics</a>
+        <a class="topic-link" href="../index.html#methods">Methods</a>
+        <a class="topic-link" href="../index.html#arrays">Arrays</a>
+        <a class="topic-link" href="../index.html#strings">Strings</a>
+        <a class="topic-link" href="../index.html#oop">OOP</a>
+        <a class="topic-link" href="../index.html#interfaces">Interfaces</a>
+        <a class="topic-link" href="../index.html#exceptions">Exceptions</a>
+        <a class="topic-link" href="../index.html#regex">Regex</a>
+        <a class="topic-link" href="../index.html#memory">Memory</a>
+        <a class="topic-link" href="../index.html#generics">Generics</a>
+        <a class="topic-link" href="../index.html#collections">Collections</a>
+        <a class="topic-link" href="../index.html#java8">Java 8+</a>
+        <a class="topic-link" href="../index.html#datetime">Date &amp; Time</a>
+        <a class="topic-link" href="../index.html#multithreading"
+          >Multithreading</a
+        >
+        <a class="topic-link" href="../index.html#filehandling">Files</a>
+        <!-- <a class="topic-link" href="../index.html#networking">Networking</a> -->
+        <a class="topic-link" href="../index.html#jdbc">JDBC</a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="page-hero">
+      <div class="container-xl">
+        <nav aria-label="breadcrumb" class="mb-3">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a href="../index.html">Java Codeex</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="../index.html#generics">Generics</a>
+            </li>
+            <li class="breadcrumb-item active">Generics in Java</li>
+          </ol>
+        </nav>
+        <h1 class="mb-2">Generics in Java</h1>
+        <p class="mb-0" style="color: #cdd6f4; font-size: 1.08rem">
+          Write type-safe, reusable code with Java Generics — no casting, no
+          ClassCastException.
+        </p>
+      </div>
+    </section>
+    <aside class="topic-guide" aria-label="Learning guide">
+      <div class="topic-guide-step">
+        <span>01</span><strong>Reuse safely</strong
+        ><small>Add a type parameter</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>02</span><strong>Reuse safely</strong
+        ><small>Restrict allowed types</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>03</span><strong>Reuse safely</strong
+        ><small>Avoid unnecessary casts</small>
+      </div>
+      <p class="topic-guide-summary">
+        <strong>Learning goal:</strong> Generics catch many type mistakes before
+        the program runs.
+      </p>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="container-xl py-5">
+      <div class="row g-5">
+        <!-- Article -->
+        <div class="col-lg-8">
+          <article class="content-wrapper">
+            <!-- 1. What are Generics? -->
+            <h2 id="what-are-generics">1. What are Generics?</h2>
+            <p>
+              <strong>Generics</strong>, introduced in Java 5, allow you to
+              write classes, interfaces, and methods that work with any type
+              while providing <strong>compile-time type safety</strong>. Before
+              generics, developers used <strong>raw types</strong> — collections
+              and containers operated on <code class="inline">Object</code>,
+              requiring explicit casts everywhere.
+            </p>
+
+            <h3>The Problem Before Generics</h3>
+            <pre>
+// Pre-generics: raw type List stores Object
+List names = new ArrayList();
+names.add("Alice");
+names.add("Bob");
+names.add(42);          // accidentally added an Integer — no compile error!
+
+// Explicit cast needed — fails at RUNTIME if type is wrong
+String first = (String) names.get(2);  // ClassCastException at runtime!</pre>
+            <div class="output-box">
+              Exception in thread "main" java.lang.ClassCastException:<br />&nbsp;&nbsp;class
+              java.lang.Integer cannot be cast to class java.lang.String
+            </div>
+
+            <h3>The Solution: Generics</h3>
+            <pre>
+// With generics: compiler enforces type correctness
+List&lt;String&gt; names = new ArrayList&lt;&gt;();
+names.add("Alice");
+names.add("Bob");
+// names.add(42);  // COMPILE ERROR — Integer is not a String
+
+String first = names.get(0);  // no cast needed, always safe</pre>
+            <div class="output-box">Alice</div>
+            <div class="note-box">
+              <p>
+                <strong>Key benefit:</strong> Errors are caught at
+                <em>compile time</em>, not at runtime. This makes your code
+                safer, eliminates manual casting, and improves readability.
+              </p>
+            </div>
+
+            <!-- 2. Generic Classes -->
+            <h2 id="generic-classes">2. Generic Classes</h2>
+            <p>
+              A <strong>generic class</strong> declares one or more
+              <em>type parameters</em> in angle brackets after the class name.
+              By convention, <code class="inline">T</code> stands for "Type".
+              The type parameter acts as a placeholder that gets replaced with a
+              real type when the class is instantiated.
+            </p>
+            <pre>
+// Generic class with type parameter T
+public class Box&lt;T&gt; {
+    private T value;
+
+    public Box(T value) {
+        this.value = value;
+    }
+
+    public T getValue() {
+        return value;
+    }
+
+    public void setValue(T value) {
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "Box[" + value + "]";
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Box&lt;String&gt; stringBox = new Box&lt;&gt;("Hello Generics");
+        Box&lt;Integer&gt; intBox   = new Box&lt;&gt;(100);
+
+        System.out.println(stringBox.getValue());       // no cast needed
+        System.out.println(intBox.getValue() * 2);
+
+        // stringBox.setValue(123);  // COMPILE ERROR — must be String
+    }
+}</pre>
+            <div class="output-box">Hello Generics<br />200</div>
+
+            <!-- 3. Generic Methods -->
+            <h2 id="generic-methods">3. Generic Methods</h2>
+            <p>
+              A method can declare its own type parameters, independent of any
+              class-level type parameters. The type parameter list appears
+              before the return type.
+            </p>
+            <pre>
+public class GenericUtils {
+
+    // T is the method's own type parameter
+    public static &lt;T&gt; void printArray(T[] array) {
+        for (T element : array) {
+            System.out.print(element + " ");
+        }
+        System.out.println();
+    }
+
+    // Returns the larger of two Comparable values
+    public static &lt;T extends Comparable&lt;T&gt;&gt; T max(T a, T b) {
+        return (a.compareTo(b) &gt;= 0) ? a : b;
+    }
+
+    public static void main(String[] args) {
+        Integer[] nums = {1, 2, 3, 4, 5};
+        String[]  strs = {"banana", "apple", "cherry"};
+
+        printArray(nums);  // T inferred as Integer
+        printArray(strs);  // T inferred as String
+
+        System.out.println(max(10, 20));         // 20
+        System.out.println(max("cat", "dog"));   // dog
+    }
+}</pre>
+            <div class="output-box">
+              1 2 3 4 5<br />banana apple cherry<br />20<br />dog
+            </div>
+
+            <!-- 4. Generic Interfaces -->
+            <h2 id="generic-interfaces">4. Generic Interfaces</h2>
+            <p>
+              Interfaces can also be parameterized with type parameters.
+              Implementing classes either provide a concrete type or pass the
+              type parameter through.
+            </p>
+            <pre>
+// Generic interface with two type parameters
+public interface Pair&lt;K, V&gt; {
+    K getKey();
+    V getValue();
+}
+
+// Concrete implementation
+public class OrderedPair&lt;K, V&gt; implements Pair&lt;K, V&gt; {
+    private final K key;
+    private final V value;
+
+    public OrderedPair(K key, V value) {
+        this.key   = key;
+        this.value = value;
+    }
+
+    @Override public K getKey()   { return key;   }
+    @Override public V getValue() { return value; }
+
+    @Override
+    public String toString() {
+        return "(" + key + ", " + value + ")";
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Pair&lt;String, Integer&gt; p1 = new OrderedPair&lt;&gt;("Alice", 30);
+        Pair&lt;String, String&gt;  p2 = new OrderedPair&lt;&gt;("country", "Java");
+        System.out.println(p1);
+        System.out.println(p2);
+    }
+}</pre>
+            <div class="output-box">(Alice, 30)<br />(country, Java)</div>
+
+            <!-- 5. Bounded Type Parameters -->
+            <h2 id="bounded-types">5. Bounded Type Parameters</h2>
+            <p>
+              Bounds restrict the types that can be used as type arguments. Use
+              <code class="inline">extends</code> for upper bounds (works for
+              both classes and interfaces).
+            </p>
+
+            <h3>Upper Bound: &lt;T extends Number&gt;</h3>
+            <p>
+              Restricts T to <code class="inline">Number</code> or any of its
+              subclasses (<code class="inline">Integer</code>,
+              <code class="inline">Double</code>, etc.), allowing access to
+              <code class="inline">Number</code>'s methods.
+            </p>
+            <pre>
+public class Stats&lt;T extends Number&gt; {
+    private T[] data;
+
+    public Stats(T[] data) { this.data = data; }
+
+    public double average() {
+        double sum = 0;
+        for (T val : data) {
+            sum += val.doubleValue();  // doubleValue() is from Number
+        }
+        return sum / data.length;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Integer[] ints    = {2, 4, 6, 8, 10};
+        Double[]  doubles = {1.5, 2.5, 3.5};
+
+        System.out.println(new Stats&lt;&gt;(ints).average());    // 6.0
+        System.out.println(new Stats&lt;&gt;(doubles).average()); // 2.5
+
+        // Stats&lt;String&gt; s = new Stats&lt;&gt;(...); // COMPILE ERROR
+    }
+}</pre>
+            <div class="output-box">6.0<br />2.5</div>
+
+            <h3>Multiple Bounds</h3>
+            <p>
+              A type parameter can have multiple bounds using
+              <code class="inline">&amp;</code>. The class bound (if any) must
+              come first.
+            </p>
+            <pre>
+// T must extend Comparable AND implement Serializable
+public &lt;T extends Comparable&lt;T&gt; &amp; java.io.Serializable&gt; T clamp(T val, T min, T max) {
+    if (val.compareTo(min) &lt; 0) return min;
+    if (val.compareTo(max) &gt; 0) return max;
+    return val;
+}</pre>
+
+            <!-- 6. Wildcards -->
+            <h2 id="wildcards">6. Wildcards</h2>
+            <p>
+              The <strong>wildcard</strong>
+              <code class="inline">?</code> represents an unknown type. It is
+              used in method parameters (not class declarations) to increase
+              flexibility when you need to accept a range of parameterized
+              types.
+            </p>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Wildcard</th>
+                  <th>Name</th>
+                  <th>Meaning</th>
+                  <th>Use When</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="inline">&lt;?&gt;</code></td>
+                  <td>Unbounded</td>
+                  <td>Any type</td>
+                  <td>
+                    Only using <code class="inline">Object</code> methods;
+                    read-only iteration
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">&lt;? extends T&gt;</code></td>
+                  <td>Upper bounded</td>
+                  <td>T or any subtype of T</td>
+                  <td>Reading/consuming data (producer)</td>
+                </tr>
+                <tr>
+                  <td><code class="inline">&lt;? super T&gt;</code></td>
+                  <td>Lower bounded</td>
+                  <td>T or any supertype of T</td>
+                  <td>Writing/supplying data (consumer)</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>Unbounded Wildcard</h3>
+            <pre>
+public static void printList(List&lt;?&gt; list) {
+    for (Object item : list) {
+        System.out.print(item + " ");
+    }
+    System.out.println();
+}
+
+printList(List.of(1, 2, 3));
+printList(List.of("a", "b", "c"));</pre>
+            <div class="output-box">1 2 3<br />a b c</div>
+
+            <h3>Upper Bounded Wildcard</h3>
+            <pre>
+// Accepts List&lt;Integer&gt;, List&lt;Double&gt;, List&lt;Number&gt;, etc.
+public static double sumOfList(List&lt;? extends Number&gt; list) {
+    double sum = 0;
+    for (Number n : list) sum += n.doubleValue();
+    return sum;
+}
+
+System.out.println(sumOfList(List.of(1, 2, 3)));          // 6.0
+System.out.println(sumOfList(List.of(1.5, 2.5, 3.0)));    // 7.0</pre>
+            <div class="output-box">6.0<br />7.0</div>
+
+            <h3>Lower Bounded Wildcard</h3>
+            <pre>
+// Accepts List&lt;Integer&gt;, List&lt;Number&gt;, List&lt;Object&gt;
+public static void addNumbers(List&lt;? super Integer&gt; list) {
+    for (int i = 1; i &lt;= 5; i++) list.add(i);
+}
+
+List&lt;Number&gt; numbers = new ArrayList&lt;&gt;();
+addNumbers(numbers);
+System.out.println(numbers);</pre>
+            <div class="output-box">[1, 2, 3, 4, 5]</div>
+            <div class="note-box">
+              <p>
+                <strong>PECS Principle:</strong> "Producer Extends, Consumer
+                Super." If a parameterized type <em>produces</em> T values (you
+                read from it), use
+                <code class="inline">&lt;? extends T&gt;</code>. If it
+                <em>consumes</em> T values (you write to it), use
+                <code class="inline">&lt;? super T&gt;</code>.
+              </p>
+            </div>
+
+            <!-- 7. Type Erasure -->
+            <h2 id="type-erasure">7. Type Erasure</h2>
+            <p>
+              Java generics are a <strong>compile-time mechanism only</strong>.
+              The Java compiler uses type information to perform type checks and
+              insert casts, then <strong>erases</strong> all type parameters
+              from the bytecode. At runtime, a
+              <code class="inline">List&lt;String&gt;</code> and a
+              <code class="inline">List&lt;Integer&gt;</code> are both just
+              <code class="inline">List</code>.
+            </p>
+            <pre>
+// Source code (what you write)
+List&lt;String&gt; list = new ArrayList&lt;&gt;();
+list.add("hello");
+String s = list.get(0);
+
+// After type erasure (what the JVM sees)
+List list = new ArrayList();
+list.add("hello");
+String s = (String) list.get(0);  // compiler inserts this cast</pre>
+            <p><strong>Implications of type erasure:</strong></p>
+            <ul>
+              <li>
+                You cannot use <code class="inline">instanceof</code> with a
+                parameterized type:
+                <code class="inline">obj instanceof List&lt;String&gt;</code> is
+                a compile error.
+              </li>
+              <li>
+                You cannot create instances of a type parameter:
+                <code class="inline">new T()</code> is not allowed.
+              </li>
+              <li>
+                You cannot create generic arrays:
+                <code class="inline">new T[10]</code> is not allowed directly.
+              </li>
+              <li>
+                Static fields of a generic class cannot use the type parameter.
+              </li>
+            </ul>
+            <pre>
+// This is legal — checks erased type
+if (list instanceof List&lt;?&gt;) { ... }
+
+// This is NOT legal — type erased at runtime
+// if (list instanceof List&lt;String&gt;) { ... }  // COMPILE ERROR</pre>
+            <div class="warn-box">
+              <p>
+                <strong>Heap pollution:</strong> Mixing raw types and generic
+                types can lead to unchecked warnings and unexpected
+                <code class="inline">ClassCastException</code> at runtime
+                because the compiler cannot guarantee type safety across
+                raw-type boundaries.
+              </p>
+            </div>
+
+            <!-- 8. Generic Collections -->
+            <h2 id="generic-collections">8. Generic Collections</h2>
+            <p>
+              The Java Collections Framework was retrofitted with generics in
+              Java 5. Always use parameterized collections — never use raw types
+              in new code.
+            </p>
+            <pre>
+import java.util.*;
+
+public class GenericCollections {
+    public static void main(String[] args) {
+        // Typed List — compiler prevents adding wrong types
+        List&lt;String&gt; languages = new ArrayList&lt;&gt;();
+        languages.add("Java");
+        languages.add("Kotlin");
+        languages.add("Scala");
+        // languages.add(42);  // COMPILE ERROR
+
+        for (String lang : languages) {
+            System.out.println(lang.toUpperCase());  // no cast needed
+        }
+
+        // Typed Map
+        Map&lt;String, Integer&gt; scores = new HashMap&lt;&gt;();
+        scores.put("Alice", 95);
+        scores.put("Bob", 87);
+
+        for (Map.Entry&lt;String, Integer&gt; entry : scores.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+    }
+}</pre>
+            <div class="output-box">
+              JAVA<br />KOTLIN<br />SCALA<br />Alice: 95<br />Bob: 87
+            </div>
+
+            <!-- 9. Multiple Type Parameters -->
+            <h2 id="multiple-type-params">9. Multiple Type Parameters</h2>
+            <p>
+              A generic class or method can declare multiple type parameters,
+              separated by commas. The standard library's
+              <code class="inline">Map.Entry&lt;K, V&gt;</code> is a classic
+              example.
+            </p>
+            <pre>
+// Generic Pair class with two type parameters
+public class Pair&lt;K, V&gt; {
+    private final K key;
+    private final V value;
+
+    public Pair(K key, V value) {
+        this.key   = key;
+        this.value = value;
+    }
+
+    public K getKey()   { return key;   }
+    public V getValue() { return value; }
+
+    public static &lt;K, V&gt; Pair&lt;K, V&gt; of(K k, V v) {
+        return new Pair&lt;&gt;(k, v);
+    }
+
+    @Override
+    public String toString() {
+        return key + " -> " + value;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Pair&lt;String, Integer&gt;  nameAge   = Pair.of("Alice", 30);
+        Pair&lt;String, Boolean&gt;  feature   = Pair.of("darkMode", true);
+        Pair&lt;Integer, Double&gt;  ratio     = Pair.of(1, 1.618);
+
+        System.out.println(nameAge);
+        System.out.println(feature);
+        System.out.println(ratio);
+
+        // Map.Entry is Java's built-in two-parameter generic
+        Map&lt;String, List&lt;Integer&gt;&gt; groupedScores = new HashMap&lt;&gt;();
+        groupedScores.put("math", List.of(90, 85, 92));
+        for (Map.Entry&lt;String, List&lt;Integer&gt;&gt; e : groupedScores.entrySet()) {
+            System.out.println(e.getKey() + ": " + e.getValue());
+        }
+    }
+}</pre>
+            <div class="output-box">
+              Alice -> 30<br />darkMode -> true<br />1 -> 1.618<br />math: [90,
+              85, 92]
+            </div>
+
+            <!-- 10. Common Conventions -->
+            <h2 id="conventions">10. Common Conventions</h2>
+            <p>
+              Java uses single uppercase letters as type parameter names by
+              convention. Following these conventions makes generic code
+              instantly recognizable to other Java developers.
+            </p>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Letter</th>
+                  <th>Stands For</th>
+                  <th>Typical Usage</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="inline">T</code></td>
+                  <td>Type</td>
+                  <td>
+                    General-purpose type parameter:
+                    <code class="inline">Box&lt;T&gt;</code>,
+                    <code class="inline">Comparable&lt;T&gt;</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">E</code></td>
+                  <td>Element</td>
+                  <td>
+                    Elements in a collection:
+                    <code class="inline">List&lt;E&gt;</code>,
+                    <code class="inline">Set&lt;E&gt;</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">K</code></td>
+                  <td>Key</td>
+                  <td>
+                    Map key type: <code class="inline">Map&lt;K, V&gt;</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">V</code></td>
+                  <td>Value</td>
+                  <td>
+                    Map value type: <code class="inline">Map&lt;K, V&gt;</code>,
+                    <code class="inline">Cache&lt;K, V&gt;</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">N</code></td>
+                  <td>Number</td>
+                  <td>
+                    Numeric type parameters:
+                    <code class="inline">Stats&lt;N extends Number&gt;</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">R</code></td>
+                  <td>Result / Return</td>
+                  <td>
+                    Function return types:
+                    <code class="inline">Function&lt;T, R&gt;</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">S, U, W</code></td>
+                  <td>Secondary types</td>
+                  <td>
+                    Second, third, fourth type params when T is already used
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <pre>
+// Convention examples from the standard library
+interface Comparable&lt;T&gt;          // T = Type
+interface Collection&lt;E&gt;          // E = Element
+interface Map&lt;K, V&gt;              // K = Key, V = Value
+interface Function&lt;T, R&gt;         // T = input Type, R = Return type
+interface BiFunction&lt;T, U, R&gt;    // T, U = inputs, R = return</pre>
+            <div class="note-box">
+              <p>
+                <strong>Good practice:</strong> Always parameterize your
+                collections and containers. Enable the compiler warning
+                <code class="inline">-Xlint:unchecked</code> (or the equivalent
+                IDE warning) to catch any accidental raw-type usage in your
+                codebase.
+              </p>
+            </div>
+
+            <!-- Prev / Next -->
+            <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+              <a
+                href="./memory-allocation.html"
+                class="btn btn-outline-secondary"
+                >&larr; Memory Allocation</a
+              >
+              <a href="./collections.html" class="btn btn-primary"
+                >Collections &rarr;</a
+              >
+            </div>
+          </article>
+        </div>
+
+        <!-- Sticky TOC -->
+        <div class="col-lg-4 d-none d-lg-block">
+          <div class="toc">
+            <h6>On This Page</h6>
+            <a href="#what-are-generics">1. What are Generics?</a>
+            <a href="#generic-classes">2. Generic Classes</a>
+            <a href="#generic-methods">3. Generic Methods</a>
+            <a href="#generic-interfaces">4. Generic Interfaces</a>
+            <a href="#bounded-types">5. Bounded Type Parameters</a>
+            <a href="#wildcards">6. Wildcards</a>
+            <a href="#type-erasure">7. Type Erasure</a>
+            <a href="#generic-collections">8. Generic Collections</a>
+            <a href="#multiple-type-params">9. Multiple Type Parameters</a>
+            <a href="#conventions">10. Common Conventions</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 mt-4">
+      <div class="container-xl text-center" style="font-size: 0.88rem">
+        &copy; 2024 Java Codeex &mdash; Generics in Java Reference
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmk+GOFVeA//xwkFWEVflJ8ikO1y+k"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+
+

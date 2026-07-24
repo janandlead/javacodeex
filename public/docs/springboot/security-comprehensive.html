@@ -1,0 +1,1141 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Comprehensive Spring Boot Security guide"
+    />
+    <title>Spring Boot Security Comprehensive Guide | Java Codeex</title>
+    <link rel="icon" href="../icons/javacodeex.jpg" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../site-theme.css" />
+    <link rel="stylesheet" href="./springboot.css" />
+  </head>
+  <body>
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" /></a>
+        <a class="topic-link" href="./index.html#basics">Overview</a>
+        <a class="topic-link" href="https://javacodeex.com/springboot/project-structure.html"
+          >Project Structure</a
+        >
+        <a class="topic-link" href="./aop.html">AOP</a>
+        <a class="topic-link" href="./index.html#data-jpa">Data JPA</a>
+        <a class="topic-link" href="./index.html#security">Security</a>
+        <a class="topic-link" href="./index.html#exception-handling"
+          >Exceptions</a
+        >
+        <a class="topic-link" href="./index.html#rest-api">REST APIs</a>
+        <a class="topic-link" href="./validation.html">Validation</a>
+        <a class="topic-link" href="./index.html#testing">Testing</a>
+        <a class="topic-link" href="./index.html#actuator">Actuator</a>
+        <a class="topic-link" href="./index.html#deployment">Deployment</a>
+      </div>
+    </nav>
+    <section class="spring-hero">
+      <div class="container-xl">
+        <span class="spring-pill">Java Codeex</span>
+        <h1 class="mt-3">Spring Boot Security Comprehensive Guide</h1>
+        <p class="lead">
+          Protect your application: authentication (who you are), authorization
+          (what you can do), and defense against common attacks.
+        </p>
+      </div>
+    </section>
+    <main class="container-xl py-5">
+      <div class="spring-callout mb-4">
+        <strong>Security mindset:</strong> Never trust user input. Assume
+        attackers will try to break your system. Defense in depth: multiple
+        layers of protection.
+      </div>
+
+      <h2 id="authentication-vs-authorization">
+        Authentication vs Authorization
+      </h2>
+
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Concept</th>
+              <th>Definition</th>
+              <th>Example</th>
+              <th>Question</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Authentication</strong></td>
+              <td>Verifying identity - "Are you who you claim?"</td>
+              <td>Login with username/password</td>
+              <td>Who are you?</td>
+            </tr>
+            <tr>
+              <td><strong>Authorization</strong></td>
+              <td>Checking permissions - "Are you allowed?"</td>
+              <td>Admin can delete users</td>
+              <td>What can you do?</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="security-filter-chain">
+        Real-time example: secure online store API
+      </h2>
+      <p>
+        Consider an online store with customers, support staff, and
+        administrators. Anyone should be able to browse products, but only a
+        signed-in customer can create an order, support staff can view orders,
+        and administrators can delete products. Spring Security helps us express
+        these rules in one place.
+      </p>
+
+      <div class="concept-diagram">
+        <figcaption>What happens when a request arrives?</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>Client</strong><small>Username/password or JWT</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Security filters</strong><small>Authenticate request</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Authorization</strong
+            ><small>Check role and permission</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Controller</strong><small>Run business logic</small>
+          </div>
+        </div>
+      </div>
+
+      <h3 id="security-dependencies">1. Add the required dependency</h3>
+      <p>
+        The security starter provides the filter chain, password support, and
+        authentication APIs. Add validation and JPA if users are stored in a
+        database.
+      </p>
+      <pre class="spring-code"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-security&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+      <p>
+        After adding the security starter, Spring Security protects every
+        endpoint by default. We then replace that default with rules that fit
+        our application.
+      </p>
+
+      <h3 id="security-user-model">2. Store users safely</h3>
+      <p>
+        Store a password hash, never the original password. The role is kept as
+        application data so that authorization decisions can be made after the
+        user is authenticated.
+      </p>
+      <pre class="spring-code"><code>@Entity
+@Table(name = "app_users")
+public class AppUser {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false)
+    private String passwordHash;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
+    private boolean enabled = true;
+
+    // constructors, getters, and setters
+}
+
+public enum Role {
+    CUSTOMER, SUPPORT, ADMIN
+}</code></pre>
+
+      <h3 id="security-user-details">3. Load the user during login</h3>
+      <pre class="spring-code"><code>public interface AppUserRepository
+        extends JpaRepository&lt;AppUser, Long&gt; {
+
+    Optional&lt;AppUser&gt; findByUsername(String username);
+}
+
+@Service
+public class StoreUserDetailsService
+        implements UserDetailsService {
+
+    private final AppUserRepository userRepository;
+
+    public StoreUserDetailsService(AppUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username)
+            throws UsernameNotFoundException {
+
+        AppUser user = userRepository.findByUsername(username)
+                .orElseThrow(() -&gt; new UsernameNotFoundException(
+                        "User not found"));
+
+        return User.withUsername(user.getUsername())
+                .password(user.getPasswordHash())
+                .roles(user.getRole().name())
+                .disabled(!user.isEnabled())
+                .build();
+    }
+}</code></pre>
+
+      <h3 id="password-encoding">4. Hash passwords when registering</h3>
+      <p>
+        BCrypt is deliberately slow, which makes large-scale password guessing
+        more difficult. The encoder automatically creates a different salt for
+        each password. During login, Spring compares the plain input with the
+        stored hash; it never decrypts the hash.
+      </p>
+      <pre class="spring-code"><code>@Service
+public class RegistrationService {
+
+    private final AppUserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public RegistrationService(
+            AppUserRepository userRepository,
+            PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public void register(String username, String plainPassword) {
+        AppUser user = new AppUser();
+        user.setUsername(username);
+        user.setPasswordHash(passwordEncoder.encode(plainPassword));
+        user.setRole(Role.CUSTOMER);
+        user.setEnabled(true);
+        userRepository.save(user);
+    }
+}</code></pre>
+
+      <h3 id="roles-permissions">5. Define endpoint permissions</h3>
+      <pre class="spring-code"><code>@Configuration
+@EnableMethodSecurity
+public class SecurityConfig {
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http)
+            throws Exception {
+
+        http
+            .csrf(csrf -&gt; csrf.disable())
+            .sessionManagement(session -&gt; session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -&gt; auth
+                .requestMatchers(HttpMethod.GET, "/api/products/**")
+                    .permitAll()
+                .requestMatchers("/api/auth/**")
+                    .permitAll()
+                .requestMatchers("/api/admin/**")
+                    .hasRole("ADMIN")
+                .requestMatchers("/api/support/**")
+                    .hasAnyRole("SUPPORT", "ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/orders/**")
+                    .hasAnyRole("CUSTOMER", "ADMIN")
+                .anyRequest().authenticated());
+
+        return http.build();
+    }
+}</code></pre>
+      <p>
+        Disabling CSRF is appropriate here only because this example is a
+        stateless API using an authorization header. Do not copy that setting to
+        a browser application that authenticates with cookies and sessions.
+      </p>
+
+      <h3 id="method-security">6. Protect business methods too</h3>
+      <p>
+        URL rules protect routes, while method security protects business logic
+        even if the same service is called from another controller, scheduled
+        job, or messaging listener.
+      </p>
+      <pre class="spring-code"><code>@Service
+public class OrderService {
+
+    @PreAuthorize("hasAnyRole('CUSTOMER', 'ADMIN')")
+    public Order createOrder(CreateOrderRequest request) {
+        // Validate products, calculate total, and save the order.
+        return orderRepository.save(buildOrder(request));
+    }
+
+    @PreAuthorize("hasRole('SUPPORT') or hasRole('ADMIN')")
+    public Page&lt;Order&gt; findOrders(Pageable pageable) {
+        return orderRepository.findAll(pageable);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    public void cancelAnyOrder(Long orderId) {
+        // Only administrators can perform this operation.
+    }
+}</code></pre>
+
+      <h3 id="security-test-flow">7. Try the protected API</h3>
+      <p>
+        The following flow makes the security rules easy to verify. A public
+        product request succeeds without a token. An order request without a
+        token returns <code>401 Unauthorized</code>. A logged-in customer can
+        create an order, but an administrator-only request is rejected with
+        <code>403 Forbidden</code> when the user lacks the required role.
+      </p>
+      <pre class="spring-code"><code># Public endpoint
+curl http://localhost:8080/api/products
+
+# Protected endpoint without a token: 401
+curl -X POST http://localhost:8080/api/orders \
+  -H "Content-Type: application/json" \
+  -d '{"productId":10,"quantity":2}'
+
+# Protected endpoint with a customer's JWT
+curl -X POST http://localhost:8080/api/orders \
+  -H "Authorization: Bearer &lt;customer-token&gt;" \
+  -H "Content-Type: application/json" \
+  -d '{"productId":10,"quantity":2}'
+
+# Admin endpoint with a non-admin token: 403
+curl -H "Authorization: Bearer &lt;customer-token&gt;" \
+  http://localhost:8080/api/admin/users</code></pre>
+
+      <div class="spring-callout mb-4">
+        <strong>Remember:</strong> <code>401</code> means the request has no
+        valid identity. <code>403</code> means the identity is known but does
+        not have enough permission.
+      </div>
+
+      <h2 id="password-security">Password Security Best Practices</h2>
+
+      <h3>Do not store plain-text passwords</h3>
+      <pre class="spring-code"><code>// NEVER DO THIS!
+user.setPassword("password123");  // Visible to everyone
+repository.save(user);
+</code></pre>
+
+      <h3>Use BCrypt password hashing</h3>
+      <pre class="spring-code"><code>// pom.xml dependency
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.security&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-security-crypto&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+// Password encoding
+@Service
+public class UserService {
+    private final PasswordEncoder passwordEncoder;
+    
+    public UserService(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+    
+    public void createUser(String username, String plainPassword) {
+        String hashedPassword = passwordEncoder.encode(plainPassword);
+        // Store hashedPassword in database
+        User user = new User(username, hashedPassword);
+        repository.save(user);
+    }
+    
+    public boolean verifyPassword(String plainPassword, String hashedPassword) {
+        return passwordEncoder.matches(plainPassword, hashedPassword);
+    }
+}
+
+// Configuration
+@Configuration
+public class SecurityConfig {
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}
+</code></pre>
+
+      <h2 id="http-basic-auth">HTTP Basic Authentication</h2>
+
+      <p>Simplest form of authentication (for development/testing only):</p>
+
+      <pre class="spring-code"><code>@Configuration
+public class SecurityConfig {
+    
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/public/**").permitAll()
+                .anyRequest().authenticated())
+            .httpBasic(Customizer.withDefaults());
+        
+        return http.build();
+    }
+    
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new InMemoryUserDetailsManager(
+            User.builder()
+                .username("user")
+                .password("{noop}password")  // {noop} = no encoding (development only!)
+                .roles("USER")
+                .build(),
+            User.builder()
+                .username("admin")
+                .password("{noop}admin")
+                .roles("ADMIN")
+                .build()
+        );
+    }
+}
+
+// Usage: curl -u user:password http://localhost:8080/api/protected
+</code></pre>
+
+      <h2 id="jwt-authentication">JWT (JSON Web Token) Authentication</h2>
+
+      <p>Stateless authentication perfect for REST APIs:</p>
+
+      <pre class="spring-code"><code>// Step 1: Add JWT dependency
+&lt;dependency&gt;
+    &lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt;
+    &lt;artifactId&gt;jjwt-api&lt;/artifactId&gt;
+    &lt;version&gt;0.12.3&lt;/version&gt;
+&lt;/dependency&gt;
+
+// Step 2: Create JWT utility
+@Component
+public class JwtUtil {
+    @Value("${app.jwt.secret}")
+    private String secret;
+    
+    @Value("${app.jwt.expiration}")
+    private long expiration;
+    
+    public String generateToken(String username) {
+        return Jwts.builder()
+            .subject(username)
+            .issuedAt(new Date())
+            .expiration(new Date(System.currentTimeMillis() + expiration))
+            .signWith(getSigningKey())
+            .compact();
+    }
+    
+    public String extractUsername(String token) {
+        return Jwts.parserBuilder()
+            .setSigningKey(getSigningKey())
+            .build()
+            .parseClaimsJws(token)
+            .getBody()
+            .getSubject();
+    }
+    
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+    
+    private Key getSigningKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(secret);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
+}
+
+// Step 3: Create login endpoint
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+    
+    @PostMapping("/login")
+    public ResponseEntity&lt;TokenResponse&gt; login(@RequestBody LoginRequest request) {
+        try {
+            authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                    request.username(),
+                    request.password()
+                )
+            );
+            
+            String token = jwtUtil.generateToken(request.username());
+            return ResponseEntity.ok(new TokenResponse(token));
+        } catch (BadCredentialsException e) {
+            throw new UnauthorizedException("Invalid credentials");
+        }
+    }
+}
+
+// Step 4: Properties
+app.jwt.secret=your-secret-key-base64-encoded
+app.jwt.expiration=3600000  // 1 hour in milliseconds
+</code></pre>
+
+      <h2 id="jwt-end-to-end">End-to-end JWT implementation</h2>
+      <p>
+        This example builds an employee portal. A user registers, logs in,
+        receives a signed JWT, and sends the token when calling a protected
+        profile API. Users are stored in PostgreSQL using Spring Data JPA.
+      </p>
+
+      <div class="concept-diagram">
+        <figcaption>JWT request flow</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>Register</strong><small>Save BCrypt hash</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Login</strong><small>Check credentials</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>JWT</strong><small>Return signed token</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Protected API</strong><small>Verify Bearer token</small>
+          </div>
+        </div>
+      </div>
+
+      <h3 id="jwt-project-dependencies">1. Add dependencies</h3>
+      <pre class="spring-code"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-security&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+    &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt;
+    &lt;artifactId&gt;jjwt-api&lt;/artifactId&gt;
+    &lt;version&gt;0.12.5&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt;
+    &lt;artifactId&gt;jjwt-impl&lt;/artifactId&gt;
+    &lt;version&gt;0.12.5&lt;/version&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt;
+    &lt;artifactId&gt;jjwt-jackson&lt;/artifactId&gt;
+    &lt;version&gt;0.12.5&lt;/version&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+
+      <h3 id="jwt-database-configuration">2. Configure PostgreSQL and JWT</h3>
+      <pre
+        class="spring-code"
+      ><code>spring.datasource.url=jdbc:postgresql://localhost:5432/employee_portal
+spring.datasource.username=postgres
+spring.datasource.password=${DB_PASSWORD}
+spring.jpa.hibernate.ddl-auto=update
+
+# Use a long random Base64 secret from a secret manager.
+app.jwt.secret=${JWT_SECRET_BASE64}
+app.jwt.expiration=900000</code></pre>
+      <p>
+        Use Flyway or Liquibase for production schema changes. Keep access
+        tokens short-lived, and never commit a real JWT secret or database
+        password to source control.
+      </p>
+
+      <h3 id="jwt-user-entity">3. Create the database entity and repository</h3>
+      <pre class="spring-code"><code>@Entity
+@Table(name = "portal_users")
+public class AppUser {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(name = "password_hash", nullable = false)
+    private String passwordHash;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
+    private boolean enabled = true;
+
+    // constructors, getters, and setters
+}
+
+public enum Role {
+    USER, ADMIN
+}
+
+public interface AppUserRepository
+        extends JpaRepository&lt;AppUser, Long&gt; {
+    Optional&lt;AppUser&gt; findByUsername(String username);
+    boolean existsByUsername(String username);
+}</code></pre>
+
+      <h3 id="jwt-user-service">4. Create the user service</h3>
+      <p>
+        Spring calls <code>loadUserByUsername</code> during login. The
+        registration method hashes the password before saving it; the plain
+        password is never stored.
+      </p>
+      <pre class="spring-code"><code>@Service
+public class AppUserService implements UserDetailsService {
+    private final AppUserRepository repository;
+    private final PasswordEncoder passwordEncoder;
+
+    public AppUserService(AppUserRepository repository,
+                           PasswordEncoder passwordEncoder) {
+        this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        AppUser user = repository.findByUsername(username)
+                .orElseThrow(() -&gt; new UsernameNotFoundException(
+                        "User not found"));
+
+        return User.withUsername(user.getUsername())
+                .password(user.getPasswordHash())
+                .roles(user.getRole().name())
+                .disabled(!user.isEnabled())
+                .build();
+    }
+
+    public AppUser register(String username, String password) {
+        if (repository.existsByUsername(username)) {
+            throw new IllegalArgumentException("Username already exists");
+        }
+        AppUser user = new AppUser();
+        user.setUsername(username);
+        user.setPasswordHash(passwordEncoder.encode(password));
+        user.setRole(Role.USER);
+        user.setEnabled(true);
+        return repository.save(user);
+    }
+}</code></pre>
+
+      <h3 id="jwt-service">5. Create the JWT service</h3>
+      <p>
+        A JWT is signed, not encrypted. Put only non-sensitive claims such as
+        the username, role, issued time, and expiry in the token.
+      </p>
+      <pre class="spring-code"><code>@Service
+public class JwtService {
+    private final SecretKey key;
+    private final long expiration;
+
+    public JwtService(@Value("${app.jwt.secret}") String secret,
+                       @Value("${app.jwt.expiration}") long expiration) {
+        this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+        this.expiration = expiration;
+    }
+
+    public String createToken(UserDetails user) {
+        Date now = new Date();
+        return Jwts.builder()
+                .subject(user.getUsername())
+                .claim("roles", user.getAuthorities())
+                .issuedAt(now)
+                .expiration(new Date(now.getTime() + expiration))
+                .signWith(key)
+                .compact();
+    }
+
+    public String username(String token) {
+        return Jwts.parser().verifyWith(key).build()
+                .parseSignedClaims(token).getPayload().getSubject();
+    }
+
+    public boolean isValid(String token, UserDetails user) {
+        try {
+            Claims claims = Jwts.parser().verifyWith(key).build()
+                    .parseSignedClaims(token).getPayload();
+            return claims.getSubject().equals(user.getUsername())
+                    &amp;&amp; claims.getExpiration().after(new Date());
+        } catch (JwtException | IllegalArgumentException ex) {
+            return false;
+        }
+    }
+}</code></pre>
+
+      <h3 id="jwt-filter">6. Verify the token in a security filter</h3>
+      <pre class="spring-code"><code>@Component
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    private final JwtService jwtService;
+    private final AppUserService userService;
+
+    public JwtAuthenticationFilter(JwtService jwtService,
+                                   AppUserService userService) {
+        this.jwtService = jwtService;
+        this.userService = userService;
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain chain)
+            throws ServletException, IOException {
+        String header = request.getHeader("Authorization");
+
+        if (header == null || !header.startsWith("Bearer ")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
+        try {
+            String token = header.substring(7);
+            String username = jwtService.username(token);
+            UserDetails user = userService.loadUserByUsername(username);
+
+            if (jwtService.isValid(token, user)) {
+                var authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                user, null, user.getAuthorities());
+                SecurityContextHolder.getContext()
+                        .setAuthentication(authentication);
+            }
+        } catch (JwtException | UsernameNotFoundException ex) {
+            // Invalid tokens remain unauthenticated and result in 401.
+        }
+
+        chain.doFilter(request, response);
+    }
+}</code></pre>
+
+      <h3 id="jwt-security-configuration">7. Configure Spring Security</h3>
+      <pre class="spring-code"><code>@Configuration
+@EnableMethodSecurity
+public class SecurityConfig {
+    private final JwtAuthenticationFilter jwtFilter;
+
+    public SecurityConfig(JwtAuthenticationFilter jwtFilter) {
+        this.jwtFilter = jwtFilter;
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    AuthenticationManager authenticationManager(
+            AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http)
+            throws Exception {
+        http
+            .csrf(csrf -&gt; csrf.disable())
+            .sessionManagement(session -&gt; session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -&gt; auth
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated())
+            .addFilterBefore(jwtFilter,
+                    UsernamePasswordAuthenticationFilter.class);
+        return http.build();
+    }
+}</code></pre>
+      <p>
+        CSRF is disabled here because this is a stateless API using an
+        Authorization header. Keep CSRF protection enabled for a browser
+        application that uses cookie-based sessions.
+      </p>
+
+      <h3 id="jwt-auth-controller">8. Create register and login endpoints</h3>
+      <pre
+        class="spring-code"
+      ><code>public record RegisterRequest(String username, String password) {}
+public record LoginRequest(String username, String password) {}
+public record TokenResponse(String accessToken) {}
+
+@RestController
+@RequestMapping("/api/auth")
+public class AuthController {
+    private final AppUserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+
+    public AuthController(AppUserService userService,
+                           AuthenticationManager authenticationManager,
+                           JwtService jwtService) {
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
+    }
+
+    @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void register(@RequestBody RegisterRequest request) {
+        userService.register(request.username(), request.password());
+    }
+
+    @PostMapping("/login")
+    public TokenResponse login(@RequestBody LoginRequest request) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.username(), request.password()));
+        UserDetails user = (UserDetails) authentication.getPrincipal();
+        return new TokenResponse(jwtService.createToken(user));
+    }
+}</code></pre>
+
+      <h3 id="jwt-protected-controller">9. Create a protected controller</h3>
+      <pre class="spring-code"><code>@RestController
+@RequestMapping("/api/profile")
+public class ProfileController {
+    @GetMapping
+    public Map&lt;String, Object&gt; profile(Authentication authentication) {
+        return Map.of("username", authentication.getName(),
+                "authorities", authentication.getAuthorities());
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin-view")
+    public String adminView() {
+        return "Only an administrator can see this";
+    }
+}</code></pre>
+
+      <h3 id="jwt-test-requests">10. Test the complete flow</h3>
+      <pre class="spring-code"><code># Register a user
+curl -X POST http://localhost:8080/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"username":"anand","password":"StrongPassword123!"}'
+
+# Login and copy accessToken from the response
+curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"anand","password":"StrongPassword123!"}'
+
+# Call the protected endpoint
+curl http://localhost:8080/api/profile \
+  -H "Authorization: Bearer &lt;access-token&gt;"
+
+# No token: 401 Unauthorized
+curl http://localhost:8080/api/profile
+
+# USER calling an ADMIN endpoint: 403 Forbidden
+curl http://localhost:8080/api/profile/admin-view \
+  -H "Authorization: Bearer &lt;user-token&gt;"</code></pre>
+
+      <h3 id="jwt-production-notes">Production checklist</h3>
+      <ul>
+        <li>Use HTTPS and never log the Authorization header.</li>
+        <li>Keep access tokens short-lived and rotate refresh tokens.</li>
+        <li>
+          Store signing secrets in a secret manager and rotate them safely.
+        </li>
+        <li>
+          Validate signature, issuer, audience, and expiry when services share
+          tokens.
+        </li>
+        <li>
+          Return a generic login error so attackers cannot discover valid
+          usernames.
+        </li>
+      </ul>
+
+      <h2 id="role-based-access">Role-Based Access Control</h2>
+
+      <pre class="spring-code"><code>@Configuration
+public class SecurityConfig {
+    
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests(auth -> auth
+                // Public endpoints
+                .requestMatchers("/api/public/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
+                
+                // Admin only
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                
+                // Moderator and Admin
+                .requestMatchers(HttpMethod.DELETE, "/api/users/**")
+                    .hasAnyRole("ADMIN", "MODERATOR")
+                
+                // Any authenticated user
+                .anyRequest().authenticated()
+            )
+            .httpBasic(Customizer.withDefaults());
+        
+        return http.build();
+    }
+}
+
+// Method-level security
+@Service
+public class UserService {
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteAllUsers() {
+        // Only admins can call this
+    }
+    
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR')")
+    public void suspendUser(Long userId) {
+        // Admins or moderators
+    }
+    
+    @PreAuthorize("#userId == authentication.principal.id || hasRole('ADMIN')")
+    public void updateUser(Long userId, UserUpdateRequest request) {
+        // Users can update themselves, admins can update anyone
+    }
+}
+</code></pre>
+
+      <h2 id="csrf-cors">CSRF and CORS Configuration</h2>
+
+      <h3>CSRF Protection (for browser-based clients)</h3>
+      <pre class="spring-code"><code>@Configuration
+public class SecurityConfig {
+    
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .csrf(csrf -> csrf
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+            );
+        
+        return http.build();
+    }
+}
+</code></pre>
+
+      <h3>CORS Configuration (for cross-origin requests)</h3>
+      <pre class="spring-code"><code>@Configuration
+public class CorsConfig {
+    
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/api/**")
+                    .allowedOrigins("https://example.com", "https://www.example.com")
+                    .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
+                    .allowedHeaders("*")
+                    .allowCredentials(true)
+                    .maxAge(3600);
+            }
+        };
+    }
+}
+
+// Or use annotation
+@RestController
+@CrossOrigin(origins = "https://example.com")
+@RequestMapping("/api")
+public class UserController {
+    // ...
+}
+</code></pre>
+
+      <h2 id="security-headers">Security Headers</h2>
+
+      <p>Add headers to protect against common attacks:</p>
+
+      <pre class="spring-code"><code>@Configuration
+public class SecurityConfig {
+    
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+            .headers(headers -> headers
+                .xssProtection(Customizer.withDefaults())  // XSS prevention
+                .contentSecurityPolicy(csp -> 
+                    csp.policyDirectives("default-src 'self'"))
+                .frameOptions(frameOptions -> 
+                    frameOptions.deny())  // Prevent clickjacking
+                .hsts(hsts -> hsts
+                    .maxAgeInSeconds(31536000)  // 1 year
+                    .preload(true))
+            );
+        
+        return http.build();
+    }
+}
+</code></pre>
+
+      <h2 id="security-best-practices">Security Best Practices</h2>
+
+      <div
+        style="
+          background: #d4edda;
+          padding: 20px;
+          border-radius: 4px;
+          border-left: 4px solid #28a745;
+          margin: 20px 0;
+        "
+      >
+        <h4 style="margin-top: 0">Recommended practices</h4>
+        <ul class="lh-lg">
+          <li>Use HTTPS everywhere; never use HTTP in production.</li>
+          <li>
+            Hash passwords with BCrypt or another strong password encoder.
+          </li>
+          <li>
+            Use strong, randomly generated secrets for JWT and session tokens.
+          </li>
+          <li>Validate all user input on the server.</li>
+          <li>
+            Use prepared statements for SQL; Spring Data JPA helps prevent SQL
+            injection.
+          </li>
+          <li>Keep Spring Boot and security dependencies updated.</li>
+          <li>Read secrets from environment variables or a secret manager.</li>
+          <li>
+            Log security events such as login failures and access denials.
+          </li>
+          <li>Test authorization rules and run security scans regularly.</li>
+          <li>Give each user and service only the permissions it needs.</li>
+        </ul>
+      </div>
+
+      <div
+        style="
+          background: #f8d7da;
+          padding: 20px;
+          border-radius: 4px;
+          border-left: 4px solid #dc3545;
+          margin: 20px 0;
+        "
+      >
+        <h4 style="margin-top: 0">Avoid these mistakes</h4>
+        <ul class="lh-lg">
+          <li>Never store passwords in plain text.</li>
+          <li>Never use weak secrets such as "secret" or "123456".</li>
+          <li>Never trust client-side validation alone.</li>
+          <li>
+            Never use <code>{noop}</code> password encoding in production.
+          </li>
+          <li>
+            Never disable CSRF protection without understanding the client
+            authentication model.
+          </li>
+          <li>
+            Do not expose stack traces, passwords, or internal details in API
+            errors.
+          </li>
+          <li>Do not build SQL strings by concatenating user input.</li>
+          <li>Never write passwords or access tokens to logs.</li>
+          <li>Do not ignore security warnings from dependencies.</li>
+        </ul>
+      </div>
+
+      <h2 id="common-attacks">Common Attacks and Defenses</h2>
+
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Attack</th>
+              <th>What it does</th>
+              <th>Defense</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>SQL Injection</strong></td>
+              <td>Attacker adds malicious SQL in input</td>
+              <td>Use JPA/prepared statements (never concatenate SQL)</td>
+            </tr>
+            <tr>
+              <td><strong>XSS (Cross-Site Scripting)</strong></td>
+              <td>Inject JavaScript in response</td>
+              <td>Validate output, use @ResponseBody, set security headers</td>
+            </tr>
+            <tr>
+              <td><strong>CSRF (Cross-Site Request Forgery)</strong></td>
+              <td>Trick user into making unwanted request</td>
+              <td>Enable CSRF tokens in Spring Security</td>
+            </tr>
+            <tr>
+              <td><strong>Password Cracking</strong></td>
+              <td>Try many password combinations</td>
+              <td>Use strong hashing (BCrypt), slow down attempts</td>
+            </tr>
+            <tr>
+              <td><strong>Man-in-the-Middle</strong></td>
+              <td>Intercept unencrypted traffic</td>
+              <td>Always use HTTPS</td>
+            </tr>
+            <tr>
+              <td><strong>Privilege Escalation</strong></td>
+              <td>User gains higher permissions</td>
+              <td>Strict authorization checks, least privilege</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <a class="btn btn-success" href="security-comprehensive.html"
+        >Open the Security Guide</a
+      >
+    </main>
+    <footer class="py-4 text-center">
+      <p class="mb-0">&copy; 2026 Java Codeex</p>
+    </footer>
+    <script src="./springboot-nav.js"></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

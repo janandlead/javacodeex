@@ -1,0 +1,1238 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Java Multithreading guide - Thread lifecycle, synchronization, ReentrantLock, deadlock prevention, thread pools, ExecutorService and Java 21 Virtual Threads."
+    />
+    <meta
+      name="keywords"
+      content="Java multithreading, Java threads, synchronization Java, thread pool Java, deadlock Java, ExecutorService, virtual threads"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Java Codeex" />
+    <link rel="canonical" href="https://javacodeex.in/java/multithreading/" />
+    <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
+    <link
+      rel="shortcut icon"
+      href="../icons/javacodeex.jpg"
+      type="image/jpeg"
+    />
+    <link rel="apple-touch-icon" href="../icons/javacodeex.jpg" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta
+      property="og:title"
+      content="Java Multithreading - Synchronization, Locks and Thread Pools | Java Codeex"
+    />
+    <meta
+      property="og:description"
+      content="Java Multithreading guide - Thread lifecycle, synchronization, ReentrantLock, deadlock prevention, thread pools, ExecutorService and Java 21 Virtual Threads."
+    />
+    <meta
+      property="og:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta property="og:url" content="https://javacodeex.in/multithreading/" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Java Multithreading - Synchronization, Locks and Thread Pools | Java Codeex"
+    />
+    <meta
+      name="twitter:description"
+      content="Java Multithreading guide - Thread lifecycle, synchronization, ReentrantLock, deadlock prevention, thread pools, ExecutorService and Java 21 Virtual Threads."
+    />
+    <meta
+      name="twitter:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Java Multithreading - Synchronization, Locks and Thread Pools | Java
+      Codeex
+    </title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        scroll-behavior: smooth;
+        font-size: 1rem;
+        color: #222;
+      }
+      .navbar {
+        background-color: #1a1a2e;
+      }
+      .navbar-brand {
+        font-weight: 700;
+        color: #f8a100 !important;
+      }
+      .navbar-nav .nav-link {
+        color: #cdd6f4 !important;
+        font-size: 0.85rem;
+      }
+      .navbar-nav .nav-link:hover {
+        color: #f8a100 !important;
+      }
+      .page-hero {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 60%,
+          #0f3460 100%
+        );
+        color: #fff;
+        padding: 48px 0 36px;
+      }
+      .page-hero h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+      }
+      .breadcrumb-item a {
+        color: #f8a100;
+        text-decoration: none;
+      }
+      .breadcrumb-item.active {
+        color: #cdd6f4;
+      }
+      .breadcrumb-item + .breadcrumb-item::before {
+        color: #8a9bb3;
+      }
+      .content-wrapper {
+        max-width: 860px;
+      }
+      h2 {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: #0f3460;
+        border-left: 5px solid #f8a100;
+        padding-left: 12px;
+        margin-top: 2.2rem;
+        margin-bottom: 0.8rem;
+      }
+      h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #16213e;
+        margin-top: 1.6rem;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        line-height: 1.8;
+      }
+      pre {
+        background: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 1.2rem 1.4rem;
+        font-size: 0.88rem;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+      code.inline {
+        background: #eef2ff;
+        color: #0f3460;
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 0.88rem;
+      }
+      .output-box {
+        background: #0d1117;
+        color: #58d68d;
+        border-left: 4px solid #58d68d;
+        border-radius: 4px;
+        padding: 0.8rem 1.2rem;
+        font-family: monospace;
+        font-size: 0.92rem;
+        margin: 0.5rem 0 1rem;
+      }
+      .note-box {
+        background: #eaf4ff;
+        border-left: 5px solid #3b82f6;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .note-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .warn-box {
+        background: #fff8e1;
+        border-left: 5px solid #f8a100;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .warn-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .table thead th {
+        background: #0f3460;
+        color: #fff;
+      }
+      .table-hover tbody tr:hover {
+        background: #f0f6ff;
+      }
+      .toc {
+        background: #f8f9fc;
+        border: 1px solid #e0e7ef;
+        border-radius: 10px;
+        padding: 1.2rem 1.4rem;
+        position: sticky;
+        top: 72px;
+      }
+      .toc h6 {
+        font-weight: 700;
+        color: #0f3460;
+        margin-bottom: 0.8rem;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        letter-spacing: 0.05em;
+      }
+      .toc a {
+        display: block;
+        font-size: 0.87rem;
+        color: #444;
+        text-decoration: none;
+        padding: 3px 0 3px 8px;
+        border-left: 3px solid transparent;
+        transition: all 0.15s;
+      }
+      .toc a:hover {
+        color: #f8a100;
+        border-left-color: #f8a100;
+      }
+      footer {
+        background: #1a1a2e;
+        color: #8a9bb3;
+      }
+
+      /* === TECH BANNER HEADER === */
+      .brand-bar {
+        background: #1a1a2e;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .brand-link {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: #f8a100;
+        font-weight: 700;
+        font-size: 1.15rem;
+        gap: 10px;
+      }
+      .brand-link:hover {
+        opacity: 0.85;
+        color: #f8a100;
+      }
+      .tech-banner {
+        background: #16213e;
+        border-bottom: 2px solid rgba(248, 161, 0, 0.2);
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tech-banner::-webkit-scrollbar {
+        height: 3px;
+      }
+      .tech-banner::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .tech-banner .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .tech-tab {
+        display: inline-block;
+        color: #a6adc8;
+        text-decoration: none;
+        padding: 11px 22px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+        white-space: nowrap;
+      }
+      .tech-tab:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.06);
+        text-decoration: none;
+      }
+      .tech-tab.active {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        font-weight: 700;
+      }
+      .tech-tab.coming-soon {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .java-subnav {
+        background: #0f3460;
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+      }
+      .java-subnav::-webkit-scrollbar {
+        height: 3px;
+      }
+      .java-subnav::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .java-subnav .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .topic-link {
+        display: inline-block;
+        color: #cdd6f4;
+        text-decoration: none;
+        padding: 10px 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+      }
+      .topic-link:hover {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        text-decoration: none;
+      }
+    </style>
+    <link rel="stylesheet" href="../site-theme.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a
+          class="java-course-home"
+          href="../index.html#courses"
+          title="Back to courses"
+          aria-label="Back to courses"
+        >
+          <img src="../icons/javacodeex.jpg" alt="Back to courses" />
+        </a>
+        <a class="topic-link" href="./introduction-to-java.html">Basics</a>
+        <a class="topic-link" href="./methods.html">Methods</a>
+        <a class="topic-link" href="./arrays.html">Arrays</a>
+        <a class="topic-link" href="./strings.html">Strings</a>
+        <a class="topic-link" href="./oop-concepts.html">OOP</a>
+        <a class="topic-link" href="./interfaces.html">Interfaces</a>
+        <a class="topic-link" href="./exception-handling.html">Exceptions</a>
+        <a class="topic-link" href="./regex.html">Regex</a>
+        <a class="topic-link" href="./memory-allocation.html">Memory</a>
+        <a class="topic-link" href="./generics.html">Generics</a>
+        <a class="topic-link" href="./collections.html">Collections</a>
+        <a class="topic-link" href="./java-8-features.html">Java 8+</a>
+        <a class="topic-link" href="./date-and-time-api.html">Date &amp; Time</a>
+        <a class="topic-link" href="./multithreading.html">Multithreading</a>
+        <a class="topic-link" href="./file-handling.html">Files</a>
+        <a class="topic-link" href="./jdbc.html">JDBC</a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="page-hero">
+      <div class="container-xl">
+        <nav aria-label="breadcrumb" class="mb-3">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a href="../index.html">Java Codeex</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="../index.html#multithreading">Multithreading</a>
+            </li>
+            <li class="breadcrumb-item active">Multithreading in Java</li>
+          </ol>
+        </nav>
+        <h1>Multithreading in Java</h1>
+        <p class="mb-0" style="color: #cdd6f4; font-size: 1.08rem">
+          Write concurrent Java programs using threads, synchronization, and the
+          Executor framework.
+        </p>
+      </div>
+    </section>
+    <aside class="topic-guide" aria-label="Learning guide">
+      <div class="topic-guide-step">
+        <span>01</span><strong>Run work concurrently</strong
+        ><small>Create threads or tasks</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>02</span><strong>Run work concurrently</strong
+        ><small>Coordinate shared data</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>03</span><strong>Run work concurrently</strong
+        ><small>Use pools safely</small>
+      </div>
+      <p class="topic-guide-summary">
+        <strong>Learning goal:</strong> Concurrency can improve responsiveness
+        when work is divided carefully.
+      </p>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="container-xl py-5">
+      <div class="row g-5">
+        <!-- Article -->
+        <div class="col-lg-8">
+          <div class="content-wrapper">
+            <!-- 1 -->
+            <h2 id="what-is-multithreading">1. What is Multithreading?</h2>
+            <p>
+              A <strong>process</strong> is an independent program running in
+              its own memory space. A <strong>thread</strong> is the smallest
+              unit of execution within a process. Multiple threads share the
+              same process memory, making communication between them fast and
+              efficient.
+            </p>
+            <p><strong>Benefits of multithreading:</strong></p>
+            <ul>
+              <li>
+                <strong>Concurrency</strong> — multiple tasks appear to run
+                simultaneously, improving responsiveness.
+              </li>
+              <li>
+                <strong>CPU utilization</strong> — while one thread waits on
+                I/O, another thread can use the CPU.
+              </li>
+              <li>
+                <strong>Simplified modeling</strong> — each independent task can
+                live in its own thread (e.g., GUI + background download).
+              </li>
+            </ul>
+            <div class="note-box">
+              <p>
+                <strong>Note:</strong> On a single-core CPU, threads are
+                interleaved (concurrency). On multi-core CPUs, threads may truly
+                run in parallel (parallelism).
+              </p>
+            </div>
+
+            <!-- 2 -->
+            <h2 id="thread-lifecycle">2. Thread Lifecycle</h2>
+            <p>
+              A Java thread transitions through the following states during its
+              lifetime:
+            </p>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>State</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="inline">NEW</code></td>
+                  <td>
+                    Thread object created but
+                    <code class="inline">start()</code> not yet called.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">RUNNABLE</code></td>
+                  <td>
+                    Thread is executing or ready to execute; waiting for CPU
+                    time.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">BLOCKED</code></td>
+                  <td>
+                    Waiting to acquire a monitor lock held by another thread.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">WAITING</code></td>
+                  <td>
+                    Waiting indefinitely for another thread (e.g.,
+                    <code class="inline">wait()</code>,
+                    <code class="inline">join()</code>).
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">TIMED_WAITING</code></td>
+                  <td>
+                    Waiting for a specified period (e.g.,
+                    <code class="inline">sleep(ms)</code>,
+                    <code class="inline">wait(ms)</code>).
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">TERMINATED</code></td>
+                  <td>
+                    Thread has finished execution or was terminated by an
+                    exception.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <pre>
+// Check thread state at runtime
+Thread t = new Thread(() -> System.out.println("running"));
+System.out.println(t.getState()); // NEW
+t.start();
+System.out.println(t.getState()); // RUNNABLE or TERMINATED</pre>
+
+            <!-- 3 -->
+            <h2 id="extending-thread">
+              3. Creating Threads — Extending Thread
+            </h2>
+            <p>
+              The simplest way to create a thread is to subclass
+              <code class="inline">java.lang.Thread</code> and override the
+              <code class="inline">run()</code> method. Call
+              <code class="inline">start()</code> to launch the new thread.
+            </p>
+            <pre>
+public class MyThread extends Thread {
+
+    private String name;
+
+    public MyThread(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 1; i &lt;= 5; i++) {
+            System.out.println(name + " — count: " + i);
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        MyThread t1 = new MyThread("Thread-A");
+        MyThread t2 = new MyThread("Thread-B");
+        t1.start(); // starts a new thread
+        t2.start(); // starts another new thread
+    }
+}</pre>
+            <div class="output-box">
+              Thread-A — count: 1<br />Thread-B — count: 1<br />Thread-A —
+              count: 2<br />Thread-B — count: 2<br />... (interleaved output)
+            </div>
+            <div class="warn-box">
+              <p>
+                <strong>Limitation:</strong> Java supports only single
+                inheritance, so extending
+                <code class="inline">Thread</code> prevents you from extending
+                any other class. Prefer
+                <code class="inline">Runnable</code> instead.
+              </p>
+            </div>
+
+            <!-- 4 -->
+            <h2 id="implementing-runnable">
+              4. Creating Threads — Implementing Runnable
+            </h2>
+            <p>
+              The preferred approach is to implement the
+              <code class="inline">Runnable</code> interface and pass it to a
+              <code class="inline">Thread</code> constructor. This separates the
+              task logic from thread management and allows your class to extend
+              another class.
+            </p>
+            <pre>
+public class PrintTask implements Runnable {
+
+    private String message;
+
+    public PrintTask(String message) {
+        this.message = message;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 0; i &lt; 4; i++) {
+            System.out.println(Thread.currentThread().getName()
+                               + " says: " + message);
+        }
+    }
+
+    public static void main(String[] args) {
+        Runnable task1 = new PrintTask("Hello");
+        Runnable task2 = new PrintTask("World");
+
+        Thread t1 = new Thread(task1, "Worker-1");
+        Thread t2 = new Thread(task2, "Worker-2");
+
+        t1.start();
+        t2.start();
+
+        // Lambda shorthand (Java 8+)
+        Thread t3 = new Thread(() -> System.out.println("Lambda thread!"), "Worker-3");
+        t3.start();
+    }
+}</pre>
+            <div class="output-box">
+              Worker-1 says: Hello<br />Worker-2 says: World<br />Worker-1 says:
+              Hello<br />Worker-3 says: Lambda thread!<br />...
+            </div>
+
+            <!-- 5 -->
+            <h2 id="start-vs-run">5. Thread.start() vs Thread.run()</h2>
+            <p>
+              This is a classic mistake. Understanding the difference is
+              critical:
+            </p>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Behavior</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="inline">start()</code></td>
+                  <td>
+                    Creates a <em>new OS thread</em> and schedules
+                    <code class="inline">run()</code> on it. Returns
+                    immediately.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">run()</code></td>
+                  <td>
+                    Calls the <code class="inline">run()</code> method directly
+                    <em>in the current thread</em>. No new thread is created.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <pre>
+public class StartVsRun {
+    public static void main(String[] args) {
+        Thread t = new Thread(() -> {
+            System.out.println("Executing in: "
+                + Thread.currentThread().getName());
+        });
+
+        // Correct — executes in a NEW thread
+        t.start(); // prints "Executing in: Thread-0"
+
+        // Wrong — executes in main thread
+        // t.run(); // prints "Executing in: main"
+    }
+}</pre>
+            <div class="note-box">
+              <p>
+                <strong>Rule:</strong> Always call
+                <code class="inline">start()</code>. Calling
+                <code class="inline">run()</code> directly gives you no
+                concurrency benefit and can mislead you into thinking threads
+                are working when they are not.
+              </p>
+            </div>
+
+            <!-- 6 -->
+            <h2 id="thread-sleep">6. Thread.sleep()</h2>
+            <p>
+              <code class="inline">Thread.sleep(milliseconds)</code> pauses the
+              <em>current</em> thread for at least the specified time. It does
+              <strong>not</strong> release any locks the thread holds. It throws
+              a checked <code class="inline">InterruptedException</code> which
+              must be handled.
+            </p>
+            <pre>
+public class SleepDemo {
+    public static void main(String[] args) {
+        System.out.println("Task started at: " + java.time.LocalTime.now());
+
+        try {
+            Thread.sleep(2000); // pause for 2 seconds
+        } catch (InterruptedException e) {
+            // Restore interrupt status — best practice
+            Thread.currentThread().interrupt();
+            System.out.println("Thread was interrupted!");
+        }
+
+        System.out.println("Task resumed at: " + java.time.LocalTime.now());
+    }
+}</pre>
+            <div class="output-box">
+              Task started at: 10:30:00.123<br />Task resumed at: 10:30:02.125
+            </div>
+            <div class="warn-box">
+              <p>
+                <strong>Important:</strong> Never swallow
+                <code class="inline">InterruptedException</code> silently.
+                Either rethrow it or restore the interrupt flag with
+                <code class="inline">Thread.currentThread().interrupt()</code>.
+              </p>
+            </div>
+
+            <!-- 7 -->
+            <h2 id="thread-priority">7. Thread Priority</h2>
+            <p>
+              Each Java thread has a priority from
+              <code class="inline">1</code> (MIN) to
+              <code class="inline">10</code> (MAX). The JVM scheduler uses
+              priority as a <em>hint</em> — higher-priority threads are more
+              likely to be scheduled first, but this is not guaranteed and
+              varies by OS.
+            </p>
+            <pre>
+public class PriorityDemo {
+    public static void main(String[] args) {
+        Thread low  = new Thread(() -> System.out.println("Low priority"));
+        Thread norm = new Thread(() -> System.out.println("Normal priority"));
+        Thread high = new Thread(() -> System.out.println("High priority"));
+
+        low.setPriority(Thread.MIN_PRIORITY);   // 1
+        norm.setPriority(Thread.NORM_PRIORITY); // 5 (default)
+        high.setPriority(Thread.MAX_PRIORITY);  // 10
+
+        System.out.println("Low  priority value: " + low.getPriority());
+        System.out.println("High priority value: " + high.getPriority());
+
+        low.start();
+        norm.start();
+        high.start();
+    }
+}</pre>
+            <div class="note-box">
+              <p>
+                <strong>Note:</strong> Do not rely on thread priorities for
+                correctness. Use them only as performance tuning hints. Program
+                logic must never depend on scheduling order.
+              </p>
+            </div>
+
+            <!-- 8 -->
+            <h2 id="daemon-threads">8. Daemon Threads</h2>
+            <p>
+              A <strong>daemon thread</strong> is a background service thread
+              (e.g., garbage collector). The JVM will exit when all non-daemon
+              (user) threads finish, even if daemon threads are still running.
+              Call <code class="inline">setDaemon(true)</code> <em>before</em>
+              <code class="inline">start()</code>.
+            </p>
+            <pre>
+public class DaemonDemo {
+    public static void main(String[] args) throws InterruptedException {
+        Thread daemon = new Thread(() -> {
+            while (true) {
+                System.out.println("Daemon thread running...");
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        });
+
+        daemon.setDaemon(true);  // must be called before start()
+        daemon.start();
+
+        System.out.println("Is daemon? " + daemon.isDaemon()); // true
+
+        Thread.sleep(1500); // main thread sleeps 1.5s
+        System.out.println("Main thread finishing — JVM will exit");
+        // JVM exits here; daemon thread is killed automatically
+    }
+}</pre>
+            <div class="output-box">
+              Is daemon? true<br />Daemon thread running...<br />Daemon thread
+              running...<br />Daemon thread running...<br />Main thread
+              finishing — JVM will exit
+            </div>
+
+            <!-- 9 -->
+            <h2 id="synchronization">9. Synchronization</h2>
+            <p>
+              When multiple threads access shared mutable data, a
+              <strong>race condition</strong> can corrupt state. Use
+              <code class="inline">synchronized</code> to allow only one thread
+              at a time.
+            </p>
+            <h3>Race Condition (Problem)</h3>
+            <pre>
+public class Counter {
+    private int count = 0;
+
+    // NOT thread-safe — race condition!
+    public void increment() {
+        count++; // read-modify-write: three separate operations
+    }
+
+    public int getCount() { return count; }
+
+    public static void main(String[] args) throws InterruptedException {
+        Counter c = new Counter();
+        Thread t1 = new Thread(() -> { for (int i = 0; i &lt; 1000; i++) c.increment(); });
+        Thread t2 = new Thread(() -> { for (int i = 0; i &lt; 1000; i++) c.increment(); });
+        t1.start(); t2.start();
+        t1.join(); t2.join();
+        System.out.println("Expected 2000, got: " + c.getCount()); // often less!
+    }
+}</pre>
+            <h3>Synchronized Method (Fix)</h3>
+            <pre>
+public class SynchronizedCounter {
+    private int count = 0;
+
+    // Only one thread can execute this at a time
+    public synchronized void increment() {
+        count++;
+    }
+
+    public synchronized int getCount() { return count; }
+}</pre>
+            <h3>Synchronized Block (Fine-grained control)</h3>
+            <pre>
+public class BankAccount {
+    private double balance;
+    private final Object lock = new Object();
+
+    public void deposit(double amount) {
+        synchronized (lock) {  // lock on specific object
+            balance += amount;
+            System.out.println("Deposited: " + amount
+                               + " | Balance: " + balance);
+        }
+    }
+
+    public void withdraw(double amount) {
+        synchronized (lock) {
+            if (balance >= amount) {
+                balance -= amount;
+                System.out.println("Withdrew: " + amount
+                                   + " | Balance: " + balance);
+            }
+        }
+    }
+}</pre>
+
+            <!-- 10 -->
+            <h2 id="thread-safety">10. Thread Safety</h2>
+            <p>
+              Beyond <code class="inline">synchronized</code>, Java provides
+              several mechanisms for safe concurrent access:
+            </p>
+            <h3>volatile Keyword</h3>
+            <p>
+              Marks a variable so reads/writes go directly to main memory,
+              preventing thread-local caching. Use when one thread writes and
+              others only read.
+            </p>
+            <pre>
+public class VolatileDemo {
+    // Without volatile, the loop in another thread might never see the update
+    private volatile boolean running = true;
+
+    public void stop() {
+        running = false;
+    }
+
+    public void run() {
+        while (running) {
+            // do work
+        }
+        System.out.println("Thread stopped cleanly.");
+    }
+}</pre>
+            <h3>Atomic Operations</h3>
+            <pre>
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class AtomicDemo {
+    private AtomicInteger count = new AtomicInteger(0);
+
+    public void increment() {
+        count.incrementAndGet(); // atomic read-modify-write
+    }
+
+    public int getCount() {
+        return count.get();
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        AtomicDemo demo = new AtomicDemo();
+        Thread t1 = new Thread(() -> { for(int i=0;i&lt;1000;i++) demo.increment(); });
+        Thread t2 = new Thread(() -> { for(int i=0;i&lt;1000;i++) demo.increment(); });
+        t1.start(); t2.start();
+        t1.join();  t2.join();
+        System.out.println("Count (always 2000): " + demo.getCount());
+    }
+}</pre>
+
+            <!-- 11 -->
+            <h2 id="locks">11. Locks (ReentrantLock)</h2>
+            <p>
+              <code class="inline">ReentrantLock</code> from
+              <code class="inline">java.util.concurrent.locks</code> provides
+              explicit, flexible locking with features like
+              <code class="inline">tryLock()</code> and timed acquisition that
+              <code class="inline">synchronized</code> cannot offer.
+            </p>
+            <pre>
+import java.util.concurrent.locks.ReentrantLock;
+
+public class LockDemo {
+    private final ReentrantLock lock = new ReentrantLock();
+    private int count = 0;
+
+    public void increment() {
+        lock.lock();           // acquire the lock
+        try {
+            count++;
+        } finally {
+            lock.unlock();     // ALWAYS release in finally
+        }
+    }
+
+    public void tryIncrement() {
+        if (lock.tryLock()) {  // acquire only if immediately available
+            try {
+                count++;
+                System.out.println("Lock acquired, count = " + count);
+            } finally {
+                lock.unlock();
+            }
+        } else {
+            System.out.println("Could not acquire lock, skipping.");
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        LockDemo demo = new LockDemo();
+        Thread t1 = new Thread(() -> { for(int i=0;i&lt;500;i++) demo.increment(); });
+        Thread t2 = new Thread(() -> { for(int i=0;i&lt;500;i++) demo.increment(); });
+        t1.start(); t2.start();
+        t1.join();  t2.join();
+        System.out.println("Final count: " + demo.count); // always 1000
+    }
+}</pre>
+
+            <!-- 12 -->
+            <h2 id="deadlock">12. Deadlock</h2>
+            <p>
+              A <strong>deadlock</strong> occurs when two or more threads are
+              each waiting for a lock held by the other, forming a circular
+              dependency from which none can proceed.
+            </p>
+            <h3>Deadlock Example</h3>
+            <pre>
+public class DeadlockDemo {
+    private static final Object lockA = new Object();
+    private static final Object lockB = new Object();
+
+    public static void main(String[] args) {
+        Thread t1 = new Thread(() -> {
+            synchronized (lockA) {
+                System.out.println("T1 holds A, waiting for B...");
+                try { Thread.sleep(100); } catch (InterruptedException e) {}
+                synchronized (lockB) {  // DEADLOCK — t2 holds B
+                    System.out.println("T1 acquired B");
+                }
+            }
+        });
+
+        Thread t2 = new Thread(() -> {
+            synchronized (lockB) {
+                System.out.println("T2 holds B, waiting for A...");
+                try { Thread.sleep(100); } catch (InterruptedException e) {}
+                synchronized (lockA) {  // DEADLOCK — t1 holds A
+                    System.out.println("T2 acquired A");
+                }
+            }
+        });
+
+        t1.start();
+        t2.start();
+        // Both threads hang forever!
+    }
+}</pre>
+            <h3>Prevention Strategies</h3>
+            <ul>
+              <li>
+                <strong>Lock ordering:</strong> Always acquire locks in the same
+                order across all threads.
+              </li>
+              <li>
+                <strong>tryLock with timeout:</strong> Use
+                <code class="inline">lock.tryLock(timeout, unit)</code> and back
+                off if not acquired.
+              </li>
+              <li>
+                <strong>Minimize lock scope:</strong> Hold locks for the
+                shortest time possible.
+              </li>
+              <li>
+                <strong>Use higher-level concurrency utilities</strong> from
+                <code class="inline">java.util.concurrent</code> instead of
+                manual locking.
+              </li>
+            </ul>
+
+            <!-- 13 -->
+            <h2 id="thread-pools">13. Thread Pools and Executor Framework</h2>
+            <p>
+              Creating a new thread for every task is expensive. A
+              <strong>thread pool</strong> reuses a fixed set of threads. The
+              <code class="inline">Executor</code> framework (Java 5+) manages
+              pools for you.
+            </p>
+            <pre>
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class ThreadPoolDemo {
+    public static void main(String[] args) {
+        // Pool of 4 worker threads
+        ExecutorService executor = Executors.newFixedThreadPool(4);
+
+        for (int i = 1; i &lt;= 10; i++) {
+            final int taskId = i;
+            executor.submit(() -> {
+                System.out.println("Task " + taskId
+                    + " running in " + Thread.currentThread().getName());
+                try {
+                    Thread.sleep(500); // simulate work
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            });
+        }
+
+        executor.shutdown(); // no new tasks accepted
+        System.out.println("All tasks submitted.");
+        // executor.awaitTermination(10, TimeUnit.SECONDS) to wait
+    }
+}</pre>
+            <div class="output-box">
+              Task 1 running in pool-1-thread-1<br />Task 2 running in
+              pool-1-thread-2<br />Task 3 running in pool-1-thread-3<br />Task 4
+              running in pool-1-thread-4<br />Task 5 running in
+              pool-1-thread-1<br />...
+            </div>
+            <table class="table table-bordered table-hover mt-3">
+              <thead>
+                <tr>
+                  <th>Factory Method</th>
+                  <th>Behavior</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="inline">newFixedThreadPool(n)</code></td>
+                  <td>Fixed pool of n threads; queues extra tasks.</td>
+                </tr>
+                <tr>
+                  <td><code class="inline">newCachedThreadPool()</code></td>
+                  <td>
+                    Creates threads as needed; reuses idle ones. Unbounded.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">newSingleThreadExecutor()</code></td>
+                  <td>Single worker thread; tasks execute sequentially.</td>
+                </tr>
+                <tr>
+                  <td><code class="inline">newScheduledThreadPool(n)</code></td>
+                  <td>Supports delayed and periodic task scheduling.</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- 14 -->
+            <h2 id="callable-future">14. Callable and Future</h2>
+            <p>
+              <code class="inline">Runnable</code> cannot return a value or
+              throw checked exceptions. Use
+              <code class="inline">Callable&lt;V&gt;</code> when you need a
+              result. <code class="inline">Future&lt;V&gt;</code> holds the
+              eventual return value and lets you check status or cancel.
+            </p>
+            <pre>
+import java.util.concurrent.*;
+
+public class CallableFutureDemo {
+    public static void main(String[] args) throws Exception {
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+
+        // Callable returns a result
+        Callable&lt;Integer&gt; sumTask = () -> {
+            int sum = 0;
+            for (int i = 1; i &lt;= 100; i++) sum += i;
+            Thread.sleep(1000); // simulate computation
+            return sum;
+        };
+
+        Callable&lt;String&gt; greetTask = () -> {
+            Thread.sleep(500);
+            return "Hello from Callable!";
+        };
+
+        Future&lt;Integer&gt; sumFuture   = executor.submit(sumTask);
+        Future&lt;String&gt;  greetFuture = executor.submit(greetTask);
+
+        System.out.println("Tasks submitted, doing other work...");
+
+        // get() blocks until result is ready
+        String greeting = greetFuture.get();           // waits ~500ms
+        Integer sum     = sumFuture.get(3, TimeUnit.SECONDS); // timeout
+
+        System.out.println("Greeting: " + greeting);
+        System.out.println("Sum 1-100: " + sum);
+
+        executor.shutdown();
+    }
+}</pre>
+            <div class="output-box">
+              Tasks submitted, doing other work...<br />Greeting: Hello from
+              Callable!<br />Sum 1-100: 5050
+            </div>
+
+            <!-- 15 -->
+            <h2 id="virtual-threads">15. Virtual Threads — Java 21</h2>
+            <p>
+              Introduced as a stable feature in Java 21 (Project Loom),
+              <strong>virtual threads</strong> are lightweight threads managed
+              by the JVM — not the OS. You can create millions of them without
+              exhausting system resources, making them ideal for high-throughput
+              I/O-bound applications.
+            </p>
+            <pre>
+public class VirtualThreadDemo {
+    public static void main(String[] args) throws InterruptedException {
+        // Create a single virtual thread
+        Thread vt = Thread.ofVirtual()
+                          .name("my-virtual-thread")
+                          .start(() -> System.out.println(
+                              "Running in: " + Thread.currentThread()));
+
+        vt.join();
+
+        // Launch 100,000 virtual threads — trivial resource usage
+        var threads = new java.util.ArrayList&lt;Thread&gt;();
+        for (int i = 0; i &lt; 100_000; i++) {
+            final int id = i;
+            threads.add(Thread.ofVirtual().start(() -> {
+                // simulate I/O wait
+                try { Thread.sleep(1000); }
+                catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+            }));
+        }
+        for (Thread t : threads) t.join();
+        System.out.println("All 100,000 virtual threads completed!");
+
+        // With ExecutorService (recommended)
+        try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+            for (int i = 0; i &lt; 10; i++) {
+                final int taskId = i;
+                executor.submit(() ->
+                    System.out.println("VT Task " + taskId
+                        + " in " + Thread.currentThread()));
+            }
+        } // auto-shutdown
+    }
+}</pre>
+            <div class="output-box">
+              Running in:
+              VirtualThread[#21,my-virtual-thread]/runnable@ForkJoinPool...<br />All
+              100,000 virtual threads completed!<br />VT Task 0 in
+              VirtualThread[#22]/runnable@...<br />...
+            </div>
+            <div class="note-box">
+              <p>
+                <strong>Java 21+ required.</strong> Virtual threads are best for
+                I/O-bound work (HTTP calls, DB queries). CPU-bound tasks still
+                benefit from traditional platform threads with proper pool
+                sizing.
+              </p>
+            </div>
+
+            <!-- Prev / Next -->
+            <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+              <a href="../index.html#datetime" class="btn btn-outline-secondary"
+                >&larr; Date and Time API</a
+              >
+              <a href="./file-handling.html" class="btn btn-primary"
+                >File Handling &rarr;</a
+              >
+            </div>
+          </div>
+          <!-- content-wrapper -->
+        </div>
+        <!-- col-lg-8 -->
+
+        <!-- TOC -->
+        <div class="col-lg-4">
+          <div class="toc">
+            <h6>On This Page</h6>
+            <a href="#what-is-multithreading">1. What is Multithreading?</a>
+            <a href="#thread-lifecycle">2. Thread Lifecycle</a>
+            <a href="#extending-thread">3. Extending Thread</a>
+            <a href="#implementing-runnable">4. Implementing Runnable</a>
+            <a href="#start-vs-run">5. start() vs run()</a>
+            <a href="#thread-sleep">6. Thread.sleep()</a>
+            <a href="#thread-priority">7. Thread Priority</a>
+            <a href="#daemon-threads">8. Daemon Threads</a>
+            <a href="#synchronization">9. Synchronization</a>
+            <a href="#thread-safety">10. Thread Safety</a>
+            <a href="#locks">11. Locks</a>
+            <a href="#deadlock">12. Deadlock</a>
+            <a href="#thread-pools">13. Thread Pools</a>
+            <a href="#callable-future">14. Callable and Future</a>
+            <a href="#virtual-threads">15. Virtual Threads</a>
+          </div>
+        </div>
+      </div>
+      <!-- row -->
+    </div>
+    <!-- container -->
+
+    <!-- Footer -->
+    <footer class="py-4 mt-5">
+      <div class="container-xl text-center">
+        <p class="mb-0">
+          &copy; 2026 Java Codeex. Built with HTML5 &amp; Bootstrap 5.
+        </p>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmk+GOFVeA//xwkFWEVflJ8ikO1y+k"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+

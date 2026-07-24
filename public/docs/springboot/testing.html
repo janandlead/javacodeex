@@ -1,0 +1,554 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Testing Spring Boot Applications | Java Codeex</title>
+    <link rel="icon" href="../icons/javacodeex.jpg" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../site-theme.css" />
+    <link rel="stylesheet" href="./springboot.css" />
+  </head>
+  <body>
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" /></a>
+        <a class="topic-link" href="./index.html#basics">Overview</a>
+        <a class="topic-link" href="https://javacodeex.com/springboot/project-structure.html"
+          >Project Structure</a
+        >
+        <a class="topic-link" href="./aop.html">AOP</a>
+        <a class="topic-link" href="./index.html#data-jpa">Data JPA</a>
+        <a class="topic-link" href="./index.html#security">Security</a>
+        <a class="topic-link" href="./index.html#exception-handling"
+          >Global Exception Handling</a
+        >
+        <a class="topic-link" href="./index.html#rest-api">REST APIs</a>
+        <a class="topic-link" href="./validation.html">Validation</a>
+        <a class="topic-link" href="./index.html#testing">Testing</a>
+        <a class="topic-link" href="./index.html#actuator">Actuator</a>
+        <a class="topic-link" href="./index.html#deployment">Deployment</a>
+      </div>
+    </nav>
+    <section class="spring-hero">
+      <div class="container-xl">
+        <span class="spring-pill">Java Codeex</span>
+        <h1 class="mt-3">Testing Spring Boot Applications</h1>
+        <p class="lead">
+          Test behavior at the right level: small unit tests, focused slices,
+          and realistic integration tests.
+        </p>
+      </div>
+    </section>
+    <main class="container-xl py-5">
+      <div class="spring-callout mb-4">
+        <strong>In simple terms:</strong> A test checks whether a small piece of
+        code behaves as expected. Mockito creates fake dependencies so you can
+        test an Employee or Department service without connecting to a real
+        database, sending an email, or calling another service.
+      </div>
+
+      <div class="concept-diagram">
+        <figcaption>A practical testing pyramid</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>Unit test</strong><small>Service + Mockito mocks</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Slice test</strong><small>Controller or repository</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Integration test</strong
+            ><small>Real application path</small>
+          </div>
+        </div>
+      </div>
+
+      <h2 id="testing-dependencies">1. Add testing dependencies</h2>
+      <p>
+        <code>spring-boot-starter-test</code> includes JUnit 5, Mockito,
+        AssertJ, Spring Test, and tools for MVC and JSON testing.
+      </p>
+      <pre class="spring-code"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+
+      <h2 id="testing-levels">2. Choose the right test level</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Test type</th>
+              <th>What it loads</th>
+              <th>Typical annotation</th>
+              <th>Speed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Unit</td>
+              <td>One class and mocked dependencies</td>
+              <td><code>@ExtendWith(MockitoExtension.class)</code></td>
+              <td>Very fast</td>
+            </tr>
+            <tr>
+              <td>Web slice</td>
+              <td>Controller, MVC, JSON, filters</td>
+              <td><code>@WebMvcTest</code></td>
+              <td>Fast</td>
+            </tr>
+            <tr>
+              <td>Data slice</td>
+              <td>JPA repositories and database test setup</td>
+              <td><code>@DataJpaTest</code></td>
+              <td>Medium</td>
+            </tr>
+            <tr>
+              <td>Integration</td>
+              <td>Complete Spring application context</td>
+              <td><code>@SpringBootTest</code></td>
+              <td>Slower</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="employee-domain">3. Example domain: Employee and Department</h2>
+      <p>
+        We will test an Employee service that reads an employee from a
+        repository and looks up the employee's Department. The service should
+        throw a clear exception when the employee or department does not exist.
+      </p>
+      <pre class="spring-code"><code>public record Employee(
+        Long id, String name, Long departmentId) {
+}
+
+public record Department(Long id, String name) {
+}
+
+public record EmployeeDetails(
+        Long employeeId,
+        String employeeName,
+        String departmentName) {
+}</code></pre>
+
+      <h2 id="employee-service">4. Employee service to test</h2>
+      <pre class="spring-code"><code>@Service
+public class EmployeeService {
+    private final EmployeeRepository employeeRepository;
+    private final DepartmentRepository departmentRepository;
+
+    public EmployeeService(
+            EmployeeRepository employeeRepository,
+            DepartmentRepository departmentRepository) {
+        this.employeeRepository = employeeRepository;
+        this.departmentRepository = departmentRepository;
+    }
+
+    public EmployeeDetails findDetails(Long employeeId) {
+        Employee employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -&gt; new EmployeeNotFoundException(employeeId));
+
+        Department department = departmentRepository
+                .findById(employee.departmentId())
+                .orElseThrow(() -&gt; new DepartmentNotFoundException(
+                        employee.departmentId()));
+
+        return new EmployeeDetails(
+                employee.id(), employee.name(), department.name());
+    }
+}</code></pre>
+
+      <h2 id="mockito-annotations">5. Important Mockito annotations</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Annotation</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>@ExtendWith(MockitoExtension.class)</code></td>
+              <td>
+                Starts Mockito and initializes annotations for a JUnit 5 test.
+              </td>
+            </tr>
+            <tr>
+              <td><code>@Mock</code></td>
+              <td>
+                Creates a fake dependency whose methods return default values
+                until stubbed.
+              </td>
+            </tr>
+            <tr>
+              <td><code>@InjectMocks</code></td>
+              <td>Creates the class under test and injects its mocks.</td>
+            </tr>
+            <tr>
+              <td><code>@Spy</code></td>
+              <td>
+                Wraps a real object; real methods run unless selectively
+                stubbed.
+              </td>
+            </tr>
+            <tr>
+              <td><code>@Captor</code></td>
+              <td>
+                Creates an ArgumentCaptor for inspecting values passed to a
+                mock.
+              </td>
+            </tr>
+            <tr>
+              <td><code>@MockBean</code></td>
+              <td>
+                Replaces a bean in a Spring test context; common in older Spring
+                Boot versions.
+              </td>
+            </tr>
+            <tr>
+              <td><code>@MockitoBean</code></td>
+              <td>
+                Spring's newer bean-mocking annotation for test application
+                contexts.
+              </td>
+            </tr>
+            <tr>
+              <td><code>@MockitoSpyBean</code></td>
+              <td>
+                Spring's newer spy equivalent for a bean in the test context.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="basic-mockito-test">6. Basic Mockito unit test</h2>
+      <p>
+        The test below does not start Spring and does not connect to a database.
+        Mockito supplies fake repositories, so the test focuses only on the
+        EmployeeService behavior.
+      </p>
+      <pre class="spring-code"><code>@ExtendWith(MockitoExtension.class)
+class EmployeeServiceTest {
+
+    @Mock
+    private EmployeeRepository employeeRepository;
+
+    @Mock
+    private DepartmentRepository departmentRepository;
+
+    @InjectMocks
+    private EmployeeService employeeService;
+
+    @Test
+    void returnsEmployeeWithDepartmentName() {
+        Employee employee = new Employee(1L, "Anand", 10L);
+        Department department = new Department(10L, "Engineering");
+
+        when(employeeRepository.findById(1L))
+                .thenReturn(Optional.of(employee));
+        when(departmentRepository.findById(10L))
+                .thenReturn(Optional.of(department));
+
+        EmployeeDetails result = employeeService.findDetails(1L);
+
+        assertThat(result.employeeName()).isEqualTo("Anand");
+        assertThat(result.departmentName()).isEqualTo("Engineering");
+    }
+}</code></pre>
+
+      <h2 id="stubbing">7. Stubbing mock behavior</h2>
+      <p>
+        Stubbing tells Mockito what a dependency should return or throw when a
+        method is called. Use <code>when(...).thenReturn(...)</code> for normal
+        methods and <code>thenThrow</code> for failure scenarios.
+      </p>
+      <pre class="spring-code"><code>when(employeeRepository.findById(1L))
+        .thenReturn(Optional.of(employee));
+
+when(employeeRepository.findById(99L))
+        .thenReturn(Optional.empty());
+
+when(employeeRepository.count())
+        .thenReturn(25L);
+
+when(employeeRepository.save(any(Employee.class)))
+        .thenThrow(new DataIntegrityViolationException("Duplicate email"));</code></pre>
+      <p>
+        For void methods use <code>doNothing()</code>, <code>doThrow()</code>,
+        or <code>doAnswer()</code>.
+      </p>
+      <pre
+        class="spring-code"
+      ><code>doNothing().when(emailService).sendWelcomeEmail(anyString());
+doThrow(new MailServerException()).when(emailService)
+        .sendWelcomeEmail("failed@example.com");</code></pre>
+
+      <h2 id="verification">8. Verify interactions</h2>
+      <p>
+        Assertions check the returned result. Mockito verification checks how
+        the service used its dependencies. Verify important behavior, not every
+        internal implementation detail.
+      </p>
+      <pre class="spring-code"><code>verify(employeeRepository).findById(1L);
+verify(departmentRepository).findById(10L);
+verify(employeeRepository, times(1)).findById(1L);
+verify(emailService, never()).sendWelcomeEmail(anyString());
+verify(departmentRepository, atLeastOnce()).findById(anyLong());
+verifyNoMoreInteractions(employeeRepository);</code></pre>
+
+      <h2 id="employee-error-tests">9. Test missing employee and department</h2>
+      <pre class="spring-code"><code>@Test
+void throwsWhenEmployeeDoesNotExist() {
+    when(employeeRepository.findById(99L))
+            .thenReturn(Optional.empty());
+
+    assertThatThrownBy(() -&gt; employeeService.findDetails(99L))
+            .isInstanceOf(EmployeeNotFoundException.class)
+            .hasMessage("Employee 99 was not found");
+
+    verify(employeeRepository).findById(99L);
+    verifyNoInteractions(departmentRepository);
+}
+
+@Test
+void throwsWhenDepartmentDoesNotExist() {
+    when(employeeRepository.findById(1L))
+            .thenReturn(Optional.of(new Employee(1L, "Anand", 50L)));
+    when(departmentRepository.findById(50L))
+            .thenReturn(Optional.empty());
+
+    assertThatThrownBy(() -&gt; employeeService.findDetails(1L))
+            .isInstanceOf(DepartmentNotFoundException.class);
+}</code></pre>
+
+      <h2 id="argument-matchers">10. Argument matchers</h2>
+      <p>
+        Matchers let a stub or verification work with a range of values. Do not
+        mix a raw value and a matcher in the same method call; use
+        <code>eq</code> for the raw value.
+      </p>
+      <pre class="spring-code"><code>when(employeeRepository.findByDepartmentId(
+        eq(10L), any(Pageable.class)))
+        .thenReturn(List.of(employee));
+
+verify(employeeRepository).findById(eq(1L));
+verify(employeeRepository).findById(anyLong());
+verify(employeeRepository).save(argThat(e -&gt;
+        e.name().startsWith("Anand")));
+
+// Correct: all arguments use matchers
+when(client.fetch(eq("employees"), anyInt()))
+        .thenReturn(response);</code></pre>
+
+      <h2 id="argument-captor">11. Capture method arguments</h2>
+      <p>
+        <code>ArgumentCaptor</code> is useful when you want to inspect the
+        object sent to a repository or email client.
+      </p>
+      <pre class="spring-code"><code>@Captor
+private ArgumentCaptor&lt;Employee&gt; employeeCaptor;
+
+@Test
+void savesEmployeeWithExpectedValues() {
+    when(employeeRepository.save(any(Employee.class)))
+            .thenAnswer(invocation -&gt; invocation.getArgument(0));
+
+    employeeService.create("Anand", 10L);
+
+    verify(employeeRepository).save(employeeCaptor.capture());
+    Employee saved = employeeCaptor.getValue();
+    assertThat(saved.name()).isEqualTo("Anand");
+    assertThat(saved.departmentId()).isEqualTo(10L);
+}</code></pre>
+
+      <h2 id="spy-and-inorder">12. @Spy and InOrder</h2>
+      <p>
+        A spy uses a real object and is useful when most behavior should remain
+        real but one method needs to be replaced. <code>InOrder</code> checks a
+        sequence when call order is part of the business behavior.
+      </p>
+      <pre class="spring-code"><code>@Spy
+private EmployeeMapper mapper = new EmployeeMapper();
+
+doReturn("test-name").when(mapper).normalize(anyString());
+
+InOrder order = inOrder(employeeRepository, departmentRepository);
+order.verify(employeeRepository).findById(1L);
+order.verify(departmentRepository).findById(10L);</code></pre>
+
+      <h2 id="mockito-settings">13. Mockito settings and lifecycle</h2>
+      <pre class="spring-code"><code>@ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.STRICT_STUBS)
+class DepartmentServiceTest {
+
+    @BeforeEach
+    void setUp() {
+        // Prepare common test data only when it helps readability.
+    }
+
+    @AfterEach
+    void tearDown() {
+        // Release external resources created by the test.
+    }
+}</code></pre>
+      <p>
+        Strict stubbing helps identify unused or incorrect stubs. Prefer a new
+        test fixture for each test rather than calling <code>reset(mock)</code>,
+        which can hide a test's intent.
+      </p>
+
+      <h2 id="department-service-test">14. Department service example</h2>
+      <pre class="spring-code"><code>@Service
+public class DepartmentService {
+    private final DepartmentRepository repository;
+    private final EmployeeRepository employeeRepository;
+
+    public DepartmentService(DepartmentRepository repository,
+                             EmployeeRepository employeeRepository) {
+        this.repository = repository;
+        this.employeeRepository = employeeRepository;
+    }
+
+    public int employeeCount(Long departmentId) {
+        if (!repository.existsById(departmentId)) {
+            throw new DepartmentNotFoundException(departmentId);
+        }
+        return employeeRepository.countByDepartmentId(departmentId);
+    }
+}
+
+@ExtendWith(MockitoExtension.class)
+class DepartmentServiceTest {
+    @Mock DepartmentRepository departmentRepository;
+    @Mock EmployeeRepository employeeRepository;
+    @InjectMocks DepartmentService departmentService;
+
+    @Test
+    void returnsEmployeeCount() {
+        when(departmentRepository.existsById(10L)).thenReturn(true);
+        when(employeeRepository.countByDepartmentId(10L)).thenReturn(7L);
+
+        assertThat(departmentService.employeeCount(10L)).isEqualTo(7);
+        verify(employeeRepository).countByDepartmentId(10L);
+    }
+}</code></pre>
+
+      <h2 id="web-mvc-test">15. Test the controller with @WebMvcTest</h2>
+      <p>
+        <code>@WebMvcTest</code> loads MVC components but not the complete
+        application. Mock the service and test URL mapping, JSON, validation,
+        and HTTP status codes.
+      </p>
+      <pre class="spring-code"><code>@WebMvcTest(EmployeeController.class)
+class EmployeeControllerTest {
+    @Autowired MockMvc mvc;
+
+    @MockitoBean
+    EmployeeService employeeService;
+
+    @Test
+    void returnsEmployeeDetails() throws Exception {
+        when(employeeService.findDetails(1L))
+                .thenReturn(new EmployeeDetails(1L, "Anand", "Engineering"));
+
+        mvc.perform(get("/api/employees/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.employeeName")
+                        .value("Anand"));
+    }
+}</code></pre>
+      <p>
+        In Spring Boot versions that do not provide
+        <code>@MockitoBean</code>, use <code>@MockBean</code>. The purpose is
+        the same: replace the service bean in the MVC test context.
+      </p>
+
+      <h2 id="data-jpa-test">16. Test repositories with @DataJpaTest</h2>
+      <pre class="spring-code"><code>@DataJpaTest
+class EmployeeRepositoryTest {
+    @Autowired EmployeeRepository repository;
+
+    @Test
+    void findsEmployeesByDepartment() {
+        repository.save(new EmployeeEntity("Anand", 10L));
+
+        List&lt;EmployeeEntity&gt; employees =
+                repository.findByDepartmentId(10L);
+
+        assertThat(employees).hasSize(1);
+        assertThat(employees.get(0).getName()).isEqualTo("Anand");
+    }
+}</code></pre>
+
+      <h2 id="spring-boot-test">17. Full integration test</h2>
+      <pre class="spring-code"><code>@SpringBootTest(webEnvironment =
+        SpringBootTest.WebEnvironment.RANDOM_PORT)
+class EmployeeApiIntegrationTest {
+    @Autowired TestRestTemplate client;
+
+    @Test
+    void getsEmployeeFromRunningApplication() {
+        ResponseEntity&lt;EmployeeDetails&gt; response = client.getForEntity(
+                "/api/employees/1", EmployeeDetails.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    }
+}</code></pre>
+
+      <h2 id="mockito-best-practices">18. Mockito best practices</h2>
+      <ul class="lh-lg">
+        <li>
+          Use mocks for external dependencies, not for the class under test.
+        </li>
+        <li>Give each test one clear behavior and use Arrange, Act, Assert.</li>
+        <li>Stub only calls needed by the behavior being tested.</li>
+        <li>
+          Use real value objects when they are simple; do not mock everything.
+        </li>
+        <li>
+          Verify important side effects, but avoid verifying every private
+          detail.
+        </li>
+        <li>
+          Use <code>@WebMvcTest</code>, <code>@DataJpaTest</code>, and
+          <code>@SpringBootTest</code> at the correct level.
+        </li>
+        <li>Keep tests independent and repeatable.</li>
+      </ul>
+      <div class="spring-callout">
+        <strong>Remember:</strong> Mockito is for replacing dependencies in a
+        focused test. It does not prove that your database, Spring wiring, HTTP
+        configuration, and real application work together; use slice and
+        integration tests for that confidence.
+      </div>
+      <a class="btn btn-success" href="actuator.html">Next: Actuator</a>
+    </main>
+    <footer class="py-4 text-center">
+      <p class="mb-0">&copy; 2026 Java Codeex</p>
+    </footer>
+    <script src="./springboot-nav.js"></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

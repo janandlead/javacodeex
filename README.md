@@ -1,59 +1,34 @@
-# Javacodeex
+# Java Codeex Angular Migration
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.26.
+This project is now an Angular 17 standalone application using Bootstrap 5 and Bootstrap Icons.
 
-## Development server
-
-To start a local development server, run:
+## Run locally
 
 ```bash
-ng serve
+npm install
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open `http://localhost:4200/`.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Build for production
 
 ```bash
-ng generate component component-name
+npm run build
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+The production output is written to `dist/javacodeex`.
 
-```bash
-ng generate --help
-```
+## Application structure
 
-## Building
+- `src/app/core` contains typed navigation and tutorial models/content.
+- `src/app/layout` contains the reusable header, navbar, footer, sidebar, breadcrumbs, and main layout.
+- `src/app/shared` contains reusable page-header, code-block, and 404 components.
+- `src/app/features` contains home, Java, Spring Boot, Python, and tutorial pages.
+- Java and Spring Boot are lazy-loaded route trees.
+- `public/docs/java` contains the complete inspected Java source documents from `C:\javatutorial\java`. `JavaDocumentComponent` loads these documents, removes legacy page chrome and scripts, and rewrites internal Java links to Angular routes.
+- `public/docs/springboot` contains the complete inspected Spring Boot source documents from `C:\javatutorial\springboot`. `CourseDocumentComponent` loads these documents, removes legacy page chrome and scripts, and rewrites internal Spring Boot links to Angular routes.
 
-To build the project run:
+Internal links use Angular Router routes without `.html` extensions. The old clean URL families are preserved under `/java`, `/springboot`, and `/python`.
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+For Netlify, `public/_redirects` sends unknown paths to `index.html` so direct refreshes on nested routes work.

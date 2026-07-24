@@ -1,0 +1,1580 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Beginner-friendly introduction to Java. Learn what Java is, how JVM works, JDK vs JRE vs JVM difference, Java history and write your first Java program."
+    />
+    <meta
+      name="keywords"
+      content="introduction to Java, what is Java, JVM, JDK, JRE, Java history, first Java program, Java for beginners"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Java Codeex" />
+    <link rel="canonical" href="https://javacodeex.in/java/introduction-to-java/" />
+    <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
+    <link
+      rel="shortcut icon"
+      href="../icons/javacodeex.jpg"
+      type="image/jpeg"
+    />
+    <link rel="apple-touch-icon" href="../icons/javacodeex.jpg" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta
+      property="og:title"
+      content="Introduction to Java - What is Java and How it Works | Java Codeex"
+    />
+    <meta
+      property="og:description"
+      content="Beginner-friendly introduction to Java. Learn what Java is, how JVM works, JDK vs JRE vs JVM difference, Java history and write your first Java program."
+    />
+    <meta
+      property="og:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta
+      property="og:url"
+      content="https://javacodeex.in/introduction-to-java/"
+    />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Introduction to Java - What is Java and How it Works | Java Codeex"
+    />
+    <meta
+      name="twitter:description"
+      content="Beginner-friendly introduction to Java. Learn what Java is, how JVM works, JDK vs JRE vs JVM difference, Java history and write your first Java program."
+    />
+    <meta
+      name="twitter:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Introduction to Java - What is Java and How it Works | Java Codeex
+    </title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        scroll-behavior: smooth;
+        font-size: 1rem;
+        color: #222;
+      }
+      .navbar {
+        background-color: #1a1a2e;
+      }
+      .navbar-brand {
+        font-weight: 700;
+        color: #f8a100 !important;
+      }
+      .navbar-nav .nav-link {
+        color: #cdd6f4 !important;
+        font-size: 0.85rem;
+      }
+      .navbar-nav .nav-link:hover {
+        color: #f8a100 !important;
+      }
+
+      /* Page hero */
+      .page-hero {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 60%,
+          #0f3460 100%
+        );
+        color: #fff;
+        padding: 48px 0 36px;
+      }
+      .page-hero h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+      }
+      .breadcrumb-item a {
+        color: #f8a100;
+        text-decoration: none;
+      }
+      .breadcrumb-item.active {
+        color: #cdd6f4;
+      }
+      .breadcrumb-item + .breadcrumb-item::before {
+        color: #8a9bb3;
+      }
+
+      /* Content area */
+      .content-wrapper {
+        max-width: 860px;
+      }
+      h2 {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: #0f3460;
+        border-left: 5px solid #f8a100;
+        padding-left: 12px;
+        margin-top: 2.2rem;
+        margin-bottom: 0.8rem;
+      }
+      h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #16213e;
+        margin-top: 1.6rem;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        line-height: 1.8;
+      }
+
+      /* Code blocks */
+      pre {
+        background: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 1.2rem 1.4rem;
+        font-size: 0.88rem;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+      code.inline {
+        background: #eef2ff;
+        color: #0f3460;
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 0.88rem;
+      }
+      .output-box {
+        background: #0d1117;
+        color: #58d68d;
+        border-left: 4px solid #58d68d;
+        border-radius: 4px;
+        padding: 0.8rem 1.2rem;
+        font-family: monospace;
+        font-size: 0.92rem;
+        margin: 0.5rem 0 1rem;
+      }
+
+      /* Info / note boxes */
+      .note-box {
+        background: #eaf4ff;
+        border-left: 5px solid #3b82f6;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .note-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+
+      /* Table */
+      .table thead th {
+        background: #0f3460;
+        color: #fff;
+      }
+      .table-hover tbody tr:hover {
+        background: #f0f6ff;
+      }
+
+      /* Feature cards */
+      .feature-card {
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        padding: 1.1rem 1.2rem;
+        height: 100%;
+        transition: box-shadow 0.2s;
+      }
+      .feature-card:hover {
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+      }
+      .feature-icon {
+        font-size: 1.6rem;
+        margin-bottom: 0.5rem;
+      }
+
+      /* TOC sidebar */
+      .toc {
+        background: #f8f9fc;
+        border: 1px solid #e0e7ef;
+        border-radius: 10px;
+        padding: 1.2rem 1.4rem;
+        position: sticky;
+        top: 72px;
+      }
+      .toc h6 {
+        font-weight: 700;
+        color: #0f3460;
+        margin-bottom: 0.8rem;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        letter-spacing: 0.05em;
+      }
+      .toc a {
+        display: block;
+        font-size: 0.87rem;
+        color: #444;
+        text-decoration: none;
+        padding: 3px 0;
+        border-left: 3px solid transparent;
+        padding-left: 8px;
+        transition: all 0.15s;
+      }
+      .toc a:hover {
+        color: #f8a100;
+        border-left-color: #f8a100;
+      }
+
+      footer {
+        background: #1a1a2e;
+        color: #8a9bb3;
+      }
+
+      /* === TECH BANNER HEADER === */
+      .brand-bar {
+        background: #1a1a2e;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .brand-link {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: #f8a100;
+        font-weight: 700;
+        font-size: 1.15rem;
+        gap: 10px;
+      }
+      .brand-link:hover {
+        opacity: 0.85;
+        color: #f8a100;
+      }
+      .tech-banner {
+        background: #16213e;
+        border-bottom: 2px solid rgba(248, 161, 0, 0.2);
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tech-banner::-webkit-scrollbar {
+        height: 3px;
+      }
+      .tech-banner::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .tech-banner .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .tech-tab {
+        display: inline-block;
+        color: #a6adc8;
+        text-decoration: none;
+        padding: 11px 22px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+        white-space: nowrap;
+      }
+      .tech-tab:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.06);
+        text-decoration: none;
+      }
+      .tech-tab.active {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        font-weight: 700;
+      }
+      .tech-tab.coming-soon {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .java-subnav {
+        background: #0f3460;
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+      }
+      .java-subnav::-webkit-scrollbar {
+        height: 3px;
+      }
+      .java-subnav::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .java-subnav .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .topic-link {
+        display: inline-block;
+        color: #cdd6f4;
+        text-decoration: none;
+        padding: 10px 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+      }
+      .topic-link:hover {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        text-decoration: none;
+      }
+    </style>
+    <link rel="stylesheet" href="../site-theme.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="topic-link" href="../index.html#basics">Basics</a>
+        <a class="topic-link" href="../index.html#methods">Methods</a>
+        <a class="topic-link" href="../index.html#arrays">Arrays</a>
+        <a class="topic-link" href="../index.html#strings">Strings</a>
+        <a class="topic-link" href="../index.html#oop">OOP</a>
+        <a class="topic-link" href="../index.html#interfaces">Interfaces</a>
+        <a class="topic-link" href="../index.html#exceptions">Exceptions</a>
+        <a class="topic-link" href="../index.html#regex">Regex</a>
+        <a class="topic-link" href="../index.html#memory">Memory</a>
+        <a class="topic-link" href="../index.html#generics">Generics</a>
+        <a class="topic-link" href="../index.html#collections">Collections</a>
+        <a class="topic-link" href="../index.html#java8">Java 8+</a>
+        <a class="topic-link" href="../index.html#datetime">Date &amp; Time</a>
+        <a class="topic-link" href="../index.html#multithreading"
+          >Multithreading</a
+        >
+        <a class="topic-link" href="../index.html#filehandling">Files</a>
+        <!-- <a class="topic-link" href="../index.html#networking">Networking</a> -->
+        <a class="topic-link" href="../index.html#jdbc">JDBC</a>
+      </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+      <div class="container-xl">
+        <nav aria-label="breadcrumb" class="mb-2">
+          <ol
+            class="breadcrumb mb-1"
+            style="background: transparent; padding: 0"
+          >
+            <li class="breadcrumb-item">
+              <a href="../index.html">Java Codeex</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="../index.html#basics">Basics</a>
+            </li>
+            <li class="breadcrumb-item active">Introduction to Java</li>
+          </ol>
+        </nav>
+        <h1>Introduction to Java</h1>
+        <p class="mb-0" style="color: #a6adc8">
+          A complete beginner-friendly guide to understanding what Java is, how
+          it works, and why it matters.
+        </p>
+      </div>
+    </section>
+
+    <aside class="topic-guide" aria-label="Learning guide">
+      <div class="topic-guide-step">
+        <span>01</span><strong>Build the foundation</strong
+        ><small>Learn Java syntax</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>02</span><strong>Build the foundation</strong
+        ><small>Understand the JVM</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>03</span><strong>Build the foundation</strong
+        ><small>Practice with small programs</small>
+      </div>
+      <p class="topic-guide-summary">
+        <strong>Learning goal:</strong> This guide takes you from your first
+        Java statement to a complete beginner project.
+      </p>
+    </aside>
+    <!-- Main content -->
+    <div class="container-xl py-5">
+      <div class="row g-5">
+        <!-- Article -->
+        <div class="col-lg-8 content-wrapper">
+          <!-- What is Java -->
+          <h2 id="what-is-java">What is Java?</h2>
+          <p>
+            Java is a
+            <strong
+              >high-level, object-oriented, class-based programming
+              language</strong
+            >
+            designed to have as few implementation dependencies as possible. It
+            was created by <strong>James Gosling</strong> at Sun Microsystems
+            and released in <strong>1995</strong>. Today it is owned and
+            maintained by Oracle Corporation.
+          </p>
+          <p>
+            The most important principle behind Java is
+            <em>"Write Once, Run Anywhere"</em> (WORA). This means Java code
+            compiled on one platform can run on any other platform that has a
+            Java Virtual Machine (JVM) installed — without recompiling.
+          </p>
+          <div class="note-box">
+            <p>
+              &#128161; <strong>Quick fact:</strong> As of 2024, Java
+              consistently ranks among the top 3 most used programming languages
+              worldwide (TIOBE Index).
+            </p>
+          </div>
+
+          <!-- History -->
+          <h2 id="history">A Brief History of Java</h2>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>Year</th>
+                  <th>Milestone</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1991</td>
+                  <td>
+                    Project "Oak" started by James Gosling at Sun Microsystems
+                  </td>
+                </tr>
+                <tr>
+                  <td>1995</td>
+                  <td>Renamed to Java; officially released to the public</td>
+                </tr>
+                <tr>
+                  <td>1996</td>
+                  <td>Java 1.0 released — first stable version</td>
+                </tr>
+                <tr>
+                  <td>2004</td>
+                  <td>Java 5 — Generics, Annotations, Autoboxing introduced</td>
+                </tr>
+                <tr>
+                  <td>2014</td>
+                  <td>
+                    Java 8 — Lambda Expressions and Stream API (biggest modern
+                    update)
+                  </td>
+                </tr>
+                <tr>
+                  <td>2017</td>
+                  <td>Java 9 — Module System (Project Jigsaw)</td>
+                </tr>
+                <tr>
+                  <td>2021</td>
+                  <td>Java 17 — LTS release with Records, Sealed Classes</td>
+                </tr>
+                <tr>
+                  <td>2023</td>
+                  <td>
+                    Java 21 — LTS release with Virtual Threads (Project Loom)
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- How Java Works -->
+          <h2 id="how-it-works">How Java Works: Compilation &amp; Execution</h2>
+          <p>
+            Unlike C or C++ which compile directly to machine code, Java uses a
+            two-step process:
+          </p>
+          <ol class="lh-lg">
+            <li>
+              <strong>Compilation:</strong> The Java compiler (<code
+                class="inline"
+                >javac</code
+              >) converts your <code class="inline">.java</code> source file
+              into <strong>bytecode</strong> — a platform-neutral
+              <code class="inline">.class</code> file.
+            </li>
+            <li>
+              <strong>Execution:</strong> The
+              <strong>Java Virtual Machine (JVM)</strong> on the target machine
+              reads the bytecode and translates it into native machine
+              instructions at runtime.
+            </li>
+          </ol>
+          <pre>
+  YourProgram.java  ?  [javac compiler]  ?  YourProgram.class (bytecode)
+  YourProgram.class ?  [JVM on any OS]   ?  Runs on Windows / Mac / Linux
+      </pre>
+          <p>
+            This two-step design is why Java is platform-independent. The
+            bytecode is the same everywhere; only the JVM differs per operating
+            system.
+          </p>
+          <figure class="concept-diagram">
+            <figcaption>How a Java program reaches the screen</figcaption>
+            <div class="diagram-row">
+              <div class="diagram-node">
+                <strong>Source code</strong
+                ><small>HelloWorld.java<br />Written by you</small>
+              </div>
+              <div class="diagram-arrow">&rarr;</div>
+              <div class="diagram-node">
+                <strong>Compiler</strong
+                ><small>javac checks code<br />and creates bytecode</small>
+              </div>
+              <div class="diagram-arrow">&rarr;</div>
+              <div class="diagram-node">
+                <strong>JVM</strong
+                ><small>Reads bytecode<br />on your operating system</small>
+              </div>
+              <div class="diagram-arrow">&rarr;</div>
+              <div class="diagram-node">
+                <strong>Output</strong
+                ><small>Program result<br />on the console</small>
+              </div>
+            </div>
+          </figure>
+          <div class="note-box">
+            <p>
+              <strong>Easy way to remember:</strong> You write source code,
+              <code class="inline">javac</code> translates it, and the JVM runs
+              the translated bytecode.
+            </p>
+          </div>
+
+          <!-- JDK JRE JVM -->
+          <h2 id="jdk-jre-jvm">JDK vs JRE vs JVM</h2>
+          <p>
+            These three terms confuse most beginners. Here's a clear breakdown:
+          </p>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>Term</th>
+                  <th>Full Form</th>
+                  <th>What it does</th>
+                  <th>Who needs it?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>JVM</strong></td>
+                  <td>Java Virtual Machine</td>
+                  <td>
+                    Executes bytecode. Abstract layer between Java program and
+                    OS.
+                  </td>
+                  <td>Everyone (included in JRE)</td>
+                </tr>
+                <tr>
+                  <td><strong>JRE</strong></td>
+                  <td>Java Runtime Environment</td>
+                  <td>
+                    JVM + core libraries needed to <em>run</em> Java programs.
+                  </td>
+                  <td>End users who only run Java apps</td>
+                </tr>
+                <tr>
+                  <td><strong>JDK</strong></td>
+                  <td>Java Development Kit</td>
+                  <td>
+                    JRE + compiler (<code class="inline">javac</code>) +
+                    debugger + dev tools.
+                  </td>
+                  <td>Developers who write Java code</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="note-box">
+            <p>
+              &#128204; <strong>Simple rule:</strong> To <em>write</em> Java ?
+              install JDK. To <em>run</em> a Java app ? JRE is enough.
+            </p>
+          </div>
+
+          <!-- Variables -->
+          <h2 id="variables">Variables in Java</h2>
+          <p>
+            A variable is a named location used to store a value while a program
+            runs. Every Java variable has a <strong>data type</strong>, a
+            <strong>name</strong>, and a current value. Java is statically
+            typed, so the type is checked when the code is compiled.
+          </p>
+          <pre><code>int age = 25;
+String name = "Asha";
+boolean isLearning = true;</code></pre>
+          <p>The general declaration format is:</p>
+          <pre><code>dataType variableName = value;</code></pre>
+          <p>
+            In the example above, <code class="inline">int</code>,
+            <code class="inline">String</code>, and
+            <code class="inline">boolean</code> are data types.
+            <code class="inline">age</code>, <code class="inline">name</code>,
+            and <code class="inline">isLearning</code> are variable names.
+          </p>
+
+          <h3>Declaration, initialization, and reassignment</h3>
+          <pre><code>int score;       // declaration
+score = 95;      // initialization
+score = 100;     // reassignment
+
+System.out.println(score); // 100</code></pre>
+          <p>
+            A local variable must be assigned a value before it is read. Java
+            does not automatically give local variables a default value.
+          </p>
+
+          <h3>Common types of variables</h3>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>Kind</th>
+                  <th>Declared where?</th>
+                  <th>Lifetime</th>
+                  <th>Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Local variable</strong></td>
+                  <td>Inside a method, constructor, or block</td>
+                  <td>Until that block finishes</td>
+                  <td><code class="inline">int count = 0;</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Instance variable</strong></td>
+                  <td>
+                    Inside a class, without <code class="inline">static</code>
+                  </td>
+                  <td>As long as its object exists</td>
+                  <td><code class="inline">String title;</code></td>
+                </tr>
+                <tr>
+                  <td><strong>Static variable</strong></td>
+                  <td>
+                    Inside a class, with <code class="inline">static</code>
+                  </td>
+                  <td>As long as the class is loaded</td>
+                  <td><code class="inline">static int total;</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pre><code>class Student {
+    String name = "Ravi";        // instance variable
+    static int studentCount = 0; // static variable
+
+    void display() {
+        int marks = 85;           // local variable
+        System.out.println(name + ": " + marks);
+    }
+}</code></pre>
+
+          <h3>Constants with <code class="inline">final</code></h3>
+          <p>
+            Use <code class="inline">final</code> when a variable should be
+            assigned only once. Constants are usually written in uppercase with
+            underscores.
+          </p>
+          <pre><code>final double PI = 3.14159;
+// PI = 3.14; // Compile-time error: PI cannot be changed</code></pre>
+
+          <h3>Type inference with <code class="inline">var</code></h3>
+          <p>
+            Since Java 10, <code class="inline">var</code> can infer the type of
+            a local variable from its initializer. The type is still fixed after
+            compilation.
+          </p>
+          <pre><code>var language = "Java"; // inferred as String
+var version = 21;       // inferred as int
+
+// var empty;            // Compile-time error: an initializer is required</code></pre>
+
+          <h3>Variable naming rules</h3>
+          <ul class="lh-lg">
+            <li>
+              Names may contain letters, digits, <code class="inline">_</code>,
+              and <code class="inline">$</code>, but cannot start with a digit.
+            </li>
+            <li>
+              Names are case-sensitive: <code class="inline">total</code> and
+              <code class="inline">Total</code> are different.
+            </li>
+            <li>
+              Java keywords such as <code class="inline">class</code>,
+              <code class="inline">int</code>, and
+              <code class="inline">static</code> cannot be used as names.
+            </li>
+            <li>
+              Use <strong>camelCase</strong> for ordinary variables, such as
+              <code class="inline">totalMarks</code>.
+            </li>
+            <li>
+              Choose descriptive names instead of unclear names like
+              <code class="inline">x</code> or
+              <code class="inline">data1</code>.
+            </li>
+          </ul>
+          <div class="note-box">
+            <p>
+              &#128161; <strong>Best practice:</strong> Declare a variable close
+              to where it is first used, initialize it immediately when
+              possible, and choose a name that explains what it stores.
+            </p>
+          </div>
+
+          <!-- Key Features -->
+          <h2 id="features">Key Features of Java</h2>
+          <div class="row g-3 mt-1">
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon">&#127760;</div>
+                <h3 class="mt-0" style="margin-top: 0 !important">
+                  Platform Independent
+                </h3>
+                <p class="mb-0 text-muted" style="font-size: 0.9rem">
+                  Bytecode runs on any device with a JVM — Windows, Mac, Linux,
+                  Android.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon">&#128274;</div>
+                <h3 class="mt-0">Secure</h3>
+                <p class="mb-0 text-muted" style="font-size: 0.9rem">
+                  No explicit pointers. Security manager controls resource
+                  access. Bytecode verifier checks code before execution.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon">&#129680;</div>
+                <h3 class="mt-0">Object-Oriented</h3>
+                <p class="mb-0 text-muted" style="font-size: 0.9rem">
+                  Everything revolves around objects and classes. Supports
+                  Encapsulation, Inheritance, Polymorphism, and Abstraction.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon">&#9889;</div>
+                <h3 class="mt-0">Multithreaded</h3>
+                <p class="mb-0 text-muted" style="font-size: 0.9rem">
+                  Built-in support for concurrent execution of multiple threads,
+                  making programs faster and more responsive.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon">&#128257;</div>
+                <h3 class="mt-0">Automatic Memory Management</h3>
+                <p class="mb-0 text-muted" style="font-size: 0.9rem">
+                  Garbage Collector automatically frees unused memory — no
+                  manual memory deallocation needed.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="feature-card">
+                <div class="feature-icon">&#128218;</div>
+                <h3 class="mt-0">Rich Standard Library</h3>
+                <p class="mb-0 text-muted" style="font-size: 0.9rem">
+                  Thousands of built-in classes for collections, I/O,
+                  networking, database access, GUI, and more.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- First Java Program -->
+          <h2 id="first-program">Your First Java Program</h2>
+          <p>Let's break down a simple Java program line by line.</p>
+          <pre><code>public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}</code></pre>
+          <h6 class="mt-3 mb-1 text-muted">Output</h6>
+          <div class="output-box">Hello, World!</div>
+
+          <h3>Line-by-line explanation</h3>
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+              <thead>
+                <tr>
+                  <th>Line</th>
+                  <th>Explanation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="inline">public class HelloWorld</code></td>
+                  <td>
+                    Defines a class named <strong>HelloWorld</strong>. In Java,
+                    every program lives inside a class.
+                    <code class="inline">public</code> means it's accessible
+                    from anywhere.
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <code class="inline"
+                      >public static void main(String[] args)</code
+                    >
+                  </td>
+                  <td>
+                    The <strong>entry point</strong> of every Java application.
+                    The JVM always looks for this exact signature to start
+                    execution. <code class="inline">static</code> means it
+                    belongs to the class, not an object.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">System.out.println(...)</code></td>
+                  <td>
+                    Prints text to the console followed by a newline.
+                    <code class="inline">System</code> is a built-in class,
+                    <code class="inline">out</code> is the standard output
+                    stream, <code class="inline">println</code> is the method.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Java Basics -->
+          <div class="learning-flow my-4" aria-label="Java program flow">
+            <div class="flow-step">
+              <span>1</span><strong>Input</strong><small>Read data</small>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-step">
+              <span>2</span><strong>Process</strong
+              ><small>Use variables and operators</small>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-step">
+              <span>3</span><strong>Decision / Loop</strong
+              ><small>Control the program</small>
+            </div>
+            <div class="flow-arrow">&rarr;</div>
+            <div class="flow-step">
+              <span>4</span><strong>Output</strong
+              ><small>Show the result</small>
+            </div>
+          </div>
+
+          <h2 id="print-output">Print Output in Java</h2>
+          <p>
+            Java writes console output through
+            <code class="inline">System.out</code>. Use
+            <code class="inline">print()</code> when the cursor should stay on
+            the same line and <code class="inline">println()</code> when the
+            cursor should move to a new line. Use
+            <code class="inline">printf()</code> when you need formatted output.
+          </p>
+          <pre><code>System.out.print("Hello ");
+System.out.println("Java");
+System.out.printf("Score: %d%%", 95);</code></pre>
+          <div class="output-box">Hello Java<br />Score: 95%</div>
+          <ul class="lh-lg">
+            <li>
+              Join text and values with <code class="inline">+</code>:
+              <code class="inline">"Age: " + age</code>.
+            </li>
+            <li>
+              Use <code class="inline">%d</code> for integers,
+              <code class="inline">%f</code> for decimals, and
+              <code class="inline">%s</code> for strings with
+              <code class="inline">printf()</code>.
+            </li>
+            <li>
+              Escape special characters with sequences such as
+              <code class="inline">\n</code> for a new line and
+              <code class="inline">\t</code> for a tab.
+            </li>
+          </ul>
+
+          <h2 id="taking-input">Taking Input with Scanner</h2>
+          <p>
+            The <code class="inline">Scanner</code> class reads input from the
+            keyboard. Create one Scanner for
+            <code class="inline">System.in</code>, then use a method that
+            matches the expected type.
+          </p>
+          <pre><code>import java.util.Scanner;
+
+Scanner scanner = new Scanner(System.in);
+System.out.print("Enter your name: ");
+String name = scanner.nextLine();
+System.out.print("Enter your age: ");
+int age = scanner.nextInt();
+
+System.out.println(name + " is " + age + " years old.");
+scanner.close();</code></pre>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>Method</th>
+                  <th>Reads</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="inline">nextInt()</code></td>
+                  <td>An integer</td>
+                </tr>
+                <tr>
+                  <td><code class="inline">nextDouble()</code></td>
+                  <td>A decimal number</td>
+                </tr>
+                <tr>
+                  <td><code class="inline">next()</code></td>
+                  <td>One word</td>
+                </tr>
+                <tr>
+                  <td><code class="inline">nextLine()</code></td>
+                  <td>A complete line, including spaces</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="warn-box">
+            <p>
+              <strong>Common issue:</strong> After
+              <code class="inline">nextInt()</code>, call
+              <code class="inline">nextLine()</code> once to consume the pending
+              line break before reading the next full line.
+            </p>
+          </div>
+
+          <h2 id="identifiers">Identifiers</h2>
+          <p>
+            Identifiers are the names given to classes, methods, variables, and
+            other program elements. Good identifiers make code easier to
+            understand.
+          </p>
+          <pre><code>class StudentProfile {       // class identifier
+    String studentName;      // variable identifier
+
+    void printProfile() {    // method identifier
+        System.out.println(studentName);
+    }
+}</code></pre>
+          <ul class="lh-lg">
+            <li>
+              Use letters, digits, underscores, and dollar signs; never begin
+              with a digit.
+            </li>
+            <li>
+              Identifiers are case-sensitive:
+              <code class="inline">total</code> and
+              <code class="inline">Total</code> differ.
+            </li>
+            <li>Do not use spaces or Java keywords.</li>
+            <li>
+              Prefer <code class="inline">camelCase</code> for variables and
+              methods, and <code class="inline">PascalCase</code> for classes.
+            </li>
+          </ul>
+
+          <h2 id="keywords">Java Keywords</h2>
+          <p>
+            Keywords are reserved words with special meaning to the compiler.
+            They cannot be used as identifiers.
+          </p>
+          <div class="keyword-cloud" aria-label="Common Java keywords">
+            <code>class</code><code>public</code><code>private</code
+            ><code>static</code><code>void</code><code>new</code><code>if</code
+            ><code>else</code><code>for</code><code>while</code
+            ><code>return</code><code>final</code><code>import</code
+            ><code>extends</code><code>interface</code>
+          </div>
+          <p>
+            For example, <code class="inline">class</code> defines a class and
+            <code class="inline">return</code> sends a value back from a method.
+            Java also has contextual keywords such as
+            <code class="inline">var</code>, whose meaning depends on where it
+            is used.
+          </p>
+
+          <h2 id="data-types">Data Types</h2>
+          <p>
+            A data type defines what kind of value a variable can hold and which
+            operations are valid for it. Java types are divided into primitive
+            types and reference types.
+          </p>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Size</th>
+                  <th>Example</th>
+                  <th>Use</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="inline">byte</code></td>
+                  <td>8-bit</td>
+                  <td><code class="inline">byte level = 3;</code></td>
+                  <td>Very small whole numbers</td>
+                </tr>
+                <tr>
+                  <td><code class="inline">short</code></td>
+                  <td>16-bit</td>
+                  <td><code class="inline">short count = 1200;</code></td>
+                  <td>Small whole numbers</td>
+                </tr>
+                <tr>
+                  <td><code class="inline">int</code></td>
+                  <td>32-bit</td>
+                  <td><code class="inline">int age = 25;</code></td>
+                  <td>Default whole-number choice</td>
+                </tr>
+                <tr>
+                  <td><code class="inline">long</code></td>
+                  <td>64-bit</td>
+                  <td>
+                    <code class="inline"
+                      >long population = 8_000_000_000L;</code
+                    >
+                  </td>
+                  <td>Large whole numbers</td>
+                </tr>
+                <tr>
+                  <td><code class="inline">float</code></td>
+                  <td>32-bit</td>
+                  <td><code class="inline">float rate = 2.5f;</code></td>
+                  <td>Single-precision decimals</td>
+                </tr>
+                <tr>
+                  <td><code class="inline">double</code></td>
+                  <td>64-bit</td>
+                  <td><code class="inline">double price = 19.99;</code></td>
+                  <td>Default decimal choice</td>
+                </tr>
+                <tr>
+                  <td><code class="inline">char</code></td>
+                  <td>16-bit</td>
+                  <td><code class="inline">char grade = 'A';</code></td>
+                  <td>One UTF-16 character</td>
+                </tr>
+                <tr>
+                  <td><code class="inline">boolean</code></td>
+                  <td>
+                    <code class="inline">true</code> /
+                    <code class="inline">false</code>
+                  </td>
+                  <td><code class="inline">boolean active = true;</code></td>
+                  <td>Conditions and flags</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            <strong>Reference types</strong> store a reference to an object,
+            such as <code class="inline">String</code>, arrays, and custom
+            classes. They can hold <code class="inline">null</code>; primitives
+            cannot.
+          </p>
+          <figure class="concept-diagram memory-diagram">
+            <figcaption>Primitive values and reference values</figcaption>
+            <div class="diagram-row">
+              <div class="diagram-node">
+                <strong>Primitive variable</strong
+                ><small
+                  ><code>int age = 25;</code><br />Stores the value
+                  directly</small
+                >
+              </div>
+              <div class="diagram-arrow">&nbsp;or&nbsp;</div>
+              <div class="diagram-node">
+                <strong>Reference variable</strong
+                ><small
+                  ><code>String name = "Asha";</code><br />Points to an
+                  object</small
+                >
+              </div>
+            </div>
+          </figure>
+          <div class="note-box">
+            <p>
+              <strong>Beginner rule:</strong> Start with
+              <code class="inline">int</code> for whole numbers and
+              <code class="inline">double</code> for decimals. Choose a
+              reference type when you need text, collections, arrays, or your
+              own objects.
+            </p>
+          </div>
+
+          <h2 id="literals">Literals</h2>
+          <p>
+            A literal is a fixed value written directly in source code. Java
+            supports several literal forms.
+          </p>
+          <pre><code>int decimal = 42;
+int binary = 0b1010;
+int hexadecimal = 0x2A;
+long largeNumber = 1_000_000L;
+double temperature = 36.5;
+char initial = 'J';
+String message = "Hello, Java";
+boolean ready = true;
+String nothing = null;</code></pre>
+          <p>
+            Use underscores to make long numbers easier to read. The underscores
+            are ignored by the compiler and cannot appear at the beginning or
+            end of a number.
+          </p>
+
+          <h2 id="wrapper-classes">Wrapper Classes</h2>
+          <p>
+            Wrapper classes represent primitive values as objects. They are
+            useful with collections and APIs that require objects.
+          </p>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>Primitive</th>
+                  <th>Wrapper</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="inline">int</code></td>
+                  <td><code class="inline">Integer</code></td>
+                </tr>
+                <tr>
+                  <td><code class="inline">double</code></td>
+                  <td><code class="inline">Double</code></td>
+                </tr>
+                <tr>
+                  <td><code class="inline">boolean</code></td>
+                  <td><code class="inline">Boolean</code></td>
+                </tr>
+                <tr>
+                  <td><code class="inline">char</code></td>
+                  <td><code class="inline">Character</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <pre><code>Integer boxed = 42;        // autoboxing: int to Integer
+int number = boxed;         // unboxing: Integer to int
+int value = Integer.parseInt("123");</code></pre>
+
+          <h2 id="operators">Operators</h2>
+          <p>Operators combine values and produce a result.</p>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Operators</th>
+                  <th>Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Arithmetic</td>
+                  <td><code class="inline">+ - * / %</code></td>
+                  <td><code class="inline">total = price * quantity;</code></td>
+                </tr>
+                <tr>
+                  <td>Comparison</td>
+                  <td>
+                    <code class="inline">== != &gt; &lt; &gt;= &lt;=</code>
+                  </td>
+                  <td><code class="inline">age &gt;= 18</code></td>
+                </tr>
+                <tr>
+                  <td>Logical</td>
+                  <td><code class="inline">&amp;&amp; || !</code></td>
+                  <td>
+                    <code class="inline">age &gt;= 18 &amp;&amp; citizen</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Assignment</td>
+                  <td><code class="inline">= += -= *= /=</code></td>
+                  <td><code class="inline">score += 5;</code></td>
+                </tr>
+                <tr>
+                  <td>Unary</td>
+                  <td><code class="inline">++ -- + -</code></td>
+                  <td><code class="inline">count++;</code></td>
+                </tr>
+                <tr>
+                  <td>Conditional</td>
+                  <td><code class="inline">? :</code></td>
+                  <td>
+                    <code class="inline"
+                      >status = age &gt;= 18 ? "Adult" : "Minor";</code
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="warn-box">
+            <p>
+              <strong>Remember:</strong> <code class="inline">=</code> assigns a
+              value, while <code class="inline">==</code> compares values. Use
+              <code class="inline">equals()</code> when comparing the contents
+              of most objects, especially strings.
+            </p>
+          </div>
+
+          <h2 id="decision-making">Decision Making</h2>
+          <p>
+            Decision statements run different code depending on whether a
+            condition is true or false.
+          </p>
+          <figure class="concept-diagram">
+            <figcaption>
+              The thinking pattern behind <code>if / else</code>
+            </figcaption>
+            <div class="flowchart">
+              <div class="flowchart-node">
+                Start with a value, for example <code>marks = 76</code>
+              </div>
+              <div class="flowchart-arrow">&darr;</div>
+              <div class="flowchart-node condition">
+                Is <code>marks &gt;= 90</code> true?
+              </div>
+              <div class="flowchart-arrow">No &darr;</div>
+              <div class="flowchart-node condition">
+                Is <code>marks &gt;= 60</code> true?
+              </div>
+              <div class="flowchart-arrow">Yes &darr;</div>
+              <div class="flowchart-node result">
+                Print <strong>Grade B</strong>
+              </div>
+            </div>
+          </figure>
+          <pre><code>int marks = 76;
+
+if (marks &gt;= 90) {
+    System.out.println("Grade A");
+} else if (marks &gt;= 60) {
+    System.out.println("Grade B");
+} else {
+    System.out.println("Needs improvement");
+}</code></pre>
+          <p>
+            Use <code class="inline">switch</code> when comparing one value with
+            several fixed options.
+          </p>
+          <pre><code>int day = 2;
+switch (day) {
+    case 1 -&gt; System.out.println("Monday");
+    case 2 -&gt; System.out.println("Tuesday");
+    default -&gt; System.out.println("Another day");
+}</code></pre>
+
+          <h2 id="loops">Loops and Jump Statements</h2>
+          <p>
+            Loops repeat a block of code. Use
+            <code class="inline">for</code> when the number of repetitions is
+            known, <code class="inline">while</code> when a condition controls
+            repetition, and <code class="inline">do-while</code> when the body
+            must run at least once.
+          </p>
+          <pre><code>for (int i = 1; i &lt;= 5; i++) {
+    if (i == 3) continue; // skip this iteration
+    if (i == 5) break;    // stop the loop
+    System.out.println(i);
+}
+
+int attempts = 0;
+while (attempts &lt; 3) {
+    attempts++;
+}</code></pre>
+          <ul class="lh-lg">
+            <li>
+              <code class="inline">break</code> exits the nearest loop or
+              switch.
+            </li>
+            <li>
+              <code class="inline">continue</code> skips the current iteration
+              and starts the next one.
+            </li>
+            <li>
+              <code class="inline">return</code> exits the current method,
+              optionally returning a value.
+            </li>
+          </ul>
+
+          <h2 id="number-guessing-project">Project: Number Guessing Game</h2>
+          <p>
+            Use input, variables, operators, decisions, and loops together in
+            this beginner project. The program chooses a number from 1 to 100
+            and gives the player hints until the answer is found.
+          </p>
+          <pre><code>import java.util.Random;
+import java.util.Scanner;
+
+public class NumberGuessingGame {
+    public static void main(String[] args) {
+        Random random = new Random();
+        Scanner scanner = new Scanner(System.in);
+        int target = random.nextInt(100) + 1;
+        int attempts = 0;
+        int guess;
+
+        System.out.println("Guess a number from 1 to 100.");
+        do {
+            System.out.print("Your guess: ");
+            guess = scanner.nextInt();
+            attempts++;
+
+            if (guess &lt; target) {
+                System.out.println("Too low!");
+            } else if (guess &gt; target) {
+                System.out.println("Too high!");
+            } else {
+                System.out.println("Correct in " + attempts + " attempts!");
+            }
+        } while (guess != target);
+
+        scanner.close();
+    }
+}</code></pre>
+          <div class="note-box">
+            <p>
+              &#127919; <strong>Challenge:</strong> Add a maximum of seven
+              attempts, reject guesses outside 1–100, and ask the player whether
+              they want to play again.
+            </p>
+          </div>
+
+          <!-- How to run -->
+          <h2 id="run">How to Compile &amp; Run</h2>
+          <p>Using the command line (after installing JDK):</p>
+          <pre><code># Step 1 — Save your file as HelloWorld.java
+# Step 2 — Compile it
+javac HelloWorld.java
+
+# Step 3 — Run it
+java HelloWorld</code></pre>
+          <div class="note-box">
+            <p>
+              &#9888;&#65039; The filename <strong>must match</strong> the class
+              name exactly, including capitalisation.
+              <code class="inline">HelloWorld.java</code> for
+              <code class="inline">public class HelloWorld</code>.
+            </p>
+          </div>
+
+          <!-- Where Java is used -->
+          <h2 id="uses">Where is Java Used?</h2>
+          <ul class="lh-lg">
+            <li>
+              <strong>Android Development</strong> — Android apps were
+              historically written in Java (now also Kotlin).
+            </li>
+            <li>
+              <strong>Enterprise Backend</strong> — Large-scale server-side
+              applications using Spring Boot, Hibernate, Jakarta EE.
+            </li>
+            <li>
+              <strong>Web Applications</strong> — Java Servlets, JSP, and modern
+              REST APIs.
+            </li>
+            <li>
+              <strong>Big Data</strong> — Apache Hadoop, Apache Spark, and Kafka
+              are written in Java.
+            </li>
+            <li>
+              <strong>Cloud &amp; Microservices</strong> — Popular with AWS,
+              GCP, and Azure backend services.
+            </li>
+            <li>
+              <strong>Embedded Systems &amp; IoT</strong> — Smart cards, set-top
+              boxes, and industrial controllers.
+            </li>
+            <li>
+              <strong>Scientific Computing</strong> — Used in research tools and
+              simulations.
+            </li>
+          </ul>
+
+          <!-- Java vs other languages -->
+          <h2 id="comparison">Java vs Other Languages</h2>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  <th>Java</th>
+                  <th>C++</th>
+                  <th>Python</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Platform Independent</td>
+                  <td>&#9989; Yes (JVM)</td>
+                  <td>&#10060; No</td>
+                  <td>&#9989; Yes (interpreter)</td>
+                </tr>
+                <tr>
+                  <td>Memory Management</td>
+                  <td>Automatic (GC)</td>
+                  <td>Manual</td>
+                  <td>Automatic (GC)</td>
+                </tr>
+                <tr>
+                  <td>Speed</td>
+                  <td>Fast (JIT compiled)</td>
+                  <td>Very Fast</td>
+                  <td>Slower</td>
+                </tr>
+                <tr>
+                  <td>Syntax Complexity</td>
+                  <td>Medium</td>
+                  <td>High</td>
+                  <td>Low</td>
+                </tr>
+                <tr>
+                  <td>Primary Use</td>
+                  <td>Enterprise, Android</td>
+                  <td>Systems, Games</td>
+                  <td>Data Science, Scripting</td>
+                </tr>
+                <tr>
+                  <td>Strongly Typed</td>
+                  <td>&#9989; Yes</td>
+                  <td>&#9989; Yes</td>
+                  <td>&#10060; Dynamically typed</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- What's Next -->
+          <h2 id="next">What to Learn Next</h2>
+          <p>
+            Now that you understand what Java is and how it works, the
+            recommended learning path is:
+          </p>
+          <ol class="lh-lg">
+            <li>
+              <a
+                href="https://javacodeex.in/download-and-install-java-development-kit-jdk-on-windows-mac-and-linux/"
+                target="_blank"
+                >Download and Install Java (JDK)</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://javacodeex.in/how-to-download-and-install-intellij-idea/"
+                target="_blank"
+                >Set up IntelliJ IDEA</a
+              >
+            </li>
+            <li>Learn Syntax: Variables, Data Types, Operators</li>
+            <li>Control Flow: if/else, loops</li>
+            <li>Methods and Arrays</li>
+            <li>Object-Oriented Programming (OOP)</li>
+          </ol>
+
+          <!-- Nav buttons -->
+          <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+            <a href="../index.html" class="btn btn-outline-secondary"
+              >&larr; Back to Home</a
+            >
+            <a
+              href="./download-and-install-java.html"
+              class="btn btn-warning text-dark fw-semibold"
+              >Next: Download and Install Java &rarr;</a
+            >
+          </div>
+        </div>
+        <!-- end article -->
+
+        <!-- TOC Sidebar -->
+        <div class="col-lg-4 d-none d-lg-block">
+          <div class="toc">
+            <h6>On this page</h6>
+            <a href="#what-is-java">What is Java?</a>
+            <a href="#history">History of Java</a>
+            <a href="#how-it-works">How Java Works</a>
+            <a href="#jdk-jre-jvm">JDK vs JRE vs JVM</a>
+            <a href="#variables">Variables</a>
+            <a href="#features">Key Features</a>
+            <a href="#first-program">Your First Program</a>
+            <a href="#print-output">Print Output</a>
+            <a href="#taking-input">Taking Input</a>
+            <a href="#identifiers">Identifiers</a>
+            <a href="#keywords">Keywords</a>
+            <a href="#data-types">Data Types</a>
+            <a href="#literals">Literals</a>
+            <a href="#wrapper-classes">Wrapper Classes</a>
+            <a href="#operators">Operators</a>
+            <a href="#decision-making">Decision Making</a>
+            <a href="#loops">Loops and Jump Statements</a>
+            <a href="#number-guessing-project">Number Guessing Project</a>
+            <a href="#run">Compile &amp; Run</a>
+            <a href="#uses">Where Java is Used</a>
+            <a href="#comparison">Java vs Other Languages</a>
+            <a href="#next">What to Learn Next</a>
+          </div>
+        </div>
+      </div>
+      <!-- end row -->
+    </div>
+    <!-- end container -->
+
+    <!-- Footer -->
+    <footer class="py-4 text-center mt-2">
+      <p class="mb-0">
+        &copy; 2026 Java Codeex. Built with HTML5 &amp; Bootstrap 5.
+      </p>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmk+GOFVeA//xwkFWEVflJ8ikO1y+k"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+
+

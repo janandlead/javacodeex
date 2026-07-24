@@ -1,0 +1,1003 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Java Regular Expressions guide - Pattern, Matcher classes, character classes, quantifiers, anchors with practical email and phone validation examples."
+    />
+    <meta
+      name="keywords"
+      content="Java regex, regular expressions Java, Pattern class, Matcher class, Java regex tutorial, email validation regex"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Java Codeex" />
+    <link rel="canonical" href="https://javacodeex.in/java/regex/" />
+    <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
+    <link
+      rel="shortcut icon"
+      href="../icons/javacodeex.jpg"
+      type="image/jpeg"
+    />
+    <link rel="apple-touch-icon" href="../icons/javacodeex.jpg" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta
+      property="og:title"
+      content="Java Regular Expressions - Pattern and Matcher Classes | Java Codeex"
+    />
+    <meta
+      property="og:description"
+      content="Java Regular Expressions guide - Pattern, Matcher classes, character classes, quantifiers, anchors with practical email and phone validation examples."
+    />
+    <meta
+      property="og:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta property="og:url" content="https://javacodeex.in/regex/" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Java Regular Expressions - Pattern and Matcher Classes | Java Codeex"
+    />
+    <meta
+      name="twitter:description"
+      content="Java Regular Expressions guide - Pattern, Matcher classes, character classes, quantifiers, anchors with practical email and phone validation examples."
+    />
+    <meta
+      name="twitter:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Java Regular Expressions - Pattern and Matcher Classes | Java Codeex
+    </title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        scroll-behavior: smooth;
+        font-size: 1rem;
+        color: #222;
+      }
+      .navbar {
+        background-color: #1a1a2e;
+      }
+      .navbar-brand {
+        font-weight: 700;
+        color: #f8a100 !important;
+      }
+      .navbar-nav .nav-link {
+        color: #cdd6f4 !important;
+        font-size: 0.85rem;
+      }
+      .navbar-nav .nav-link:hover {
+        color: #f8a100 !important;
+      }
+      .page-hero {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 60%,
+          #0f3460 100%
+        );
+        color: #fff;
+        padding: 48px 0 36px;
+      }
+      .page-hero h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+      }
+      .breadcrumb-item a {
+        color: #f8a100;
+        text-decoration: none;
+      }
+      .breadcrumb-item.active {
+        color: #cdd6f4;
+      }
+      .breadcrumb-item + .breadcrumb-item::before {
+        color: #8a9bb3;
+      }
+      .content-wrapper {
+        max-width: 860px;
+      }
+      h2 {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: #0f3460;
+        border-left: 5px solid #f8a100;
+        padding-left: 12px;
+        margin-top: 2.2rem;
+        margin-bottom: 0.8rem;
+      }
+      h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #16213e;
+        margin-top: 1.6rem;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        line-height: 1.8;
+      }
+      pre {
+        background: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 1.2rem 1.4rem;
+        font-size: 0.88rem;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+      code.inline {
+        background: #eef2ff;
+        color: #0f3460;
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 0.88rem;
+      }
+      .output-box {
+        background: #0d1117;
+        color: #58d68d;
+        border-left: 4px solid #58d68d;
+        border-radius: 4px;
+        padding: 0.8rem 1.2rem;
+        font-family: monospace;
+        font-size: 0.92rem;
+        margin: 0.5rem 0 1rem;
+      }
+      .note-box {
+        background: #eaf4ff;
+        border-left: 5px solid #3b82f6;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .note-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .warn-box {
+        background: #fff8e1;
+        border-left: 5px solid #f8a100;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .warn-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .table thead th {
+        background: #0f3460;
+        color: #fff;
+      }
+      .table-hover tbody tr:hover {
+        background: #f0f6ff;
+      }
+      .toc {
+        background: #f8f9fc;
+        border: 1px solid #e0e7ef;
+        border-radius: 10px;
+        padding: 1.2rem 1.4rem;
+        position: sticky;
+        top: 72px;
+      }
+      .toc h6 {
+        font-weight: 700;
+        color: #0f3460;
+        margin-bottom: 0.8rem;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        letter-spacing: 0.05em;
+      }
+      .toc a {
+        display: block;
+        font-size: 0.87rem;
+        color: #444;
+        text-decoration: none;
+        padding: 3px 0 3px 8px;
+        border-left: 3px solid transparent;
+        transition: all 0.15s;
+      }
+      .toc a:hover {
+        color: #f8a100;
+        border-left-color: #f8a100;
+      }
+      footer {
+        background: #1a1a2e;
+        color: #8a9bb3;
+      }
+
+      /* === TECH BANNER HEADER === */
+      .brand-bar {
+        background: #1a1a2e;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .brand-link {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: #f8a100;
+        font-weight: 700;
+        font-size: 1.15rem;
+        gap: 10px;
+      }
+      .brand-link:hover {
+        opacity: 0.85;
+        color: #f8a100;
+      }
+      .tech-banner {
+        background: #16213e;
+        border-bottom: 2px solid rgba(248, 161, 0, 0.2);
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tech-banner::-webkit-scrollbar {
+        height: 3px;
+      }
+      .tech-banner::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .tech-banner .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .tech-tab {
+        display: inline-block;
+        color: #a6adc8;
+        text-decoration: none;
+        padding: 11px 22px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+        white-space: nowrap;
+      }
+      .tech-tab:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.06);
+        text-decoration: none;
+      }
+      .tech-tab.active {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        font-weight: 700;
+      }
+      .tech-tab.coming-soon {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .java-subnav {
+        background: #0f3460;
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+      }
+      .java-subnav::-webkit-scrollbar {
+        height: 3px;
+      }
+      .java-subnav::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .java-subnav .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .topic-link {
+        display: inline-block;
+        color: #cdd6f4;
+        text-decoration: none;
+        padding: 10px 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+      }
+      .topic-link:hover {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        text-decoration: none;
+      }
+    </style>
+    <link rel="stylesheet" href="../site-theme.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="topic-link" href="../index.html#basics">Basics</a>
+        <a class="topic-link" href="../index.html#methods">Methods</a>
+        <a class="topic-link" href="../index.html#arrays">Arrays</a>
+        <a class="topic-link" href="../index.html#strings">Strings</a>
+        <a class="topic-link" href="../index.html#oop">OOP</a>
+        <a class="topic-link" href="../index.html#interfaces">Interfaces</a>
+        <a class="topic-link" href="../index.html#exceptions">Exceptions</a>
+        <a class="topic-link" href="../index.html#regex">Regex</a>
+        <a class="topic-link" href="../index.html#memory">Memory</a>
+        <a class="topic-link" href="../index.html#generics">Generics</a>
+        <a class="topic-link" href="../index.html#collections">Collections</a>
+        <a class="topic-link" href="../index.html#java8">Java 8+</a>
+        <a class="topic-link" href="../index.html#datetime">Date &amp; Time</a>
+        <a class="topic-link" href="../index.html#multithreading"
+          >Multithreading</a
+        >
+        <a class="topic-link" href="../index.html#filehandling">Files</a>
+        <!-- <a class="topic-link" href="../index.html#networking">Networking</a> -->
+        <a class="topic-link" href="../index.html#jdbc">JDBC</a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="page-hero">
+      <div class="container-xl">
+        <nav aria-label="breadcrumb" class="mb-3">
+          <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item">
+              <a href="../index.html">Java Codeex</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="../index.html#regex">Regex</a>
+            </li>
+            <li class="breadcrumb-item active">Regular Expressions in Java</li>
+          </ol>
+        </nav>
+        <h1 class="mb-2">Regular Expressions in Java</h1>
+        <p class="mb-0" style="color: #cdd6f4; font-size: 1.08rem">
+          Use Java's <code style="color: #f8a100">java.util.regex</code> package
+          for powerful pattern matching and text manipulation.
+        </p>
+      </div>
+    </section>
+    <aside class="topic-guide" aria-label="Learning guide">
+      <div class="topic-guide-step">
+        <span>01</span><strong>Find text patterns</strong
+        ><small>Write a pattern</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>02</span><strong>Find text patterns</strong
+        ><small>Match input</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>03</span><strong>Find text patterns</strong
+        ><small>Extract or replace text</small>
+      </div>
+      <p class="topic-guide-summary">
+        <strong>Learning goal:</strong> Regular expressions are compact rules
+        for searching and validating text.
+      </p>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="container-xl py-5">
+      <div class="row g-5">
+        <!-- Article -->
+        <div class="col-lg-8">
+          <article class="content-wrapper">
+            <!-- 1. What is Regex? -->
+            <h2 id="what-is-regex">1. What is Regex?</h2>
+            <p>
+              A <strong>regular expression</strong> (regex) is a sequence of
+              characters that defines a search pattern. Regex engines scan input
+              text and identify portions that match the specified pattern. Java
+              provides built-in regex support through the
+              <code class="inline">java.util.regex</code> package, available
+              since JDK 1.4.
+            </p>
+            <p>Common use cases include:</p>
+            <ul>
+              <li>
+                <strong>Validation</strong> — verify that an email address,
+                phone number, or postal code is correctly formatted.
+              </li>
+              <li>
+                <strong>Search</strong> — locate one or more occurrences of a
+                pattern within a larger string.
+              </li>
+              <li>
+                <strong>Replace</strong> — substitute matched substrings with
+                new content.
+              </li>
+              <li>
+                <strong>Split</strong> — break a string into tokens using a
+                delimiter pattern.
+              </li>
+              <li>
+                <strong>Extract</strong> — pull out specific data (dates,
+                prices, URLs) from unstructured text.
+              </li>
+            </ul>
+            <div class="note-box">
+              <p>
+                <strong>Note:</strong> Java regex syntax is largely compatible
+                with Perl-style regular expressions, which are also used in
+                Python, JavaScript, and most modern languages.
+              </p>
+            </div>
+
+            <!-- 2. Key Classes -->
+            <h2 id="key-classes">2. Key Classes</h2>
+            <p>
+              The <code class="inline">java.util.regex</code> package contains
+              three primary classes:
+            </p>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Class</th>
+                  <th>Role</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="inline">Pattern</code></td>
+                  <td>
+                    Compiled representation of a regex. Created via
+                    <code class="inline">Pattern.compile(regex)</code>.
+                    Immutable and thread-safe; reuse instances for efficiency.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">Matcher</code></td>
+                  <td>
+                    Engine that performs match operations on a character
+                    sequence using a <code class="inline">Pattern</code>.
+                    Created via
+                    <code class="inline">pattern.matcher(input)</code>. Not
+                    thread-safe; create one per thread.
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">PatternSyntaxException</code></td>
+                  <td>
+                    Unchecked exception thrown when a regex pattern string has a
+                    syntax error. Extends
+                    <code class="inline">IllegalArgumentException</code>.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- 3. Basic Pattern Matching -->
+            <h2 id="basic-matching">3. Basic Pattern Matching</h2>
+            <p>
+              The simplest workflow: compile a pattern, create a matcher for the
+              input, then call <code class="inline">matches()</code> to test
+              whether the <em>entire</em> input matches the pattern.
+            </p>
+            <pre>
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+public class BasicMatch {
+    public static void main(String[] args) {
+        String pattern = "\\d{3}-\\d{4}";   // e.g. 555-1234
+        String input   = "555-1234";
+
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(input);
+
+        if (m.matches()) {
+            System.out.println("Input matches the pattern.");
+        } else {
+            System.out.println("No match.");
+        }
+    }
+}</pre>
+            <div class="output-box">Input matches the pattern.</div>
+            <div class="warn-box">
+              <p>
+                <strong>Warning:</strong>
+                <code class="inline">matches()</code> requires the entire string
+                to match. Use <code class="inline">find()</code> to locate a
+                pattern anywhere within the input.
+              </p>
+            </div>
+
+            <!-- 4. Pattern Class -->
+            <h2 id="pattern-class">4. Pattern Class</h2>
+            <p>
+              The <code class="inline">Pattern</code> class is the entry point
+              for all regex operations. Its key static and instance methods are:
+            </p>
+
+            <h3>compile()</h3>
+            <p>
+              Compiles the regex string into a reusable
+              <code class="inline">Pattern</code> object. Optionally accepts
+              flags such as
+              <code class="inline">Pattern.CASE_INSENSITIVE</code>.
+            </p>
+            <pre>
+Pattern p = Pattern.compile("[a-z]+", Pattern.CASE_INSENSITIVE);</pre>
+
+            <h3>matcher()</h3>
+            <p>
+              Creates a <code class="inline">Matcher</code> bound to the given
+              input string.
+            </p>
+            <pre>Matcher m = p.matcher("Hello World");</pre>
+
+            <h3>matches() — static shortcut</h3>
+            <p>
+              Compiles and matches in one call. Convenient for one-off checks.
+            </p>
+            <pre>boolean ok = Pattern.matches("\\d+", "12345");  // true</pre>
+
+            <h3>split()</h3>
+            <p>
+              Splits the input string around matches of the pattern — similar to
+              <code class="inline">String.split()</code> but with a pre-compiled
+              pattern.
+            </p>
+            <pre>
+Pattern p = Pattern.compile("[,;\\s]+");
+String[] tokens = p.split("one, two;  three four");
+for (String t : tokens) System.out.println(t);</pre>
+            <div class="output-box">one<br />two<br />three<br />four</div>
+
+            <!-- 5. Matcher Class -->
+            <h2 id="matcher-class">5. Matcher Class</h2>
+            <p>
+              A <code class="inline">Matcher</code> performs the actual
+              searching. Key methods:
+            </p>
+
+            <h3>find()</h3>
+            <p>
+              Advances through the input and returns
+              <code class="inline">true</code> each time a new match is found.
+              Ideal for iterating over all occurrences.
+            </p>
+            <pre>
+Pattern p = Pattern.compile("\\d+");
+Matcher m = p.matcher("Order 42, item 7, qty 100");
+while (m.find()) {
+    System.out.println("Found: " + m.group() + " at index " + m.start());
+}</pre>
+            <div class="output-box">
+              Found: 42 at index 6<br />Found: 7 at index 15<br />Found: 100 at
+              index 22
+            </div>
+
+            <h3>group(), start(), end()</h3>
+            <p>
+              After a successful <code class="inline">find()</code> or
+              <code class="inline">matches()</code>, these methods return the
+              matched substring, its start index, and its end index
+              respectively.
+            </p>
+            <pre>
+Pattern p = Pattern.compile("(\\w+)@(\\w+\\.\\w+)");
+Matcher m = p.matcher("Contact: alice@example.com today.");
+if (m.find()) {
+    System.out.println("Full match : " + m.group(0));
+    System.out.println("Username   : " + m.group(1));
+    System.out.println("Domain     : " + m.group(2));
+    System.out.println("Start/End  : " + m.start() + " / " + m.end());
+}</pre>
+            <div class="output-box">
+              Full match : alice@example.com<br />Username : alice<br />Domain :
+              example.com<br />Start/End : 9 / 26
+            </div>
+
+            <h3>replaceAll()</h3>
+            <p>
+              Replaces every match in the input with the given replacement
+              string.
+            </p>
+            <pre>
+String result = Pattern.compile("\\bfoo\\b")
+                       .matcher("foo foobar foo")
+                       .replaceAll("bar");
+System.out.println(result);</pre>
+            <div class="output-box">bar foobar bar</div>
+
+            <!-- 6. Character Classes -->
+            <h2 id="char-classes">6. Character Classes</h2>
+            <p>
+              Character classes match a single character against a set of
+              allowed characters defined inside square brackets.
+            </p>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Syntax</th>
+                  <th>Meaning</th>
+                  <th>Example Match</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="inline">[abc]</code></td>
+                  <td>Any one of a, b, or c</td>
+                  <td>
+                    <code class="inline">"a"</code>,
+                    <code class="inline">"b"</code>,
+                    <code class="inline">"c"</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">[^abc]</code></td>
+                  <td>Any character except a, b, or c</td>
+                  <td>
+                    <code class="inline">"d"</code>,
+                    <code class="inline">"z"</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">[a-z]</code></td>
+                  <td>Any lowercase letter a through z</td>
+                  <td>
+                    <code class="inline">"m"</code>,
+                    <code class="inline">"p"</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">[A-Z]</code></td>
+                  <td>Any uppercase letter A through Z</td>
+                  <td>
+                    <code class="inline">"G"</code>,
+                    <code class="inline">"T"</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">[0-9]</code></td>
+                  <td>Any digit 0 through 9</td>
+                  <td>
+                    <code class="inline">"3"</code>,
+                    <code class="inline">"7"</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">.</code></td>
+                  <td>Any character except newline</td>
+                  <td>
+                    <code class="inline">"x"</code>,
+                    <code class="inline">"@"</code>,
+                    <code class="inline">"5"</code>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- 7. Predefined Character Classes -->
+            <h2 id="predefined-classes">7. Predefined Character Classes</h2>
+            <p>
+              Java regex provides shorthand escape sequences for common
+              character groups.
+            </p>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Shorthand</th>
+                  <th>Meaning</th>
+                  <th>Equivalent</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="inline">\d</code></td>
+                  <td>Any digit</td>
+                  <td><code class="inline">[0-9]</code></td>
+                </tr>
+                <tr>
+                  <td><code class="inline">\D</code></td>
+                  <td>Any non-digit</td>
+                  <td><code class="inline">[^0-9]</code></td>
+                </tr>
+                <tr>
+                  <td><code class="inline">\w</code></td>
+                  <td>Any word character (letter, digit, underscore)</td>
+                  <td><code class="inline">[a-zA-Z0-9_]</code></td>
+                </tr>
+                <tr>
+                  <td><code class="inline">\W</code></td>
+                  <td>Any non-word character</td>
+                  <td><code class="inline">[^a-zA-Z0-9_]</code></td>
+                </tr>
+                <tr>
+                  <td><code class="inline">\s</code></td>
+                  <td>Any whitespace (space, tab, newline)</td>
+                  <td><code class="inline">[ \t\r\n\f]</code></td>
+                </tr>
+                <tr>
+                  <td><code class="inline">\S</code></td>
+                  <td>Any non-whitespace</td>
+                  <td><code class="inline">[^ \t\r\n\f]</code></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="note-box">
+              <p>
+                <strong>In Java strings:</strong> backslash must be escaped, so
+                write <code class="inline">\\d</code> in a Java string literal
+                to represent the regex token <code class="inline">\d</code>.
+              </p>
+            </div>
+
+            <!-- 8. Quantifiers -->
+            <h2 id="quantifiers">8. Quantifiers</h2>
+            <p>
+              Quantifiers specify how many times a preceding element must occur
+              to constitute a match.
+            </p>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Quantifier</th>
+                  <th>Meaning</th>
+                  <th>Example Pattern</th>
+                  <th>Matches</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="inline">*</code></td>
+                  <td>0 or more times</td>
+                  <td><code class="inline">go*</code></td>
+                  <td>"g", "go", "goo", "gooo"</td>
+                </tr>
+                <tr>
+                  <td><code class="inline">+</code></td>
+                  <td>1 or more times</td>
+                  <td><code class="inline">go+</code></td>
+                  <td>"go", "goo" (not "g")</td>
+                </tr>
+                <tr>
+                  <td><code class="inline">?</code></td>
+                  <td>0 or 1 time (optional)</td>
+                  <td><code class="inline">colou?r</code></td>
+                  <td>"color", "colour"</td>
+                </tr>
+                <tr>
+                  <td><code class="inline">{n}</code></td>
+                  <td>Exactly n times</td>
+                  <td><code class="inline">\d{4}</code></td>
+                  <td>"2024", "1999"</td>
+                </tr>
+                <tr>
+                  <td><code class="inline">{n,}</code></td>
+                  <td>At least n times</td>
+                  <td><code class="inline">\d{2,}</code></td>
+                  <td>"12", "999", "10000"</td>
+                </tr>
+                <tr>
+                  <td><code class="inline">{n,m}</code></td>
+                  <td>Between n and m times</td>
+                  <td><code class="inline">\d{2,4}</code></td>
+                  <td>"12", "123", "1234"</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>
+              By default, quantifiers are <strong>greedy</strong> — they match
+              as much as possible. Append <code class="inline">?</code> to make
+              them <strong>lazy</strong> (e.g. <code class="inline">.*?</code>)
+              — match as little as possible.
+            </p>
+
+            <!-- 9. Anchors and Boundaries -->
+            <h2 id="anchors">9. Anchors and Boundaries</h2>
+            <p>
+              Anchors do not consume characters; they assert a position in the
+              input string.
+            </p>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Anchor</th>
+                  <th>Asserts</th>
+                  <th>Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code class="inline">^</code></td>
+                  <td>Start of string (or start of line in MULTILINE mode)</td>
+                  <td>
+                    <code class="inline">^Hello</code> matches "Hello world" but
+                    not "Say Hello"
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">$</code></td>
+                  <td>End of string (or end of line in MULTILINE mode)</td>
+                  <td>
+                    <code class="inline">world$</code> matches "Hello world" but
+                    not "world peace"
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">\b</code></td>
+                  <td>Word boundary (between \w and \W)</td>
+                  <td>
+                    <code class="inline">\bcat\b</code> matches "cat" but not
+                    "concatenate"
+                  </td>
+                </tr>
+                <tr>
+                  <td><code class="inline">\B</code></td>
+                  <td>Non-word boundary</td>
+                  <td>
+                    <code class="inline">\Bcat\B</code> matches "concatenate"
+                    but not standalone "cat"
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <pre>
+Pattern p = Pattern.compile("^\\d{4}$");
+System.out.println(p.matcher("2024").matches());     // true
+System.out.println(p.matcher("20245").matches());    // false
+System.out.println(p.matcher("abc").matches());      // false</pre>
+            <div class="output-box">true<br />false<br />false</div>
+
+            <!-- 10. Common Practical Examples -->
+            <h2 id="practical-examples">10. Common Practical Examples</h2>
+
+            <h3>Email Validation</h3>
+            <pre>
+public static boolean isValidEmail(String email) {
+    String regex = "^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.[a-zA-Z]{2,}$";
+    return Pattern.matches(regex, email);
+}
+
+System.out.println(isValidEmail("user@example.com"));   // true
+System.out.println(isValidEmail("bad-email@"));         // false
+System.out.println(isValidEmail("also.bad@.com"));      // false</pre>
+            <div class="output-box">true<br />false<br />false</div>
+
+            <h3>Phone Number Validation (US format)</h3>
+            <pre>
+public static boolean isValidPhone(String phone) {
+    // Accepts: (123) 456-7890, 123-456-7890, 1234567890
+    String regex = "^(\\(\\d{3}\\)\\s?|\\d{3}[-.]?)\\d{3}[-.]?\\d{4}$";
+    return Pattern.matches(regex, phone);
+}
+
+System.out.println(isValidPhone("(800) 555-1234"));   // true
+System.out.println(isValidPhone("800-555-1234"));     // true
+System.out.println(isValidPhone("8005551234"));       // true
+System.out.println(isValidPhone("1234"));             // false</pre>
+            <div class="output-box">true<br />true<br />true<br />false</div>
+
+            <h3>URL Pattern Extraction</h3>
+            <pre>
+String text = "Visit https://www.example.com or http://docs.java.net for more.";
+Pattern p = Pattern.compile("https?://[\\w./-]+");
+Matcher m = p.matcher(text);
+while (m.find()) {
+    System.out.println("URL: " + m.group());
+}</pre>
+            <div class="output-box">
+              URL: https://www.example.com<br />URL: http://docs.java.net
+            </div>
+
+            <!-- 11. String regex methods -->
+            <h2 id="string-methods">11. String Regex Methods</h2>
+            <p>
+              The <code class="inline">String</code> class provides convenient
+              regex shortcuts that do not require creating
+              <code class="inline">Pattern</code> or
+              <code class="inline">Matcher</code> objects explicitly.
+            </p>
+
+            <h3>matches()</h3>
+            <p>
+              Tests whether the entire string matches the given regex.
+              Equivalent to
+              <code class="inline">Pattern.matches(regex, str)</code>.
+            </p>
+            <pre>
+String s = "hello123";
+System.out.println(s.matches("[a-z]+\\d+"));   // true
+System.out.println(s.matches("[a-z]+"));       // false (digits not covered)</pre>
+            <div class="output-box">true<br />false</div>
+
+            <h3>replaceAll()</h3>
+            <p>
+              Replaces every substring matching the regex with the replacement.
+              Internally creates a new <code class="inline">Pattern</code> on
+              each call — cache a <code class="inline">Pattern</code> when
+              calling in a loop.
+            </p>
+            <pre>
+String cleaned = "Hello   World  !".replaceAll("\\s+", " ");
+System.out.println(cleaned);</pre>
+            <div class="output-box">Hello World !</div>
+
+            <h3>split()</h3>
+            <p>
+              Splits the string at each point where the regex matches, returning
+              a <code class="inline">String[]</code>.
+            </p>
+            <pre>
+String csv = "apple, banana,  cherry,date";
+String[] fruits = csv.split(",\\s*");
+for (String f : fruits) System.out.println(f);</pre>
+            <div class="output-box">
+              apple<br />banana<br />cherry<br />date
+            </div>
+
+            <div class="warn-box">
+              <p>
+                <strong>Performance tip:</strong>
+                <code class="inline">String.replaceAll()</code> and
+                <code class="inline">String.split()</code> recompile the pattern
+                on every invocation. If you call them repeatedly with the same
+                pattern, compile it once with
+                <code class="inline">Pattern.compile()</code> and reuse it.
+              </p>
+            </div>
+
+            <!-- Prev / Next -->
+            <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+              <a href="./exception-handling.html" class="btn btn-outline-secondary"
+                >&larr; Exception Handling</a
+              >
+              <a href="./memory-allocation.html" class="btn btn-primary"
+                >Memory Allocation &rarr;</a
+              >
+            </div>
+          </article>
+        </div>
+
+        <!-- Sticky TOC -->
+        <div class="col-lg-4 d-none d-lg-block">
+          <div class="toc">
+            <h6>On This Page</h6>
+            <a href="#what-is-regex">1. What is Regex?</a>
+            <a href="#key-classes">2. Key Classes</a>
+            <a href="#basic-matching">3. Basic Pattern Matching</a>
+            <a href="#pattern-class">4. Pattern Class</a>
+            <a href="#matcher-class">5. Matcher Class</a>
+            <a href="#char-classes">6. Character Classes</a>
+            <a href="#predefined-classes">7. Predefined Character Classes</a>
+            <a href="#quantifiers">8. Quantifiers</a>
+            <a href="#anchors">9. Anchors and Boundaries</a>
+            <a href="#practical-examples">10. Common Practical Examples</a>
+            <a href="#string-methods">11. String Regex Methods</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 mt-4">
+      <div class="container-xl text-center" style="font-size: 0.88rem">
+        &copy; 2024 Java Codeex &mdash; Regular Expressions Reference
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmk+GOFVeA//xwkFWEVflJ8ikO1y+k"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+

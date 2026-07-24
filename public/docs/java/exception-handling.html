@@ -1,0 +1,1618 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Java Exception Handling guide - try-catch-finally, throw, throws, custom exceptions, chained exceptions, NullPointerException and try-with-resources."
+    />
+    <meta
+      name="keywords"
+      content="Java exception handling, try catch Java, throw throws Java, custom exceptions, NullPointerException, Java exceptions tutorial"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Java Codeex" />
+    <link rel="canonical" href="https://javacodeex.in/java/exception-handling/" />
+    <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
+    <link
+      rel="shortcut icon"
+      href="../icons/javacodeex.jpg"
+      type="image/jpeg"
+    />
+    <link rel="apple-touch-icon" href="../icons/javacodeex.jpg" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta
+      property="og:title"
+      content="Java Exception Handling - try catch throw throws finally | Java Codeex"
+    />
+    <meta
+      property="og:description"
+      content="Java Exception Handling guide - try-catch-finally, throw, throws, custom exceptions, chained exceptions, NullPointerException and try-with-resources."
+    />
+    <meta
+      property="og:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta
+      property="og:url"
+      content="https://javacodeex.in/exception-handling/"
+    />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Java Exception Handling - try catch throw throws finally | Java Codeex"
+    />
+    <meta
+      name="twitter:description"
+      content="Java Exception Handling guide - try-catch-finally, throw, throws, custom exceptions, chained exceptions, NullPointerException and try-with-resources."
+    />
+    <meta
+      name="twitter:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Java Exception Handling - try catch throw throws finally | Java Codeex
+    </title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        scroll-behavior: smooth;
+        font-size: 1rem;
+        color: #222;
+      }
+      .navbar {
+        background-color: #1a1a2e;
+      }
+      .navbar-brand {
+        font-weight: 700;
+        color: #f8a100 !important;
+      }
+      .navbar-nav .nav-link {
+        color: #cdd6f4 !important;
+        font-size: 0.85rem;
+      }
+      .navbar-nav .nav-link:hover {
+        color: #f8a100 !important;
+      }
+      .page-hero {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 60%,
+          #0f3460 100%
+        );
+        color: #fff;
+        padding: 48px 0 36px;
+      }
+      .page-hero h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+      }
+      .breadcrumb-item a {
+        color: #f8a100;
+        text-decoration: none;
+      }
+      .breadcrumb-item.active {
+        color: #cdd6f4;
+      }
+      .breadcrumb-item + .breadcrumb-item::before {
+        color: #8a9bb3;
+      }
+      .content-wrapper {
+        max-width: 860px;
+      }
+      h2 {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: #0f3460;
+        border-left: 5px solid #f8a100;
+        padding-left: 12px;
+        margin-top: 2.2rem;
+        margin-bottom: 0.8rem;
+      }
+      h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #16213e;
+        margin-top: 1.6rem;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        line-height: 1.8;
+      }
+      pre {
+        background: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 1.2rem 1.4rem;
+        font-size: 0.88rem;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+      code.inline {
+        background: #eef2ff;
+        color: #0f3460;
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 0.88rem;
+      }
+      .output-box {
+        background: #0d1117;
+        color: #58d68d;
+        border-left: 4px solid #58d68d;
+        border-radius: 4px;
+        padding: 0.8rem 1.2rem;
+        font-family: monospace;
+        font-size: 0.92rem;
+        margin: 0.5rem 0 1rem;
+      }
+      .note-box {
+        background: #eaf4ff;
+        border-left: 5px solid #3b82f6;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .note-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .warn-box {
+        background: #fff8e1;
+        border-left: 5px solid #f8a100;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .warn-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .success-box {
+        background: #e8f8f0;
+        border-left: 5px solid #28a745;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .success-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .table thead th {
+        background: #0f3460;
+        color: #fff;
+      }
+      .table-hover tbody tr:hover {
+        background: #f0f6ff;
+      }
+      .toc {
+        background: #f8f9fc;
+        border: 1px solid #e0e7ef;
+        border-radius: 10px;
+        padding: 1.2rem 1.4rem;
+        position: sticky;
+        top: 72px;
+      }
+      .toc h6 {
+        font-weight: 700;
+        color: #0f3460;
+        margin-bottom: 0.8rem;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        letter-spacing: 0.05em;
+      }
+      .toc a {
+        display: block;
+        font-size: 0.87rem;
+        color: #444;
+        text-decoration: none;
+        padding: 3px 0 3px 8px;
+        border-left: 3px solid transparent;
+        transition: all 0.15s;
+      }
+      .toc a:hover {
+        color: #f8a100;
+        border-left-color: #f8a100;
+      }
+      footer {
+        background: #1a1a2e;
+        color: #8a9bb3;
+      }
+
+      /* === TECH BANNER HEADER === */
+      .brand-bar {
+        background: #1a1a2e;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .brand-link {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: #f8a100;
+        font-weight: 700;
+        font-size: 1.15rem;
+        gap: 10px;
+      }
+      .brand-link:hover {
+        opacity: 0.85;
+        color: #f8a100;
+      }
+      .tech-banner {
+        background: #16213e;
+        border-bottom: 2px solid rgba(248, 161, 0, 0.2);
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tech-banner::-webkit-scrollbar {
+        height: 3px;
+      }
+      .tech-banner::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .tech-banner .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .tech-tab {
+        display: inline-block;
+        color: #a6adc8;
+        text-decoration: none;
+        padding: 11px 22px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+        white-space: nowrap;
+      }
+      .tech-tab:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.06);
+        text-decoration: none;
+      }
+      .tech-tab.active {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        font-weight: 700;
+      }
+      .tech-tab.coming-soon {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .java-subnav {
+        background: #0f3460;
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+      }
+      .java-subnav::-webkit-scrollbar {
+        height: 3px;
+      }
+      .java-subnav::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .java-subnav .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .topic-link {
+        display: inline-block;
+        color: #cdd6f4;
+        text-decoration: none;
+        padding: 10px 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+      }
+      .topic-link:hover {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        text-decoration: none;
+      }
+    </style>
+    <link rel="stylesheet" href="../site-theme.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg sticky-top shadow-sm">
+      <div class="container-xl">
+        <a class="navbar-brand" href="../index.html#courses"
+          ><img
+            src="../icons/javacodeex.jpg"
+            alt="Java Codeex"
+            style="
+              height: 32px;
+              width: 32px;
+              object-fit: cover;
+              border-radius: 6px;
+              margin-right: 8px;
+              vertical-align: middle;
+            "
+            loading="lazy"
+          />
+          Java Codeex</a
+        >
+        <button
+          class="navbar-toggler border-secondary"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navMenu"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+          <ul class="navbar-nav ms-auto flex-wrap gap-1">
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#basics">Basics</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#methods">Methods</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#arrays">Arrays</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#strings">Strings</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#oop">OOP</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#interfaces">Interfaces</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#exceptions">Exceptions</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#regex">Regex</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#memory">Memory</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#generics">Generics</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#collections"
+                >Collections</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#java8">Java 8+</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#datetime"
+                >Date &amp; Time</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#multithreading"
+                >Multithreading</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#filehandling">Files</a>
+            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="../index.html#networking">Networking</a>
+            </li> -->
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#jdbc">JDBC</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Hero -->
+    <section class="page-hero">
+      <div class="container-xl">
+        <nav aria-label="breadcrumb" class="mb-3">
+          <ol class="breadcrumb mb-0" style="background: none; padding: 0">
+            <li class="breadcrumb-item">
+              <a href="../index.html">Java Codeex</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="../index.html#exceptions">Exception Handling</a>
+            </li>
+            <li class="breadcrumb-item active">Exception Handling in Java</li>
+          </ol>
+        </nav>
+        <h1 class="mb-2">Exception Handling in Java</h1>
+        <p class="mb-0" style="color: #cdd6f4; font-size: 1.08rem">
+          Handle runtime errors gracefully using Java's exception handling
+          mechanism.
+        </p>
+      </div>
+    </section>
+    <aside class="topic-guide" aria-label="Learning guide">
+      <div class="topic-guide-step">
+        <span>01</span><strong>Handle failures</strong
+        ><small>Detect a problem</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>02</span><strong>Handle failures</strong
+        ><small>Catch and explain it</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>03</span><strong>Handle failures</strong
+        ><small>Recover or finish safely</small>
+      </div>
+      <p class="topic-guide-summary">
+        <strong>Learning goal:</strong> Exceptions let programs respond to
+        unexpected situations without crashing silently.
+      </p>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="container-xl py-5">
+      <div class="row g-4">
+        <!-- Article -->
+        <div class="col-lg-8">
+          <article class="content-wrapper">
+            <!-- Section 1: What is an Exception? -->
+            <h2 id="what-is-exception">1. What is an Exception?</h2>
+            <p>
+              An <strong>exception</strong> is an abnormal event that disrupts
+              the normal flow of a program at runtime. Java's exception handling
+              mechanism lets you detect, handle, and recover from such events
+              without crashing the program.
+            </p>
+            <p>Java distinguishes three categories of throwable problems:</p>
+            <div class="table-responsive my-3">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Category</th>
+                    <th>Superclass</th>
+                    <th>Checked?</th>
+                    <th>Examples</th>
+                    <th>When Occurs</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Checked Exception</strong></td>
+                    <td><code class="inline">Exception</code></td>
+                    <td>Yes — compiler enforces handling</td>
+                    <td>
+                      <code class="inline">IOException</code>,
+                      <code class="inline">SQLException</code>,
+                      <code class="inline">ParseException</code>
+                    </td>
+                    <td>Predictable failures: file not found, bad URL</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Unchecked Exception</strong></td>
+                    <td><code class="inline">RuntimeException</code></td>
+                    <td>No — optional to handle</td>
+                    <td>
+                      <code class="inline">NullPointerException</code>,
+                      <code class="inline">ArrayIndexOutOfBoundsException</code
+                      >, <code class="inline">ClassCastException</code>
+                    </td>
+                    <td>Programming bugs / logic errors</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Error</strong></td>
+                    <td><code class="inline">Error</code></td>
+                    <td>No — not meant to be caught</td>
+                    <td>
+                      <code class="inline">OutOfMemoryError</code>,
+                      <code class="inline">StackOverflowError</code>
+                    </td>
+                    <td>Serious JVM problems — typically unrecoverable</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="note-box">
+              <p>
+                <strong>Checked vs Unchecked:</strong> Checked exceptions must
+                be either caught (<code class="inline">try-catch</code>) or
+                declared in the method signature (<code class="inline"
+                  >throws</code
+                >). Unchecked exceptions (RuntimeException subclasses) have no
+                such requirement — handling is optional.
+              </p>
+            </div>
+
+            <!-- Section 2: Exception Hierarchy -->
+            <h2 id="exception-hierarchy">2. Exception Hierarchy</h2>
+            <p>
+              All exceptions and errors in Java descend from
+              <code class="inline">java.lang.Throwable</code>. Understanding
+              this hierarchy helps you choose which exceptions to catch and how
+              broadly.
+            </p>
+            <pre><code>java.lang.Object
+  +-- java.lang.Throwable
+        +-- java.lang.Error               (Errors — don't catch these)
+        ¦     +-- OutOfMemoryError
+        ¦     +-- StackOverflowError
+        ¦     +-- VirtualMachineError
+        +-- java.lang.Exception           (Checked exceptions)
+              +-- IOException
+              ¦     +-- FileNotFoundException
+              ¦     +-- EOFException
+              +-- SQLException
+              +-- ParseException
+              +-- ClassNotFoundException
+              +-- RuntimeException        (Unchecked exceptions)
+                    +-- NullPointerException
+                    +-- ArrayIndexOutOfBoundsException
+                    +-- ClassCastException
+                    +-- NumberFormatException
+                    +-- IllegalArgumentException
+                    +-- IllegalStateException
+                    +-- ArithmeticException
+                    +-- UnsupportedOperationException</code></pre>
+            <div class="table-responsive my-3">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Exception</th>
+                    <th>Type</th>
+                    <th>Common Cause</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code class="inline">NullPointerException</code></td>
+                    <td>Unchecked</td>
+                    <td>Calling a method on a <code>null</code> reference</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <code class="inline">ArrayIndexOutOfBoundsException</code>
+                    </td>
+                    <td>Unchecked</td>
+                    <td>Accessing array index outside valid range</td>
+                  </tr>
+                  <tr>
+                    <td><code class="inline">NumberFormatException</code></td>
+                    <td>Unchecked</td>
+                    <td>
+                      <code>Integer.parseInt("abc")</code> — non-numeric string
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code class="inline">ClassCastException</code></td>
+                    <td>Unchecked</td>
+                    <td>
+                      Invalid type casting: <code>(String) new Integer(1)</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code class="inline">ArithmeticException</code></td>
+                    <td>Unchecked</td>
+                    <td>Division by zero: <code>10 / 0</code></td>
+                  </tr>
+                  <tr>
+                    <td><code class="inline">FileNotFoundException</code></td>
+                    <td>Checked</td>
+                    <td>Opening a file that doesn't exist</td>
+                  </tr>
+                  <tr>
+                    <td><code class="inline">IOException</code></td>
+                    <td>Checked</td>
+                    <td>General I/O failure (network, disk)</td>
+                  </tr>
+                  <tr>
+                    <td><code class="inline">SQLException</code></td>
+                    <td>Checked</td>
+                    <td>Database query or connection failure</td>
+                  </tr>
+                  <tr>
+                    <td><code class="inline">StackOverflowError</code></td>
+                    <td>Error</td>
+                    <td>Infinite or deeply nested recursion</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Section 3: try-catch Block -->
+            <h2 id="try-catch">3. try-catch Block</h2>
+            <p>
+              The <code class="inline">try</code> block contains code that might
+              throw an exception. The <code class="inline">catch</code> block
+              handles it. Java checks catch blocks
+              <strong>top to bottom</strong> — put more specific exceptions
+              before more general ones.
+            </p>
+            <pre><code>public class TryCatchDemo {
+
+    // Basic try-catch
+    public static void basicDemo() {
+        try {
+            int result = 10 / 0;          // throws ArithmeticException
+            System.out.println(result);   // never reached
+        } catch (ArithmeticException e) {
+            System.out.println("Caught: " + e.getMessage());  // / by zero
+        }
+        System.out.println("Program continues...");
+    }
+
+    // Catching specific exceptions — order matters (specific before general)
+    public static void multiCatchDemo(String input, int[] arr, int index) {
+        try {
+            int parsed = Integer.parseInt(input);  // may throw NumberFormatException
+            int value  = arr[index];               // may throw ArrayIndexOutOfBoundsException
+            int result = parsed / value;           // may throw ArithmeticException
+            System.out.println("Result: " + result);
+        } catch (NumberFormatException e) {
+            System.out.println("Bad number format: " + e.getMessage());
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Array index error: " + e.getMessage());
+        } catch (ArithmeticException e) {
+            System.out.println("Math error: " + e.getMessage());
+        } catch (Exception e) {
+            // General catch-all — always last
+            System.out.println("Unexpected error: " + e.getMessage());
+        }
+    }
+
+    // Multi-catch (Java 7+) — catch multiple types in one block
+    public static void multiCatchShorthand(String input) {
+        try {
+            int val = Integer.parseInt(input);
+            System.out.println("Parsed: " + val);
+        } catch (NumberFormatException | NullPointerException e) {
+            System.out.println("Input error: " + e.getClass().getSimpleName());
+        }
+    }
+
+    public static void main(String[] args) {
+        basicDemo();
+        System.out.println("---");
+
+        multiCatchDemo("abc", new int[]{1,2,3}, 1);  // NumberFormatException
+        multiCatchDemo("5",   new int[]{1,2,3}, 5);  // ArrayIndexOutOfBounds
+        multiCatchDemo("5",   new int[]{0,0,0}, 0);  // ArithmeticException (5/0)
+        multiCatchDemo("5",   new int[]{2,4,6}, 1);  // Success: 5/4 = 1
+        System.out.println("---");
+
+        multiCatchShorthand(null);   // NullPointerException
+        multiCatchShorthand("xyz");  // NumberFormatException
+    }
+}</code></pre>
+            <div class="output-box">
+              Caught: / by zero<br />Program continues...<br />---<br />Bad
+              number format: For input string: "abc"<br />Array index error:
+              Index 5 out of bounds for length 3<br />Math error: / by zero<br />Result:
+              1<br />---<br />Input error: NullPointerException<br />Input
+              error: NumberFormatException
+            </div>
+            <div class="warn-box">
+              <p>
+                <strong
+                  >Never catch <code>Exception</code> or
+                  <code>Throwable</code> silently</strong
+                >
+                with an empty catch block — it hides bugs and makes debugging
+                very difficult. Always log or handle the exception meaningfully.
+              </p>
+            </div>
+
+            <!-- Section 4: finally Block -->
+            <h2 id="finally-block">
+              4. The <code class="inline">finally</code> Block
+            </h2>
+            <p>
+              The <code class="inline">finally</code> block
+              <strong>always executes</strong> after the try and any catch
+              blocks — whether or not an exception was thrown or caught. It is
+              the ideal place to release resources like file handles or database
+              connections.
+            </p>
+            <pre><code>import java.io.*;
+
+public class FinallyDemo {
+
+    // finally always runs
+    public static void alwaysRuns(boolean throwEx) {
+        try {
+            System.out.println("try block executing");
+            if (throwEx) {
+                throw new RuntimeException("Deliberate error");
+            }
+            System.out.println("No exception thrown");
+        } catch (RuntimeException e) {
+            System.out.println("catch: " + e.getMessage());
+        } finally {
+            System.out.println("finally: always executes");
+        }
+    }
+
+    // Classic resource cleanup pattern (pre Java 7)
+    public static void readFile(String path) {
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(path));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + path);
+        } catch (IOException e) {
+            System.out.println("IO error: " + e.getMessage());
+        } finally {
+            // This runs even if exception occurs — prevents resource leak
+            if (reader != null) {
+                try {
+                    reader.close();
+                    System.out.println("Reader closed in finally.");
+                } catch (IOException e) {
+                    System.out.println("Error closing reader: " + e.getMessage());
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        alwaysRuns(false);
+        System.out.println("---");
+        alwaysRuns(true);
+        System.out.println("---");
+        readFile("nonexistent.txt");
+    }
+}</code></pre>
+            <div class="output-box">
+              try block executing<br />No exception thrown<br />finally: always
+              executes<br />---<br />try block executing<br />catch: Deliberate
+              error<br />finally: always executes<br />---<br />File not found:
+              nonexistent.txt
+            </div>
+            <div class="note-box">
+              <p>
+                <strong>Special case:</strong>
+                <code class="inline">finally</code> does NOT execute if
+                <code class="inline">System.exit()</code> is called inside the
+                try block, or if the JVM crashes. For resource cleanup, prefer
+                try-with-resources (section 12) over explicit
+                <code class="inline">finally</code>.
+              </p>
+            </div>
+
+            <!-- Section 5: throw -->
+            <h2 id="throw-keyword">
+              5. The <code class="inline">throw</code> Keyword
+            </h2>
+            <p>
+              Use <code class="inline">throw</code> to
+              <strong>manually throw an exception</strong> from your code. You
+              can throw any instance of a class that extends
+              <code class="inline">Throwable</code>, but in practice you throw
+              subclasses of <code class="inline">Exception</code> or
+              <code class="inline">RuntimeException</code>.
+            </p>
+            <pre><code>public class ThrowDemo {
+
+    public static double divide(double a, double b) {
+        if (b == 0) {
+            throw new ArithmeticException("Cannot divide by zero");
+        }
+        return a / b;
+    }
+
+    public static int getElement(int[] arr, int index) {
+        if (arr == null) {
+            throw new NullPointerException("Array must not be null");
+        }
+        if (index < 0 || index >= arr.length) {
+            throw new ArrayIndexOutOfBoundsException(
+                "Index " + index + " out of bounds for length " + arr.length);
+        }
+        return arr[index];
+    }
+
+    public static void setAge(int age) {
+        if (age < 0 || age > 150) {
+            throw new IllegalArgumentException(
+                "Age must be between 0 and 150, got: " + age);
+        }
+        System.out.println("Age set to: " + age);
+    }
+
+    public static void main(String[] args) {
+        // Successful calls
+        System.out.println(divide(10, 2));     // 5.0
+        System.out.println(getElement(new int[]{10, 20, 30}, 1));  // 20
+        setAge(25);
+
+        // Each throw caught and handled
+        try { divide(5, 0); }
+        catch (ArithmeticException e) { System.out.println("Error: " + e.getMessage()); }
+
+        try { getElement(new int[]{1,2,3}, 10); }
+        catch (ArrayIndexOutOfBoundsException e) { System.out.println("Error: " + e.getMessage()); }
+
+        try { setAge(-5); }
+        catch (IllegalArgumentException e) { System.out.println("Error: " + e.getMessage()); }
+    }
+}</code></pre>
+            <div class="output-box">
+              5.0<br />20<br />Age set to: 25<br />Error: Cannot divide by
+              zero<br />Error: Index 10 out of bounds for length 3<br />Error:
+              Age must be between 0 and 150, got: -5
+            </div>
+
+            <!-- Section 6: throws -->
+            <h2 id="throws-keyword">
+              6. The <code class="inline">throws</code> Keyword
+            </h2>
+            <p>
+              <code class="inline">throws</code> is used in a method signature
+              to declare that the method <em>may throw</em> one or more checked
+              exceptions. This passes the responsibility of handling the
+              exception to the caller.
+            </p>
+            <pre><code>import java.io.*;
+import java.net.*;
+
+public class ThrowsDemo {
+
+    // Declares it may throw IOException — caller must handle it
+    public static String readFirstLine(String filename) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(filename));
+        String line = reader.readLine();
+        reader.close();
+        return line;
+    }
+
+    // Declares multiple checked exceptions
+    public static void fetchData(String urlStr) throws IOException, MalformedURLException {
+        URL url = new URL(urlStr);        // may throw MalformedURLException
+        url.openConnection();             // may throw IOException
+        System.out.println("Connected to: " + urlStr);
+    }
+
+    // Caller MUST handle or re-declare with throws
+    public static void caller() throws IOException {
+        String line = readFirstLine("data.txt");  // handled by re-declaring
+        System.out.println("Read: " + line);
+    }
+
+    // Or catch it here
+    public static void callerWithCatch() {
+        try {
+            String line = readFirstLine("data.txt");
+            System.out.println("Read: " + line);
+        } catch (IOException e) {
+            System.out.println("Could not read file: " + e.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+        callerWithCatch();   // handles IOException internally
+
+        try {
+            fetchData("not-a-valid-url");
+        } catch (IOException e) {
+            System.out.println("Fetch failed: " + e.getClass().getSimpleName()
+                + " - " + e.getMessage());
+        }
+    }
+}</code></pre>
+            <div class="output-box">
+              Could not read file: data.txt (No such file or directory)<br />Fetch
+              failed: MalformedURLException - no protocol: not-a-valid-url
+            </div>
+            <div class="note-box">
+              <p>
+                <strong>throw vs throws:</strong>
+                <code class="inline">throw</code> is an action — it actually
+                throws an exception object.
+                <code class="inline">throws</code> is a declaration — it
+                announces that a method might throw that exception. They are
+                used in completely different places.
+              </p>
+            </div>
+
+            <!-- Section 7: final vs finally vs finalize -->
+            <h2 id="final-finally-finalize">7. final vs finally vs finalize</h2>
+            <p>
+              These three keywords sound similar but serve completely different
+              purposes — a very common interview topic.
+            </p>
+            <div class="table-responsive my-3">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Keyword</th>
+                    <th>What It Is</th>
+                    <th>Used With</th>
+                    <th>Purpose</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code class="inline">final</code></td>
+                    <td>Access modifier keyword</td>
+                    <td>Variables, methods, classes</td>
+                    <td>
+                      Variable: constant (cannot reassign). Method: cannot be
+                      overridden. Class: cannot be subclassed.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code class="inline">finally</code></td>
+                    <td>Block in exception handling</td>
+                    <td>try-catch statement</td>
+                    <td>
+                      Code that always executes after try/catch — used for
+                      cleanup.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code class="inline">finalize()</code></td>
+                    <td>Instance method</td>
+                    <td>Object (deprecated since Java 9)</td>
+                    <td>
+                      Called by GC before reclaiming an object — unreliable,
+                      avoid using.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <pre><code>public class FinalKeywords {
+
+    // final variable — constant, must be assigned once
+    final int MAX = 100;
+
+    // final method — cannot be overridden in subclasses
+    public final void display() {
+        System.out.println("final method: MAX = " + MAX);
+    }
+
+    public static void finalDemo() {
+        // final local variable
+        final String NAME = "Java";
+        // NAME = "Python";  // COMPILE ERROR — cannot reassign final
+
+        // final reference — the reference is final, not the object
+        final StringBuilder sb = new StringBuilder("Hello");
+        sb.append(", World!");   // OK — object is mutable
+        // sb = new StringBuilder(); // COMPILE ERROR
+        System.out.println("final ref: " + sb);
+    }
+
+    public static void finallyDemo() {
+        try {
+            System.out.println("In try");
+            int x = 5 / 1;
+        } finally {
+            System.out.println("finally always runs");
+        }
+    }
+
+    // finalize() — deprecated, called by GC before collection
+    // DO NOT rely on this for resource cleanup
+    @Override
+    @SuppressWarnings("deprecation")
+    protected void finalize() throws Throwable {
+        System.out.println("finalize() called by GC");
+        super.finalize();
+    }
+
+    public static void main(String[] args) {
+        finalDemo();
+        finallyDemo();
+        new FinalKeywords().display();
+    }
+}
+
+// final class — cannot be extended
+final class ImmutablePoint {
+    final int x, y;
+    ImmutablePoint(int x, int y) { this.x = x; this.y = y; }
+}
+// class ExtendedPoint extends ImmutablePoint { } // COMPILE ERROR</code></pre>
+            <div class="output-box">
+              final ref: Hello, World!<br />In try<br />finally always runs<br />final
+              method: MAX = 100
+            </div>
+
+            <!-- Section 8: Custom Exceptions -->
+            <h2 id="custom-exceptions">8. Custom Exceptions</h2>
+            <p>
+              You can create your own exception classes to represent
+              domain-specific error conditions. Extend
+              <code class="inline">Exception</code> for a checked exception, or
+              <code class="inline">RuntimeException</code> for an unchecked one.
+            </p>
+            <pre><code>// Checked custom exception — caller must handle or declare
+public class InsufficientFundsException extends Exception {
+    private double amount;
+    private double balance;
+
+    public InsufficientFundsException(double amount, double balance) {
+        super(String.format("Cannot withdraw $%.2f. Available balance: $%.2f", amount, balance));
+        this.amount  = amount;
+        this.balance = balance;
+    }
+
+    public double getAmount()  { return amount; }
+    public double getBalance() { return balance; }
+}
+
+// Unchecked custom exception — optional to handle
+public class InvalidAgeException extends RuntimeException {
+    private int invalidAge;
+
+    public InvalidAgeException(int age) {
+        super("Invalid age: " + age + ". Must be between 0 and 150.");
+        this.invalidAge = age;
+    }
+
+    public int getInvalidAge() { return invalidAge; }
+}
+
+public class BankAccount {
+    private String owner;
+    private double balance;
+
+    public BankAccount(String owner, double balance) {
+        this.owner   = owner;
+        this.balance = balance;
+    }
+
+    // Checked exception — declared with throws
+    public void withdraw(double amount) throws InsufficientFundsException {
+        if (amount > balance) {
+            throw new InsufficientFundsException(amount, balance);
+        }
+        balance -= amount;
+        System.out.println("Withdrew $" + amount + ". New balance: $" + balance);
+    }
+}
+
+public class Person {
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        if (age < 0 || age > 150) {
+            throw new InvalidAgeException(age);  // unchecked
+        }
+        this.name = name;
+        this.age  = age;
+    }
+
+    @Override
+    public String toString() { return name + ", age " + age; }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        BankAccount acc = new BankAccount("Alice", 500.0);
+
+        try {
+            acc.withdraw(200.0);   // OK
+            acc.withdraw(400.0);   // throws InsufficientFundsException
+        } catch (InsufficientFundsException e) {
+            System.out.println("Error: " + e.getMessage());
+            System.out.println("Tried to withdraw: $" + e.getAmount());
+            System.out.println("Available: $" + e.getBalance());
+        }
+
+        System.out.println("---");
+
+        try {
+            Person p1 = new Person("Bob", 30);    // OK
+            System.out.println(p1);
+            Person p2 = new Person("Eve", -5);    // throws InvalidAgeException
+        } catch (InvalidAgeException e) {
+            System.out.println("Age error: " + e.getMessage());
+            System.out.println("Invalid value was: " + e.getInvalidAge());
+        }
+    }
+}</code></pre>
+            <div class="output-box">
+              Withdrew $200.0. New balance: $300.0<br />Error: Cannot withdraw
+              $400.00. Available balance: $300.00<br />Tried to withdraw:
+              $400.0<br />Available: $300.0<br />---<br />Bob, age 30<br />Age
+              error: Invalid age: -5. Must be between 0 and 150.<br />Invalid
+              value was: -5
+            </div>
+
+            <!-- Section 9: Chained Exceptions -->
+            <h2 id="chained-exceptions">9. Chained Exceptions</h2>
+            <p>
+              Exception chaining allows you to
+              <strong
+                >wrap a lower-level exception inside a higher-level one</strong
+              >, preserving the original cause. This is essential for debugging
+              layered applications — you can see the full chain of what went
+              wrong.
+            </p>
+            <pre><code>public class DatabaseException extends Exception {
+    public DatabaseException(String message, Throwable cause) {
+        super(message, cause);   // cause parameter chains the original exception
+    }
+}
+
+public class ServiceException extends Exception {
+    public ServiceException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
+
+public class DataLayer {
+    public void queryDatabase() throws DatabaseException {
+        try {
+            // Simulate a low-level SQL error
+            throw new java.sql.SQLException("Table 'users' does not exist");
+        } catch (java.sql.SQLException e) {
+            // Wrap low-level exception in domain exception, preserving cause
+            throw new DatabaseException("Database query failed", e);
+        }
+    }
+}
+
+public class ServiceLayer {
+    private DataLayer dataLayer = new DataLayer();
+
+    public void getUser(int id) throws ServiceException {
+        try {
+            dataLayer.queryDatabase();
+        } catch (DatabaseException e) {
+            // Wrap again — service doesn't expose DB details
+            throw new ServiceException("Could not retrieve user with id=" + id, e);
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        ServiceLayer service = new ServiceLayer();
+
+        try {
+            service.getUser(42);
+        } catch (ServiceException e) {
+            System.out.println("Service Error: " + e.getMessage());
+
+            // getCause() retrieves the chained exception
+            Throwable cause1 = e.getCause();
+            System.out.println("Caused by: " + cause1.getMessage());
+
+            Throwable cause2 = cause1.getCause();
+            System.out.println("Root cause: " + cause2.getMessage());
+            System.out.println("Root type: " + cause2.getClass().getSimpleName());
+        }
+
+        System.out.println("---");
+
+        // Using initCause() — alternative to cause constructor param
+        RuntimeException re = new RuntimeException("Outer exception");
+        IllegalStateException inner = new IllegalStateException("Inner exception");
+        re.initCause(inner);
+
+        try {
+            throw re;
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+            System.out.println("initCause: " + e.getCause().getMessage());
+        }
+    }
+}</code></pre>
+            <div class="output-box">
+              Service Error: Could not retrieve user with id=42<br />Caused by:
+              Database query failed<br />Root cause: Table 'users' does not
+              exist<br />Root type: SQLException<br />---<br />Outer
+              exception<br />initCause: Inner exception
+            </div>
+            <div class="success-box">
+              <p>
+                <strong>Best practice:</strong> Always chain exceptions when
+                re-throwing. Never swallow the original exception. This
+                preserves the full stack trace which is invaluable during
+                debugging in production.
+              </p>
+            </div>
+
+            <!-- Section 10: NullPointerException -->
+            <h2 id="null-pointer-exception">10. NullPointerException</h2>
+            <p>
+              <code class="inline">NullPointerException</code> (NPE) is the most
+              common runtime exception in Java. It is thrown when you attempt to
+              use a reference that points to <code class="inline">null</code>.
+            </p>
+            <h3>Common Causes</h3>
+            <pre><code>public class NpeDemo {
+
+    public static void main(String[] args) {
+        // Cause 1: Calling method on null reference
+        String s = null;
+        // System.out.println(s.length());  // NPE!
+
+        // Cause 2: Accessing field of null object
+        int[] arr = null;
+        // int len = arr.length;           // NPE!
+
+        // Cause 3: Unboxing null wrapper
+        Integer num = null;
+        // int n = num;  // NPE — auto-unboxing null Integer
+
+        // Cause 4: Return value not checked
+        String result = findName("Z");
+        // System.out.println(result.toUpperCase());  // NPE if result is null
+
+        // ---- Prevention Techniques ----
+
+        // 1. Null check before use
+        if (result != null) {
+            System.out.println(result.toUpperCase());
+        } else {
+            System.out.println("Name not found");
+        }
+
+        // 2. Java 8 Optional — explicit null handling
+        java.util.Optional&lt;String&gt; opt = java.util.Optional.ofNullable(findName("Alice"));
+        String upper = opt.map(String::toUpperCase).orElse("NOT FOUND");
+        System.out.println(upper);  // ALICE
+
+        // 3. Objects.requireNonNull — fail fast with clear message
+        try {
+            String name = java.util.Objects.requireNonNull(findName("Z"),
+                "Name lookup returned null for key 'Z'");
+        } catch (NullPointerException e) {
+            System.out.println("NPE caught: " + e.getMessage());
+        }
+
+        // 4. String comparisons — use constant.equals() to avoid NPE
+        String userInput = null;
+        // if (userInput.equals("admin"))  // NPE
+        if ("admin".equals(userInput)) {   // safe — no NPE
+            System.out.println("Admin!");
+        } else {
+            System.out.println("Not admin (safe comparison)");
+        }
+
+        // 5. Java 14+ Helpful NPE messages show exactly what is null
+        // e.g.: Cannot invoke "String.length()" because "s" is null
+    }
+
+    static String findName(String key) {
+        java.util.Map&lt;String, String&gt; map = new java.util.HashMap&lt;&gt;();
+        map.put("Alice", "Alice Smith");
+        map.put("Bob",   "Bob Jones");
+        return map.get(key);  // returns null if key not found
+    }
+}</code></pre>
+            <div class="output-box">
+              Name not found<br />ALICE<br />NPE caught: Name lookup returned
+              null for key 'Z'<br />Not admin (safe comparison)
+            </div>
+            <div class="warn-box">
+              <p>
+                <strong>Java 14+ Helpful NPEs:</strong> Since Java 14 (JEP 358),
+                NPE messages explicitly state what was null, e.g. "Cannot invoke
+                String.length() because variable 's' is null". Enable with
+                <code class="inline"
+                  >-XX:+ShowCodeDetailsInExceptionMessages</code
+                >
+                (default on from Java 17).
+              </p>
+            </div>
+
+            <!-- Section 11: Exception Handling with Method Overriding -->
+            <h2 id="overriding-exceptions">
+              11. Exception Handling with Method Overriding
+            </h2>
+            <p>
+              Java enforces strict rules when a subclass overrides a method that
+              declares checked exceptions. The overriding method cannot widen
+              the checked exception clause — it can only narrow it or remove it.
+            </p>
+            <pre><code>import java.io.*;
+
+public class Parent {
+    // Declares a checked exception
+    public void readData() throws IOException {
+        System.out.println("Parent.readData()");
+    }
+}
+
+public class Child extends Parent {
+    // ALLOWED: Override with no exception (narrowing — removing)
+    // @Override
+    // public void readData() { ... }
+
+    // ALLOWED: Override with same exception
+    @Override
+    public void readData() throws IOException {
+        System.out.println("Child.readData() - same exception");
+    }
+
+    // ALLOWED: Override with subclass exception (narrowing)
+    // @Override
+    // public void readData() throws FileNotFoundException { ... }
+    //   (FileNotFoundException extends IOException — more specific)
+
+    // NOT ALLOWED: Broaden to parent exception
+    // @Override
+    // public void readData() throws Exception { ... }
+    //   COMPILE ERROR: Exception is broader than IOException
+
+    // NOT ALLOWED: Add unrelated checked exception
+    // @Override
+    // public void readData() throws SQLException { ... }
+    //   COMPILE ERROR: SQLException not declared in parent
+}
+
+// Unchecked exceptions have NO restrictions in overriding
+class Base {
+    public void process() {
+        System.out.println("Base.process()");
+    }
+}
+
+class Derived extends Base {
+    @Override
+    public void process() throws RuntimeException {  // fine — unchecked
+        System.out.println("Derived.process()");
+        throw new IllegalStateException("Not ready");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            Parent p = new Child();
+            p.readData();              // polymorphic call
+        } catch (IOException e) {
+            System.out.println("IOException: " + e.getMessage());
+        }
+
+        try {
+            Base b = new Derived();
+            b.process();               // throws unchecked at runtime
+        } catch (RuntimeException e) {
+            System.out.println("RuntimeException: " + e.getMessage());
+        }
+    }
+}</code></pre>
+            <div class="output-box">
+              Child.readData() - same exception<br />RuntimeException: Not ready
+            </div>
+            <div class="table-responsive my-3">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Scenario</th>
+                    <th>Allowed?</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Override with no checked exception</td>
+                    <td>Yes</td>
+                  </tr>
+                  <tr>
+                    <td>Override with the same checked exception</td>
+                    <td>Yes</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Override with a more specific (child) checked exception
+                    </td>
+                    <td>Yes</td>
+                  </tr>
+                  <tr>
+                    <td>Override with a broader (parent) checked exception</td>
+                    <td>No — compile error</td>
+                  </tr>
+                  <tr>
+                    <td>Override with an unrelated checked exception</td>
+                    <td>No — compile error</td>
+                  </tr>
+                  <tr>
+                    <td>Override with any unchecked (Runtime) exception</td>
+                    <td>Yes — no restrictions</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Section 12: try-with-resources -->
+            <h2 id="try-with-resources">12. try-with-resources (Java 7+)</h2>
+            <p>
+              Introduced in Java 7,
+              <strong>try-with-resources</strong> automatically closes resources
+              declared in the parentheses of the
+              <code class="inline">try</code> statement. The resource must
+              implement <code class="inline">java.lang.AutoCloseable</code> (or
+              its subinterface <code class="inline">Closeable</code>). This is
+              cleaner and safer than using a
+              <code class="inline">finally</code> block.
+            </p>
+            <pre><code>import java.io.*;
+import java.util.Scanner;
+
+public class TryWithResourcesDemo {
+
+    // AutoCloseable custom resource
+    static class DatabaseConnection implements AutoCloseable {
+        String url;
+
+        public DatabaseConnection(String url) {
+            this.url = url;
+            System.out.println("Connection opened: " + url);
+        }
+
+        public void query(String sql) {
+            System.out.println("Executing: " + sql);
+        }
+
+        @Override
+        public void close() {
+            System.out.println("Connection closed: " + url);
+            // In real code: connection.close();
+        }
+    }
+
+    // Single resource
+    public static void singleResource() {
+        try (DatabaseConnection conn = new DatabaseConnection("jdbc:mysql://localhost/db")) {
+            conn.query("SELECT * FROM users");
+            conn.query("SELECT * FROM orders");
+        } // close() called automatically, even if exception occurs
+        System.out.println("After try block");
+    }
+
+    // Multiple resources — closed in REVERSE order of declaration
+    public static void multipleResources() {
+        try (DatabaseConnection conn1 = new DatabaseConnection("db1");
+             DatabaseConnection conn2 = new DatabaseConnection("db2")) {
+            conn1.query("SELECT ...");
+            conn2.query("INSERT ...");
+        } // conn2 closed first, then conn1
+    }
+
+    // Real-world: reading a file
+    public static void readFileLines(String path) {
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + path);
+        } catch (IOException e) {
+            System.out.println("IO error: " + e.getMessage());
+        }
+        // br.close() called automatically — no finally needed
+    }
+
+    // try-with-resources + catch + finally all together
+    public static void fullExample(String path) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            System.out.println("First line: " + reader.readLine());
+        } catch (FileNotFoundException e) {
+            System.out.println("File missing: " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Read error: " + e.getMessage());
+        } finally {
+            System.out.println("finally still runs with try-with-resources");
+        }
+    }
+
+    public static void main(String[] args) {
+        singleResource();
+        System.out.println("---");
+        multipleResources();
+        System.out.println("---");
+        readFileLines("missing.txt");
+        System.out.println("---");
+        fullExample("missing.txt");
+    }
+}</code></pre>
+            <div class="output-box">
+              Connection opened: jdbc:mysql://localhost/db<br />Executing:
+              SELECT * FROM users<br />Executing: SELECT * FROM orders<br />Connection
+              closed: jdbc:mysql://localhost/db<br />After try block<br />---<br />Connection
+              opened: db1<br />Connection opened: db2<br />Executing: SELECT
+              ...<br />Executing: INSERT ...<br />Connection closed: db2<br />Connection
+              closed: db1<br />---<br />File not found: missing.txt<br />---<br />File
+              missing: missing.txt (No such file or directory)<br />finally
+              still runs with try-with-resources
+            </div>
+            <div class="success-box">
+              <p>
+                <strong>Suppressed Exceptions:</strong> If both the try block
+                and the <code class="inline">close()</code> method throw
+                exceptions, the close exception is <em>suppressed</em> (attached
+                to the primary exception). You can access them via
+                <code class="inline">e.getSuppressed()</code>. This is one of
+                the key advantages over manual
+                <code class="inline">finally</code> blocks, which would silently
+                discard the original exception.
+              </p>
+            </div>
+
+            <!-- Prev / Next Navigation -->
+            <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+              <a href="./interfaces.html" class="btn btn-outline-secondary"
+                >&larr; Prev: Interfaces</a
+              >
+              <a href="../index.html#regex" class="btn btn-primary"
+                >Next: Regex &rarr;</a
+              >
+            </div>
+          </article>
+        </div>
+
+        <!-- Sticky TOC -->
+        <div class="col-lg-4">
+          <div class="toc">
+            <h6>On This Page</h6>
+            <a href="#what-is-exception">1. What is an Exception?</a>
+            <a href="#exception-hierarchy">2. Exception Hierarchy</a>
+            <a href="#try-catch">3. try-catch Block</a>
+            <a href="#finally-block">4. finally Block</a>
+            <a href="#throw-keyword">5. The throw Keyword</a>
+            <a href="#throws-keyword">6. The throws Keyword</a>
+            <a href="#final-finally-finalize"
+              >7. final vs finally vs finalize</a
+            >
+            <a href="#custom-exceptions">8. Custom Exceptions</a>
+            <a href="#chained-exceptions">9. Chained Exceptions</a>
+            <a href="#null-pointer-exception">10. NullPointerException</a>
+            <a href="#overriding-exceptions">11. Exceptions &amp; Overriding</a>
+            <a href="#try-with-resources">12. try-with-resources</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-4 mt-4">
+      <div class="container-xl text-center">
+        <p class="mb-1" style="font-size: 0.9rem">
+          Java Codeex &mdash; Exception Handling
+        </p>
+        <p class="mb-0" style="font-size: 0.82rem">
+          Built with Bootstrap 5 &bull; For learning purposes
+        </p>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmk+GOFVeA//xwkFWEVflJ8ikO1y+k"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>

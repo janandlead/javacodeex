@@ -1,0 +1,2305 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Learn what Spring Boot is and how it simplifies Java application development."
+    />
+    <title>Introduction to Spring Boot | Java Codeex</title>
+    <link rel="icon" href="../icons/javacodeex.jpg" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../site-theme.css" />
+    <link rel="stylesheet" href="./springboot.css" />
+  </head>
+  <body>
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" /></a>
+        <a class="topic-link" href="./index.html#basics"
+          >Overview</a
+        >
+        <a class="topic-link" href="https://javacodeex.com/springboot/project-structure.html"
+          >Project Structure</a
+        >
+        <a class="topic-link" href="./aop.html">AOP</a>
+        <a class="topic-link" href="./index.html#data-jpa">Data JPA</a>
+        <a class="topic-link" href="./index.html#security">Security</a>
+        <a class="topic-link" href="./index.html#exception-handling"
+          >Exceptions</a
+        >
+        <a class="topic-link" href="./index.html#rest-api">REST APIs</a>
+        <a class="topic-link" href="./validation.html">Validation</a>
+        <a class="topic-link" href="./index.html#testing">Testing</a>
+        <a class="topic-link" href="./index.html#actuator">Actuator</a>
+        <a class="topic-link" href="./index.html#deployment">Deployment</a>
+      </div>
+    </nav>
+    <section class="spring-hero">
+      <div class="container-xl">
+        <span class="spring-pill">Java Codeex</span>
+        <h1 class="mt-3">Introduction to Spring Boot</h1>
+        <p class="lead">
+          Spring Boot helps you create stand-alone, production-ready Spring
+          applications with sensible defaults and less configuration.
+        </p>
+      </div>
+    </section>
+    <main class="container-xl py-5">
+      <div class="spring-callout mb-4">
+        <strong>In simple terms:</strong> Spring provides the building blocks;
+        Spring Boot assembles common pieces so you can focus on your
+        application.
+      </div>
+      <h2 id="what-is-spring-boot">What is Spring Boot?</h2>
+      <p>
+        Spring Boot is an opinionated framework built on top of the Spring
+        Framework. It helps developers create production-ready Java applications
+        quickly by choosing sensible defaults and reducing the amount of
+        configuration they must write.
+      </p>
+      <p>
+        <strong>Opinionated</strong> does not mean that Spring Boot removes your
+        choices. It means Spring Boot provides a good default first, while still
+        allowing you to change the configuration when your application needs
+        something different.
+      </p>
+      <h3>Why was Spring Boot created?</h3>
+      <p>
+        Before Spring Boot, starting a Spring application often meant
+        configuring many separate pieces manually:
+      </p>
+      <ul class="lh-lg">
+        <li><code>web.xml</code> and the <code>DispatcherServlet</code></li>
+        <li>A servlet container such as Tomcat</li>
+        <li>Maven or Gradle dependencies and compatible versions</li>
+        <li>The Spring application context and bean configuration</li>
+        <li>Property files and environment-specific settings</li>
+      </ul>
+      <p>
+        This setup could require hundreds of lines of configuration before the
+        first business feature was written.
+      </p>
+      <div class="concept-diagram">
+        <figcaption>Traditional Spring vs Spring Boot</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>Traditional Spring</strong
+            ><small
+              >Configure server, context, beans, dependencies, and properties
+              manually</small
+            >
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Spring Boot</strong
+            ><small>Add starters, use defaults, and run the application</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Ready application</strong
+            ><small>Focus on business features</small>
+          </div>
+        </div>
+      </div>
+      <h3>Minimal Spring Boot application</h3>
+      <pre class="spring-code"><code>@SpringBootApplication
+public class DemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}</code></pre>
+      <p>
+        With this class and the right starter dependency, Spring Boot can start
+        the application context and an embedded web server. You can run it like
+        a normal Java program, without separately installing and deploying a WAR
+        file to Tomcat.
+      </p>
+      <h3>Key advantages</h3>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Advantage</th>
+              <th>What it means</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Embedded Tomcat</td>
+              <td>The server can run inside your executable JAR.</td>
+            </tr>
+            <tr>
+              <td>Auto-configuration</td>
+              <td>
+                Spring Boot configures common components when their dependencies
+                are present.
+              </td>
+            </tr>
+            <tr>
+              <td>Starter dependencies</td>
+              <td>One dependency brings a compatible group of libraries.</td>
+            </tr>
+            <tr>
+              <td>Less XML</td>
+              <td>
+                Java configuration, annotations, and properties replace most
+                manual XML setup.
+              </td>
+            </tr>
+            <tr>
+              <td>Production features</td>
+              <td>
+                Health checks, metrics, external configuration, and logging
+                support are available.
+              </td>
+            </tr>
+            <tr>
+              <td>Easy deployment</td>
+              <td>Build one JAR and run it with <code>java -jar</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Real-world analogy: opening a restaurant</h3>
+      <p>Imagine opening a restaurant.</p>
+      <div class="concept-diagram">
+        <figcaption>Restaurant analogy</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>Traditional Spring</strong
+            ><small
+              >You arrange tables, chairs, kitchen equipment, gas, electricity,
+              menu, and chef separately</small
+            >
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Spring Boot</strong
+            ><small
+              >The restaurant infrastructure is ready; you focus on cooking the
+              food</small
+            >
+          </div>
+        </div>
+      </div>
+      <p>
+        Spring Boot prepares the common infrastructure. You still decide what
+        your application does, how its business rules work, and which features
+        your users receive.
+      </p>
+      <h2>Spring vs Spring Boot</h2>
+      <p>
+        Spring is a large ecosystem for building Java applications.
+        Traditionally, developers configured many objects and framework
+        integrations by hand. Spring Boot adds conventions, starter
+        dependencies, embedded servers, and automatic configuration to reduce
+        that setup work.
+      </p>
+      <div class="concept-diagram">
+        <figcaption>What happens when a Boot app starts</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>main()</strong><small>Start the application</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>SpringApplication</strong><small>Creates the context</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Auto-configuration</strong
+            ><small>Finds useful defaults</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Embedded server</strong
+            ><small>Serves the application</small>
+          </div>
+        </div>
+      </div>
+      <h2>Minimal application</h2>
+      <pre class="spring-code"><code>@SpringBootApplication
+public class DemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}</code></pre>
+      <p>
+        <code>@SpringBootApplication</code> combines component scanning,
+        auto-configuration, and a configuration class.
+        <code>SpringApplication.run()</code> creates the application context and
+        starts the embedded server when web dependencies are present.
+      </p>
+      <h2>Key ideas</h2>
+      <ul class="lh-lg">
+        <li>
+          <strong>Convention over configuration:</strong> common choices work
+          with little code.
+        </li>
+        <li>
+          <strong>Starters:</strong> dependency bundles for web, data, security,
+          and testing.
+        </li>
+        <li>
+          <strong>Embedded server:</strong> run the app as a normal Java process
+          or JAR.
+        </li>
+        <li>
+          <strong>External configuration:</strong> change environment-specific
+          values without recompiling.
+        </li>
+      </ul>
+      <h2 id="auto-configuration">Auto-Configuration</h2>
+      <p>
+        Auto-configuration is Spring Boot's way of choosing common beans for
+        you. Boot checks the libraries on the classpath, your configuration
+        properties, and the beans you already defined. It creates sensible
+        defaults only when they are needed.
+      </p>
+      <div class="concept-diagram">
+        <figcaption>How auto-configuration makes a decision</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>Classpath</strong><small>Is Spring MVC present?</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Conditions</strong
+            ><small>Is a matching bean missing?</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Default bean</strong
+            ><small>Configure it automatically</small>
+          </div>
+        </div>
+      </div>
+      <p>
+        For example, when the web starter is present, Boot can configure an
+        embedded server, Spring MVC infrastructure, JSON support, and a
+        dispatcher servlet. If you define your own bean, Boot usually backs away
+        so your explicit choice wins.
+      </p>
+      <div class="spring-callout">
+        <strong>Remember:</strong> Auto-configuration is a collection of
+        conditional configuration classes that can be inspected, overridden, or
+        disabled when necessary.
+      </div>
+      <h3>Including dependencies to activate auto-configuration</h3>
+      <p>
+        Auto-configuration is driven by the dependencies in your project. Adding
+        a starter places the required libraries on the classpath, so Spring Boot
+        can detect the feature and configure it.
+      </p>
+      <pre
+        class="spring-code"
+      ><code>&lt;!-- Adds Spring MVC, Jackson, validation support, and embedded Tomcat --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;!-- Adds JPA, Hibernate, transactions, and repository support --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+      <p>
+        After these dependencies are available, Boot checks their classes and
+        creates the matching infrastructure. A dependency does not automatically
+        create a useful application feature by itself; your controllers,
+        entities, repositories, and properties still need to be provided.
+      </p>
+      <h3>Excluding an auto-configuration class</h3>
+      <p>
+        Sometimes a dependency is present but your application does not need the
+        feature it normally activates. You can exclude the related
+        auto-configuration class.
+      </p>
+      <pre
+        class="spring-code"
+      ><code>import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+public class DemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}</code></pre>
+      <p>
+        The same exclusion can be configured without changing the Java class:
+      </p>
+      <pre class="spring-code"><code># application.properties
+spring.autoconfigure.exclude=\
+org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration</code></pre>
+      <p>
+        This is useful for a service that includes a database-related library
+        transitively but does not connect to a database. Exclude only what you
+        understand; removing required auto-configuration can cause missing beans
+        or startup errors.
+      </p>
+      <h3>Excluding an individual dependency</h3>
+      <p>
+        Dependency exclusion is different from auto-configuration exclusion. A
+        dependency exclusion prevents a library from being downloaded or used,
+        while an auto-configuration exclusion keeps the library but prevents
+        Boot from creating its default beans.
+      </p>
+      <pre
+        class="spring-code"
+      ><code>&lt;!-- Keep Spring MVC, but remove embedded Tomcat --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;exclusions&gt;
+        &lt;exclusion&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-tomcat&lt;/artifactId&gt;
+        &lt;/exclusion&gt;
+    &lt;/exclusions&gt;
+&lt;/dependency&gt;</code></pre>
+      <h3>Replacing embedded Tomcat with Jetty</h3>
+      <p>
+        Spring Boot's web starter uses embedded Tomcat by default. To use Jetty
+        instead, exclude the Tomcat starter and add the Jetty starter. Do not
+        keep both servlet containers in the same application because the server
+        configuration can become ambiguous.
+      </p>
+      <pre class="spring-code"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;exclusions&gt;
+        &lt;exclusion&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-tomcat&lt;/artifactId&gt;
+        &lt;/exclusion&gt;
+    &lt;/exclusions&gt;
+&lt;/dependency&gt;
+
+&lt;!-- Add the alternative embedded servlet container --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-jetty&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+      <div class="concept-diagram">
+        <figcaption>Changing the embedded servlet container</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>spring-boot-starter-web</strong
+            ><small>Tomcat by default</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Exclude Tomcat</strong
+            ><small>Remove the default server</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node result">
+            <strong>Add Jetty</strong
+            ><small>Run the same MVC app on Jetty</small>
+          </div>
+        </div>
+      </div>
+      <p>
+        Your controllers and REST endpoints usually do not change because Spring
+        MVC sits above the servlet container. The main difference is the
+        embedded server that receives HTTP requests and starts the application.
+      </p>
+      <h3>Useful auto-configuration controls</h3>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Requirement</th>
+              <th>Approach</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Add a feature</td>
+              <td>Add a starter or library</td>
+              <td><code>spring-boot-starter-data-jpa</code></td>
+            </tr>
+            <tr>
+              <td>Change a default value</td>
+              <td>Set a property</td>
+              <td><code>server.port=8081</code></td>
+            </tr>
+            <tr>
+              <td>Replace a default bean</td>
+              <td>Define your own <code>@Bean</code></td>
+              <td>Custom <code>ObjectMapper</code></td>
+            </tr>
+            <tr>
+              <td>Disable configuration</td>
+              <td>
+                Use <code>exclude</code> or
+                <code>spring.autoconfigure.exclude</code>
+              </td>
+              <td><code>DataSourceAutoConfiguration</code></td>
+            </tr>
+            <tr>
+              <td>Change the web server</td>
+              <td>Exclude Tomcat and add Jetty</td>
+              <td><code>spring-boot-starter-jetty</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h2 id="starters">Starters</h2>
+      <p>
+        A Spring Boot Starter is a carefully selected group of dependencies for
+        one application capability. Instead of finding and adding every library
+        separately, you add one starter and Spring Boot brings in the commonly
+        required libraries.
+      </p>
+      <div class="concept-diagram">
+        <figcaption>
+          How a starter helps create an application feature
+        </figcaption>
+        <div class="flowchart">
+          <div class="flowchart-node">Choose a capability</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node"><code>spring-boot-starter-web</code></div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">Spring MVC + JSON + embedded server</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node result">
+            Auto-configuration creates the web infrastructure
+          </div>
+        </div>
+      </div>
+      <h3>Example: adding the Web starter</h3>
+      <p>To build REST APIs, add the Web starter to <code>pom.xml</code>:</p>
+      <pre class="spring-code"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+      <p>
+        This starter commonly provides Spring MVC, an embedded servlet
+        container, JSON serialization through Jackson, validation support,
+        logging, and the Spring libraries needed to run a web application. You
+        can then write a controller without manually configuring a
+        <code>DispatcherServlet</code> or servlet container.
+      </p>
+      <pre class="spring-code"><code>@RestController
+@RequestMapping("/hello")
+class HelloController {
+    @GetMapping
+    String hello() {
+        return "Hello Spring Boot";
+    }
+}</code></pre>
+      <h3>Popular Spring Boot starters</h3>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Starter</th>
+              <th>Use it for</th>
+              <th>What it usually provides</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>spring-boot-starter</code></td>
+              <td>Core applications</td>
+              <td>Core Spring Boot support, logging, and configuration</td>
+            </tr>
+            <tr>
+              <td><code>spring-boot-starter-web</code></td>
+              <td>REST APIs and MVC applications</td>
+              <td>Spring MVC, Jackson, validation, and embedded Tomcat</td>
+            </tr>
+            <tr>
+              <td><code>spring-boot-starter-webflux</code></td>
+              <td>Reactive web applications</td>
+              <td>WebFlux and a reactive HTTP stack</td>
+            </tr>
+            <tr>
+              <td><code>spring-boot-starter-data-jpa</code></td>
+              <td>Relational database access</td>
+              <td>
+                Spring Data JPA, Hibernate, transactions, and repositories
+              </td>
+            </tr>
+            <tr>
+              <td><code>spring-boot-starter-jdbc</code></td>
+              <td>SQL access with JDBC</td>
+              <td>JDBC template and connection-pool support</td>
+            </tr>
+            <tr>
+              <td><code>spring-boot-starter-security</code></td>
+              <td>Authentication and authorization</td>
+              <td>Security filters and secure defaults</td>
+            </tr>
+            <tr>
+              <td><code>spring-boot-starter-validation</code></td>
+              <td>Validating request objects</td>
+              <td>Jakarta Bean Validation integration</td>
+            </tr>
+            <tr>
+              <td><code>spring-boot-starter-test</code></td>
+              <td>Automated testing</td>
+              <td>JUnit, Mockito, AssertJ, and Spring Test</td>
+            </tr>
+            <tr>
+              <td><code>spring-boot-starter-actuator</code></td>
+              <td>Monitoring and operations</td>
+              <td>Health, metrics, and management endpoints</td>
+            </tr>
+            <tr>
+              <td><code>spring-boot-starter-aop</code></td>
+              <td>Aspect-oriented programming</td>
+              <td>Spring AOP and AspectJ integration support</td>
+            </tr>
+            <tr>
+              <td><code>spring-boot-starter-cache</code></td>
+              <td>Caching application results</td>
+              <td>Spring's cache abstraction and related support</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Starter dependencies and transitive dependencies</h3>
+      <p>
+        A starter may depend on several other libraries. These are called
+        transitive dependencies. For example, the Web starter brings in the
+        Spring Web modules and an embedded server without requiring you to list
+        each one manually.
+      </p>
+      <pre class="spring-code"><code>spring-boot-starter-web
+├── spring-boot-starter
+├── spring-web
+├── spring-webmvc
+├── spring-boot-starter-json
+├── spring-boot-starter-tomcat
+└── spring-boot-starter-validation</code></pre>
+      <p>
+        The exact dependency tree can vary with the Spring Boot version. Use
+        Maven to inspect the actual libraries in your project:
+      </p>
+      <pre class="spring-code"><code>mvn dependency:tree</code></pre>
+      <h3>Starters and auto-configuration are different</h3>
+      <p>
+        A starter provides libraries; auto-configuration uses those libraries to
+        create default Beans and infrastructure.
+      </p>
+      <div class="concept-diagram">
+        <figcaption>Starter versus auto-configuration</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>Starter</strong><small>Adds compatible libraries</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Classpath detection</strong
+            ><small>Boot sees available classes</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node result">
+            <strong>Auto-configuration</strong
+            ><small>Creates matching Beans</small>
+          </div>
+        </div>
+      </div>
+      <p>
+        Adding <code>spring-boot-starter-data-jpa</code> gives the project JPA
+        libraries. Auto-configuration then creates infrastructure such as an
+        <code>EntityManagerFactory</code> and transaction support when the
+        required database settings are available.
+      </p>
+      <h3>Dependency version management</h3>
+      <p>
+        When a Spring Boot parent or dependency management is used, Boot selects
+        compatible versions for managed libraries. In most projects, do not add
+        versions to individual Spring Boot starters.
+      </p>
+      <pre class="spring-code"><code>&lt;parent&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+    &lt;version&gt;YOUR_SPRING_BOOT_VERSION&lt;/version&gt;
+&lt;/parent&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+      <p>
+        Specifying random versions for Spring libraries can create conflicts.
+        Add a version only when you intentionally need a library version outside
+        Boot's dependency management and have verified compatibility.
+      </p>
+      <h3>Starters with Gradle</h3>
+      <pre class="spring-code"><code>dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}</code></pre>
+      <h3>Choosing the right starter</h3>
+      <ul class="lh-lg">
+        <li>
+          Use <code>spring-boot-starter-web</code> for traditional Servlet-based
+          REST APIs.
+        </li>
+        <li>
+          Use <code>spring-boot-starter-webflux</code> when your application is
+          designed for reactive, non-blocking processing.
+        </li>
+        <li>
+          Use <code>spring-boot-starter-data-jpa</code> for object-relational
+          mapping and repository-based SQL access.
+        </li>
+        <li>
+          Use <code>spring-boot-starter-jdbc</code> when you prefer SQL and JDBC
+          templates instead of JPA.
+        </li>
+        <li>
+          Use <code>spring-boot-starter-test</code> in the test scope so test
+          libraries are not packaged as production dependencies.
+        </li>
+      </ul>
+      <h3>Adding a non-Spring library</h3>
+      <p>
+        Not every library has a Spring Boot starter. You can add a normal Maven
+        dependency and configure it yourself, or define a small
+        <code>@Bean</code> for the third-party client.
+      </p>
+      <pre class="spring-code"><code>&lt;dependency&gt;
+    &lt;groupId&gt;com.example&lt;/groupId&gt;
+    &lt;artifactId&gt;third-party-client&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+
+@Configuration
+class ClientConfiguration {
+    @Bean
+    ThirdPartyClient thirdPartyClient() {
+        return new ThirdPartyClient();
+    }
+}</code></pre>
+      <div class="spring-callout">
+        <strong>Key idea:</strong> A starter is a convenient dependency bundle,
+        not a magic replacement for application design. Select the capability
+        you need, inspect its dependencies when troubleshooting, and customize
+        or exclude parts only when there is a clear reason.
+      </div>
+      <h2 id="dependency-injection">Dependency Injection</h2>
+      <p>
+        Dependency injection (DI) means a class receives the objects it needs
+        instead of creating them with <code>new</code>. Spring owns these
+        objects as beans and connects them when the application context starts.
+      </p>
+      <pre class="spring-code"><code>@Service
+class GreetingService {
+    String message() { return "Hello from Spring"; }
+}
+
+@RestController
+class GreetingController {
+    private final GreetingService service;
+
+    GreetingController(GreetingService service) {
+        this.service = service;
+    }
+}</code></pre>
+      <div class="concept-diagram">
+        <figcaption>Constructor injection flow</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>Spring scans</strong><small>Finds @Service</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Creates bean</strong><small>Builds GreetingService</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Injects it</strong
+            ><small>Calls controller constructor</small>
+          </div>
+        </div>
+      </div>
+      <p>
+        Constructor injection is preferred because the dependency is visible,
+        can be stored in a <code>final</code> field, and can be replaced with a
+        test double in a unit test.
+      </p>
+      <h3>Why dependency injection is useful</h3>
+      <p>
+        Without DI, a class creates its own dependencies. This creates tight
+        coupling and makes it difficult to replace a real database, payment
+        provider, or email service during testing.
+      </p>
+      <pre
+        class="spring-code"
+      ><code>// Tight coupling: the service chooses its implementation
+class OrderService {
+    private final EmailSender sender = new SmtpEmailSender();
+}
+
+// Loose coupling: Spring supplies the implementation
+@Service
+class OrderService {
+    private final EmailSender sender;
+
+    OrderService(EmailSender sender) {
+        this.sender = sender;
+    }
+}</code></pre>
+      <p>
+        The second design depends on the <code>EmailSender</code> abstraction.
+        The implementation can be changed through configuration or a test double
+        without changing the business class.
+      </p>
+      <h3>Types of dependency injection</h3>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Example</th>
+              <th>When to use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Constructor injection</td>
+              <td><code>Service(Repository repository)</code></td>
+              <td>Required dependencies; recommended default</td>
+            </tr>
+            <tr>
+              <td>Setter injection</td>
+              <td><code>setFormatter(Formatter formatter)</code></td>
+              <td>Optional or replaceable dependency</td>
+            </tr>
+            <tr>
+              <td>Field injection</td>
+              <td><code>@Autowired private Repository repository</code></td>
+              <td>Generally avoid; hides dependencies and complicates tests</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <pre class="spring-code"><code>@Service
+class ReportService {
+    private Formatter formatter;
+
+    @Autowired
+    void setFormatter(Formatter formatter) {
+        this.formatter = formatter;
+    }
+}</code></pre>
+      <p>
+        When a class has one constructor, Spring automatically uses it. You
+        normally do not need <code>@Autowired</code> on that constructor. If a
+        class has multiple constructors, mark the constructor Spring should use.
+      </p>
+      <h3>Dependency injection and testing</h3>
+      <p>
+        Constructor injection makes a class easy to test without starting
+        Spring. A fake or mock dependency can be passed directly to the
+        constructor.
+      </p>
+      <pre
+        class="spring-code"
+      ><code>InvoiceRepository fakeRepository = new InMemoryInvoiceRepository();
+InvoiceService service = new InvoiceService(fakeRepository);
+
+// The unit test can exercise InvoiceService without a database
+service.createInvoice();</code></pre>
+      <h2 id="application-context">Application Context</h2>
+      <p>
+        The <strong>ApplicationContext</strong> is Spring's central container.
+        It creates beans, stores them, injects dependencies, publishes events,
+        and manages configuration. In a web application it also connects the
+        application to the embedded server and request infrastructure.
+      </p>
+      <div class="concept-diagram">
+        <figcaption>
+          The ApplicationContext as the application container
+        </figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>Configuration</strong><small>Classes and properties</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>ApplicationContext</strong
+            ><small>Creates and manages beans</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Application</strong><small>Uses connected services</small>
+          </div>
+        </div>
+      </div>
+      <h2 id="component-scanning">Component Scanning</h2>
+      <p>
+        Component scanning searches the application packages for classes marked
+        with annotations such as <code>@Component</code>, <code>@Service</code>,
+        <code>@Repository</code>, and <code>@Controller</code>. Spring registers
+        each discovered class as a bean.
+      </p>
+      <pre class="spring-code"><code>@SpringBootApplication
+public class DemoApplication { }
+
+@Service
+class OrderService { }
+
+@Repository
+class OrderRepository { }</code></pre>
+      <p>
+        Keep the main application class in a parent package of these classes. If
+        a component is outside the scan range, Spring will not discover it
+        unless you configure scanning explicitly.
+      </p>
+      <h2 id="autowiring">Autowiring</h2>
+      <p>
+        Autowiring is the process of resolving a dependency and supplying it to
+        a bean. Constructor injection is the clearest form. Use
+        <code>@Qualifier</code> when more than one bean has the same interface.
+      </p>
+      <pre class="spring-code"><code>interface PaymentGateway {
+    void pay();
+}
+
+@Component("cardGateway")
+class CardGateway implements PaymentGateway { public void pay() { } }
+
+@Service
+class CheckoutService {
+    private final PaymentGateway gateway;
+
+    CheckoutService(@Qualifier("cardGateway") PaymentGateway gateway) {
+        this.gateway = gateway;
+    }
+}</code></pre>
+      <div class="spring-callout">
+        <strong>Best practice:</strong> Prefer one constructor and constructor
+        injection. Avoid field injection because it hides required dependencies
+        and makes plain unit tests harder to create.
+      </div>
+      <h3>What happens when multiple Beans match?</h3>
+      <p>
+        Spring normally resolves a dependency by type. If only one
+        <code>PaymentGateway</code> Bean exists, it is injected automatically.
+        If two or more implementations exist, Spring cannot guess which one you
+        want and may throw <code>NoUniqueBeanDefinitionException</code>.
+      </p>
+      <pre class="spring-code"><code>@Component("cardGateway")
+class CardGateway implements PaymentGateway { }
+
+@Component("paypalGateway")
+class PaypalGateway implements PaymentGateway { }
+
+// Error: two PaymentGateway Beans match this dependency
+CheckoutService(PaymentGateway gateway) { }</code></pre>
+      <h3>Choosing a Bean with <code>@Qualifier</code></h3>
+      <p>
+        Use <code>@Qualifier</code> when the injection point must select a
+        specific implementation. The qualifier value normally matches the Bean
+        name.
+      </p>
+      <pre class="spring-code"><code>@Service
+class CheckoutService {
+    private final PaymentGateway gateway;
+
+    CheckoutService(
+            @Qualifier("paypalGateway")
+            PaymentGateway gateway) {
+        this.gateway = gateway;
+    }
+}</code></pre>
+      <h3>Choosing a default Bean with <code>@Primary</code></h3>
+      <p>
+        Use <code>@Primary</code> when one implementation should be the default
+        whenever no qualifier is supplied.
+      </p>
+      <pre class="spring-code"><code>@Primary
+@Component
+class CardGateway implements PaymentGateway { }
+
+@Component
+class PaypalGateway implements PaymentGateway { }
+
+// CardGateway is selected because it is @Primary
+CheckoutService(PaymentGateway gateway) { }</code></pre>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Choice</th>
+              <th>Meaning</th>
+              <th>Best use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>@Qualifier</code></td>
+              <td>Choose one exact Bean at this injection point</td>
+              <td>The required implementation is known here</td>
+            </tr>
+            <tr>
+              <td><code>@Primary</code></td>
+              <td>Choose one default Bean among several</td>
+              <td>One implementation is the normal application choice</td>
+            </tr>
+            <tr>
+              <td>Both</td>
+              <td><code>@Qualifier</code> wins over <code>@Primary</code></td>
+              <td>Use a default but allow explicit overrides</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Injecting all implementations</h3>
+      <p>
+        Spring can inject a <code>List</code>, <code>Set</code>, or
+        <code>Map</code> of matching Beans. This is useful when an application
+        should use every notification channel or payment check.
+      </p>
+      <pre class="spring-code"><code>@Service
+class NotificationService {
+    private final List&lt;NotificationSender&gt; senders;
+
+    NotificationService(List&lt;NotificationSender&gt; senders) {
+        this.senders = senders;
+    }
+
+    void notifyAllChannels(String message) {
+        senders.forEach(sender -> sender.send(message));
+    }
+}</code></pre>
+      <p>
+        Use <code>@Order</code> on implementations when the execution order
+        matters.
+      </p>
+      <h3>Optional dependencies</h3>
+      <p>
+        If a dependency is genuinely optional, use <code>Optional</code> or
+        <code>ObjectProvider</code> instead of allowing a required constructor
+        dependency to fail at startup.
+      </p>
+      <pre class="spring-code"><code>@Service
+class ReportService {
+    private final Optional&lt;AuditService&gt; auditService;
+
+    ReportService(Optional&lt;AuditService&gt; auditService) {
+        this.auditService = auditService;
+    }
+}</code></pre>
+      <h3>Common DI and autowiring errors</h3>
+      <ul class="lh-lg">
+        <li>
+          <strong>NoSuchBeanDefinitionException:</strong> the required Bean is
+          missing, outside component scanning, or missing an annotation.
+        </li>
+        <li>
+          <strong>NoUniqueBeanDefinitionException:</strong> multiple Beans
+          match; use <code>@Qualifier</code> or <code>@Primary</code>.
+        </li>
+        <li>
+          <strong>Circular dependency:</strong> two Beans require each other;
+          redesign the responsibilities or introduce a third service.
+        </li>
+        <li>
+          <strong>Null dependency:</strong> an object was created with
+          <code>new</code> instead of being obtained from Spring, so Spring
+          never injected its dependencies.
+        </li>
+      </ul>
+      <div class="spring-callout">
+        <strong>Best practice:</strong> Prefer constructor injection, depend on
+        interfaces where practical, use <code>@Qualifier</code> for an explicit
+        choice, use <code>@Primary</code> for a sensible default, and keep
+        services stateless.
+      </div>
+      <h2 id="bean-scope">Bean Scopes</h2>
+      <p>
+        A bean scope controls how many instances Spring creates and how long
+        they are kept.
+      </p>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Scope</th>
+              <th>Meaning</th>
+              <th>Good use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>singleton</code></td>
+              <td>
+                One instance per application context. This is the default.
+              </td>
+              <td>Stateless services and repositories</td>
+            </tr>
+            <tr>
+              <td><code>prototype</code></td>
+              <td>A new instance each time it is requested.</td>
+              <td>Short-lived, stateful objects</td>
+            </tr>
+            <tr>
+              <td><code>request</code></td>
+              <td>One instance for each HTTP request.</td>
+              <td>Request-specific web state</td>
+            </tr>
+            <tr>
+              <td><code>session</code></td>
+              <td>One instance for each HTTP session.</td>
+              <td>User-session state</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <pre class="spring-code"><code>@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+class TemporaryReport { }</code></pre>
+      <div class="spring-callout">
+        <strong>Important:</strong> A singleton bean should usually be
+        stateless. If it stores changing user data in fields, different requests
+        may accidentally share that data.
+      </div>
+      <h2 id="bean-lifecycle">Bean Life Cycle</h2>
+      <p>
+        The bean lifecycle is the sequence Spring follows from creating an
+        object to removing it. Knowing the sequence helps you place setup and
+        cleanup code correctly.
+      </p>
+      <div class="concept-diagram">
+        <figcaption>Bean lifecycle at a glance</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>1. Instantiate</strong><small>Create the object</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>2. Inject</strong><small>Provide dependencies</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>3. Initialize</strong><small>Run setup callbacks</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>4. Use</strong><small>Bean serves requests</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>5. Destroy</strong><small>Run cleanup</small>
+          </div>
+        </div>
+      </div>
+      <ol class="lh-lg">
+        <li>
+          <strong>Instantiation:</strong> Spring creates the object using its
+          constructor.
+        </li>
+        <li>
+          <strong>Dependency injection:</strong> Spring supplies constructor,
+          field, or setter dependencies.
+        </li>
+        <li>
+          <strong>Post-processors:</strong> framework hooks can inspect or
+          enhance the bean.
+        </li>
+        <li>
+          <strong>Initialization:</strong> methods marked with
+          <code>@PostConstruct</code> run after dependencies are ready.
+        </li>
+        <li>
+          <strong>Ready for use:</strong> the bean handles application work
+          within its scope.
+        </li>
+        <li>
+          <strong>Destruction:</strong> during context shutdown,
+          <code>@PreDestroy</code> can release resources.
+        </li>
+      </ol>
+      <pre class="spring-code"><code>@Component
+class ConnectionManager {
+    @PostConstruct
+    void connect() {
+        System.out.println("Open connection");
+    }
+
+    @PreDestroy
+    void disconnect() {
+        System.out.println("Close connection");
+    }
+}</code></pre>
+      <p>
+        Use lifecycle callbacks for resources that belong to the bean, such as
+        opening and closing a client. Avoid putting long-running work in
+        initialization because it can delay application startup.
+      </p>
+      <h3>Detailed lifecycle order</h3>
+      <p>
+        For a singleton Bean, Spring applies callbacks in a predictable order.
+        The exact internal path can vary when proxies or custom post-processors
+        are involved, but the following sequence is the important learning
+        model:
+      </p>
+      <div class="concept-diagram">
+        <figcaption>Detailed Spring Bean lifecycle</figcaption>
+        <div class="flowchart">
+          <div class="flowchart-node">1. Read Bean definition</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">2. Constructor creates object</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">3. Aware callbacks</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">
+            4. Inject properties and dependencies
+          </div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">5. Before-initialization processors</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">6. Initialization callbacks</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node result">
+            7. After-initialization processors and ready Bean
+          </div>
+        </div>
+      </div>
+      <ol class="lh-lg">
+        <li>
+          <strong>Read the definition:</strong> Spring reads metadata from
+          annotations, configuration classes, XML, or a starter.
+        </li>
+        <li>
+          <strong>Instantiate:</strong> Spring calls the constructor and creates
+          the object.
+        </li>
+        <li>
+          <strong>Aware callbacks:</strong> selected callback interfaces receive
+          Spring objects such as the Bean name or context.
+        </li>
+        <li>
+          <strong>Populate properties:</strong> constructor, setter, field, and
+          other dependencies are supplied.
+        </li>
+        <li>
+          <strong>Before initialization:</strong> registered
+          <code>BeanPostProcessor</code> implementations can inspect the Bean.
+        </li>
+        <li>
+          <strong>Initialize:</strong> <code>@PostConstruct</code>,
+          <code>InitializingBean</code>, and a configured
+          <code>initMethod</code> run.
+        </li>
+        <li>
+          <strong>After initialization:</strong> post-processors can wrap the
+          Bean with a proxy, for example for transactions or AOP.
+        </li>
+        <li>
+          <strong>Use:</strong> the ready Bean is used by controllers, services,
+          repositories, or other Beans.
+        </li>
+        <li>
+          <strong>Shutdown:</strong> destruction callbacks release resources
+          when the ApplicationContext closes.
+        </li>
+      </ol>
+      <h3>Lifecycle callback options</h3>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Callback</th>
+              <th>When it runs</th>
+              <th>Recommendation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>@PostConstruct</code></td>
+              <td>After dependency injection</td>
+              <td>Preferred for small initialization tasks</td>
+            </tr>
+            <tr>
+              <td><code>InitializingBean.afterPropertiesSet()</code></td>
+              <td>After properties are set</td>
+              <td>
+                Useful when implementing Spring-specific lifecycle behavior
+              </td>
+            </tr>
+            <tr>
+              <td><code>@PreDestroy</code></td>
+              <td>Before the Bean is destroyed</td>
+              <td>Preferred for cleanup tasks</td>
+            </tr>
+            <tr>
+              <td><code>DisposableBean.destroy()</code></td>
+              <td>During context shutdown</td>
+              <td>Use when Spring interface coupling is acceptable</td>
+            </tr>
+            <tr>
+              <td><code>initMethod</code>/<code>destroyMethod</code></td>
+              <td>Configured on a <code>@Bean</code> method</td>
+              <td>Useful for third-party classes that cannot be edited</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Initialization interfaces</h3>
+      <p>
+        <code>InitializingBean</code> lets a Bean run code after Spring has
+        supplied its properties.
+      </p>
+      <pre class="spring-code"><code>@Component
+class SearchIndex implements InitializingBean {
+    private final IndexClient client;
+
+    SearchIndex(IndexClient client) {
+        this.client = client;
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        client.verifyConnection();
+    }
+}</code></pre>
+      <p>
+        For application code, <code>@PostConstruct</code> is often less coupled
+        to Spring. Do not implement both for the same setup work, or it may run
+        twice.
+      </p>
+      <h3>Destruction interfaces</h3>
+      <p>
+        <code>DisposableBean</code> provides a <code>destroy()</code> callback
+        during a graceful ApplicationContext shutdown.
+      </p>
+      <pre class="spring-code"><code>@Component
+class FileResource implements DisposableBean {
+    private final FileChannel channel;
+
+    FileResource(FileChannel channel) {
+        this.channel = channel;
+    }
+
+    @Override
+    public void destroy() throws IOException {
+        channel.close();
+    }
+}</code></pre>
+      <h3>Lifecycle methods for <code>@Bean</code> objects</h3>
+      <p>
+        Use <code>initMethod</code> and <code>destroyMethod</code> when the
+        object belongs to a third-party library and cannot be annotated.
+      </p>
+      <pre class="spring-code"><code>@Configuration
+class ClientConfiguration {
+    @Bean(initMethod = "connect", destroyMethod = "close")
+    ExternalClient externalClient() {
+        return new ExternalClient();
+    }
+}
+
+class ExternalClient {
+    public void connect() { /* open client */ }
+    public void close() { /* release client */ }
+}</code></pre>
+      <h3>
+        <code>BeanNameAware</code>, <code>BeanFactoryAware</code>, and
+        <code>ApplicationContextAware</code>
+      </h3>
+      <p>
+        Aware interfaces let a Bean receive information about the Spring
+        container. They are useful for framework infrastructure, but ordinary
+        application services should prefer normal dependency injection.
+      </p>
+      <pre class="spring-code"><code>@Component
+class ContainerAwareBean implements
+        BeanNameAware, BeanFactoryAware,
+        ApplicationContextAware {
+
+    @Override
+    public void setBeanName(String name) {
+        System.out.println("Bean name: " + name);
+    }
+
+    @Override
+    public void setBeanFactory(BeanFactory factory) {
+        System.out.println("BeanFactory received");
+    }
+
+    @Override
+    public void setApplicationContext(
+            ApplicationContext context) {
+        System.out.println("ApplicationContext received");
+    }
+}</code></pre>
+      <p>
+        These callbacks are invoked before the initialization callbacks. Direct
+        access to the container increases coupling, so inject the specific
+        dependency you need whenever possible.
+      </p>
+      <h3><code>BeanPostProcessor</code></h3>
+      <p>
+        A <code>BeanPostProcessor</code> can run custom logic before and after
+        every Bean initialization. Spring uses this extension point for
+        annotations, proxies, AOP, and other framework features.
+      </p>
+      <pre class="spring-code"><code>@Component
+class TimingPostProcessor implements BeanPostProcessor {
+    @Override
+    public Object postProcessBeforeInitialization(
+            Object bean, String name) {
+        System.out.println("Before: " + name);
+        return bean;
+    }
+
+    @Override
+    public Object postProcessAfterInitialization(
+            Object bean, String name) {
+        System.out.println("After: " + name);
+        return bean;
+    }
+}</code></pre>
+      <p>
+        Always return the Bean, or a deliberate replacement/proxy, from these
+        methods. Returning <code>null</code> can prevent the Bean from
+        continuing through the processor chain.
+      </p>
+      <h3><code>BeanFactoryPostProcessor</code></h3>
+      <p>
+        <code>BeanFactoryPostProcessor</code> runs against Bean definitions
+        before normal Bean objects are created. It changes metadata such as
+        property values or scope; it does not perform initialization on a
+        particular Bean.
+      </p>
+      <pre class="spring-code"><code>@Component
+class DefinitionLogger implements BeanFactoryPostProcessor {
+    @Override
+    public void postProcessBeanFactory(
+            ConfigurableListableBeanFactory factory) {
+        System.out.println(
+                "Definitions: " + factory.getBeanDefinitionCount());
+    }
+}</code></pre>
+      <h3><code>SmartInitializingSingleton</code></h3>
+      <p>
+        <code>SmartInitializingSingleton</code> runs after all regular singleton
+        Beans have been instantiated. It is useful when a component must start
+        work only after the whole singleton graph is ready.
+      </p>
+      <pre class="spring-code"><code>@Component
+class MessageConsumer implements SmartInitializingSingleton {
+    @Override
+    public void afterSingletonsInstantiated() {
+        System.out.println("All singleton Beans are ready");
+    }
+}</code></pre>
+      <h3><code>Lifecycle</code> and <code>SmartLifecycle</code></h3>
+      <p>
+        These interfaces manage components that need to start and stop, such as
+        message consumers, schedulers, or background listeners.
+      </p>
+      <pre class="spring-code"><code>@Component
+class EventListener implements SmartLifecycle {
+    private boolean running;
+
+    @Override
+    public void start() {
+        running = true;
+        System.out.println("Listener started");
+    }
+
+    @Override
+    public void stop() {
+        running = false;
+        System.out.println("Listener stopped");
+    }
+
+    @Override
+    public boolean isRunning() {
+        return running;
+    }
+}</code></pre>
+      <p>
+        <code>SmartLifecycle</code> also supports automatic startup,
+        asynchronous shutdown, and phase ordering. Use it for
+        application-managed processes rather than simple one-time setup.
+      </p>
+      <h3>Prototype and destruction behavior</h3>
+      <p>
+        Spring initializes prototype Beans, but it does not normally call their
+        destruction callbacks because the container does not track every
+        prototype instance after handing it to the application. The code that
+        creates or owns a prototype resource must release it.
+      </p>
+      <h3>Important lifecycle practices</h3>
+      <ul class="lh-lg">
+        <li>
+          Keep <code>@PostConstruct</code> quick; slow network calls can delay
+          application startup.
+        </li>
+        <li>
+          Close connections, executors, files, and clients in a destruction
+          callback.
+        </li>
+        <li>
+          Do not rely on cleanup during a forced process kill; use graceful
+          shutdown where possible.
+        </li>
+        <li>
+          Do not use <code>ApplicationContextAware</code> as a replacement for
+          dependency injection.
+        </li>
+        <li>
+          Use <code>BeanPostProcessor</code> and
+          <code>BeanFactoryPostProcessor</code> mainly for framework or
+          infrastructure code.
+        </li>
+      </ul>
+      <h2 id="configuration-properties">Configuration Properties</h2>
+      <p>
+        Configuration properties keep environment-specific values outside Java
+        code. They can come from <code>application.properties</code>, YAML
+        files, environment variables, command-line arguments, or a
+        profile-specific file.
+      </p>
+      <div class="concept-diagram">
+        <figcaption>How Spring Boot supplies configuration</figcaption>
+        <div class="flowchart">
+          <div class="flowchart-node">
+            Properties file, YAML, or environment variable
+          </div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">Spring Boot property sources</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">Bind or inject values</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node result">
+            Bean uses typed application settings
+          </div>
+        </div>
+      </div>
+      <h3>Using <code>@Value</code> for individual values</h3>
+      <p>
+        <code>@Value</code> is convenient when a Bean needs one or two simple
+        values. The placeholder uses the format <code>${property.name}</code>.
+      </p>
+      <pre class="spring-code"><code># application.properties
+app.name=Order Service
+app.timeout-seconds=10
+
+@Component
+class AppInfo {
+    @Value("${app.name}")
+    private String name;
+
+    @Value("${app.timeout-seconds:5}")
+    private int timeoutSeconds;
+}</code></pre>
+      <p>
+        The value after the colon is a default. If
+        <code>app.timeout-seconds</code> is missing, Spring uses <code>5</code>.
+        A missing property without a default usually causes a startup error.
+      </p>
+      <p>
+        <code>@Value</code> can also read environment variables and simple
+        expressions, but too many fields make a class difficult to read and
+        test.
+      </p>
+      <h3>Using <code>@ConfigurationProperties</code> for related settings</h3>
+      <p>
+        Use <code>@ConfigurationProperties</code> when settings belong to one
+        logical group. Spring binds properties with the same prefix to a typed
+        object.
+      </p>
+      <pre class="spring-code"><code># application.properties
+app.mail.host=smtp.example.com
+app.mail.port=587
+app.mail.username=notifications
+app.mail.enabled=true
+
+@ConfigurationProperties(prefix = "app.mail")
+public record MailProperties(
+        String host,
+        int port,
+        String username,
+        boolean enabled) { }</code></pre>
+      <p>Register the class with configuration-property scanning:</p>
+      <pre class="spring-code"><code>@SpringBootApplication
+@ConfigurationPropertiesScan
+public class DemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}</code></pre>
+      <p>It can then be injected like any other Spring Bean:</p>
+      <pre class="spring-code"><code>@Service
+class MailService {
+    private final MailProperties properties;
+
+    MailService(MailProperties properties) {
+        this.properties = properties;
+    }
+
+    void send(String message) {
+        if (properties.enabled()) {
+            System.out.println("Sending through " + properties.host());
+        }
+    }
+}</code></pre>
+      <h3>YAML and nested configuration</h3>
+      <p>YAML is useful when configuration contains nested objects or lists.</p>
+      <pre class="spring-code"><code>app:
+  name: Order Service
+  mail:
+    host: smtp.example.com
+    port: 587
+    enabled: true
+  features:
+    - orders
+    - reports</code></pre>
+      <p>
+        Both kebab-case and camel-case property names can bind to Java fields,
+        but using kebab-case in configuration is a clear convention:
+      </p>
+      <pre class="spring-code"><code>app.mail-timeout=10
+
+@ConfigurationProperties(prefix = "app")
+class AppProperties {
+    private Duration mailTimeout;
+    // getter and setter
+}</code></pre>
+      <h3>Validating configuration</h3>
+      <p>
+        Validation catches incorrect configuration during startup instead of
+        allowing a broken value to fail later during a request. Add the
+        validation starter when it is not already available.
+      </p>
+      <pre class="spring-code"><code>@Validated
+@ConfigurationProperties(prefix = "app.mail")
+public class MailProperties {
+    @NotBlank
+    private String host;
+
+    @Min(1)
+    @Max(65535)
+    private int port;
+
+    // getters and setters
+}</code></pre>
+      <p>
+        If the port is outside the valid range or the host is empty, Spring Boot
+        fails fast and reports the configuration problem.
+      </p>
+      <h3>Creating configuration Beans with <code>@Bean</code></h3>
+      <p>
+        <code>@Bean</code> registers the return value of a method in the
+        ApplicationContext. Use it for third-party classes, custom defaults, or
+        objects that require explicit construction.
+      </p>
+      <pre class="spring-code"><code>@Configuration
+class AppConfiguration {
+    @Bean
+    Clock applicationClock() {
+        return Clock.systemUTC();
+    }
+}
+
+@Service
+class AuditService {
+    private final Clock clock;
+
+    AuditService(Clock clock) {
+        this.clock = clock;
+    }
+}</code></pre>
+      <p>
+        Spring calls the configuration method, stores the returned object as a
+        Bean, and injects the same Bean wherever <code>Clock</code> is required.
+        You can give it a name with <code>@Bean("utcClock")</code> and select it
+        with <code>@Qualifier("utcClock")</code>.
+      </p>
+      <h3>Configuring a <code>RestTemplate</code> Bean</h3>
+      <p>
+        <code>RestTemplate</code> is a synchronous HTTP client. It is useful
+        when a Spring Boot service needs to call another REST service and wait
+        for its response. Configure it as a Bean so the application can reuse
+        one consistently configured client.
+      </p>
+      <pre class="spring-code"><code>@Configuration
+class HttpClientConfiguration {
+    @Bean
+    RestTemplate restTemplate(RestTemplateBuilder builder) {
+        return builder
+                .setConnectTimeout(Duration.ofSeconds(3))
+                .setReadTimeout(Duration.ofSeconds(5))
+                .build();
+    }
+}</code></pre>
+      <p>
+        <code>RestTemplateBuilder</code> is supplied by Spring Boot. The
+        timeouts prevent a slow or unavailable remote service from holding
+        application threads forever.
+      </p>
+      <h3>Calling a REST API with <code>RestTemplate</code></h3>
+      <pre class="spring-code"><code>@Service
+class CustomerClient {
+    private final RestTemplate restTemplate;
+
+    CustomerClient(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    Customer findCustomer(Long id) {
+        return restTemplate.getForObject(
+                "https://api.example.com/customers/{id}",
+                Customer.class,
+                id);
+    }
+}</code></pre>
+      <p>Common methods include:</p>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>getForObject</code></td>
+              <td>GET and convert the response body to an object</td>
+            </tr>
+            <tr>
+              <td><code>getForEntity</code></td>
+              <td>GET and receive status, headers, and body</td>
+            </tr>
+            <tr>
+              <td><code>postForObject</code></td>
+              <td>POST a request and convert the response</td>
+            </tr>
+            <tr>
+              <td><code>exchange</code></td>
+              <td>
+                Full control over HTTP method, headers, body, and response type
+              </td>
+            </tr>
+            <tr>
+              <td><code>delete</code></td>
+              <td>Send a DELETE request</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Sending headers and reading a full response</h3>
+      <pre class="spring-code"><code>HttpHeaders headers = new HttpHeaders();
+headers.setBearerAuth(token);
+headers.setContentType(MediaType.APPLICATION_JSON);
+
+HttpEntity&lt;CustomerRequest&gt; request =
+        new HttpEntity&lt;&gt;(customerRequest, headers);
+
+ResponseEntity&lt;Customer&gt; response = restTemplate.exchange(
+        url,
+        HttpMethod.POST,
+        request,
+        Customer.class);
+
+Customer customer = response.getBody();</code></pre>
+      <h3>Handling errors from remote services</h3>
+      <p>
+        By default, <code>RestTemplate</code> throws exceptions for many 4xx and
+        5xx responses. Catch and translate those exceptions at the client
+        boundary rather than exposing implementation details to controllers.
+      </p>
+      <pre class="spring-code"><code>try {
+    return restTemplate.getForObject(url, Customer.class);
+} catch (HttpClientErrorException.NotFound ex) {
+    throw new CustomerNotFoundException();
+} catch (RestClientException ex) {
+    throw new RemoteServiceException("Customer API unavailable", ex);
+}</code></pre>
+      <h3>RestTemplate or WebClient?</h3>
+      <p>
+        <code>RestTemplate</code> is blocking and easy to understand. For new
+        applications that need reactive, non-blocking processing, use Spring's
+        <code>WebClient</code>. Choose based on the architecture rather than
+        mixing blocking calls into a reactive pipeline.
+      </p>
+      <div class="spring-callout">
+        <strong>Best practice:</strong> Use <code>@Value</code> for a few simple
+        values, <code>@ConfigurationProperties</code> for related settings,
+        <code>@Bean</code> for reusable configured objects, and a shared,
+        timeout-configured HTTP client for external API calls. Never hard-code
+        passwords, API tokens, or production URLs in Java source code.
+      </div>
+      <h2 id="profiles">Profiles</h2>
+      <p>
+        Profiles let one application use different configuration and Beans for
+        different environments. The same code can run locally, in testing, and
+        in production while using the appropriate database, ports, logging
+        levels, and external services.
+      </p>
+      <div class="concept-diagram">
+        <figcaption>
+          How profiles choose environment-specific settings
+        </figcaption>
+        <div class="flowchart">
+          <div class="flowchart-node">Start the application</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">
+            Read <code>spring.profiles.active</code>
+          </div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">Load common properties</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">Load the selected profile properties</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node result">
+            Create only the matching Beans
+          </div>
+        </div>
+      </div>
+      <h3>Profile-specific property files</h3>
+      <p>
+        Keep shared settings in <code>application.properties</code> and
+        environment-specific values in files such as
+        <code>application-dev.properties</code> and
+        <code>application-prod.properties</code>.
+      </p>
+      <pre
+        class="spring-code"
+      ><code># application.properties - shared by every environment
+spring.application.name=order-service
+spring.jpa.show-sql=false
+
+# application-dev.properties - safe local settings
+server.port=8081
+spring.datasource.url=jdbc:h2:mem:orders
+logging.level.com.example.orders=DEBUG
+
+# application-prod.properties - production settings
+server.port=8080
+spring.datasource.url=jdbc:postgresql://db:5432/orders
+logging.level.root=INFO
+
+# Select a profile when starting the application
+java -jar app.jar --spring.profiles.active=dev</code></pre>
+      <p>
+        In a deployment environment, the active profile can also be selected
+        with an environment variable:
+      </p>
+      <pre class="spring-code"><code>SPRING_PROFILES_ACTIVE=prod</code></pre>
+      <h3>Using <code>@Profile</code> with Beans</h3>
+      <p>
+        A profile can decide which implementation Spring creates. This is useful
+        when development should use a fake service while production should use a
+        real cloud service.
+      </p>
+      <pre class="spring-code"><code>public interface EmailSender {
+    void send(String to, String message);
+}
+
+@Profile("dev")
+@Service
+class ConsoleEmailSender implements EmailSender {
+    public void send(String to, String message) {
+        System.out.println("DEV email to " + to + ": " + message);
+    }
+}
+
+@Profile("prod")
+@Service
+class SmtpEmailSender implements EmailSender {
+    public void send(String to, String message) {
+        // Send through the production mail provider
+    }
+}</code></pre>
+      <p>
+        With the <code>dev</code> profile active, Spring registers
+        <code>ConsoleEmailSender</code>. With the <code>prod</code> profile
+        active, it registers <code>SmtpEmailSender</code>.
+      </p>
+      <h3>Activating profiles</h3>
+      <pre class="spring-code"><code># application.properties
+spring.profiles.active=dev
+
+# Command line (usually useful in deployment scripts)
+java -jar app.jar --spring.profiles.active=prod
+
+# Maven test run
+mvn test -Dspring.profiles.active=test</code></pre>
+      <p>
+        Command-line arguments and environment variables are commonly preferred
+        for deployment because the same packaged JAR can be promoted through
+        environments without changing the application code.
+      </p>
+      <h3>Real-world use cases</h3>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Use case</th>
+              <th>Development</th>
+              <th>Production</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Database</td>
+              <td>H2 or a local Docker database</td>
+              <td>Managed PostgreSQL or MySQL</td>
+            </tr>
+            <tr>
+              <td>External APIs</td>
+              <td>Mock server or sandbox endpoint</td>
+              <td>Live payment, email, or shipping provider</td>
+            </tr>
+            <tr>
+              <td>Logging</td>
+              <td>Detailed <code>DEBUG</code> logs</td>
+              <td>Concise <code>INFO</code> logs</td>
+            </tr>
+            <tr>
+              <td>Security</td>
+              <td>Test users and relaxed local settings</td>
+              <td>Real authentication and strict security rules</td>
+            </tr>
+            <tr>
+              <td>Data loading</td>
+              <td>Sample records for learning</td>
+              <td>No sample data; use controlled migrations</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Testing with a test profile</h3>
+      <p>
+        A test profile can provide an isolated database and predictable settings
+        so tests do not modify development or production data.
+      </p>
+      <pre
+        class="spring-code"
+      ><code># src/test/resources/application-test.properties
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.jpa.hibernate.ddl-auto=create-drop
+
+@ActiveProfiles("test")
+@SpringBootTest
+class OrderServiceTest {
+    // Tests use the test database and test configuration
+}</code></pre>
+      <h3>Profile groups</h3>
+      <p>
+        When several profiles always belong together, define a profile group:
+      </p>
+      <pre
+        class="spring-code"
+      ><code>spring.profiles.group.production=prod,monitoring,security
+
+# Activating production also activates the three related profiles
+spring.profiles.active=production</code></pre>
+      <div class="spring-callout">
+        <strong>Best practice:</strong> Keep common values in
+        <code>application.properties</code>, put only differences in profile
+        files, and keep passwords and tokens in environment variables or a
+        secret manager. Profiles organize configuration; they are not a security
+        system.
+      </div>
+      <h2 id="conditional-beans">Conditional Beans</h2>
+      <p>
+        Spring Boot can create a bean only when a condition is true. This is the
+        same idea used by auto-configuration and is useful for optional
+        integrations.
+      </p>
+      <pre class="spring-code"><code>@Bean
+@ConditionalOnProperty(name = "app.payments.enabled", havingValue = "true")
+PaymentGateway paymentGateway() {
+    return new CardGateway();
+}</code></pre>
+      <div class="spring-callout">
+        <strong>Core idea:</strong> Spring Boot combines conditions,
+        configuration, and component scanning to build the application context
+        that your code uses.
+      </div>
+      <h2 id="when-to-override">When to Override Defaults</h2>
+      <p>
+        Keep Boot defaults when they match your needs. Define an explicit bean
+        or property when you need a different port, database, serializer,
+        security rule, or implementation. Prefer a small, deliberate override
+        over disabling large parts of auto-configuration.
+      </p>
+      <div class="spring-callout">
+        <strong>Debugging tip:</strong> Enable the condition evaluation report
+        when you need to understand why an auto-configuration matched or did not
+        match. Run with <code>--debug</code> flag.
+      </div>
+
+      <h2 id="common-annotations">Common Spring Boot Annotations Explained</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Annotation</th>
+              <th>Purpose</th>
+              <th>Example usage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>@SpringBootApplication</code></td>
+              <td>
+                Main entry point. Combines @Configuration,
+                @EnableAutoConfiguration, and @ComponentScan.
+              </td>
+              <td>Mark your main class</td>
+            </tr>
+            <tr>
+              <td><code>@Component</code></td>
+              <td>Generic Spring-managed component.</td>
+              <td>Generic utility class</td>
+            </tr>
+            <tr>
+              <td><code>@Service</code></td>
+              <td>Business logic layer. Semantically marks service classes.</td>
+              <td>Implement business rules</td>
+            </tr>
+            <tr>
+              <td><code>@Repository</code></td>
+              <td>Data access layer. Can translate database exceptions.</td>
+              <td>Database access code</td>
+            </tr>
+            <tr>
+              <td><code>@RestController</code></td>
+              <td>
+                HTTP API controller. Combines @Controller and @ResponseBody.
+              </td>
+              <td>REST endpoints</td>
+            </tr>
+            <tr>
+              <td><code>@Bean</code></td>
+              <td>Explicitly register a method's return value as a bean.</td>
+              <td>Third-party object setup</td>
+            </tr>
+            <tr>
+              <td><code>@Autowired</code></td>
+              <td>
+                Inject dependencies. (Less common with modern constructor
+                injection)
+              </td>
+              <td>Field/method injection</td>
+            </tr>
+            <tr>
+              <td><code>@Value</code></td>
+              <td>Inject a property value into a field.</td>
+              <td>Single configuration values</td>
+            </tr>
+            <tr>
+              <td><code>@Configuration</code></td>
+              <td>Class contains @Bean definitions.</td>
+              <td>Configuration classes</td>
+            </tr>
+            <tr>
+              <td><code>@ConfigurationProperties</code></td>
+              <td>Bind properties to a typed object.</td>
+              <td>Group related settings</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="core-concept-flow">Complete Spring Boot Core Flow</h2>
+      <p>These concepts work together during application startup:</p>
+      <div
+        style="
+          background: #f5f5f5;
+          padding: 20px;
+          border-left: 4px solid #007bff;
+          margin: 20px 0;
+          border-radius: 4px;
+        "
+      >
+        <pre style="margin: 0; font-size: 13px; line-height: 1.6">
+┌─ Application starts ─┐
+│  main(String[] args)  │
+└──────────┬────────────┘
+           │
+           ▼
+┌──────────────────────────────────┐
+│  SpringApplication.run()          │
+│  Creates the Application Context │
+└──────────┬───────────────────────┘
+           │
+           ▼
+┌──────────────────────────────────┐
+│  Auto-Configuration kicks in      │
+│  • Checks classpath libraries     │
+│  • Reads application.properties   │
+│  • Conditions are evaluated       │
+└──────────┬───────────────────────┘
+           │
+           ▼
+┌──────────────────────────────────┐
+│  Component Scanning               │
+│  • Finds @Service classes         │
+│  • Finds @Repository classes      │
+│  • Finds @RestController classes  │
+└──────────┬───────────────────────┘
+           │
+           ▼
+┌──────────────────────────────────┐
+│  Beans are created                │
+│  • Instantiate marked classes     │
+│  • Inject dependencies            │
+│  • Call @PostConstruct methods    │
+└──────────┬───────────────────────┘
+           │
+           ▼
+┌──────────────────────────────────┐
+│  Embedded Server starts           │
+│  • Tomcat, Netty, or Jetty        │
+│  • Listen on configured port      │
+└──────────┬───────────────────────┘
+           │
+           ▼
+┌──────────────────────────────────┐
+│  🎯 Application Ready!            │
+│  • Accept requests                │
+│  • Serve responses                │
+└──────────────────────────────────┘
+</pre>
+      </div>
+
+      <h2 id="quick-visual-guide">Quick Visual: What Spring Boot Does</h2>
+      <div class="row g-3 mt-3">
+        <div class="col-md-6">
+          <div
+            style="
+              background: #fff3cd;
+              padding: 20px;
+              border-radius: 4px;
+              border-left: 4px solid #ffc107;
+            "
+          >
+            <h4>❌ Without Spring Boot</h4>
+            <ul style="font-size: 13px; margin-bottom: 0">
+              <li>Install Tomcat separately</li>
+              <li>Create web.xml</li>
+              <li>Configure DispatcherServlet</li>
+              <li>Set up database connection pool</li>
+              <li>Configure Spring context XML</li>
+              <li>Manage dependency versions</li>
+              <li>Deploy WAR file</li>
+              <li>~400+ lines of configuration</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div
+            style="
+              background: #d4edda;
+              padding: 20px;
+              border-radius: 4px;
+              border-left: 4px solid #28a745;
+            "
+          >
+            <h4>✅ With Spring Boot</h4>
+            <ul style="font-size: 13px; margin-bottom: 0">
+              <li>Add starter dependency</li>
+              <li>Write your service code</li>
+              <li>Write your controller</li>
+              <li>Run main() method</li>
+              <li>Server starts automatically</li>
+              <li>Everything works!</li>
+              <li>Run as JAR: java -jar app.jar</li>
+              <li>~50 lines of code + minimal config</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h2 id="core-concept-flow">Understanding the Request Flow</h2>
+      <p>
+        When a user's browser makes a request to your Spring Boot application,
+        here's what happens:
+      </p>
+      <div
+        style="
+          background: #f5f5f5;
+          padding: 20px;
+          border-left: 4px solid #007bff;
+          margin: 20px 0;
+          border-radius: 4px;
+        "
+      >
+        <pre style="margin: 0; font-size: 13px; line-height: 1.8">
+Client makes HTTP request:
+  GET /api/users/1
+
+         ▼
+
+Spring DispatcherServlet receives the request
+  (automatically configured by Spring Boot)
+
+         ▼
+
+Request is matched to a @RestController method
+  Example: getUser(@PathVariable Long id)
+
+         ▼
+
+Dependencies are injected into controller
+  (UserService, UserRepository, etc.)
+
+         ▼
+
+Business logic executes in service layer
+  (Fetch data from database, apply rules)
+
+         ▼
+
+Response is converted to JSON
+  (Spring automatically serializes to JSON)
+
+         ▼
+
+HTTP response sent back to client
+  200 OK + JSON body
+</pre>
+      </div>
+
+      <h2 id="core-concept-flow">Complete Spring Boot Core Flow</h2>
+      <p>These concepts work together during application startup:</p>
+      <div class="concept-diagram">
+        <figcaption>From dependencies to a ready application</figcaption>
+        <div class="flowchart">
+          <div class="flowchart-node">Add starter dependencies</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">
+            Start <code>SpringApplication.run()</code>
+          </div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">Create the Application Context</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">
+            Run auto-configuration and component scanning
+          </div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">Create beans and inject dependencies</div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node">
+            Apply profiles, properties, scopes, and conditions
+          </div>
+          <div class="flowchart-arrow">&darr;</div>
+          <div class="flowchart-node result">
+            Start the server and mark the application ready
+          </div>
+        </div>
+      </div>
+      <h2 id="core-summary">Core Concepts Summary</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Concept</th>
+              <th>Simple meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Application Context</td>
+              <td>The central container that manages Spring Beans.</td>
+            </tr>
+            <tr>
+              <td>Auto-Configuration</td>
+              <td>
+                Creates common configuration from dependencies and properties.
+              </td>
+            </tr>
+            <tr>
+              <td>Starters</td>
+              <td>
+                Convenient dependency groups for application capabilities.
+              </td>
+            </tr>
+            <tr>
+              <td>Component Scanning</td>
+              <td>Finds annotated classes and registers them as Beans.</td>
+            </tr>
+            <tr>
+              <td>Dependency Injection</td>
+              <td>
+                Provides required objects instead of creating them manually.
+              </td>
+            </tr>
+            <tr>
+              <td>Autowiring</td>
+              <td>Resolves and supplies matching Beans.</td>
+            </tr>
+            <tr>
+              <td>Bean Scopes</td>
+              <td>Control how many instances exist and how long they live.</td>
+            </tr>
+            <tr>
+              <td>Bean Lifecycle</td>
+              <td>Controls creation, initialization, use, and destruction.</td>
+            </tr>
+            <tr>
+              <td>Configuration Properties</td>
+              <td>Keep settings outside Java code.</td>
+            </tr>
+            <tr>
+              <td>Profiles</td>
+              <td>
+                Use different settings and Beans for different environments.
+              </td>
+            </tr>
+            <tr>
+              <td>Conditional Beans</td>
+              <td>Create Beans only when a condition matches.</td>
+            </tr>
+            <tr>
+              <td>First Project</td>
+              <td>Combines these ideas in a working REST API.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="spring-callout">
+        <strong>Recommended next step:</strong> Follow the
+        <a href="setup.html#spring-initializr"
+          >Spring Initializr project setup</a
+        >, then build the Product REST API and apply each core concept as you
+        go.
+      </div>
+      <a class="btn btn-success" href="setup.html"
+        >Next: Setup and Installation â†’</a
+      >
+    </main>
+    <footer class="py-4 text-center">
+      <p class="mb-0">&copy; 2026 Java Codeex</p>
+    </footer>
+    <script src="./springboot-nav.js"></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1417 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Complete Java Strings tutorial - String immutability, equals vs ==, String methods, StringBuffer vs StringBuilder comparison with practical code examples."
+    />
+    <meta
+      name="keywords"
+      content="Java Strings, String methods Java, String immutability, StringBuffer, StringBuilder, Java String tutorial"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Java Codeex" />
+    <link rel="canonical" href="https://javacodeex.in/java/strings/" />
+    <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
+    <link
+      rel="shortcut icon"
+      href="../icons/javacodeex.jpg"
+      type="image/jpeg"
+    />
+    <link rel="apple-touch-icon" href="../icons/javacodeex.jpg" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta
+      property="og:title"
+      content="Java Strings - Complete Tutorial with String Methods | Java Codeex"
+    />
+    <meta
+      property="og:description"
+      content="Complete Java Strings tutorial - String immutability, equals vs ==, String methods, StringBuffer vs StringBuilder comparison with practical code examples."
+    />
+    <meta
+      property="og:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta property="og:url" content="https://javacodeex.in/strings/" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Java Strings - Complete Tutorial with String Methods | Java Codeex"
+    />
+    <meta
+      name="twitter:description"
+      content="Complete Java Strings tutorial - String immutability, equals vs ==, String methods, StringBuffer vs StringBuilder comparison with practical code examples."
+    />
+    <meta
+      name="twitter:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Java Strings - Complete Tutorial with String Methods | Java Codeex
+    </title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        scroll-behavior: smooth;
+        font-size: 1rem;
+        color: #222;
+      }
+      .navbar {
+        background-color: #1a1a2e;
+      }
+      .navbar-brand {
+        font-weight: 700;
+        color: #f8a100 !important;
+      }
+      .navbar-nav .nav-link {
+        color: #cdd6f4 !important;
+        font-size: 0.85rem;
+      }
+      .navbar-nav .nav-link:hover {
+        color: #f8a100 !important;
+      }
+      .page-hero {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 60%,
+          #0f3460 100%
+        );
+        color: #fff;
+        padding: 48px 0 36px;
+      }
+      .page-hero h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+      }
+      .breadcrumb-item a {
+        color: #f8a100;
+        text-decoration: none;
+      }
+      .breadcrumb-item.active {
+        color: #cdd6f4;
+      }
+      .breadcrumb-item + .breadcrumb-item::before {
+        color: #8a9bb3;
+      }
+      .content-wrapper {
+        max-width: 860px;
+      }
+      h2 {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: #0f3460;
+        border-left: 5px solid #f8a100;
+        padding-left: 12px;
+        margin-top: 2.2rem;
+        margin-bottom: 0.8rem;
+      }
+      h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #16213e;
+        margin-top: 1.6rem;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        line-height: 1.8;
+      }
+      pre {
+        background: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 1.2rem 1.4rem;
+        font-size: 0.88rem;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+      code.inline {
+        background: #eef2ff;
+        color: #0f3460;
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 0.88rem;
+      }
+      .output-box {
+        background: #0d1117;
+        color: #58d68d;
+        border-left: 4px solid #58d68d;
+        border-radius: 4px;
+        padding: 0.8rem 1.2rem;
+        font-family: monospace;
+        font-size: 0.92rem;
+        margin: 0.5rem 0 1rem;
+      }
+      .note-box {
+        background: #eaf4ff;
+        border-left: 5px solid #3b82f6;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .note-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .warn-box {
+        background: #fff8e1;
+        border-left: 5px solid #f8a100;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .warn-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .success-box {
+        background: #e8f8f0;
+        border-left: 5px solid #28a745;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .success-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .table thead th {
+        background: #0f3460;
+        color: #fff;
+      }
+      .table-hover tbody tr:hover {
+        background: #f0f6ff;
+      }
+      .toc {
+        background: #f8f9fc;
+        border: 1px solid #e0e7ef;
+        border-radius: 10px;
+        padding: 1.2rem 1.4rem;
+        position: sticky;
+        top: 72px;
+      }
+      .toc h6 {
+        font-weight: 700;
+        color: #0f3460;
+        margin-bottom: 0.8rem;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        letter-spacing: 0.05em;
+      }
+      .toc a {
+        display: block;
+        font-size: 0.87rem;
+        color: #444;
+        text-decoration: none;
+        padding: 3px 0 3px 8px;
+        border-left: 3px solid transparent;
+        transition: all 0.15s;
+      }
+      .toc a:hover {
+        color: #f8a100;
+        border-left-color: #f8a100;
+      }
+      footer {
+        background: #1a1a2e;
+        color: #8a9bb3;
+      }
+
+      /* === TECH BANNER HEADER === */
+      .brand-bar {
+        background: #1a1a2e;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .brand-link {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: #f8a100;
+        font-weight: 700;
+        font-size: 1.15rem;
+        gap: 10px;
+      }
+      .brand-link:hover {
+        opacity: 0.85;
+        color: #f8a100;
+      }
+      .tech-banner {
+        background: #16213e;
+        border-bottom: 2px solid rgba(248, 161, 0, 0.2);
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tech-banner::-webkit-scrollbar {
+        height: 3px;
+      }
+      .tech-banner::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .tech-banner .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .tech-tab {
+        display: inline-block;
+        color: #a6adc8;
+        text-decoration: none;
+        padding: 11px 22px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+        white-space: nowrap;
+      }
+      .tech-tab:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.06);
+        text-decoration: none;
+      }
+      .tech-tab.active {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        font-weight: 700;
+      }
+      .tech-tab.coming-soon {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .java-subnav {
+        background: #0f3460;
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+      }
+      .java-subnav::-webkit-scrollbar {
+        height: 3px;
+      }
+      .java-subnav::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .java-subnav .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .topic-link {
+        display: inline-block;
+        color: #cdd6f4;
+        text-decoration: none;
+        padding: 10px 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+      }
+      .topic-link:hover {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        text-decoration: none;
+      }
+    </style>
+    <link rel="stylesheet" href="../site-theme.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg sticky-top shadow-sm">
+      <div class="container-xl">
+        <a class="navbar-brand" href="../index.html#courses"
+          ><img
+            src="../icons/javacodeex.jpg"
+            alt="Java Codeex"
+            style="
+              height: 32px;
+              width: 32px;
+              object-fit: cover;
+              border-radius: 6px;
+              margin-right: 8px;
+              vertical-align: middle;
+            "
+            loading="lazy"
+          />
+          Java Codeex</a
+        >
+        <button
+          class="navbar-toggler border-secondary"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navMenu"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+          <ul class="navbar-nav ms-auto flex-wrap gap-1">
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#basics">Basics</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#methods">Methods</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#arrays">Arrays</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#strings">Strings</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#oop">OOP</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#interfaces">Interfaces</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#exceptions">Exceptions</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#regex">Regex</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#memory">Memory</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#generics">Generics</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#collections"
+                >Collections</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#java8">Java 8+</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#datetime"
+                >Date &amp; Time</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#multithreading"
+                >Multithreading</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#filehandling">Files</a>
+            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="../index.html#networking">Networking</a>
+            </li> -->
+            <li class="nav-item">
+              <a class="nav-link" href="../index.html#jdbc">JDBC</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- PAGE HERO -->
+    <section class="page-hero">
+      <div class="container-xl">
+        <nav aria-label="breadcrumb" class="mb-2">
+          <ol
+            class="breadcrumb mb-1"
+            style="background: transparent; padding: 0"
+          >
+            <li class="breadcrumb-item">
+              <a href="../index.html">Java Codeex</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="../index.html#strings">Strings</a>
+            </li>
+            <li class="breadcrumb-item active">Strings in Java</li>
+          </ol>
+        </nav>
+        <h1>Strings in Java</h1>
+        <p class="mb-0" style="color: #a6adc8">
+          Master Java Strings — the most commonly used class in Java
+          programming.
+        </p>
+      </div>
+    </section>
+    <aside class="topic-guide" aria-label="Learning guide">
+      <div class="topic-guide-step">
+        <span>01</span><strong>Work with text</strong
+        ><small>Create immutable strings</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>02</span><strong>Work with text</strong
+        ><small>Compare content</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>03</span><strong>Work with text</strong
+        ><small>Transform safely</small>
+      </div>
+      <p class="topic-guide-summary">
+        <strong>Learning goal:</strong> String APIs help you process text
+        without changing the original value.
+      </p>
+    </aside>
+
+    <!-- CONTENT -->
+    <div class="container-xl py-5">
+      <div class="row g-5">
+        <div class="col-lg-8 content-wrapper">
+          <!-- 1. What is a String? -->
+          <h2 id="what-is-string">1. What is a String?</h2>
+          <p>
+            A <strong>String</strong> in Java is a sequence of characters. It is
+            an object of the <code class="inline">java.lang.String</code> class,
+            which is automatically imported in every Java program. Strings are
+            one of the most frequently used types in Java and have special
+            language-level support.
+          </p>
+          <p>Three key characteristics of Java Strings:</p>
+          <ul>
+            <li>
+              <strong>Immutable:</strong> Once a String object is created, its
+              content cannot be changed. Any operation that seems to modify a
+              String actually creates a new one.
+            </li>
+            <li>
+              <strong>String Pool:</strong> Java maintains a special area of
+              heap memory called the <em>String Constant Pool</em>. When you
+              create a string literal, Java checks the pool first; if the value
+              already exists, it reuses that object instead of creating a new
+              one.
+            </li>
+            <li>
+              <strong>Object vs Literal:</strong> Strings can be created as
+              literals (stored in the pool) or using the
+              <code class="inline">new</code> keyword (always creates a new heap
+              object, bypassing the pool).
+            </li>
+          </ul>
+          <pre>
+// String as an object in memory:
+//
+//  String Pool (inside heap):
+//  +------------------+
+//  |  "Hello"  &lt;------+--- s1 (literal)
+//  |                  |+-- s2 (literal — same object reused!)
+//  +------------------+
+//
+//  Regular Heap:
+//  +------------------+
+//  |  "Hello"  &lt;------+--- s3 (new keyword — different object)
+//  +------------------+</pre>
+
+          <!-- 2. Creating Strings -->
+          <h2 id="creating-strings">2. Creating Strings</h2>
+          <h3>String Literal (Preferred)</h3>
+          <pre>
+String s1 = "Hello";
+String s2 = "Hello";   // reuses the same pool object as s1
+
+System.out.println(s1 == s2);       // true  (same reference in pool)
+System.out.println(s1.equals(s2));  // true  (same content)</pre>
+          <div class="output-box">true<br />true</div>
+
+          <h3>Using the new Keyword</h3>
+          <pre>
+String s3 = new String("Hello");
+String s4 = new String("Hello");
+
+System.out.println(s3 == s4);       // false (different heap objects)
+System.out.println(s3.equals(s4));  // true  (same content)</pre>
+          <div class="output-box">false<br />true</div>
+
+          <h3>Other Ways to Create Strings</h3>
+          <pre>
+// From a char array
+char[] chars = {'J', 'a', 'v', 'a'};
+String fromChars = new String(chars);
+System.out.println(fromChars);   // Java
+
+// From an integer / other type
+String fromInt    = String.valueOf(42);
+String fromDouble = String.valueOf(3.14);
+System.out.println(fromInt + " " + fromDouble);  // 42 3.14</pre>
+          <div class="output-box">Java<br />42 3.14</div>
+          <div class="success-box">
+            <p>
+              <strong>Best Practice:</strong> Always use string literals instead
+              of <code class="inline">new String(...)</code>. Literals benefit
+              from pool sharing, reducing memory usage. Reserve
+              <code class="inline">new String()</code> for rare cases where you
+              explicitly need a distinct heap object.
+            </p>
+          </div>
+
+          <h2 id="string-constant-pool">String Constant Pool (SCP)</h2>
+          <p>
+            The <strong>String Constant Pool (SCP)</strong> is a special area
+            managed by the JVM for reusing string literals. A literal such as
+            <code class="inline">"Java"</code> is checked in the pool before
+            a new object is created. If the same value already exists, Java
+            reuses the existing object.
+          </p>
+          <pre>
+String first = "Java";
+String second = "Java";
+String third = new String("Java");
+
+first == second; // true: both references point to the SCP object
+first == third;  // false: third points to a separate heap object
+
+// Add a runtime string to the SCP when appropriate:
+String pooled = new String("Spring").intern();</pre>
+          <pre>
+                JVM heap
+  +-------------------------------------------+
+  | String Constant Pool (SCP)                |
+  |  +---------+                              |
+  |  | "Java"  | &lt;----- first, second          |
+  |  +---------+                              |
+  |                                           |
+  | Ordinary heap                             |
+  |  +---------+                              |
+  |  | "Java"  | &lt;----- third                 |
+  |  +---------+                              |
+  +-------------------------------------------+</pre>
+          <div class="note-box">
+            <p>
+              <strong>Remember:</strong> the SCP is about sharing literal
+              objects; it is not a separate physical memory area outside the
+              heap. The exact internal layout is JVM-specific, but thinking of
+              it as a shared pool is the easiest way to understand it.
+            </p>
+          </div>
+
+          <h2 id="immutable-class">How to Create an Immutable Class</h2>
+          <p>
+            An immutable object cannot change after construction. Every method
+            that appears to update it must return a new object. Java's
+            <code class="inline">String</code> class follows this design.
+          </p>
+          <p>Follow these beginner-friendly rules:</p>
+          <ol>
+            <li>Declare the class <code class="inline">final</code>.</li>
+            <li>Make all fields <code class="inline">private final</code>.</li>
+            <li>Set fields only through the constructor.</li>
+            <li>Do not provide setters or methods that mutate state.</li>
+            <li>Make defensive copies of mutable input and output objects.</li>
+          </ol>
+          <pre>
+public final class UserProfile {
+    private final String username;
+    private final List&lt;String&gt; roles;
+
+    public UserProfile(String username, List&lt;String&gt; roles) {
+        this.username = username;
+        this.roles = List.copyOf(roles); // defensive copy
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public List&lt;String&gt; getRoles() {
+        return roles; // List.copyOf made it unmodifiable
+    }
+}
+
+UserProfile profile = new UserProfile("anand", List.of("ADMIN"));
+// profile.username = "other"; // not allowed: no setter
+// profile.getRoles().add("USER"); // UnsupportedOperationException</pre>
+          <div class="success-box">
+            <p>
+              <strong>Why String is safer:</strong> a String has no setter and
+              its internal character data is never exposed for modification.
+              This makes it safe to share between methods, threads, caches, and
+              security checks.
+            </p>
+          </div>
+
+          <!-- 3. Why Strings are Immutable -->
+          <h2 id="immutability">3. Why Strings are Immutable</h2>
+          <p>
+            Java designers made the <code class="inline">String</code> class
+            immutable for three important reasons:
+          </p>
+          <h3>1. Memory Efficiency (String Pool)</h3>
+          <p>
+            Because strings are immutable, the JVM can safely share a single
+            instance of a string value across many references. If strings were
+            mutable, one reference changing the content would corrupt all other
+            references pointing to the same pool entry.
+          </p>
+          <pre>
+String a = "Java";
+String b = "Java";
+// Both 'a' and 'b' safely point to the same pool object.
+// No risk of corruption because neither can change it.</pre>
+
+          <h3>2. Thread Safety</h3>
+          <p>
+            Immutable objects are inherently thread-safe. Multiple threads can
+            read the same <code class="inline">String</code> simultaneously
+            without synchronization, because no thread can alter its state.
+          </p>
+          <pre>
+// Safe to share across threads — no synchronization needed
+String config = "database=localhost;port=5432";
+// Thread 1, Thread 2, Thread 3 all read 'config' safely</pre>
+
+          <h3>3. Security</h3>
+          <p>
+            Strings are used for sensitive data such as file paths, network
+            URLs, database connection strings, and passwords. If strings were
+            mutable, malicious code could alter the value after a security check
+            but before the actual use.
+          </p>
+          <pre>
+// Hypothetical security issue if String were mutable:
+String filename = "/secure/data.txt";
+// ... security check passes on "/secure/data.txt" ...
+// ... if mutable, attacker mutates to "/etc/passwd" ...
+// ... file is opened with attacker's path — security breach!
+
+// Because String is immutable, this attack is impossible.</pre>
+          <div class="note-box">
+            <p>
+              <strong>Practical impact:</strong> The immutability of String
+              means any operation like
+              <code class="inline">toUpperCase()</code> or
+              <code class="inline">replace()</code> returns a
+              <em>new</em> String. The original is never altered. Always capture
+              the result: <code class="inline">s = s.toUpperCase();</code>
+            </p>
+          </div>
+
+          <!-- 4. equals vs == -->
+          <h2 id="equals-vs-operator">4. String Comparison: .equals() vs ==</h2>
+          <p>
+            This is one of the most common sources of bugs for Java beginners.
+            The <code class="inline">==</code> operator compares
+            <strong>references</strong> (memory addresses), not content. The
+            <code class="inline">.equals()</code> method compares the actual
+            <strong>character sequence</strong>.
+          </p>
+          <pre>
+public class StringComparison {
+    public static void main(String[] args) {
+        String a = "Hello";
+        String b = "Hello";
+        String c = new String("Hello");
+        String d = new String("Hello");
+
+        // Reference comparison with ==
+        System.out.println(a == b);   // true  — same pool object
+        System.out.println(a == c);   // false — pool vs heap object
+        System.out.println(c == d);   // false — two different heap objects
+
+        // Content comparison with .equals()
+        System.out.println(a.equals(b));   // true
+        System.out.println(a.equals(c));   // true
+        System.out.println(c.equals(d));   // true
+
+        // Case-insensitive comparison
+        String x = "java";
+        String y = "JAVA";
+        System.out.println(x.equalsIgnoreCase(y));  // true
+    }
+}</pre>
+          <div class="output-box">
+            true<br />false<br />false<br />true<br />true<br />true<br />true
+          </div>
+          <div class="warn-box">
+            <p>
+              <strong>Golden Rule:</strong> ALWAYS use
+              <code class="inline">.equals()</code> to compare String content.
+              Never use <code class="inline">==</code> for strings. For
+              null-safe comparison, use
+              <code class="inline">Objects.equals(a, b)</code> from
+              <code class="inline">java.util.Objects</code>.
+            </p>
+          </div>
+
+          <!-- 5. String Concatenation -->
+          <h2 id="concatenation">5. String Concatenation</h2>
+          <h3>The + Operator</h3>
+          <p>
+            The simplest way to join strings. Java overloads the
+            <code class="inline">+</code> operator for String concatenation. Any
+            primitive or object concatenated with a String is automatically
+            converted to its String representation.
+          </p>
+          <pre>
+String first = "Hello";
+String second = "World";
+String result = first + ", " + second + "!";
+System.out.println(result);   // Hello, World!
+
+int age = 25;
+System.out.println("Age: " + age);   // Age: 25 (int auto-converted)</pre>
+          <div class="output-box">Hello, World!<br />Age: 25</div>
+
+          <h3>The concat() Method</h3>
+          <pre>
+String s1 = "Good ";
+String s2 = s1.concat("Morning");
+System.out.println(s2);   // Good Morning
+// s1 is unchanged: "Good "</pre>
+          <div class="output-box">Good Morning</div>
+
+          <h3>StringBuilder for Loops (Best Practice)</h3>
+          <p>
+            Using <code class="inline">+</code> inside a loop creates many
+            intermediate String objects, wasting memory. Use
+            <code class="inline">StringBuilder</code> for efficient repeated
+            concatenation.
+          </p>
+          <pre>
+// Inefficient — creates many temporary String objects
+String result = "";
+for (int i = 1; i &lt;= 5; i++) {
+    result += i + " ";   // each iteration creates a new String
+}
+System.out.println(result);
+
+// Efficient — StringBuilder modifies a single buffer
+StringBuilder sb = new StringBuilder();
+for (int i = 1; i &lt;= 5; i++) {
+    sb.append(i).append(" ");
+}
+System.out.println(sb.toString());</pre>
+          <div class="output-box">1 2 3 4 5<br />1 2 3 4 5</div>
+
+          <!-- 6. String Methods -->
+          <h2 id="string-methods">6. Important String Methods</h2>
+          <p>
+            The <code class="inline">String</code> class provides a rich set of
+            methods. All methods return new Strings without modifying the
+            original (immutability).
+          </p>
+          <table
+            class="table table-bordered table-hover mb-4"
+            style="font-size: 0.88rem"
+          >
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Syntax / Example</th>
+                <th>Output</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code class="inline">length()</code></td>
+                <td><code class="inline">"Hello".length()</code></td>
+                <td><code class="inline">5</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">charAt(i)</code></td>
+                <td><code class="inline">"Java".charAt(1)</code></td>
+                <td><code class="inline">'a'</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">substring(start)</code></td>
+                <td><code class="inline">"Tutorial".substring(4)</code></td>
+                <td><code class="inline">"rial"</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">substring(start, end)</code></td>
+                <td><code class="inline">"Tutorial".substring(0, 4)</code></td>
+                <td><code class="inline">"Tuto"</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">indexOf(str)</code></td>
+                <td><code class="inline">"banana".indexOf("an")</code></td>
+                <td><code class="inline">1</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">lastIndexOf(str)</code></td>
+                <td><code class="inline">"banana".lastIndexOf("an")</code></td>
+                <td><code class="inline">3</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">toUpperCase()</code></td>
+                <td><code class="inline">"hello".toUpperCase()</code></td>
+                <td><code class="inline">"HELLO"</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">toLowerCase()</code></td>
+                <td><code class="inline">"WORLD".toLowerCase()</code></td>
+                <td><code class="inline">"world"</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">trim()</code></td>
+                <td><code class="inline">" hi ".trim()</code></td>
+                <td><code class="inline">"hi"</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">strip()</code></td>
+                <td><code class="inline">" hi ".strip()</code></td>
+                <td>
+                  <code class="inline">"hi"</code> (Unicode-aware, Java 11+)
+                </td>
+              </tr>
+              <tr>
+                <td><code class="inline">replace(old, new)</code></td>
+                <td><code class="inline">"aabbcc".replace("bb","XX")</code></td>
+                <td><code class="inline">"aaXXcc"</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">contains(seq)</code></td>
+                <td><code class="inline">"Java".contains("av")</code></td>
+                <td><code class="inline">true</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">startsWith(str)</code></td>
+                <td><code class="inline">"Hello".startsWith("He")</code></td>
+                <td><code class="inline">true</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">endsWith(str)</code></td>
+                <td><code class="inline">"Hello".endsWith("lo")</code></td>
+                <td><code class="inline">true</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">split(regex)</code></td>
+                <td><code class="inline">"a,b,c".split(",")</code></td>
+                <td><code class="inline">["a","b","c"]</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">isEmpty()</code></td>
+                <td><code class="inline">"".isEmpty()</code></td>
+                <td><code class="inline">true</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">isBlank()</code></td>
+                <td><code class="inline">" ".isBlank()</code></td>
+                <td><code class="inline">true</code> (Java 11+)</td>
+              </tr>
+              <tr>
+                <td><code class="inline">toCharArray()</code></td>
+                <td><code class="inline">"Hi".toCharArray()</code></td>
+                <td><code class="inline">['H','i']</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">compareTo(str)</code></td>
+                <td><code class="inline">"apple".compareTo("banana")</code></td>
+                <td>negative int</td>
+              </tr>
+            </tbody>
+          </table>
+          <pre>
+public class StringMethodsDemo {
+    public static void main(String[] args) {
+        String s = "  Hello, Java World!  ";
+
+        System.out.println(s.trim());                   // Hello, Java World!
+        System.out.println(s.trim().length());          // 19
+        System.out.println(s.trim().toUpperCase());     // HELLO, JAVA WORLD!
+        System.out.println(s.trim().replace("Java", "Amazing Java"));
+        System.out.println(s.trim().contains("Java")); // true
+        System.out.println(s.trim().startsWith("He")); // true
+        System.out.println(s.trim().charAt(7));        // J
+        System.out.println(s.trim().substring(7, 11)); // Java
+        System.out.println(s.trim().indexOf("World")); // 12
+
+        // Splitting a CSV string
+        String csv = "Alice,Bob,Charlie,Dave";
+        String[] names = csv.split(",");
+        for (String name : names) {
+            System.out.print("[" + name + "] ");
+        }
+    }
+}</pre>
+          <div class="output-box">
+            Hello, Java World!<br />19<br />HELLO, JAVA WORLD!<br />Hello,
+            Amazing Java World!<br />true<br />true<br />J<br />Java<br />12<br />[Alice]
+            [Bob] [Charlie] [Dave]
+          </div>
+
+          <!-- 7. String vs StringBuffer vs StringBuilder -->
+          <h2 id="string-vs-buffer-builder">
+            7. String vs StringBuffer vs StringBuilder
+          </h2>
+          <p>
+            Java provides three classes for working with character sequences,
+            each with different characteristics:
+          </p>
+          <table class="table table-bordered table-hover mb-3">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>String</th>
+                <th>StringBuffer</th>
+                <th>StringBuilder</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Mutability</td>
+                <td>Immutable</td>
+                <td>Mutable</td>
+                <td>Mutable</td>
+              </tr>
+              <tr>
+                <td>Thread Safety</td>
+                <td>Yes (immutable)</td>
+                <td>Yes (synchronized)</td>
+                <td>No</td>
+              </tr>
+              <tr>
+                <td>Performance</td>
+                <td>Slow for concat in loops</td>
+                <td>Moderate</td>
+                <td>Fast</td>
+              </tr>
+              <tr>
+                <td>Storage</td>
+                <td>String Pool / Heap</td>
+                <td>Heap</td>
+                <td>Heap</td>
+              </tr>
+              <tr>
+                <td>Introduced in</td>
+                <td>JDK 1.0</td>
+                <td>JDK 1.0</td>
+                <td>JDK 1.5</td>
+              </tr>
+              <tr>
+                <td>Use when</td>
+                <td>Value won't change</td>
+                <td>Multi-threaded modification</td>
+                <td>Single-threaded modification</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="note-box">
+            <p>
+              <strong>Rule of thumb:</strong> Use
+              <code class="inline">String</code> for fixed values,
+              <code class="inline">StringBuilder</code> for building strings in
+              a single thread, and <code class="inline">StringBuffer</code> when
+              multiple threads modify the same buffer.
+            </p>
+          </div>
+
+          <!-- 8. StringBuffer -->
+          <h2 id="stringbuffer">8. StringBuffer</h2>
+          <p>
+            <code class="inline">StringBuffer</code> is a mutable sequence of
+            characters that is <strong>thread-safe</strong> because its methods
+            are synchronized. Use it when multiple threads share and modify the
+            same string buffer.
+          </p>
+          <pre>
+public class StringBufferDemo {
+    public static void main(String[] args) {
+        StringBuffer sb = new StringBuffer("Hello");
+
+        // append() — adds to the end
+        sb.append(", World");
+        System.out.println(sb);   // Hello, World
+
+        // insert(index, str) — inserts at a position
+        sb.insert(5, " Beautiful");
+        System.out.println(sb);   // Hello Beautiful, World
+
+        // replace(start, end, str)
+        sb.replace(6, 15, "Wonderful");
+        System.out.println(sb);   // Hello Wonderful, World
+
+        // delete(start, end)
+        sb.delete(5, 16);
+        System.out.println(sb);   // Hello World
+
+        // reverse()
+        sb.reverse();
+        System.out.println(sb);   // dlroW olleH
+
+        // length() and capacity()
+        StringBuffer sb2 = new StringBuffer();
+        System.out.println("Length: " + sb2.length());       // 0
+        System.out.println("Capacity: " + sb2.capacity());   // 16 (default)
+
+        // charAt and setCharAt
+        StringBuffer sb3 = new StringBuffer("Java");
+        sb3.setCharAt(0, 'j');
+        System.out.println(sb3);   // java
+    }
+}</pre>
+          <div class="output-box">
+            Hello, World<br />Hello Beautiful, World<br />Hello Wonderful,
+            World<br />Hello World<br />dlroW olleH<br />Length: 0<br />Capacity:
+            16<br />java
+          </div>
+
+          <!-- 9. StringBuilder -->
+          <h2 id="stringbuilder">9. StringBuilder</h2>
+          <p>
+            <code class="inline">StringBuilder</code> is identical to
+            <code class="inline">StringBuffer</code> in its API but is
+            <strong>not synchronized</strong>, making it faster for
+            single-threaded use cases. It is the preferred choice for building
+            strings in most Java programs.
+          </p>
+          <pre>
+public class StringBuilderDemo {
+    public static void main(String[] args) {
+        // Building a sentence word by word
+        StringBuilder sb = new StringBuilder();
+        sb.append("Learning")
+          .append(" ")
+          .append("Java")
+          .append(" ")
+          .append("is")
+          .append(" ")
+          .append("fun!");
+        System.out.println(sb.toString());   // Learning Java is fun!
+
+        // Efficiently building a numbered list
+        StringBuilder list = new StringBuilder();
+        String[] items = {"Apple", "Banana", "Cherry"};
+        for (int i = 0; i &lt; items.length; i++) {
+            list.append(i + 1).append(". ").append(items[i]).append("\n");
+        }
+        System.out.print(list);
+
+        // Reversing a string using StringBuilder
+        String original = "racecar";
+        String reversed = new StringBuilder(original).reverse().toString();
+        System.out.println(original + " reversed = " + reversed);
+
+        // Performance comparison comment:
+        // Concatenating 10,000 strings with '+' is ~1000x slower
+        // than using StringBuilder.append() in a loop.
+    }
+}</pre>
+          <div class="output-box">
+            Learning Java is fun!<br />1. Apple<br />2. Banana<br />3. Cherry<br />racecar
+            reversed = racecar
+          </div>
+
+          <h3>Common StringBuilder / StringBuffer Methods</h3>
+          <table
+            class="table table-bordered table-hover mb-3"
+            style="font-size: 0.88rem"
+          >
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Description</th>
+                <th>Example</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code class="inline">append(x)</code></td>
+                <td>Appends x to the end</td>
+                <td><code class="inline">sb.append("Hi")</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">insert(i, x)</code></td>
+                <td>Inserts x at index i</td>
+                <td><code class="inline">sb.insert(2, "XY")</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">delete(s, e)</code></td>
+                <td>Deletes chars from s to e (exclusive)</td>
+                <td><code class="inline">sb.delete(1, 3)</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">replace(s, e, str)</code></td>
+                <td>Replaces chars s to e with str</td>
+                <td><code class="inline">sb.replace(0,2,"AB")</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">reverse()</code></td>
+                <td>Reverses the character sequence</td>
+                <td><code class="inline">sb.reverse()</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">charAt(i)</code></td>
+                <td>Returns char at index i</td>
+                <td><code class="inline">sb.charAt(0)</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">setCharAt(i, c)</code></td>
+                <td>Sets char at index i to c</td>
+                <td><code class="inline">sb.setCharAt(0,'X')</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">length()</code></td>
+                <td>Returns the current length</td>
+                <td><code class="inline">sb.length()</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">toString()</code></td>
+                <td>Converts to a String object</td>
+                <td><code class="inline">sb.toString()</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">indexOf(str)</code></td>
+                <td>Finds first occurrence of str</td>
+                <td><code class="inline">sb.indexOf("ab")</code></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2 id="string-multithreading">Strings and Multithreading</h2>
+          <p>
+            A <code class="inline">String</code> is immutable, so many threads
+            can safely read the same value without locks. However,
+            <code class="inline">StringBuilder</code> is mutable and should not
+            be shared between threads unless the application provides
+            synchronization.
+          </p>
+          <pre>
+String message = "Payment completed";
+
+Runnable task = () -&gt; System.out.println(message);
+new Thread(task).start();
+new Thread(task).start();
+// Safe: both threads only read an immutable String.</pre>
+          <p>
+            <code class="inline">StringBuffer</code> synchronizes its public
+            methods, so concurrent append operations on the same instance are
+            protected. It is useful when one mutable buffer must be shared by
+            multiple threads.
+          </p>
+          <pre>
+StringBuffer auditLog = new StringBuffer();
+
+Runnable logTask = () -&gt; auditLog.append(
+        Thread.currentThread().getName()).append("\n");
+
+Thread first = new Thread(logTask, "worker-1");
+Thread second = new Thread(logTask, "worker-2");
+first.start();
+second.start();
+first.join();
+second.join();
+
+System.out.println(auditLog); // append calls are synchronized</pre>
+          <p>
+            <code class="inline">StringBuilder</code> is faster because it does
+            not pay for synchronization. Use it inside one thread, or give each
+            thread its own builder and combine the results afterward.
+          </p>
+          <pre>
+// Safe pattern: one builder per thread
+Callable&lt;String&gt; work = () -&gt; {
+    StringBuilder local = new StringBuilder();
+    local.append("Built by ")
+         .append(Thread.currentThread().getName());
+    return local.toString();
+};</pre>
+          <pre>
+                Choosing a text type
+  Read-only text  ───────────────► String
+  Mutable, one thread ───────────► StringBuilder
+  Mutable, shared threads ───────► StringBuffer
+                                  (or explicit locking)</pre>
+          <div class="warn-box">
+            <p>
+              <strong>Important:</strong> synchronized methods protect one
+              StringBuffer operation at a time. A longer sequence such as
+              “check length, then append” may still need an external lock when
+              those actions must be atomic together.
+            </p>
+          </div>
+
+          <!-- 10. String Formatting -->
+          <h2 id="string-formatting">10. String Formatting</h2>
+          <p>
+            <code class="inline">String.format()</code> allows you to build
+            formatted strings using format specifiers, similar to
+            <code class="inline">printf</code> in C. It returns a new String
+            without printing it, making it highly flexible.
+          </p>
+          <h3>Common Format Specifiers</h3>
+          <table
+            class="table table-bordered table-hover mb-3"
+            style="font-size: 0.88rem"
+          >
+            <thead>
+              <tr>
+                <th>Specifier</th>
+                <th>Type</th>
+                <th>Example</th>
+                <th>Output</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code class="inline">%s</code></td>
+                <td>String</td>
+                <td>
+                  <code class="inline">String.format("%s!", "Hello")</code>
+                </td>
+                <td><code class="inline">Hello!</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">%d</code></td>
+                <td>Integer (decimal)</td>
+                <td><code class="inline">String.format("%d", 42)</code></td>
+                <td><code class="inline">42</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">%f</code></td>
+                <td>Float/double</td>
+                <td>
+                  <code class="inline">String.format("%.2f", 3.14159)</code>
+                </td>
+                <td><code class="inline">3.14</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">%c</code></td>
+                <td>Character</td>
+                <td><code class="inline">String.format("%c", 'A')</code></td>
+                <td><code class="inline">A</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">%b</code></td>
+                <td>Boolean</td>
+                <td><code class="inline">String.format("%b", true)</code></td>
+                <td><code class="inline">true</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">%n</code></td>
+                <td>Newline</td>
+                <td>(platform-independent)</td>
+                <td>line break</td>
+              </tr>
+              <tr>
+                <td><code class="inline">%10s</code></td>
+                <td>Right-aligned, width 10</td>
+                <td><code class="inline">String.format("%10s","Hi")</code></td>
+                <td><code class="inline">" Hi"</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">%-10s</code></td>
+                <td>Left-aligned, width 10</td>
+                <td>
+                  <code class="inline">String.format("%-10s|","Hi")</code>
+                </td>
+                <td><code class="inline">"Hi |"</code></td>
+              </tr>
+              <tr>
+                <td><code class="inline">%05d</code></td>
+                <td>Zero-padded int, width 5</td>
+                <td><code class="inline">String.format("%05d", 42)</code></td>
+                <td><code class="inline">00042</code></td>
+              </tr>
+            </tbody>
+          </table>
+          <pre>
+public class StringFormatDemo {
+    public static void main(String[] args) {
+        // Basic formatting
+        String name = "Alice";
+        int age = 30;
+        double gpa = 3.856;
+
+        String info = String.format("Name: %s | Age: %d | GPA: %.2f", name, age, gpa);
+        System.out.println(info);
+
+        // Building a formatted table
+        System.out.printf("%-15s %5s %8s%n", "Product", "Qty", "Price");
+        System.out.printf("%-15s %5d %8.2f%n", "Laptop",     2,  899.99);
+        System.out.printf("%-15s %5d %8.2f%n", "Mouse",      5,   24.99);
+        System.out.printf("%-15s %5d %8.2f%n", "Keyboard",   3,   49.99);
+
+        // Zero-padded order numbers
+        for (int i = 1; i &lt;= 5; i++) {
+            System.out.println("Order #" + String.format("%04d", i));
+        }
+
+        // Formatted currency
+        double price = 1234.5;
+        System.out.println(String.format("Total: $%,.2f", price));  // $1,234.50
+    }
+}</pre>
+          <div class="output-box">
+            Name: Alice | Age: 30 | GPA: 3.86<br />Product Qty Price<br />Laptop
+            2 899.99<br />Mouse 5 24.99<br />Keyboard 3 49.99<br />Order
+            #0001<br />Order #0002<br />Order #0003<br />Order #0004<br />Order
+            #0005<br />Total: $1,234.50
+          </div>
+
+          <div class="note-box">
+            <p>
+              <strong>Java 15+ Text Blocks:</strong> For multi-line strings,
+              Java 15 introduced text blocks using triple quotes
+              <code class="inline">"""..."""</code>, which preserve formatting
+              without escape characters — great for JSON, SQL, or HTML templates
+              embedded in code.
+            </p>
+          </div>
+
+          <!-- Prev / Next -->
+          <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+            <a href="./arrays.html" class="btn btn-outline-secondary"
+              >&larr; Previous: Arrays</a
+            >
+            <a
+              href="./oop-concepts.html"
+              class="btn btn-warning text-dark fw-semibold"
+              >Next: OOP Concepts &rarr;</a
+            >
+          </div>
+        </div>
+
+        <!-- TOC Sidebar -->
+        <div class="col-lg-4 d-none d-lg-block">
+          <div class="toc">
+            <h6>On this page</h6>
+            <a href="#what-is-string">1. What is a String?</a>
+            <a href="#creating-strings">2. Creating Strings</a>
+            <a href="#string-constant-pool">String Constant Pool (SCP)</a>
+            <a href="#immutable-class">Creating an Immutable Class</a>
+            <a href="#immutability">3. Why Strings are Immutable</a>
+            <a href="#equals-vs-operator">4. .equals() vs ==</a>
+            <a href="#concatenation">5. String Concatenation</a>
+            <a href="#string-methods">6. Important String Methods</a>
+            <a href="#string-vs-buffer-builder"
+              >7. String vs StringBuffer vs StringBuilder</a
+            >
+            <a href="#stringbuffer">8. StringBuffer</a>
+            <a href="#stringbuilder">9. StringBuilder</a>
+            <a href="#string-multithreading">Strings and Multithreading</a>
+            <a href="#string-formatting">10. String Formatting</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="py-4 text-center mt-2">
+      <p class="mb-0">
+        &copy; 2026 Java Codeex. Built with HTML5 &amp; Bootstrap 5.
+      </p>
+    </footer>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmk+GOFVeA//xwkFWEVflJ8ikO1y+k"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>

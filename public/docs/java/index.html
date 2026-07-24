@@ -1,0 +1,1182 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Learn Java programming with Java Codeex. Free tutorials on Java Basics, OOP, Collections, Multithreading, JDBC and more with clear examples and code."
+    />
+    <meta
+      name="keywords"
+      content="Java tutorial, learn Java, Java programming, Java basics, OOP Java, Java collections, Java multithreading, JDBC, Java 8 features, free Java course"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Java Codeex" />
+    <link rel="canonical" href="https://javacodeex.in/java/" />
+    <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
+    <link
+      rel="shortcut icon"
+      href="../icons/javacodeex.jpg"
+      type="image/jpeg"
+    />
+    <link rel="apple-touch-icon" href="../icons/javacodeex.jpg" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta
+      property="og:title"
+      content="Java Codeex - Free Complete Java Programming Tutorial"
+    />
+    <meta
+      property="og:description"
+      content="Learn Java programming with Java Codeex. Free tutorials on Java Basics, OOP, Collections, Multithreading, JDBC and more with clear examples and code."
+    />
+    <meta
+      property="og:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta property="og:url" content="https://javacodeex.in/java/" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Java Codeex - Free Complete Java Programming Tutorial"
+    />
+    <meta
+      name="twitter:description"
+      content="Learn Java programming with Java Codeex. Free tutorials on Java Basics, OOP, Collections, Multithreading, JDBC and more with clear examples and code."
+    />
+    <meta
+      name="twitter:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Java Codeex - Free Complete Java Programming Tutorial</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        scroll-behavior: smooth;
+      }
+      .navbar {
+        background-color: #1a1a2e;
+      }
+      .navbar-brand {
+        font-weight: 700;
+        color: #f8a100 !important;
+      }
+      .navbar-nav .nav-link {
+        color: #cdd6f4 !important;
+        font-size: 0.85rem;
+      }
+      .navbar-nav .nav-link:hover {
+        color: #f8a100 !important;
+      }
+      .hero {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 60%,
+          #0f3460 100%
+        );
+        color: #fff;
+        padding: 60px 0 50px;
+      }
+      .hero h1 {
+        font-size: 2.8rem;
+        font-weight: 800;
+      }
+      .hero .badge-date {
+        background: #f8a100;
+        color: #1a1a2e;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+      pre {
+        background: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 1.2rem;
+        font-size: 0.9rem;
+        overflow-x: auto;
+      }
+      .output-box {
+        background: #0d1117;
+        color: #58d68d;
+        border-left: 4px solid #58d68d;
+        border-radius: 4px;
+        padding: 0.8rem 1.2rem;
+        font-family: monospace;
+        font-size: 0.95rem;
+      }
+      .section-card {
+        border: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+        border-radius: 10px;
+      }
+      .section-title {
+        color: #0f3460;
+        font-weight: 700;
+        border-left: 5px solid #f8a100;
+        padding-left: 12px;
+      }
+      .list-group-item a {
+        text-decoration: none;
+        color: #0f3460;
+        font-size: 0.92rem;
+      }
+      .list-group-item a:hover {
+        color: #f8a100;
+        text-decoration: underline;
+      }
+      .list-group-item {
+        border-left: none;
+        border-right: none;
+        padding: 0.55rem 1rem;
+      }
+      .list-group-item:first-child {
+        border-top: none;
+      }
+      footer {
+        background: #1a1a2e;
+        color: #8a9bb3;
+      }
+      .topic-badge {
+        background: #eaf0fb;
+        color: #0f3460;
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 20px;
+      }
+
+      /* === TECH BANNER HEADER === */
+      .brand-bar {
+        background: #1a1a2e;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .brand-link {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: #f8a100;
+        font-weight: 700;
+        font-size: 1.15rem;
+        gap: 10px;
+      }
+      .brand-link:hover {
+        opacity: 0.85;
+        color: #f8a100;
+      }
+      .tech-banner {
+        background: #16213e;
+        border-bottom: 2px solid rgba(248, 161, 0, 0.2);
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tech-banner::-webkit-scrollbar {
+        height: 3px;
+      }
+      .tech-banner::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .tech-banner .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .tech-tab {
+        display: inline-block;
+        color: #a6adc8;
+        text-decoration: none;
+        padding: 11px 22px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+        white-space: nowrap;
+      }
+      .tech-tab:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.06);
+        text-decoration: none;
+      }
+      .tech-tab.active {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        font-weight: 700;
+      }
+      .tech-tab.coming-soon {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .java-subnav {
+        background: #0f3460;
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+      }
+      .java-subnav::-webkit-scrollbar {
+        height: 3px;
+      }
+      .java-subnav::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .java-subnav .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .java-course-home {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        margin: 0 8px 0 2px;
+        color: #dbeafe;
+        font-size: 0;
+        line-height: 1;
+        text-decoration: none;
+      }
+      .java-course-home img {
+        display: block;
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        object-fit: cover;
+      }
+      .java-course-home:hover {
+        color: #f8a100;
+        text-decoration: none;
+      }
+      .topic-link {
+        display: inline-block;
+        color: #cdd6f4;
+        text-decoration: none;
+        padding: 10px 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+      }
+      .topic-link:hover {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        text-decoration: none;
+      }
+    </style>
+    <link rel="stylesheet" href="../site-theme.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a
+          class="java-course-home"
+          href="https://javacodeex.com/index.html#courses"
+          title="Back to courses"
+          aria-label="Back to courses"
+        >
+          <img src="../icons/javacodeex.jpg" alt="Back to courses" />
+        </a>
+        <a class="topic-link" href="https://javacodeex.com/java/index.html#basics">Basics</a>
+        <a class="topic-link" href="https://javacodeex.com/java/index.html#methods">Methods</a>
+        <a class="topic-link" href="https://javacodeex.com/java/index.html#arrays">Arrays</a>
+        <a class="topic-link" href="https://javacodeex.com/java/index.html#strings">Strings</a>
+        <a class="topic-link" href="https://javacodeex.com/java/index.html#oop">OOP</a>
+        <a class="topic-link" href="https://javacodeex.com/java/index.html#interfaces">Interfaces</a>
+        <a class="topic-link" href="https://javacodeex.com/java/index.html#exceptions">Exceptions</a>
+        <a class="topic-link" href="https://javacodeex.com/java/index.html#regex">Regex</a>
+        <a class="topic-link" href="https://javacodeex.com/java/index.html#memory">Memory</a>
+        <a class="topic-link" href="https://javacodeex.com/java/index.html#generics">Generics</a>
+        <a class="topic-link" href="https://javacodeex.com/java/index.html#collections">Collections</a>
+        <a class="topic-link" href="https://javacodeex.com/java/index.html#java8">Java 8+</a>
+        <a class="topic-link" href="https://javacodeex.com/java/index.html#datetime"
+          >Date &amp; Time</a
+        >
+        <a class="topic-link" href="https://javacodeex.com/java/index.html#multithreading">Multithreading</a>
+        <a class="topic-link" href="https://javacodeex.com/java/index.html#filehandling">Files</a>
+        <!-- <a class="topic-link" href="./networking.html">Networking</a> -->
+        <a class="topic-link" href="https://javacodeex.com/java/index.html#jdbc">JDBC</a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container-xl">
+        <div class="row align-items-center">
+          <div class="col-lg-8">
+            <h1>Java Codeex</h1>
+            <p class="lead mb-2" style="color: #cdd6f4">
+              Java is a high-level, object-oriented programming language used to
+              build web apps, mobile applications, and enterprise software
+              systems.
+            </p>
+            <p style="color: #a6adc8">
+              Java is platform-independent, meaning code written in Java can run
+              on any device that supports the Java Virtual Machine (JVM). Its
+              syntax and structure are similar to C-based languages like C++ and
+              C#.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main content -->
+    <div class="container-xl py-5">
+      <!-- Hello World -->
+      <div class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-3">Hello World Program</h2>
+        <pre><code>public class Codeex {
+    public static void main(String[] args) {
+        System.out.println("Hello World!");
+    }
+}</code></pre>
+        <h6 class="mt-3 mb-2 text-muted">Output</h6>
+        <div class="output-box mb-3">Hello World!</div>
+        <p class="mb-0 text-muted">
+          This program defines a class <code>Codeex</code> with a
+          <code>main</code> method that serves as the entry point and prints
+          <em>Hello World!</em> to the console.
+        </p>
+      </div>
+
+      <!-- Why Learn Java -->
+      <div class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-3">Why Learn Java?</h2>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            &#9679; &nbsp;Used to build Android apps, desktop and web apps,
+            enterprise backend systems, and cloud-based software.
+          </li>
+          <li class="list-group-item">
+            &#9679; &nbsp;In high demand with many job opportunities in software
+            development.
+          </li>
+          <li class="list-group-item">
+            &#9679; &nbsp;Has popular frameworks like Spring and Hibernate,
+            making it powerful for enterprise applications.
+          </li>
+          <li class="list-group-item">
+            &#9679; &nbsp;Supports object-oriented programming for clean,
+            maintainable, and reusable code.
+          </li>
+          <li class="list-group-item">
+            &#9679; &nbsp;Top companies like Amazon, Netflix, and LinkedIn use
+            Java.
+          </li>
+        </ul>
+      </div>
+
+      <!-- 1. Basics -->
+      <div id="basics" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Basics</h2>
+        <p class="text-muted mb-3">
+          Understand core Java concepts such as syntax, variables, data types,
+          loops, and decision-making to start your programming journey.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./introduction-to-java.html">Introduction</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./download-and-install-java.html"
+              >Download and Install Java</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./download-and-install-intellij-idea.html"
+              >Download and Install IntelliJ IDEA</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./download-and-install-intellij-idea.html">Eclipse</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./download-and-install-intellij-idea.html#first-project"
+              >Creating First Java Application in IntelliJ IDEA</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction-to-java.html#jdk-jre-jvm"
+              >JDK vs JRE vs JVM</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction-to-java.html#print-output">Print output</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction-to-java.html#taking-input">Taking Input</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction-to-java.html#identifiers">Identifiers</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction-to-java.html#keywords">Keywords</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction-to-java.html#variables">Variables</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction-to-java.html#data-types">Data Types</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction-to-java.html#literals">Literals</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction-to-java.html#wrapper-classes"
+              >Wrapper Classes</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction-to-java.html#operators">Operators</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction-to-java.html#decision-making"
+              >Decision Making</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction-to-java.html#loops"
+              >Loops and Jump Statements</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./introduction-to-java.html#number-guessing-project"
+              >Project: Number Guessing Game</a
+            >
+            <span class="topic-badge ms-1">Project</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 2. Methods -->
+      <div id="methods" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Methods</h2>
+        <p class="text-muted mb-3">
+          Java methods are reusable blocks of code that perform specific tasks
+          and help organize your program.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./methods.html">Introduction</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./methods.html#static-vs-instance"
+              >Static Methods vs Instance Methods</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./methods.html#access-modifiers">Access Modifiers</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./methods.html#command-line-args"
+              >Command Line Arguments</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./methods.html#varargs">Variable Arguments (Varargs)</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 3. Arrays -->
+      <div id="arrays" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Arrays</h2>
+        <p class="text-muted mb-3">
+          Java arrays store multiple values of the same data type in a single
+          variable using index-based positions.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./arrays.html">Introduction</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./arrays.html#multidimensional"
+              >Multi-Dimensional Arrays</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./arrays.html#jagged-arrays">Jagged Arrays</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./arrays.html#arrays-class">Arrays Class</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./arrays.html#final-arrays">Final Arrays</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./arrays.html#pitfalls">Project: Tic-Tac-Toe Game</a>
+            <span class="topic-badge ms-1">Project</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 4. Strings -->
+      <div id="strings" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Strings</h2>
+        <p class="text-muted mb-3">
+          Java Strings represent sequences of characters and are immutable,
+          widely used for text processing.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./strings.html">Introduction</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./strings.html#immutability">Why Strings are Immutable</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./strings.html#equals-vs-operator">.equals() vs ==</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./strings.html#concatenation">String Concatenation</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./strings.html#string-methods">String Methods</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./strings.html#what-is-string">String Class</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./strings.html#stringbuffer">StringBuffer Class</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./strings.html#stringbuilder">StringBuilder Class</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./strings.html#string-vs-buffer-builder"
+              >Strings vs StringBuffer vs StringBuilder</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- 5. OOP Concepts -->
+      <div id="oop" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">OOP Concepts</h2>
+        <p class="text-muted mb-3">
+          Java follows the Object-Oriented Programming paradigm with principles
+          like inheritance, encapsulation, polymorphism, and abstraction.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./oop-concepts.html">Introduction</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./oop-concepts.html#classes-objects"
+              >Classes and Objects</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./oop-concepts.html#constructors">Constructors</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./oop-concepts.html#this-keyword">this Keyword</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./oop-concepts.html#super-keyword">super Keyword</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./oop-concepts.html#encapsulation">Encapsulation</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./oop-concepts.html#inheritance">Inheritance</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./oop-concepts.html#polymorphism">Polymorphism</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./oop-concepts.html#abstraction">Abstraction</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./oop-concepts.html#object-class">Object Class</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./oop-concepts.html#packages">Packages</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./oop-concepts.html#what-is-oop"
+              >Project: Simple Banking Application</a
+            >
+            <span class="topic-badge ms-1">Project</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 6. Interfaces -->
+      <div id="interfaces" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Interfaces</h2>
+        <p class="text-muted mb-3">
+          Interfaces define contracts that classes must follow and enable
+          abstraction and multiple inheritance patterns.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./interfaces.html">Interfaces</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./interfaces.html#interface-vs-abstract"
+              >Class vs Interface</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./interfaces.html#functional-interface"
+              >Functional Interface</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./interfaces.html#nested-interface">Nested Interface</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./marker-interface.html">Marker Interface</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./interfaces.html#what-is-interface"
+              >Project: Employee Management System</a
+            >
+            <span class="topic-badge ms-1">Project</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 7. Exception Handling -->
+      <div id="exceptions" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Exception Handling</h2>
+        <p class="text-muted mb-3">
+          Exception Handling manages runtime errors using try, catch, throw,
+          throws, and finally so programs don't crash unexpectedly.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./exception-handling.html">Introduction</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./exception-handling.html#try-catch">Try-Catch Block</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./exception-handling.html#final-finally-finalize"
+              >Final, Finally and Finalize</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./exception-handling.html#throw-keyword"
+              >Throw and Throws</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./exception-handling.html#custom-exceptions"
+              >Customized Exception Handling</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./exception-handling.html#chained-exceptions"
+              >Chained Exceptions</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./exception-handling.html#null-pointer-exception"
+              >Null Pointer Exceptions</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./exception-handling.html#overriding-exceptions"
+              >Exception Handling with Method Overriding</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- 8. Regex -->
+      <div id="regex" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Regex</h2>
+        <p class="text-muted mb-3">
+          Java Regex enables pattern matching and text manipulation using the
+          java.util.regex package.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./regex.html">Introduction</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./regex.html#matcher-class">Matcher Class</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./regex.html#char-classes">Character Class</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./regex.html#quantifiers">Quantifiers</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 9. Memory Allocation -->
+      <div id="memory" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Memory Allocation</h2>
+        <p class="text-muted mb-3">
+          Java Memory Allocation involves stack and heap memory, managed
+          automatically by the JVM and garbage collector.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./memory-allocation.html">Java Memory Management</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./memory-allocation.html#object-storage"
+              >How Java Objects Stored in Memory</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./memory-allocation.html#jvm-areas"
+              >Types of Memory Areas Allocated by JVM</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./memory-allocation.html#stack-vs-heap"
+              >Stack vs Heap Memory Allocation</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./memory-allocation.html#garbage-collection"
+              >Garbage Collection</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./memory-allocation.html#gc-algorithms"
+              >Types of JVM Garbage Collectors</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./memory-allocation.html#memory-leaks">Memory Leaks</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 10. Generics -->
+      <div id="generics" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Generics</h2>
+        <p class="text-muted mb-3">
+          Generics enable type-safe classes, interfaces, and methods that work
+          with different data types.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./generics.html">Generic Classes</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./generics.html#wildcards">Wildcards</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./generics.html#bounded-types">Bounded Types</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./generics.html#type-erasure">Type Erasure</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 11. Collections -->
+      <div id="collections" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Collections</h2>
+        <p class="text-muted mb-3">
+          Collections framework provides List, Set, Map, and related classes for
+          handling groups of objects efficiently.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./collections.html">Collections Class</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./collections.html#collection-vs-collections"
+              >Collection Interface</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./collections.html#list-interface">List Interface</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./collections.html#arraylist">ArrayList</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./collections.html#linkedlist">LinkedList</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./collections.html#set-interface">Set Interface</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./collections.html#hashset">HashSet</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./collections.html#hashset">Linked HashSet</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./collections.html#set-interface">TreeSet</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./collections.html#queue-deque">Queue Interface</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./collections.html#priorityqueue">Priority Queue</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./collections.html#queue-deque">Deque Interface</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./collections.html#map-interface">Map Interface</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./collections.html#hashmap">HashMap</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./collections.html#iterator">Iterator</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./collections.html#comparable-comparator"
+              >Comparator Interface</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./collections.html#comparable-comparator"
+              >Comparable Interface</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./collections.html#choosing-collection"
+              >Collection Framework Complete Tutorial</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./collections.html#what-is-collections"
+              >Project: Face Detection System</a
+            >
+            <span class="topic-badge ms-1">Project</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 12. Java 8+ Features -->
+      <div id="java8" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Java 8+ Features</h2>
+        <p class="text-muted mb-3">
+          Java 8 and later introduced Lambda Expressions, Stream API, Optional,
+          and more for concise, expressive code.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./java-8-features.html">Lambda Expressions</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./java-8-features.html#predicate">Predicate</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./java-8-features.html#consumer">Consumer</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./java-8-features.html#supplier">Supplier</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./java-8-features.html#function-method-refs"
+              >Method References</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./java-8-features.html#stream-api">Streams</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./java-8-features.html#optional">Optional</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./java-8-features.html#collectors">Collectors</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 13. Date and Time API -->
+      <div id="datetime" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Date and Time API</h2>
+        <p class="text-muted mb-3">
+          Modern Date &amp; Time API provides immutable classes for dates,
+          times, zones, and formatting.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./date-and-time-api.html">Introduction</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./date-and-time-api.html#localdate">LocalDate</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./date-and-time-api.html#localtime">LocalTime</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./date-and-time-api.html#localdatetime">LocalDateTime</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./date-and-time-api.html#duration">Duration</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./date-and-time-api.html#period">Period</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./date-and-time-api.html#datetimeformatter"
+              >DateTimeFormatter</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- 14. Multithreading -->
+      <div id="multithreading" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Multithreading and Synchronization</h2>
+        <p class="text-muted mb-3">
+          Multithreading enables concurrent execution of threads for better CPU
+          utilization and responsiveness.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./multithreading.html">Introduction</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./multithreading.html#extending-thread">Multithreading</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./multithreading.html#start-vs-run"
+              >Thread.start() vs Thread.run()</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./multithreading.html#thread-sleep">Thread.sleep()</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./multithreading.html#implementing-runnable"
+              >Runnable Interface</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./multithreading.html#what-is-multithreading"
+              >Main Thread</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./multithreading.html#thread-priority">Thread Priority</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./multithreading.html#daemon-threads">Daemon Thread</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./multithreading.html#synchronization"
+              >Java Synchronization</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./multithreading.html#thread-safety">Thread Safety</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./multithreading.html#locks">Locks in Java</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./multithreading.html#locks">Lock vs Monitor</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./multithreading.html#locks"
+              >Lock Framework vs Thread Synchronization</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./multithreading.html#locks">Reentrant Lock</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./multithreading.html#deadlock"
+              >Deadlock in Multithreading</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./multithreading.html#thread-pools">Thread Pools</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./multithreading.html#thread-pools">Executor Framework</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./multithreading.html">Multithreading Complete Tutorial</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./multithreading.html#virtual-threads"
+              >Project: Snake Game</a
+            >
+            <span class="topic-badge ms-1">Project</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 15. File Handling -->
+      <div id="filehandling" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">File Handling</h2>
+        <p class="text-muted mb-3">
+          File Handling lets Java programs create, read, write, and manage files
+          via java.io and java.nio packages.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./file-handling.html">Introduction to Java IO</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./file-handling.html#file-reader-writer">Reader Class</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./file-handling.html#file-reader-writer">Writer Class</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./file-handling.html#io-overview">File Handling</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./file-handling.html#file-class">File Class</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./file-handling.html#file-streams">FileInputStream</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./file-handling.html#file-streams">FileOutputStream</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./file-handling.html#file-reader-writer"
+              >FileReader Class</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./file-handling.html#file-reader-writer"
+              >FileWriter Class</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./file-handling.html#buffered-streams"
+              >BufferedReader Input Stream</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./file-handling.html#buffered-streams"
+              >BufferedReader Output Stream</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./file-handling.html#permission-descriptor"
+              >FilePermission Class</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./file-handling.html#permission-descriptor"
+              >FileDescriptor Class</a
+            >
+          </li>
+          <li class="list-group-item">
+            <a href="./file-handling.html#nio-path-files"
+              >Project: Text Editor</a
+            >
+            <span class="topic-badge ms-1">Project</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 16. Networking (hidden)
+      <div id="networking" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Networking</h2>
+        <p class="text-muted mb-3">
+          Java Networking supports TCP and UDP communication for building
+          client-server applications.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./networking.html">Introduction</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./networking.html#tcp-intro">Socket Programming</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./networking.html#server-socket">Server Socket Class</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./networking.html#url-class">URL Class and Methods</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./networking.html#tcp-full-example"
+              >Project: Chat Application</a
+            >
+            <span class="topic-badge ms-1">Project</span>
+          </li>
+        </ul>
+      </div>
+      -->
+
+      <!-- 17. JDBC -->
+      <div id="jdbc" class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-1">Java Database Connectivity (JDBC)</h2>
+        <p class="text-muted mb-3">
+          JDBC enables Java applications to connect to databases and perform
+          CRUD operations efficiently.
+        </p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <a href="./jdbc.html">Introduction</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./jdbc.html#driver-types">JDBC Driver</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./jdbc.html#connection">JDBC Connection</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./jdbc.html#statement">Types of Statements in JDBC</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./jdbc.html#transactions">Transactions</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./jdbc.html#result-set">ResultSet</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./jdbc.html#result-set-metadata">Metadata</a>
+          </li>
+          <li class="list-group-item">
+            <a href="./jdbc.html#connection-pooling">Connection Pooling</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- end container -->
+
+    <!-- Footer -->
+    <footer class="py-4 text-center mt-2">
+      <p class="mb-0">
+        &copy; 2026 Java Codeex. Built with HTML5 &amp; Bootstrap 5.
+      </p>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmk+GOFVeA//xwkFWEVflJ8ikO1y+k"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>

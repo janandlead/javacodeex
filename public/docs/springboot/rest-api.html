@@ -1,0 +1,902 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Spring Boot REST APIs | Java Codeex</title>
+    <link rel="icon" href="../icons/javacodeex.jpg" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../site-theme.css" />
+    <link rel="stylesheet" href="./springboot.css" />
+  </head>
+  <body>
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" /></a>
+        <a class="topic-link" href="./index.html#basics">Overview</a>
+        <a class="topic-link" href="https://javacodeex.com/springboot/project-structure.html"
+          >Project Structure</a
+        >
+        <a class="topic-link" href="./aop.html">AOP</a>
+        <a class="topic-link" href="./index.html#data-jpa">Data JPA</a>
+        <a class="topic-link" href="./index.html#security">Security</a>
+        <a class="topic-link" href="./index.html#exception-handling"
+          >Global Exception Handling</a
+        >
+        <a class="topic-link" href="./index.html#rest-api">REST APIs</a>
+        <a class="topic-link" href="./validation.html">Validation</a>
+        <a class="topic-link" href="./index.html#testing">Testing</a>
+        <a class="topic-link" href="./index.html#actuator">Actuator</a>
+        <a class="topic-link" href="./index.html#deployment">Deployment</a>
+      </div>
+    </nav>
+    <section class="spring-hero">
+      <div class="container-xl">
+        <span class="spring-pill">Java Codeex</span>
+        <h1 class="mt-3">Building REST APIs</h1>
+        <p class="lead">
+          Create HTTP endpoints that receive requests and return useful
+          responses.
+        </p>
+      </div>
+    </section>
+    <main class="container-xl py-5">
+      <div class="spring-callout mb-4">
+        <strong>In simple terms:</strong> A REST API exposes your application's
+        data and actions as HTTP resources. Each endpoint maps an HTTP method
+        and path to a piece of behavior, and returns a status code that tells
+        the client what actually happened.
+      </div>
+      <div class="concept-diagram">
+        <figcaption>Typical API request flow</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>Client</strong><small>GET /users/1</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Controller</strong><small>Maps the request</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Service</strong><small>Applies business rules</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>JSON</strong><small>Returns the response</small>
+          </div>
+        </div>
+      </div>
+      <h2 id="http-design-basics">HTTP design basics</h2>
+      <p>
+        Before writing controllers, agree on what each HTTP method means for
+        your resources. Consistent method usage lets clients (and caches,
+        proxies, and browsers) make correct assumptions about safety and retry
+        behavior.
+      </p>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Purpose</th>
+              <th>Typical response</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>GET</td>
+              <td>Read data</td>
+              <td>200 OK</td>
+            </tr>
+            <tr>
+              <td>POST</td>
+              <td>Create data</td>
+              <td>201 Created</td>
+            </tr>
+            <tr>
+              <td>PUT/PATCH</td>
+              <td>Update data</td>
+              <td>200 OK</td>
+            </tr>
+            <tr>
+              <td>DELETE</td>
+              <td>Remove data</td>
+              <td>204 No Content</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h2 id="http-methods-explained">
+        HTTP methods explained with a store example
+      </h2>
+      <p>
+        Imagine a product resource at <code>/api/products</code>. The URL names
+        the resource; the HTTP method tells the server what action the client
+        wants. A method should be used consistently so mobile apps, browsers,
+        and other services can understand the API.
+      </p>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Example</th>
+              <th>Meaning</th>
+              <th>Safe to repeat?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>GET</td>
+              <td><code>GET /api/products/10</code></td>
+              <td>Read product 10</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>POST</td>
+              <td><code>POST /api/products</code></td>
+              <td>Create a new product</td>
+              <td>Usually no</td>
+            </tr>
+            <tr>
+              <td>PUT</td>
+              <td><code>PUT /api/products/10</code></td>
+              <td>Replace the complete product</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>PATCH</td>
+              <td><code>PATCH /api/products/10</code></td>
+              <td>Change selected fields</td>
+              <td>Design carefully</td>
+            </tr>
+            <tr>
+              <td>DELETE</td>
+              <td><code>DELETE /api/products/10</code></td>
+              <td>Remove product 10</td>
+              <td>Yes</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="get-method">GET: read resources</h3>
+      <p>
+        Use GET when the client wants data and does not want to change the
+        database. Filters, pagination, and sorting belong in query parameters.
+      </p>
+      <pre
+        class="spring-code"
+      ><code>GET /api/products?page=0&amp;size=20&amp;sort=name,asc
+GET /api/products/10</code></pre>
+      <p>
+        Typical responses are <code>200 OK</code> when data is found and
+        <code>404 Not Found</code> when a single product does not exist.
+      </p>
+
+      <h3 id="post-method">POST: create a resource</h3>
+      <p>
+        Use POST when the server generates the new resource ID. Return
+        <code>201 Created</code> and a <code>Location</code> header pointing to
+        the created resource.
+      </p>
+      <pre class="spring-code"><code>POST /api/products
+Content-Type: application/json
+
+{
+  "name": "Mechanical Keyboard",
+  "price": 2500.00,
+  "stock": 25
+}</code></pre>
+
+      <h3 id="put-method">PUT: replace a complete resource</h3>
+      <p>
+        PUT replaces the complete representation at a known URL. Require all
+        updateable fields in the request so that an omitted field does not get
+        accidentally erased or assigned an unexpected default.
+      </p>
+      <pre class="spring-code"><code>PUT /api/products/10
+Content-Type: application/json
+
+{
+  "name": "Mechanical Keyboard Pro",
+  "price": 3200.00,
+  "stock": 18
+}</code></pre>
+
+      <h3 id="patch-method">PATCH: update selected fields</h3>
+      <p>
+        PATCH changes only the fields included in the request. It is useful for
+        a quick stock or price update. The service must distinguish between an
+        omitted field and a field explicitly set to <code>null</code> if null is
+        meaningful in your application.
+      </p>
+      <pre class="spring-code"><code>PATCH /api/products/10
+Content-Type: application/json
+
+{
+  "price": 2999.00
+}</code></pre>
+
+      <h3 id="delete-method">DELETE: remove a resource</h3>
+      <p>
+        DELETE removes a resource or marks it inactive when your application
+        uses soft deletes. Return <code>204 No Content</code> after a successful
+        deletion. Do not return a misleading success when the resource never
+        existed; use <code>404 Not Found</code> when that distinction matters.
+      </p>
+      <pre class="spring-code"><code>DELETE /api/products/10
+
+204 No Content</code></pre>
+
+      <h2 id="crud-walkthrough">A complete CRUD example</h2>
+      <p>
+        The controller below manages a simple <code>Task</code> resource. It
+        supports listing, reading one task, creating, updating, and deleting
+        &mdash; the five operations almost every resource needs. Notice how each
+        method returns a <code>ResponseEntity</code> so it can control the exact
+        status code, not just the body.
+      </p>
+      <pre class="spring-code"><code>@RestController
+@RequestMapping("/api/tasks")
+class TaskController {
+    private final TaskService service;
+
+    TaskController(TaskService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    List&lt;TaskResponse&gt; list() {
+        return service.findAll();
+    }
+
+    @GetMapping("/{id}")
+    ResponseEntity&lt;TaskResponse&gt; getById(@PathVariable Long id) {
+        return service.findById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -&gt; ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    ResponseEntity&lt;TaskResponse&gt; create(@Valid @RequestBody CreateTaskRequest request) {
+        TaskResponse created = service.create(request);
+        URI location = URI.create("/api/tasks/" + created.id());
+        return ResponseEntity.created(location).body(created);
+    }
+
+    @PutMapping("/{id}")
+    ResponseEntity&lt;TaskResponse&gt; update(@PathVariable Long id, @Valid @RequestBody UpdateTaskRequest request) {
+        return service.update(id, request)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -&gt; ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity&lt;Void&gt; delete(@PathVariable Long id) {
+        boolean removed = service.delete(id);
+        return removed ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    }
+}</code></pre>
+      <div class="spring-callout">
+        <strong>Tip:</strong> <code>POST</code> that creates a resource should
+        return <code>201 Created</code> with a <code>Location</code> header
+        pointing at the new resource.
+        <code>ResponseEntity.created(location)</code> sets that header for you.
+      </div>
+      <h2 id="product-api-end-to-end">End-to-end product API</h2>
+      <p>
+        The following example shows how a real application separates HTTP,
+        business logic, and database access. A request travels through the
+        controller, service, and repository, then the result is mapped to a
+        response DTO.
+      </p>
+
+      <h3 id="product-api-entity">1. Entity and request DTOs</h3>
+      <pre class="spring-code"><code>@Entity
+@Table(name = "products")
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private BigDecimal price;
+    private int stock;
+
+    // constructors, getters, and setters
+}
+
+public record CreateProductRequest(
+        @NotBlank(message = "Name is required") String name,
+        @Positive(message = "Price must be greater than zero")
+        BigDecimal price,
+        @PositiveOrZero(message = "Stock cannot be negative") int stock) {
+}
+
+public record UpdateProductRequest(
+        @NotBlank String name,
+        @Positive BigDecimal price,
+        @PositiveOrZero int stock) {
+}
+
+public record ProductPatchRequest(
+        String name,
+        BigDecimal price,
+        Integer stock) {
+}</code></pre>
+
+      <h3 id="product-api-repository">2. Repository</h3>
+      <pre class="spring-code"><code>public interface ProductRepository
+        extends JpaRepository&lt;Product, Long&gt; {
+
+    Page&lt;Product&gt; findByNameContainingIgnoreCase(
+            String name, Pageable pageable);
+}</code></pre>
+
+      <h3 id="product-api-service">3. Service</h3>
+      <p>
+        The service owns business rules such as checking stock and deciding what
+        to do when a product is missing. It does not know anything about HTTP
+        status codes.
+      </p>
+      <pre class="spring-code"><code>@Service
+@Transactional
+public class ProductService {
+    private final ProductRepository repository;
+
+    public ProductService(ProductRepository repository) {
+        this.repository = repository;
+    }
+
+    @Transactional(readOnly = true)
+    public Page&lt;Product&gt; findAll(String name, Pageable pageable) {
+        return name == null || name.isBlank()
+                ? repository.findAll(pageable)
+                : repository.findByNameContainingIgnoreCase(name, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Product findById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -&gt; new ProductNotFoundException(id));
+    }
+
+    public Product create(CreateProductRequest request) {
+        Product product = new Product();
+        product.setName(request.name());
+        product.setPrice(request.price());
+        product.setStock(request.stock());
+        return repository.save(product);
+    }
+
+    public Product replace(Long id, UpdateProductRequest request) {
+        Product product = findById(id);
+        product.setName(request.name());
+        product.setPrice(request.price());
+        product.setStock(request.stock());
+        return product;
+    }
+
+    public Product patch(Long id, ProductPatchRequest request) {
+        Product product = findById(id);
+        if (request.name() != null) product.setName(request.name());
+        if (request.price() != null) product.setPrice(request.price());
+        if (request.stock() != null) product.setStock(request.stock());
+        return product;
+    }
+
+    public void delete(Long id) {
+        Product product = findById(id);
+        repository.delete(product);
+    }
+}</code></pre>
+
+      <h3 id="product-api-controller">4. Controller</h3>
+      <pre class="spring-code"><code>@RestController
+@RequestMapping("/api/products")
+public class ProductController {
+    private final ProductService service;
+
+    public ProductController(ProductService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public Page&lt;Product&gt; findAll(
+            @RequestParam(required = false) String name,
+            @PageableDefault(size = 20, sort = "name")
+            Pageable pageable) {
+        return service.findAll(name, pageable);
+    }
+
+    @GetMapping("/{id}")
+    public Product findById(@PathVariable Long id) {
+        return service.findById(id);
+    }
+
+    @PostMapping
+    public ResponseEntity&lt;Product&gt; create(
+            @Valid @RequestBody CreateProductRequest request) {
+        Product created = service.create(request);
+        URI location = URI.create("/api/products/" + created.getId());
+        return ResponseEntity.created(location).body(created);
+    }
+
+    @PutMapping("/{id}")
+    public Product replace(@PathVariable Long id,
+                           @Valid @RequestBody UpdateProductRequest request) {
+        return service.replace(id, request);
+    }
+
+    @PatchMapping("/{id}")
+    public Product patch(@PathVariable Long id,
+                         @RequestBody ProductPatchRequest request) {
+        return service.patch(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
+    }
+}</code></pre>
+
+      <h3 id="product-api-testing">5. Test the API</h3>
+      <pre class="spring-code"><code># List products
+curl "http://localhost:8080/api/products?page=0&amp;size=10&amp;sort=name,asc"
+
+# Create a product
+curl -X POST http://localhost:8080/api/products \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Monitor","price":18000,"stock":12}'
+
+# Read one product
+curl http://localhost:8080/api/products/1
+
+# Replace the complete product
+curl -X PUT http://localhost:8080/api/products/1 \
+  -H "Content-Type: application/json" \
+  -d '{"name":"4K Monitor","price":22000,"stock":8}'
+
+# Update only the stock
+curl -X PATCH http://localhost:8080/api/products/1 \
+  -H "Content-Type: application/json" \
+  -d '{"stock":25}'
+
+# Delete a product
+curl -X DELETE http://localhost:8080/api/products/1</code></pre>
+
+      <h2 id="path-variables-and-parameters">
+        @PathVariable, @RequestParam, and @RequestBody
+      </h2>
+      <p>
+        Spring MVC pulls request data into method parameters using a small set
+        of annotations. Each one targets a different part of the HTTP request.
+      </p>
+      <p>
+        <code>@PathVariable</code> reads a segment of the URL path &mdash; use
+        it for values that identify a specific resource.
+      </p>
+      <pre class="spring-code"><code>@GetMapping("/{id}")
+ResponseEntity&lt;TaskResponse&gt; getById(@PathVariable Long id) {
+    return service.findById(id)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -&gt; ResponseEntity.notFound().build());
+}</code></pre>
+      <p>
+        <code>@RequestParam</code> reads a query string value. It can be
+        optional, and you can supply a default so the parameter is never
+        <code>null</code>.
+      </p>
+      <pre class="spring-code"><code>@GetMapping
+List&lt;TaskResponse&gt; list(
+        @RequestParam(required = false) String status,
+        @RequestParam(defaultValue = "false") boolean overdueOnly) {
+    return service.findAll(status, overdueOnly);
+}</code></pre>
+      <p>
+        <code>@RequestBody</code> deserializes the JSON request body into a Java
+        object, typically a DTO record annotated with validation constraints.
+      </p>
+      <pre class="spring-code"><code>@PostMapping
+ResponseEntity&lt;TaskResponse&gt; create(@Valid @RequestBody CreateTaskRequest request) {
+    TaskResponse created = service.create(request);
+    return ResponseEntity.created(URI.create("/api/tasks/" + created.id())).body(created);
+}</code></pre>
+
+      <h3 id="request-input-choice">
+        Which request annotation should you use?
+      </h3>
+      <p>
+        Choose the annotation based on where the value belongs in the HTTP
+        request. A simple rule is: use <code>@PathVariable</code> to identify a
+        resource, <code>@RequestParam</code> to filter or control a request, and
+        <code>@RequestBody</code> to send a new or changed resource as JSON.
+      </p>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Annotation</th>
+              <th>Reads from</th>
+              <th>Use it for</th>
+              <th>Example</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>@PathVariable</code></td>
+              <td>URL path</td>
+              <td>Identifying one resource</td>
+              <td><code>/api/products/42</code></td>
+            </tr>
+            <tr>
+              <td><code>@RequestParam</code></td>
+              <td>Query string</td>
+              <td>Filtering, searching, paging, and sorting</td>
+              <td><code>/api/products?category=laptop</code></td>
+            </tr>
+            <tr>
+              <td><code>@RequestBody</code></td>
+              <td>JSON request body</td>
+              <td>Creating or updating multiple fields</td>
+              <td><code>{"name":"Laptop","price":75000}</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 id="path-variable-use-case">When to use @PathVariable</h3>
+      <p>
+        Use <code>@PathVariable</code> when the value identifies the resource
+        being addressed. The value is normally required, and changing it means
+        addressing a different resource.
+      </p>
+      <pre class="spring-code"><code>GET /api/products/42
+
+@GetMapping("/products/{id}")
+public Product findProduct(@PathVariable Long id) {
+    return productService.findById(id);
+}</code></pre>
+      <p>
+        Here, <code>42</code> is not a filter. It identifies one product, so it
+        belongs in the URL path.
+      </p>
+
+      <h3 id="request-param-use-case">When to use @RequestParam</h3>
+      <p>
+        Use <code>@RequestParam</code> for optional or changeable instructions
+        about a collection: search text, category filters, page number, page
+        size, sorting, or flags. Query parameters should not change the identity
+        of the resource.
+      </p>
+      <pre
+        class="spring-code"
+      ><code>GET /api/products?category=office&amp;minPrice=1000&amp;page=0&amp;size=20
+
+@GetMapping("/products")
+public Page&lt;Product&gt; search(
+        @RequestParam(required = false) String category,
+        @RequestParam(required = false) BigDecimal minPrice,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "20") int size) {
+    return productService.search(category, minPrice, page, size);
+}</code></pre>
+      <p>
+        The same endpoint can support different searches without creating a new
+        URL for every combination of filters.
+      </p>
+
+      <h3 id="request-body-use-case">When to use @RequestBody</h3>
+      <p>
+        Use <code>@RequestBody</code> when the client sends structured data,
+        usually JSON, to create or update a resource. Spring Boot uses Jackson
+        to convert the JSON into a Java DTO. The client should send the header
+        <code>Content-Type: application/json</code>.
+      </p>
+      <pre class="spring-code"><code>POST /api/products
+Content-Type: application/json
+
+{
+  "name": "Laptop",
+  "price": 75000.00,
+  "stock": 12
+}
+
+public record CreateProductRequest(
+        @NotBlank String name,
+        @Positive BigDecimal price,
+        @PositiveOrZero int stock) {
+}
+
+public record ProductResponse(
+        Long id, String name, BigDecimal price, int stock) {
+}
+
+@PostMapping("/products")
+public ResponseEntity&lt;ProductResponse&gt; create(
+        @Valid @RequestBody CreateProductRequest request) {
+    ProductResponse created = productService.create(request);
+    URI location = URI.create("/api/products/" + created.id());
+    return ResponseEntity.created(location).body(created);
+}</code></pre>
+
+      <h3 id="json-request-end-to-end">End-to-end JSON request processing</h3>
+      <p>
+        When a client creates a product, the JSON travels through the following
+        layers. Each layer has one responsibility, which makes the application
+        easier to test and maintain.
+      </p>
+      <div class="concept-diagram">
+        <figcaption>JSON create request flow</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>JSON</strong><small>Client sends product</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Controller</strong><small>Deserialize and validate</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Service</strong><small>Apply business rules</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Repository</strong><small>Save database row</small>
+          </div>
+        </div>
+      </div>
+
+      <h4 id="json-controller-layer">1. Controller receives the JSON</h4>
+      <pre class="spring-code"><code>@RestController
+@RequestMapping("/api/products")
+public class ProductController {
+    private final ProductService productService;
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
+
+    @PostMapping
+    public ResponseEntity&lt;ProductResponse&gt; create(
+            @Valid @RequestBody CreateProductRequest request) {
+        ProductResponse response = productService.create(request);
+        return ResponseEntity
+                .created(URI.create("/api/products/" + response.id()))
+                .body(response);
+    }
+}</code></pre>
+
+      <h4 id="json-service-layer">2. Service applies business rules</h4>
+      <pre class="spring-code"><code>@Service
+public class ProductService {
+    private final ProductRepository repository;
+
+    public ProductService(ProductRepository repository) {
+        this.repository = repository;
+    }
+
+    @Transactional
+    public ProductResponse create(CreateProductRequest request) {
+        if (repository.existsByNameIgnoreCase(request.name())) {
+            throw new DuplicateProductException(request.name());
+        }
+
+        Product product = new Product();
+        product.setName(request.name());
+        product.setPrice(request.price());
+        product.setStock(request.stock());
+
+        Product saved = repository.save(product);
+        return new ProductResponse(
+                saved.getId(), saved.getName(),
+                saved.getPrice(), saved.getStock());
+    }
+}</code></pre>
+
+      <h4 id="json-repository-layer">3. Repository saves the entity</h4>
+      <pre class="spring-code"><code>public interface ProductRepository
+        extends JpaRepository&lt;Product, Long&gt; {
+
+    boolean existsByNameIgnoreCase(String name);
+}</code></pre>
+
+      <h4 id="json-response">4. The client receives a response</h4>
+      <pre class="spring-code"><code>HTTP/1.1 201 Created
+Location: /api/products/101
+Content-Type: application/json
+
+{
+  "id": 101,
+  "name": "Laptop",
+  "price": 75000.00,
+  "stock": 12
+}</code></pre>
+      <p>
+        If the JSON is invalid or a required field is missing, validation stops
+        the request before the service runs. A global exception handler can
+        return <code>400 Bad Request</code> with field-specific messages.
+      </p>
+      <h2 id="response-shape">
+        Response shape: ResponseEntity&lt;T&gt; vs a bare object
+      </h2>
+      <p>
+        You can return a plain object from a controller method and Spring will
+        serialize it with a <code>200 OK</code> status. That is fine for simple,
+        always-successful reads. Reach for
+        <code>ResponseEntity&lt;T&gt;</code> whenever the status code, headers,
+        or the presence of a body can vary &mdash; for example, a lookup that
+        might not find anything, or a create operation that needs a
+        <code>Location</code> header.
+      </p>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Return type</th>
+              <th>Use when</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Bare object (e.g. <code>TaskResponse</code>)</td>
+              <td>
+                The operation always succeeds and always returns
+                <code>200 OK</code> with the same shape.
+              </td>
+            </tr>
+            <tr>
+              <td><code>ResponseEntity&lt;T&gt;</code></td>
+              <td>
+                You need a different status per outcome (404, 201, 204), custom
+                headers, or no body at all.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="spring-callout">
+        <strong>Warning:</strong> Returning <code>null</code> from a bare-object
+        method still sends <code>200 OK</code> with an empty body, which is
+        misleading to clients. Use
+        <code>ResponseEntity.notFound().build()</code> instead when a resource
+        is missing.
+      </div>
+      <h2 id="pagination-and-sorting">Pagination and sorting</h2>
+      <p>
+        Returning an entire table as one JSON array does not scale. Spring
+        Data's <code>Pageable</code> lets a controller accept page, size, and
+        sort query parameters automatically, and a repository can return a
+        <code>Page&lt;T&gt;</code> that carries the data plus paging metadata.
+      </p>
+      <pre
+        class="spring-code"
+      ><code>interface TaskRepository extends JpaRepository&lt;Task, Long&gt; {
+}
+
+@GetMapping
+Page&lt;TaskResponse&gt; list(@PageableDefault(size = 20, sort = "createdAt") Pageable pageable) {
+    return repository.findAll(pageable).map(TaskMapper::toResponse);
+}</code></pre>
+      <p>
+        A request like
+        <code>GET /api/tasks?page=1&amp;size=10&amp;sort=title,asc</code> is
+        bound directly into the <code>Pageable</code> argument &mdash; no manual
+        parsing required. The resulting <code>Page&lt;T&gt;</code> serializes
+        with <code>content</code>, <code>totalElements</code>,
+        <code>totalPages</code>, and the current page number.
+      </p>
+      <h2 id="api-versioning">API versioning strategies</h2>
+      <p>
+        APIs evolve. Pick a versioning strategy before you need it, and keep it
+        consistent across endpoints.
+      </p>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Strategy</th>
+              <th>Example</th>
+              <th>Trade-off</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>URI path</td>
+              <td><code>/api/v1/tasks</code></td>
+              <td>Simple, visible, but multiplies routes across versions.</td>
+            </tr>
+            <tr>
+              <td>Custom header</td>
+              <td><code>X-API-Version: 2</code></td>
+              <td>
+                Keeps URLs stable, but is less discoverable and harder to test
+                in a browser.
+              </td>
+            </tr>
+            <tr>
+              <td>Accept header (media type)</td>
+              <td><code>Accept: application/vnd.app.v2+json</code></td>
+              <td>
+                Follows HTTP content negotiation closely, but adds client
+                complexity.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h2 id="dto-mapping">DTO mapping pattern</h2>
+      <p>
+        A DTO (data transfer object) describes exactly what a client sends or
+        receives. An entity describes how data is persisted. They usually
+        diverge: an entity might carry lazy associations, audit columns, or
+        internal flags that should never appear in an HTTP response, and a
+        create request rarely matches every entity field one-to-one.
+      </p>
+      <pre class="spring-code"><code>// What the database stores
+@Entity
+class Task {
+    @Id @GeneratedValue Long id;
+    String title;
+    boolean done;
+    Instant createdAt;
+    @ManyToOne User owner;
+}
+
+// What a client sends to create a task
+record CreateTaskRequest(@NotBlank String title) {}
+
+// What a client receives back
+record TaskResponse(Long id, String title, boolean done, Instant createdAt) {}
+
+class TaskMapper {
+    static TaskResponse toResponse(Task task) {
+        return new TaskResponse(task.getId(), task.getTitle(), task.isDone(), task.getCreatedAt());
+    }
+
+    static Task toEntity(CreateTaskRequest request) {
+        Task task = new Task();
+        task.setTitle(request.title());
+        return task;
+    }
+}</code></pre>
+      <p>
+        Mapping by hand (or with a library like MapStruct) keeps persistence
+        details out of your public contract. Exposing entities directly tends to
+        leak internal fields, breaks when you refactor the schema, and can
+        trigger lazy-loading errors when Jackson tries to serialize an
+        association outside a transaction.
+      </p>
+      <div class="spring-callout">
+        <strong>Remember:</strong> Treat your DTOs as the real API contract. You
+        can rename database columns, split tables, or change relationships
+        without breaking clients, as long as the DTO shape stays the same.
+      </div>
+      <a class="btn btn-success" href="validation.html"
+        >Next: Validation &rarr;</a
+      >
+    </main>
+    <footer class="py-4 text-center">
+      <p class="mb-0">&copy; 2026 Java Codeex</p>
+    </footer>
+    <script src="./springboot-nav.js"></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

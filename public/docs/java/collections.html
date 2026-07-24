@@ -1,0 +1,1373 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="Java Collections Framework complete guide - ArrayList, HashMap, HashSet, TreeSet, LinkedList, Queue, Deque, Comparable vs Comparator with examples."
+    />
+    <meta
+      name="keywords"
+      content="Java collections, ArrayList, HashMap, HashSet, Java List, Java Map, Java Set, collections framework Java"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Java Codeex" />
+    <link rel="canonical" href="https://javacodeex.in/java/collections/" />
+    <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
+    <link
+      rel="shortcut icon"
+      href="../icons/javacodeex.jpg"
+      type="image/jpeg"
+    />
+    <link rel="apple-touch-icon" href="../icons/javacodeex.jpg" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta
+      property="og:title"
+      content="Java Collections Framework - List, Set, Map, Queue | Java Codeex"
+    />
+    <meta
+      property="og:description"
+      content="Java Collections Framework complete guide - ArrayList, HashMap, HashSet, TreeSet, LinkedList, Queue, Deque, Comparable vs Comparator with examples."
+    />
+    <meta
+      property="og:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta property="og:url" content="https://javacodeex.in/collections/" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Java Collections Framework - List, Set, Map, Queue | Java Codeex"
+    />
+    <meta
+      name="twitter:description"
+      content="Java Collections Framework complete guide - ArrayList, HashMap, HashSet, TreeSet, LinkedList, Queue, Deque, Comparable vs Comparator with examples."
+    />
+    <meta
+      name="twitter:image"
+      content="https://javacodeex.in/icons/javacodeex.jpg"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Java Collections Framework - List, Set, Map, Queue | Java Codeex
+    </title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      body {
+        scroll-behavior: smooth;
+        font-size: 1rem;
+        color: #222;
+      }
+      .navbar {
+        background-color: #1a1a2e;
+      }
+      .navbar-brand {
+        font-weight: 700;
+        color: #f8a100 !important;
+      }
+      .navbar-nav .nav-link {
+        color: #cdd6f4 !important;
+        font-size: 0.85rem;
+      }
+      .navbar-nav .nav-link:hover {
+        color: #f8a100 !important;
+      }
+      .page-hero {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 60%,
+          #0f3460 100%
+        );
+        color: #fff;
+        padding: 48px 0 36px;
+      }
+      .page-hero h1 {
+        font-size: 2.2rem;
+        font-weight: 800;
+      }
+      .breadcrumb-item a {
+        color: #f8a100;
+        text-decoration: none;
+      }
+      .breadcrumb-item.active {
+        color: #cdd6f4;
+      }
+      .breadcrumb-item + .breadcrumb-item::before {
+        color: #8a9bb3;
+      }
+      .content-wrapper {
+        max-width: 860px;
+      }
+      h2 {
+        font-size: 1.45rem;
+        font-weight: 700;
+        color: #0f3460;
+        border-left: 5px solid #f8a100;
+        padding-left: 12px;
+        margin-top: 2.2rem;
+        margin-bottom: 0.8rem;
+      }
+      h3 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #16213e;
+        margin-top: 1.6rem;
+        margin-bottom: 0.5rem;
+      }
+      p {
+        line-height: 1.8;
+      }
+      pre {
+        background: #1e1e2e;
+        color: #cdd6f4;
+        border-radius: 8px;
+        padding: 1.2rem 1.4rem;
+        font-size: 0.88rem;
+        overflow-x: auto;
+        margin: 1rem 0;
+      }
+      code.inline {
+        background: #eef2ff;
+        color: #0f3460;
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-size: 0.88rem;
+      }
+      .output-box {
+        background: #0d1117;
+        color: #58d68d;
+        border-left: 4px solid #58d68d;
+        border-radius: 4px;
+        padding: 0.8rem 1.2rem;
+        font-family: monospace;
+        font-size: 0.92rem;
+        margin: 0.5rem 0 1rem;
+      }
+      .note-box {
+        background: #eaf4ff;
+        border-left: 5px solid #3b82f6;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .note-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .warn-box {
+        background: #fff8e1;
+        border-left: 5px solid #f8a100;
+        border-radius: 6px;
+        padding: 0.9rem 1.2rem;
+        margin: 1rem 0;
+      }
+      .warn-box p {
+        margin: 0;
+        font-size: 0.93rem;
+      }
+      .table thead th {
+        background: #0f3460;
+        color: #fff;
+      }
+      .table-hover tbody tr:hover {
+        background: #f0f6ff;
+      }
+      .toc {
+        background: #f8f9fc;
+        border: 1px solid #e0e7ef;
+        border-radius: 10px;
+        padding: 1.2rem 1.4rem;
+        position: sticky;
+        top: 72px;
+      }
+      .toc h6 {
+        font-weight: 700;
+        color: #0f3460;
+        margin-bottom: 0.8rem;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        letter-spacing: 0.05em;
+      }
+      .toc a {
+        display: block;
+        font-size: 0.87rem;
+        color: #444;
+        text-decoration: none;
+        padding: 3px 0 3px 8px;
+        border-left: 3px solid transparent;
+        transition: all 0.15s;
+      }
+      .toc a:hover {
+        color: #f8a100;
+        border-left-color: #f8a100;
+      }
+      footer {
+        background: #1a1a2e;
+        color: #8a9bb3;
+      }
+
+      /* === TECH BANNER HEADER === */
+      .brand-bar {
+        background: #1a1a2e;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .brand-link {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: #f8a100;
+        font-weight: 700;
+        font-size: 1.15rem;
+        gap: 10px;
+      }
+      .brand-link:hover {
+        opacity: 0.85;
+        color: #f8a100;
+      }
+      .tech-banner {
+        background: #16213e;
+        border-bottom: 2px solid rgba(248, 161, 0, 0.2);
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tech-banner::-webkit-scrollbar {
+        height: 3px;
+      }
+      .tech-banner::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .tech-banner .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .tech-tab {
+        display: inline-block;
+        color: #a6adc8;
+        text-decoration: none;
+        padding: 11px 22px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-bottom: 3px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s;
+        white-space: nowrap;
+      }
+      .tech-tab:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.06);
+        text-decoration: none;
+      }
+      .tech-tab.active {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        font-weight: 700;
+      }
+      .tech-tab.coming-soon {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      .java-subnav {
+        background: #0f3460;
+        position: sticky;
+        top: 0;
+        z-index: 1020;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+      }
+      .java-subnav::-webkit-scrollbar {
+        height: 3px;
+      }
+      .java-subnav::-webkit-scrollbar-thumb {
+        background: #f8a100;
+        border-radius: 2px;
+      }
+      .java-subnav .container-xl {
+        padding-top: 0;
+        padding-bottom: 0;
+        display: flex;
+      }
+      .topic-link {
+        display: inline-block;
+        color: #cdd6f4;
+        text-decoration: none;
+        padding: 10px 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        border-bottom: 2px solid transparent;
+        transition:
+          color 0.2s,
+          border-color 0.2s;
+        white-space: nowrap;
+      }
+      .topic-link:hover {
+        color: #f8a100;
+        border-bottom-color: #f8a100;
+        text-decoration: none;
+      }
+    </style>
+    <link rel="stylesheet" href="../site-theme.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="topic-link" href="../index.html#basics">Basics</a>
+        <a class="topic-link" href="../index.html#methods">Methods</a>
+        <a class="topic-link" href="../index.html#arrays">Arrays</a>
+        <a class="topic-link" href="../index.html#strings">Strings</a>
+        <a class="topic-link" href="../index.html#oop">OOP</a>
+        <a class="topic-link" href="../index.html#interfaces">Interfaces</a>
+        <a class="topic-link" href="../index.html#exceptions">Exceptions</a>
+        <a class="topic-link" href="../index.html#regex">Regex</a>
+        <a class="topic-link" href="../index.html#memory">Memory</a>
+        <a class="topic-link" href="../index.html#generics">Generics</a>
+        <a class="topic-link" href="../index.html#collections">Collections</a>
+        <a class="topic-link" href="../index.html#java8">Java 8+</a>
+        <a class="topic-link" href="../index.html#datetime">Date &amp; Time</a>
+        <a class="topic-link" href="../index.html#multithreading"
+          >Multithreading</a
+        >
+        <a class="topic-link" href="../index.html#filehandling">Files</a>
+        <!-- <a class="topic-link" href="../index.html#networking">Networking</a> -->
+        <a class="topic-link" href="../index.html#jdbc">JDBC</a>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="page-hero">
+      <div class="container-xl">
+        <nav aria-label="breadcrumb" class="mb-3">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="../index.html">Java Codeex</a>
+            </li>
+            <li class="breadcrumb-item">
+              <a href="../index.html#collections">Collections</a>
+            </li>
+            <li class="breadcrumb-item active">
+              Collections Framework in Java
+            </li>
+          </ol>
+        </nav>
+        <h1>Collections Framework in Java</h1>
+        <p class="mb-0" style="color: #cdd6f4; font-size: 1.1rem">
+          Master Java's Collections Framework — List, Set, Queue, Map and their
+          implementations.
+        </p>
+      </div>
+    </section>
+    <aside class="topic-guide" aria-label="Learning guide">
+      <div class="topic-guide-step">
+        <span>01</span><strong>Choose a collection</strong
+        ><small>List, Set, Map, or Queue</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>02</span><strong>Choose a collection</strong
+        ><small>Add and retrieve data</small>
+      </div>
+      <div class="topic-guide-step">
+        <span>03</span><strong>Choose a collection</strong
+        ><small>Use the right structure</small>
+      </div>
+      <p class="topic-guide-summary">
+        <strong>Learning goal:</strong> Collections help programs manage
+        changing groups of objects.
+      </p>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="container-xl py-5">
+      <div class="row g-5">
+        <!-- Article -->
+        <div class="col-lg-8">
+          <article class="content-wrapper">
+            <!-- Section 1 -->
+            <h2 id="what-is-collections">
+              1. What is the Collections Framework?
+            </h2>
+            <p>
+              The Java Collections Framework (JCF) is a unified architecture for
+              storing and manipulating groups of objects. It provides a set of
+              interfaces, implementations, and algorithms that make it easy to
+              work with data structures like lists, sets, queues, and maps
+              without having to write them from scratch.
+            </p>
+            <p>
+              The core hierarchy of the Collections Framework looks like this:
+            </p>
+            <pre>
+java.lang.Iterable
+  +-- java.util.Collection
+        +-- List              (ordered, duplicates allowed)
+        ¦     +-- ArrayList
+        ¦     +-- LinkedList
+        ¦     +-- Vector
+        +-- Set               (no duplicates)
+        ¦     +-- HashSet
+        ¦     +-- LinkedHashSet
+        ¦     +-- TreeSet (SortedSet)
+        +-- Queue             (FIFO ordering)
+              +-- LinkedList
+              +-- PriorityQueue
+              +-- Deque
+                    +-- ArrayDeque
+                    +-- LinkedList
+
+java.util.Map                 (key-value pairs, separate hierarchy)
+  +-- HashMap
+  +-- LinkedHashMap
+  +-- TreeMap (SortedMap)</pre>
+            <p>
+              <strong>Interfaces</strong> define the contract (what operations
+              are supported). <strong>Implementations</strong> are the concrete
+              classes you instantiate. For example,
+              <code class="inline">List</code> is the interface;
+              <code class="inline">ArrayList</code> and
+              <code class="inline">LinkedList</code> are implementations.
+            </p>
+            <div class="note-box">
+              <p>
+                <strong>Note:</strong> <code class="inline">Map</code> does not
+                extend <code class="inline">Collection</code>. It is a separate
+                top-level interface in the framework.
+              </p>
+            </div>
+
+            <!-- Section 2 -->
+            <h2 id="collection-vs-collections">2. Collection vs Collections</h2>
+            <p>
+              These two are frequently confused but serve very different
+              purposes:
+            </p>
+            <ul>
+              <li>
+                <code class="inline">java.util.Collection</code> — an
+                <strong>interface</strong>. It is the root interface of the
+                collection hierarchy. Classes like
+                <code class="inline">ArrayList</code>,
+                <code class="inline">HashSet</code>, and
+                <code class="inline">LinkedList</code> implement it.
+              </li>
+              <li>
+                <code class="inline">java.util.Collections</code> — a
+                <strong>utility class</strong> (all static methods). It provides
+                algorithms like sorting, shuffling, binary search, and
+                synchronization wrappers.
+              </li>
+            </ul>
+            <pre>
+import java.util.*;
+
+public class CollectionVsCollections {
+    public static void main(String[] args) {
+        // Collection (interface) — used via implementation
+        Collection&lt;String&gt; names = new ArrayList&lt;&gt;();
+        names.add("Alice");
+        names.add("Charlie");
+        names.add("Bob");
+
+        // Collections (utility class) — static methods
+        System.out.println("Before sort: " + names);
+        Collections.sort((List&lt;String&gt;) names);
+        System.out.println("After sort:  " + names);
+
+        System.out.println("Max: " + Collections.max(names));
+        System.out.println("Min: " + Collections.min(names));
+
+        Collections.shuffle((List&lt;String&gt;) names);
+        System.out.println("After shuffle: " + names);
+    }
+}</pre>
+            <div class="output-box">
+              Before sort: [Alice, Charlie, Bob]<br />
+              After sort: [Alice, Bob, Charlie]<br />
+              Max: Charlie<br />
+              Min: Alice<br />
+              After shuffle: [Bob, Charlie, Alice]
+            </div>
+
+            <!-- Section 3 -->
+            <h2 id="list-interface">3. List Interface</h2>
+            <p>
+              The <code class="inline">List</code> interface represents an
+              ordered (sequenced) collection that allows duplicate elements.
+              Elements can be accessed by their integer index (position). Key
+              characteristics:
+            </p>
+            <ul>
+              <li>Maintains insertion order</li>
+              <li>Allows duplicate elements</li>
+              <li>Allows null elements</li>
+              <li>
+                Provides positional access via
+                <code class="inline">get(int index)</code>
+              </li>
+            </ul>
+            <h3>ArrayList vs LinkedList Comparison</h3>
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>ArrayList</th>
+                    <th>LinkedList</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Internal Structure</td>
+                    <td>Dynamic array</td>
+                    <td>Doubly linked nodes</td>
+                  </tr>
+                  <tr>
+                    <td>Random Access (get)</td>
+                    <td>O(1) — fast</td>
+                    <td>O(n) — slow</td>
+                  </tr>
+                  <tr>
+                    <td>Add at end</td>
+                    <td>O(1) amortized</td>
+                    <td>O(1)</td>
+                  </tr>
+                  <tr>
+                    <td>Insert / Delete in middle</td>
+                    <td>O(n) — shift needed</td>
+                    <td>O(1) once at node</td>
+                  </tr>
+                  <tr>
+                    <td>Memory</td>
+                    <td>Less overhead</td>
+                    <td>More (node pointers)</td>
+                  </tr>
+                  <tr>
+                    <td>Implements Deque</td>
+                    <td>No</td>
+                    <td>Yes</td>
+                  </tr>
+                  <tr>
+                    <td>Best for</td>
+                    <td>Read-heavy workloads</td>
+                    <td>Frequent insert/delete</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Section 4 -->
+            <h2 id="arraylist">4. ArrayList</h2>
+            <p>
+              <code class="inline">ArrayList</code> is backed by a resizable
+              array. When the array is full, a new array of 1.5× the size is
+              allocated and all elements are copied. It is the most commonly
+              used <code class="inline">List</code> implementation.
+            </p>
+            <pre>
+import java.util.*;
+
+public class ArrayListDemo {
+    public static void main(String[] args) {
+        ArrayList&lt;String&gt; fruits = new ArrayList&lt;&gt;();
+
+        // add elements
+        fruits.add("Apple");
+        fruits.add("Banana");
+        fruits.add("Cherry");
+        fruits.add("Date");
+        System.out.println("List: " + fruits);
+
+        // get element by index
+        System.out.println("Index 1: " + fruits.get(1));
+
+        // set (replace) element
+        fruits.set(2, "Coconut");
+        System.out.println("After set(2): " + fruits);
+
+        // remove by index
+        fruits.remove(0);
+        System.out.println("After remove(0): " + fruits);
+
+        // remove by value
+        fruits.remove("Date");
+        System.out.println("After remove('Date'): " + fruits);
+
+        // contains check
+        System.out.println("Contains Banana? " + fruits.contains("Banana"));
+
+        // size
+        System.out.println("Size: " + fruits.size());
+
+        // iterate with enhanced for
+        System.out.print("Elements: ");
+        for (String f : fruits) {
+            System.out.print(f + " ");
+        }
+        System.out.println();
+
+        // iterate with Iterator
+        Iterator&lt;String&gt; it = fruits.iterator();
+        System.out.print("Iterator: ");
+        while (it.hasNext()) {
+            System.out.print(it.next() + " ");
+        }
+        System.out.println();
+    }
+}</pre>
+            <div class="output-box">
+              List: [Apple, Banana, Cherry, Date]<br />
+              Index 1: Banana<br />
+              After set(2): [Apple, Banana, Coconut, Date]<br />
+              After remove(0): [Banana, Coconut, Date]<br />
+              After remove('Date'): [Banana, Coconut]<br />
+              Contains Banana? true<br />
+              Size: 2<br />
+              Elements: Banana Coconut<br />
+              Iterator: Banana Coconut
+            </div>
+
+            <!-- Section 5 -->
+            <h2 id="linkedlist">5. LinkedList</h2>
+            <p>
+              <code class="inline">LinkedList</code> implements both
+              <code class="inline">List</code> and
+              <code class="inline">Deque</code>. Each element (node) stores a
+              reference to the next and previous nodes, making insertions and
+              deletions at either end O(1).
+            </p>
+            <pre>
+import java.util.*;
+
+public class LinkedListDemo {
+    public static void main(String[] args) {
+        LinkedList&lt;String&gt; ll = new LinkedList&lt;&gt;();
+
+        // add elements
+        ll.add("Middle");
+        ll.addFirst("First");   // add to head
+        ll.addLast("Last");     // add to tail
+        System.out.println("LinkedList: " + ll);
+
+        // peek — view without removing
+        System.out.println("First: " + ll.getFirst());
+        System.out.println("Last: "  + ll.getLast());
+
+        // remove from head and tail
+        ll.removeFirst();
+        System.out.println("After removeFirst: " + ll);
+        ll.removeLast();
+        System.out.println("After removeLast: "  + ll);
+
+        // use as a stack (LIFO)
+        LinkedList&lt;Integer&gt; stack = new LinkedList&lt;&gt;();
+        stack.push(10);  // addFirst
+        stack.push(20);
+        stack.push(30);
+        System.out.println("Stack: " + stack);
+        System.out.println("Pop: " + stack.pop()); // removeFirst
+        System.out.println("Stack after pop: " + stack);
+    }
+}</pre>
+            <div class="output-box">
+              LinkedList: [First, Middle, Last]<br />
+              First: First<br />
+              Last: Last<br />
+              After removeFirst: [Middle, Last]<br />
+              After removeLast: [Middle]<br />
+              Stack: [30, 20, 10]<br />
+              Pop: 30<br />
+              Stack after pop: [20, 10]
+            </div>
+            <div class="note-box">
+              <p>
+                <strong>When to use LinkedList over ArrayList:</strong> When
+                your code frequently inserts or deletes elements at the
+                <em>beginning or middle</em> of the list, LinkedList avoids the
+                expensive array-shifting cost. For most read-heavy scenarios,
+                ArrayList is faster due to better cache locality.
+              </p>
+            </div>
+
+            <!-- Section 6 -->
+            <h2 id="set-interface">6. Set Interface</h2>
+            <p>
+              A <code class="inline">Set</code> is a collection that contains
+              <strong>no duplicate elements</strong>. It models the mathematical
+              set abstraction. The three main implementations differ in ordering
+              and performance:
+            </p>
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>HashSet</th>
+                    <th>LinkedHashSet</th>
+                    <th>TreeSet</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Order</td>
+                    <td>No guaranteed order</td>
+                    <td>Insertion order</td>
+                    <td>Sorted (natural / Comparator)</td>
+                  </tr>
+                  <tr>
+                    <td>Null allowed</td>
+                    <td>Yes (one)</td>
+                    <td>Yes (one)</td>
+                    <td>No (throws NPE)</td>
+                  </tr>
+                  <tr>
+                    <td>add / remove / contains</td>
+                    <td>O(1)</td>
+                    <td>O(1)</td>
+                    <td>O(log n)</td>
+                  </tr>
+                  <tr>
+                    <td>Backed by</td>
+                    <td>HashMap</td>
+                    <td>LinkedHashMap</td>
+                    <td>TreeMap (Red-Black tree)</td>
+                  </tr>
+                  <tr>
+                    <td>Best for</td>
+                    <td>Fast membership tests</td>
+                    <td>Dedup + preserve order</td>
+                    <td>Sorted unique elements</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Section 7 -->
+            <h2 id="hashset">7. HashSet</h2>
+            <p>
+              <code class="inline">HashSet</code> is backed by a
+              <code class="inline">HashMap</code>. Elements are stored as keys
+              in the map with a dummy value. It offers O(1) average time for
+              add, remove, and contains. The order of elements is
+              <em>not</em> predictable.
+            </p>
+            <pre>
+import java.util.*;
+
+public class HashSetDemo {
+    public static void main(String[] args) {
+        HashSet&lt;String&gt; set = new HashSet&lt;&gt;();
+
+        // add elements
+        set.add("Java");
+        set.add("Python");
+        set.add("C++");
+        set.add("Java");   // duplicate — ignored
+        set.add("Go");
+
+        System.out.println("Set: " + set);
+        System.out.println("Size: " + set.size()); // 4, not 5
+
+        // contains check
+        System.out.println("Contains Python? " + set.contains("Python"));
+        System.out.println("Contains Rust? "   + set.contains("Rust"));
+
+        // remove
+        set.remove("C++");
+        System.out.println("After remove C++: " + set);
+
+        // iteration (order not guaranteed)
+        System.out.print("Iterating: ");
+        for (String lang : set) {
+            System.out.print(lang + " ");
+        }
+        System.out.println();
+
+        // set operations — union
+        HashSet&lt;String&gt; other = new HashSet&lt;&gt;(Arrays.asList("Kotlin", "Java", "Swift"));
+        set.addAll(other);  // union
+        System.out.println("Union: " + set);
+
+        // intersection
+        set.retainAll(other);
+        System.out.println("Intersection: " + set);
+    }
+}</pre>
+            <div class="output-box">
+              Set: [Java, Go, C++, Python]<br />
+              Size: 4<br />
+              Contains Python? true<br />
+              Contains Rust? false<br />
+              After remove C++: [Java, Go, Python]<br />
+              Iterating: Java Go Python<br />
+              Union: [Java, Go, Python, Kotlin, Swift]<br />
+              Intersection: [Java]
+            </div>
+
+            <!-- Section 8 -->
+            <h2 id="queue-deque">8. Queue and Deque</h2>
+            <p>
+              A <code class="inline">Queue</code> is designed for holding
+              elements prior to processing. Most queues order elements in FIFO
+              (first-in, first-out) order. Key methods follow two styles:
+              throwing exceptions (<code class="inline">add/remove/element</code
+              >) or returning special values (<code class="inline"
+                >offer/poll/peek</code
+              >).
+            </p>
+            <p>
+              <code class="inline">Deque</code> (double-ended queue) supports
+              element insertion and removal at both ends.
+              <code class="inline">ArrayDeque</code> is the recommended
+              implementation for both stack and queue use cases — faster than
+              <code class="inline">LinkedList</code> for most operations.
+            </p>
+            <pre>
+import java.util.*;
+
+public class QueueDequeDemo {
+    public static void main(String[] args) {
+        // Queue via LinkedList (FIFO)
+        Queue&lt;String&gt; queue = new LinkedList&lt;&gt;();
+        queue.offer("Task-1");
+        queue.offer("Task-2");
+        queue.offer("Task-3");
+        System.out.println("Queue: " + queue);
+        System.out.println("Peek (head): " + queue.peek());   // view, no remove
+        System.out.println("Poll (remove): " + queue.poll()); // remove head
+        System.out.println("Queue after poll: " + queue);
+
+        System.out.println();
+
+        // Deque as Queue (FIFO) via ArrayDeque
+        Deque&lt;Integer&gt; deque = new ArrayDeque&lt;&gt;();
+        deque.offerLast(1);
+        deque.offerLast(2);
+        deque.offerLast(3);
+        System.out.println("Deque (queue mode): " + deque);
+        System.out.println("pollFirst: " + deque.pollFirst());
+
+        System.out.println();
+
+        // Deque as Stack (LIFO)
+        Deque&lt;String&gt; stack = new ArrayDeque&lt;&gt;();
+        stack.push("Page A");   // pushes to front
+        stack.push("Page B");
+        stack.push("Page C");
+        System.out.println("Stack: " + stack);
+        System.out.println("pop: " + stack.pop());    // removes front
+        System.out.println("peek: " + stack.peek());  // views front
+        System.out.println("Stack after pop: " + stack);
+    }
+}</pre>
+            <div class="output-box">
+              Queue: [Task-1, Task-2, Task-3]<br />
+              Peek (head): Task-1<br />
+              Poll (remove): Task-1<br />
+              Queue after poll: [Task-2, Task-3]<br />
+              <br />
+              Deque (queue mode): [1, 2, 3]<br />
+              pollFirst: 1<br />
+              <br />
+              Stack: [Page C, Page B, Page A]<br />
+              pop: Page C<br />
+              peek: Page B<br />
+              Stack after pop: [Page B, Page A]
+            </div>
+
+            <!-- Section 9 -->
+            <h2 id="priorityqueue">9. PriorityQueue</h2>
+            <p>
+              <code class="inline">PriorityQueue</code> orders elements
+              according to their <em>natural ordering</em> (for
+              <code class="inline">Comparable</code> types) or according to a
+              <code class="inline">Comparator</code> provided at construction
+              time. It does <strong>not</strong> permit null elements. The head
+              of the queue is always the <em>least</em> element.
+            </p>
+            <pre>
+import java.util.*;
+
+public class PriorityQueueDemo {
+    public static void main(String[] args) {
+        // Natural ordering (min-heap — smallest first)
+        PriorityQueue&lt;Integer&gt; pq = new PriorityQueue&lt;&gt;();
+        pq.offer(40);
+        pq.offer(10);
+        pq.offer(30);
+        pq.offer(20);
+        System.out.print("Poll order (natural): ");
+        while (!pq.isEmpty()) {
+            System.out.print(pq.poll() + " ");
+        }
+        System.out.println();
+
+        // Max-heap using custom Comparator
+        PriorityQueue&lt;Integer&gt; maxPQ =
+            new PriorityQueue&lt;&gt;(Comparator.reverseOrder());
+        maxPQ.offer(40);
+        maxPQ.offer(10);
+        maxPQ.offer(30);
+        maxPQ.offer(20);
+        System.out.print("Poll order (max-heap): ");
+        while (!maxPQ.isEmpty()) {
+            System.out.print(maxPQ.poll() + " ");
+        }
+        System.out.println();
+
+        // Custom objects — sort tasks by priority number
+        PriorityQueue&lt;String&gt; taskQueue =
+            new PriorityQueue&lt;&gt;(Comparator.comparingInt(String::length));
+        taskQueue.offer("LongTaskName");
+        taskQueue.offer("Go");
+        taskQueue.offer("Medium");
+        System.out.print("Tasks by name length: ");
+        while (!taskQueue.isEmpty()) {
+            System.out.print(taskQueue.poll() + " ");
+        }
+        System.out.println();
+    }
+}</pre>
+            <div class="output-box">
+              Poll order (natural): 10 20 30 40<br />
+              Poll order (max-heap): 40 30 20 10<br />
+              Tasks by name length: Go Medium LongTaskName
+            </div>
+
+            <!-- Section 10 -->
+            <h2 id="map-interface">10. Map Interface</h2>
+            <p>
+              A <code class="inline">Map</code> stores key-value pairs. Each key
+              is unique; each key maps to exactly one value. Maps are not part
+              of the <code class="inline">Collection</code> hierarchy but are a
+              fundamental part of the framework.
+            </p>
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>HashMap</th>
+                    <th>LinkedHashMap</th>
+                    <th>TreeMap</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Order</td>
+                    <td>No guaranteed order</td>
+                    <td>Insertion order</td>
+                    <td>Sorted by key</td>
+                  </tr>
+                  <tr>
+                    <td>Null keys</td>
+                    <td>One null key allowed</td>
+                    <td>One null key allowed</td>
+                    <td>Not allowed</td>
+                  </tr>
+                  <tr>
+                    <td>Null values</td>
+                    <td>Allowed</td>
+                    <td>Allowed</td>
+                    <td>Allowed</td>
+                  </tr>
+                  <tr>
+                    <td>get / put / remove</td>
+                    <td>O(1) average</td>
+                    <td>O(1) average</td>
+                    <td>O(log n)</td>
+                  </tr>
+                  <tr>
+                    <td>Backed by</td>
+                    <td>Hash table</td>
+                    <td>Hash table + linked list</td>
+                    <td>Red-Black tree</td>
+                  </tr>
+                  <tr>
+                    <td>Best for</td>
+                    <td>General purpose</td>
+                    <td>Cache (LRU pattern)</td>
+                    <td>Sorted key access</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Section 11 -->
+            <h2 id="hashmap">11. HashMap</h2>
+            <p>
+              <code class="inline">HashMap</code> is the most widely used
+              <code class="inline">Map</code> implementation. It stores entries
+              in an array of buckets using the hash of each key. Since Java 8,
+              buckets with many collisions are converted from linked lists to
+              balanced trees (red-black trees) for O(log n) worst-case lookup.
+            </p>
+            <pre>
+import java.util.*;
+
+public class HashMapDemo {
+    public static void main(String[] args) {
+        HashMap&lt;String, Integer&gt; scores = new HashMap&lt;&gt;();
+
+        // put — add key-value pairs
+        scores.put("Alice",  95);
+        scores.put("Bob",    82);
+        scores.put("Charlie", 91);
+        scores.put("Diana",  88);
+        System.out.println("Map: " + scores);
+
+        // get — retrieve value by key
+        System.out.println("Alice's score: " + scores.get("Alice"));
+
+        // getOrDefault — safe retrieval
+        System.out.println("Eve's score: " + scores.getOrDefault("Eve", 0));
+
+        // containsKey and containsValue
+        System.out.println("Has Bob? "    + scores.containsKey("Bob"));
+        System.out.println("Has score 91? " + scores.containsValue(91));
+
+        // update existing key
+        scores.put("Bob", 90);
+        System.out.println("Bob updated: " + scores.get("Bob"));
+
+        // remove
+        scores.remove("Diana");
+        System.out.println("After remove Diana: " + scores);
+
+        // iterate over entries
+        System.out.println("--- Entry Set ---");
+        for (Map.Entry&lt;String, Integer&gt; entry : scores.entrySet()) {
+            System.out.println(entry.getKey() + " -> " + entry.getValue());
+        }
+
+        // iterate over keys only
+        System.out.print("Keys: ");
+        for (String key : scores.keySet()) {
+            System.out.print(key + " ");
+        }
+        System.out.println();
+
+        // iterate over values only
+        System.out.print("Values: ");
+        for (int val : scores.values()) {
+            System.out.print(val + " ");
+        }
+        System.out.println();
+    }
+}</pre>
+            <div class="output-box">
+              Map: {Alice=95, Bob=82, Charlie=91, Diana=88}<br />
+              Alice's score: 95<br />
+              Eve's score: 0<br />
+              Has Bob? true<br />
+              Has score 91? true<br />
+              Bob updated: 90<br />
+              After remove Diana: {Alice=95, Bob=90, Charlie=91}<br />
+              --- Entry Set ---<br />
+              Alice -> 95<br />
+              Bob -> 90<br />
+              Charlie -> 91<br />
+              Keys: Alice Bob Charlie<br />
+              Values: 95 90 91
+            </div>
+
+            <!-- Section 12 -->
+            <h2 id="iterator">12. Iterator</h2>
+            <p>
+              The <code class="inline">Iterator</code> interface provides a
+              standard way to traverse any collection one element at a time. It
+              is the foundation of the enhanced for-loop. The key advantage of
+              using an explicit <code class="inline">Iterator</code> is the
+              ability to safely remove elements during traversal using
+              <code class="inline">it.remove()</code>.
+            </p>
+            <div class="warn-box">
+              <p>
+                <strong>Warning:</strong> Do <em>not</em> modify a collection
+                directly (e.g., via <code class="inline">list.remove()</code>)
+                while iterating with an enhanced for-loop — this causes a
+                <code class="inline">ConcurrentModificationException</code>. Use
+                <code class="inline">Iterator.remove()</code> instead.
+              </p>
+            </div>
+            <pre>
+import java.util.*;
+
+public class IteratorDemo {
+    public static void main(String[] args) {
+        List&lt;Integer&gt; numbers = new ArrayList&lt;&gt;(
+            Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+        );
+
+        // Use Iterator to remove even numbers safely
+        Iterator&lt;Integer&gt; it = numbers.iterator();
+        while (it.hasNext()) {
+            int num = it.next();
+            if (num % 2 == 0) {
+                it.remove(); // safe removal during iteration
+            }
+        }
+        System.out.println("Odd numbers only: " + numbers);
+
+        // ListIterator — bidirectional traversal
+        List&lt;String&gt; words = new ArrayList&lt;&gt;(Arrays.asList("a", "b", "c", "d"));
+        ListIterator&lt;String&gt; li = words.listIterator(words.size()); // start at end
+        System.out.print("Reverse: ");
+        while (li.hasPrevious()) {
+            System.out.print(li.previous() + " ");
+        }
+        System.out.println();
+    }
+}</pre>
+            <div class="output-box">
+              Odd numbers only: [1, 3, 5, 7, 9]<br />
+              Reverse: d c b a
+            </div>
+
+            <!-- Section 13 -->
+            <h2 id="comparable-comparator">13. Comparable vs Comparator</h2>
+            <p>Java provides two interfaces to define object ordering:</p>
+            <ul>
+              <li>
+                <code class="inline">Comparable&lt;T&gt;</code> — defines the
+                <em>natural ordering</em> of a class. The class itself
+                implements this interface and overrides
+                <code class="inline">compareTo(T o)</code>. One sort order per
+                class.
+              </li>
+              <li>
+                <code class="inline">Comparator&lt;T&gt;</code> — defines an
+                <em>external ordering</em>. Passed as a parameter to sort
+                methods. Multiple different orderings can be defined.
+              </li>
+            </ul>
+            <pre>
+import java.util.*;
+
+class Student implements Comparable&lt;Student&gt; {
+    String name;
+    int gpa;
+    int age;
+
+    Student(String name, int gpa, int age) {
+        this.name = name; this.gpa = gpa; this.age = age;
+    }
+
+    // Natural ordering: by GPA descending
+    @Override
+    public int compareTo(Student other) {
+        return Integer.compare(other.gpa, this.gpa); // descending
+    }
+
+    @Override
+    public String toString() {
+        return name + "(GPA=" + gpa + ", age=" + age + ")";
+    }
+}
+
+public class ComparableComparatorDemo {
+    public static void main(String[] args) {
+        List&lt;Student&gt; students = new ArrayList&lt;&gt;();
+        students.add(new Student("Alice",   90, 22));
+        students.add(new Student("Bob",     85, 20));
+        students.add(new Student("Charlie", 92, 21));
+        students.add(new Student("Diana",   88, 23));
+
+        // Sort using Comparable (natural order = GPA descending)
+        Collections.sort(students);
+        System.out.println("By GPA (Comparable): " + students);
+
+        // Sort using Comparator (by name alphabetically)
+        students.sort(Comparator.comparing(s -> s.name));
+        System.out.println("By Name (Comparator): " + students);
+
+        // Sort using Comparator (by age ascending)
+        students.sort(Comparator.comparingInt(s -> s.age));
+        System.out.println("By Age  (Comparator): " + students);
+
+        // Chained comparators: by GPA desc, then by name asc
+        students.sort(
+            Comparator.comparingInt((Student s) -> s.gpa)
+                      .reversed()
+                      .thenComparing(s -> s.name)
+        );
+        System.out.println("By GPA desc then Name: " + students);
+    }
+}</pre>
+            <div class="output-box">
+              By GPA (Comparable): [Charlie(GPA=92, age=21), Alice(GPA=90,
+              age=22), Diana(GPA=88, age=23), Bob(GPA=85, age=20)]<br />
+              By Name (Comparator): [Alice(GPA=90, age=22), Bob(GPA=85, age=20),
+              Charlie(GPA=92, age=21), Diana(GPA=88, age=23)]<br />
+              By Age (Comparator): [Bob(GPA=85, age=20), Charlie(GPA=92,
+              age=21), Alice(GPA=90, age=22), Diana(GPA=88, age=23)]<br />
+              By GPA desc then Name: [Charlie(GPA=92, age=21), Alice(GPA=90,
+              age=22), Diana(GPA=88, age=23), Bob(GPA=85, age=20)]
+            </div>
+            <div class="note-box">
+              <p>
+                <strong>Rule of thumb:</strong> Use
+                <code class="inline">Comparable</code> for the class's single,
+                most natural ordering (e.g., numbers sort numerically, strings
+                sort lexicographically). Use
+                <code class="inline">Comparator</code> when you need multiple
+                orderings, when the class is not yours to modify, or for ad-hoc
+                lambda-based sorting.
+              </p>
+            </div>
+
+            <!-- Section 14 -->
+            <h2 id="choosing-collection">14. Choosing the Right Collection</h2>
+            <p>
+              Use this decision table to pick the best collection for your use
+              case:
+            </p>
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th>Use Case</th>
+                    <th>Recommended Class</th>
+                    <th>Reason</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Ordered list, fast random access</td>
+                    <td><code class="inline">ArrayList</code></td>
+                    <td>O(1) get by index</td>
+                  </tr>
+                  <tr>
+                    <td>Frequent insert/delete at head or middle</td>
+                    <td><code class="inline">LinkedList</code></td>
+                    <td>O(1) node pointer change</td>
+                  </tr>
+                  <tr>
+                    <td>Unique elements, order not important</td>
+                    <td><code class="inline">HashSet</code></td>
+                    <td>O(1) add/contains</td>
+                  </tr>
+                  <tr>
+                    <td>Unique elements, preserve insertion order</td>
+                    <td><code class="inline">LinkedHashSet</code></td>
+                    <td>Ordered + no dups</td>
+                  </tr>
+                  <tr>
+                    <td>Unique elements, sorted order</td>
+                    <td><code class="inline">TreeSet</code></td>
+                    <td>Always sorted, O(log n)</td>
+                  </tr>
+                  <tr>
+                    <td>FIFO task queue</td>
+                    <td><code class="inline">ArrayDeque</code></td>
+                    <td>Faster than LinkedList</td>
+                  </tr>
+                  <tr>
+                    <td>Priority-based processing</td>
+                    <td><code class="inline">PriorityQueue</code></td>
+                    <td>Min-heap, O(log n) poll</td>
+                  </tr>
+                  <tr>
+                    <td>Key-value lookup, no order needed</td>
+                    <td><code class="inline">HashMap</code></td>
+                    <td>O(1) get/put</td>
+                  </tr>
+                  <tr>
+                    <td>Key-value, preserve insertion order</td>
+                    <td><code class="inline">LinkedHashMap</code></td>
+                    <td>Ordered map, LRU cache</td>
+                  </tr>
+                  <tr>
+                    <td>Key-value, sorted by key</td>
+                    <td><code class="inline">TreeMap</code></td>
+                    <td>O(log n), sorted keys</td>
+                  </tr>
+                  <tr>
+                    <td>Thread-safe list</td>
+                    <td><code class="inline">CopyOnWriteArrayList</code></td>
+                    <td>Concurrent reads</td>
+                  </tr>
+                  <tr>
+                    <td>Thread-safe map</td>
+                    <td><code class="inline">ConcurrentHashMap</code></td>
+                    <td>Segment-level locking</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Prev / Next -->
+            <div class="d-flex justify-content-between mt-5 pt-3 border-top">
+              <a href="../index.html#generics" class="btn btn-outline-secondary"
+                >&larr; Generics</a
+              >
+              <a href="./java-8-features.html" class="btn btn-primary"
+                >Java 8+ Features &rarr;</a
+              >
+            </div>
+          </article>
+        </div>
+        <!-- /col-lg-8 -->
+
+        <!-- Sticky TOC -->
+        <div class="col-lg-4 d-none d-lg-block">
+          <nav class="toc">
+            <h6>On This Page</h6>
+            <a href="#what-is-collections"
+              >1. What is the Collections Framework?</a
+            >
+            <a href="#collection-vs-collections"
+              >2. Collection vs Collections</a
+            >
+            <a href="#list-interface">3. List Interface</a>
+            <a href="#arraylist">4. ArrayList</a>
+            <a href="#linkedlist">5. LinkedList</a>
+            <a href="#set-interface">6. Set Interface</a>
+            <a href="#hashset">7. HashSet</a>
+            <a href="#queue-deque">8. Queue and Deque</a>
+            <a href="#priorityqueue">9. PriorityQueue</a>
+            <a href="#map-interface">10. Map Interface</a>
+            <a href="#hashmap">11. HashMap</a>
+            <a href="#iterator">12. Iterator</a>
+            <a href="#comparable-comparator">13. Comparable vs Comparator</a>
+            <a href="#choosing-collection">14. Choosing the Right Collection</a>
+          </nav>
+        </div>
+      </div>
+      <!-- /row -->
+    </div>
+    <!-- /container-xl -->
+
+    <!-- Footer -->
+    <footer class="py-4 mt-4">
+      <div class="container-xl text-center">
+        <small>&copy; 2026 Java Codeex. All rights reserved.</small>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmk+GOFVeA//xwkFWEVflJ8ikO1y+k"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+
+

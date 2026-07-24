@@ -1,0 +1,455 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Spring Boot Actuator | Java Codeex</title>
+    <link rel="icon" href="../icons/javacodeex.jpg" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../site-theme.css" />
+    <link rel="stylesheet" href="./springboot.css" />
+  </head>
+  <body>
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <!-- <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" /></a> -->
+        <a class="topic-link" href="./index.html#basics">Overview</a>
+        <a class="topic-link" href="https://javacodeex.com/springboot/project-structure.html"
+          >Project Structure</a
+        >
+        <a class="topic-link" href="./aop.html">AOP</a>
+        <a class="topic-link" href="./index.html#data-jpa">Data JPA</a>
+        <a class="topic-link" href="./index.html#security">Security</a>
+        <a class="topic-link" href="./index.html#exception-handling"
+          >Global Exception Handling</a
+        >
+        <a class="topic-link" href="./index.html#rest-api">REST APIs</a>
+        <a class="topic-link" href="./validation.html">Validation</a>
+        <a class="topic-link" href="./index.html#testing">Testing</a>
+        <a class="topic-link" href="./index.html#actuator">Actuator</a>
+        <a class="topic-link" href="./index.html#deployment">Deployment</a>
+      </div>
+    </nav>
+    <section class="spring-hero">
+      <div class="container-xl">
+        <span class="spring-pill">Java Codeex</span>
+        <h1 class="mt-3">Actuator and Monitoring</h1>
+        <p class="lead">
+          Expose useful health and application metrics for operations teams.
+        </p>
+      </div>
+    </section>
+    <main class="container-xl py-5">
+      <div class="spring-callout mb-4">
+        <strong>In simple terms:</strong> Actuator gives you a window into a
+        running Spring Boot application. It helps answer questions such as: “Is
+        the application alive?”, “Is the database connected?”, “How many
+        requests are failing?”, and “Is memory usage increasing?”
+      </div>
+
+      <div class="concept-diagram">
+        <figcaption>How monitoring works</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node">
+            <strong>Application</strong><small>Runs business APIs</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Actuator</strong><small>Collects health and metrics</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Monitoring tool</strong
+            ><small>Prometheus, Grafana, or cloud platform</small>
+          </div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node">
+            <strong>Team</strong><small>Receives alerts and investigates</small>
+          </div>
+        </div>
+      </div>
+
+      <h2 id="introduction">What are Actuator and monitoring?</h2>
+      <p>
+        Monitoring means observing an application's health, performance, and
+        behavior. Spring Boot Actuator provides ready-made endpoints for this
+        purpose. These endpoints are different from business endpoints such as
+        <code>/api/orders</code>; they are operational endpoints for developers,
+        DevOps engineers, and platform systems.
+      </p>
+      <p>
+        For example, Kubernetes can call a health endpoint before sending users
+        to a new application instance. Prometheus can read metrics, and Grafana
+        can display them on a dashboard.
+      </p>
+
+      <h2 id="dependency">1. Add the Actuator dependency</h2>
+      <pre class="spring-code"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+      <p>
+        Adding the starter creates Actuator endpoints, but most endpoints are
+        not exposed over HTTP automatically. You must explicitly choose what
+        should be available.
+      </p>
+
+      <h2 id="health">2. Health and readiness</h2>
+      <p>
+        Health answers whether an application can work correctly. A healthy
+        response is useful for load balancers, containers, and operations teams.
+      </p>
+      <pre class="spring-code"><code>GET /actuator/health
+
+{
+  "status": "UP",
+  "components": {
+    "db": { "status": "UP" },
+    "diskSpace": { "status": "UP" }
+  }
+}</code></pre>
+      <h3 id="liveness-readiness">Liveness vs readiness</h3>
+      <ul class="lh-lg">
+        <li>
+          <strong>Liveness:</strong> The process is running. Restart it only
+          when liveness fails.
+        </li>
+        <li>
+          <strong>Readiness:</strong> The application is ready to receive
+          traffic. Do not send traffic when readiness fails.
+        </li>
+      </ul>
+      <pre
+        class="spring-code"
+      ><code>management.endpoint.health.probes.enabled=true
+management.health.livenessstate.enabled=true
+management.health.readinessstate.enabled=true
+
+# Common Kubernetes URLs
+GET /actuator/health/liveness
+GET /actuator/health/readiness</code></pre>
+      <p>
+        A database outage may make readiness fail while the Java process is
+        still alive. The platform can temporarily remove that instance from
+        traffic instead of restarting it unnecessarily.
+      </p>
+
+      <h2 id="info">3. Application information</h2>
+      <p>
+        The <code>info</code> endpoint displays safe build and application
+        information. Do not put passwords, tokens, or private infrastructure
+        details here.
+      </p>
+      <pre class="spring-code"><code>management.info.env.enabled=true
+info.app.name=employee-service
+info.app.version=1.4.0
+info.app.environment=production
+
+GET /actuator/info</code></pre>
+
+      <h2 id="metrics">4. Metrics</h2>
+      <p>
+        Metrics are numeric measurements collected over time. They help you see
+        trends rather than investigating only after a failure.
+      </p>
+      <pre class="spring-code"><code>GET /actuator/metrics
+GET /actuator/metrics/jvm.memory.used
+GET /actuator/metrics/http.server.requests
+GET /actuator/metrics/system.cpu.usage</code></pre>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>What it tells you</th>
+              <th>Real use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>http.server.requests</code></td>
+              <td>Request count, status, and timing</td>
+              <td>Find slow or failing endpoints</td>
+            </tr>
+            <tr>
+              <td><code>jvm.memory.used</code></td>
+              <td>Memory used by the JVM</td>
+              <td>Detect memory growth</td>
+            </tr>
+            <tr>
+              <td><code>jdbc.connections.active</code></td>
+              <td>Database connections in use</td>
+              <td>Find connection-pool pressure</td>
+            </tr>
+            <tr>
+              <td><code>hikaricp.connections.pending</code></td>
+              <td>Requests waiting for a connection</td>
+              <td>Detect database bottlenecks</td>
+            </tr>
+            <tr>
+              <td><code>process.cpu.usage</code></td>
+              <td>CPU used by the process</td>
+              <td>Decide when to scale</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="exposure">5. Expose only required endpoints</h2>
+      <p>
+        Configure endpoint exposure in <code>application.properties</code>. The
+        <code>include</code> list adds endpoints; the <code>exclude</code> list
+        removes endpoints even when a broad include is used.
+      </p>
+      <pre class="spring-code"><code># Beginner/local setup
+management.endpoints.web.exposure.include=health,info,metrics
+
+# Production: expose a small, deliberate set
+management.endpoints.web.exposure.include=health,info,prometheus
+management.endpoints.web.exposure.exclude=env,beans,configprops,threaddump
+
+# Change the URL prefix if required
+management.endpoints.web.base-path=/manage</code></pre>
+      <p>
+        With the custom base path, health is available at
+        <code>/manage/health</code>. Never assume an endpoint is private just
+        because its URL is difficult to guess.
+      </p>
+
+      <h2 id="custom-health">6. Custom health indicators</h2>
+      <p>
+        Built-in health checks cover common dependencies. Add a custom indicator
+        when your service depends on a payment gateway, warehouse API, message
+        broker, or another business-critical system.
+      </p>
+      <pre class="spring-code"><code>@Component("paymentGateway")
+public class PaymentGatewayHealthIndicator
+        implements HealthIndicator {
+
+    private final PaymentGatewayClient client;
+
+    public PaymentGatewayHealthIndicator(PaymentGatewayClient client) {
+        this.client = client;
+    }
+
+    @Override
+    public Health health() {
+        try {
+            client.ping();
+            return Health.up()
+                    .withDetail("provider", "ExamplePay")
+                    .build();
+        } catch (Exception ex) {
+            return Health.down()
+                    .withDetail("reason", "Payment gateway unavailable")
+                    .build();
+        }
+    }
+}</code></pre>
+      <p>
+        Use short timeouts in health checks. A health request should not hang
+        because an external service is slow.
+      </p>
+
+      <h2 id="custom-info">7. Add custom application information</h2>
+      <pre class="spring-code"><code>@Component
+public class DeploymentInfoContributor
+        implements InfoContributor {
+
+    @Override
+    public void contribute(Info.Builder builder) {
+        builder.withDetail("region", "ap-south-1")
+                .withDetail("service", "employee-service")
+                .withDetail("release", "2026.07.24");
+    }
+}</code></pre>
+
+      <h2 id="prometheus">8. Prometheus and Grafana</h2>
+      <p>
+        Prometheus periodically scrapes a metrics endpoint and stores the
+        measurements. Grafana reads those measurements and displays charts and
+        dashboards. Add Micrometer's Prometheus registry to publish metrics in
+        Prometheus format.
+      </p>
+      <pre class="spring-code"><code>&lt;dependency&gt;
+    &lt;groupId&gt;io.micrometer&lt;/groupId&gt;
+    &lt;artifactId&gt;micrometer-registry-prometheus&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+management.endpoints.web.exposure.include=health,info,prometheus
+
+GET /actuator/prometheus</code></pre>
+      <p>Example Prometheus configuration:</p>
+      <pre class="spring-code"><code>scrape_configs:
+  - job_name: employee-service
+    metrics_path: /actuator/prometheus
+    static_configs:
+      - targets: ["employee-service:8080"]</code></pre>
+
+      <h2 id="logging">9. View and change log levels</h2>
+      <p>
+        Actuator can show configured loggers and, when explicitly exposed, can
+        temporarily change a logger level while diagnosing an issue.
+      </p>
+      <pre
+        class="spring-code"
+      ><code>management.endpoints.web.exposure.include=health,info,loggers,metrics
+
+GET /actuator/loggers
+GET /actuator/loggers/com.javacodeex.employee
+
+POST /actuator/loggers/com.javacodeex.employee
+Content-Type: application/json
+
+{ "configuredLevel": "DEBUG" }</code></pre>
+      <p>
+        Protect this endpoint and return the level to its normal value after the
+        investigation. Avoid enabling verbose logging for sensitive data.
+      </p>
+
+      <h2 id="security">10. Secure Actuator endpoints</h2>
+      <p>
+        Health may be public for a load balancer, but metrics, environment, and
+        logging endpoints should normally require authentication and network
+        restrictions.
+      </p>
+      <pre class="spring-code"><code>@Bean
+SecurityFilterChain securityFilterChain(HttpSecurity http)
+        throws Exception {
+    http.authorizeHttpRequests(auth -&gt; auth
+        .requestMatchers("/actuator/health/**").permitAll()
+        .requestMatchers("/actuator/**").hasRole("OPS")
+        .anyRequest().authenticated());
+    return http.build();
+}</code></pre>
+      <pre
+        class="spring-code"
+      ><code>management.endpoint.health.show-details=when_authorized</code></pre>
+      <p>
+        Do not expose <code>env</code>, <code>configprops</code>, or
+        <code>heapdump</code> publicly. They may reveal configuration, memory
+        contents, or infrastructure details.
+      </p>
+
+      <h2 id="custom-endpoint">11. Create a custom Actuator endpoint</h2>
+      <p>
+        A custom endpoint is useful for safe operational information that is not
+        part of the default Actuator set. Keep it read-only unless there is a
+        strong operational reason to support write operations.
+      </p>
+      <pre class="spring-code"><code>@Component
+@Endpoint(id = "deployment")
+public class DeploymentEndpoint {
+
+    @ReadOperation
+    public Map&lt;String, String&gt; deployment() {
+        return Map.of(
+                "version", "2026.07.24",
+                "region", "ap-south-1",
+                "commit", "abc123");
+    }
+}</code></pre>
+      <pre
+        class="spring-code"
+      ><code>management.endpoints.web.exposure.include=health,info,deployment
+
+GET /actuator/deployment</code></pre>
+
+      <h2 id="real-world-monitoring">12. Real-world incident example</h2>
+      <p>
+        Suppose users report that checkout is slow. A simple investigation can
+        follow this path:
+      </p>
+      <ol class="lh-lg">
+        <li>
+          Check <code>/actuator/health/readiness</code> to confirm the instance
+          can receive traffic.
+        </li>
+        <li>
+          Check <code>http.server.requests</code> for checkout latency and 5xx
+          responses.
+        </li>
+        <li>
+          Check database connection metrics for active or pending connections.
+        </li>
+        <li>
+          Check JVM memory and CPU to see whether the instance is overloaded.
+        </li>
+        <li>
+          Use a protected logger endpoint temporarily if more application detail
+          is needed.
+        </li>
+        <li>
+          Fix the root cause, restore normal logging, and record the incident.
+        </li>
+      </ol>
+
+      <h2 id="docker-kubernetes-monitoring">
+        13. Container and Kubernetes usage
+      </h2>
+      <p>
+        Containers use health probes to decide whether to restart an application
+        or send traffic to it. Keep liveness checks lightweight and use
+        readiness checks for dependencies that must be available before serving
+        requests.
+      </p>
+      <pre class="spring-code"><code>livenessProbe:
+  httpGet:
+    path: /actuator/health/liveness
+    port: 8080
+readinessProbe:
+  httpGet:
+    path: /actuator/health/readiness
+    port: 8080</code></pre>
+
+      <h2 id="monitoring-best-practices">Best practices</h2>
+      <ul class="lh-lg">
+        <li>Expose only the endpoints your platform actually needs.</li>
+        <li>
+          Protect operational endpoints with authentication and network rules.
+        </li>
+        <li>
+          Keep health checks fast and use timeouts for external dependencies.
+        </li>
+        <li>
+          Use readiness for traffic decisions and liveness for restart
+          decisions.
+        </li>
+        <li>
+          Monitor latency, error rate, traffic, and resource saturation
+          together.
+        </li>
+        <li>Never place secrets in the info endpoint or logs.</li>
+        <li>
+          Use Prometheus and Grafana or an equivalent monitoring platform in
+          production.
+        </li>
+      </ul>
+      <div class="spring-callout">
+        <strong>Security rule:</strong> Monitoring data is operational data. It
+        can reveal database names, class names, memory contents, and deployment
+        details, so treat Actuator endpoints as sensitive.
+      </div>
+      <a class="btn btn-success" href="deployment.html">Next: Deployment</a>
+    </main>
+    <footer class="py-4 text-center">
+      <p class="mb-0">&copy; 2026 Java Codeex</p>
+    </footer>
+    <script src="./springboot-nav.js"></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

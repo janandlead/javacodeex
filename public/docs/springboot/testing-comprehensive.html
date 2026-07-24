@@ -1,0 +1,484 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Comprehensive Spring Boot testing guide"
+    />
+    <title>Spring Boot Testing Guide | Java Codeex</title>
+    <link rel="icon" href="../icons/javacodeex.jpg" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../site-theme.css" />
+    <link rel="stylesheet" href="./springboot.css" />
+  </head>
+  <body>
+    <nav class="java-subnav">
+      <div class="container-xl">
+        <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" /></a>
+        <a class="topic-link" href="./index.html#basics"
+          >Overview</a
+        >
+        <a class="topic-link" href="https://javacodeex.com/springboot/project-structure.html"
+          >Project Structure</a
+        >
+        <a class="topic-link" href="./aop.html">AOP</a>
+        <a class="topic-link" href="./index.html#data-jpa">Data JPA</a>
+        <a class="topic-link" href="./index.html#security">Security</a>
+        <a class="topic-link" href="./index.html#exception-handling"
+          >Exceptions</a
+        >
+        <a class="topic-link" href="./index.html#rest-api">REST APIs</a>
+        <a class="topic-link" href="./validation.html">Validation</a>
+        <a class="topic-link" href="./index.html#testing">Testing</a>
+        <a class="topic-link" href="./index.html#actuator">Actuator</a>
+        <a class="topic-link" href="./index.html#deployment">Deployment</a>
+      </div>
+    </nav>
+    <section class="spring-hero">
+      <div class="container-xl">
+        <span class="spring-pill">Java Codeex</span>
+        <h1 class="mt-3">Spring Boot Testing Comprehensive Guide</h1>
+        <p class="lead">
+          Write unit, integration, and end-to-end tests to ensure your
+          application works correctly. Test pyramid: many unit tests, some
+          integration tests, few end-to-end tests.
+        </p>
+      </div>
+    </section>
+    <main class="container-xl py-5">
+      <div class="spring-callout mb-4">
+        <strong>Testing philosophy:</strong> A well-tested application gives you
+        confidence to refactor, deploy, and make changes without fear of
+        breaking existing functionality.
+      </div>
+
+      <h2 id="test-pyramid">The Test Pyramid</h2>
+
+      <div
+        style="
+          background: #f5f5f5;
+          padding: 20px;
+          border-radius: 4px;
+          margin: 20px 0;
+        "
+      >
+        <pre style="margin: 0; font-size: 13px; line-height: 1.8">
+           /\
+          /  \
+         / E2E \         Few end-to-end tests
+        /______\        - Slow
+       /        \       - Test entire application
+      / Integrat\       - Full Spring context
+     /___________\      
+    /            \      Many integration tests
+   / Unit Tests  \     - Medium speed
+  /_______________\    - Test Spring components together
+                      - @SpringBootTest, @DataJpaTest
+  
+Lots of unit tests     - Fast
+- Mock dependencies    - Test single class in isolation
+- No Spring context    - Use Mockito
+- Test business logic
+</pre>
+      </div>
+
+      <h2 id="unit-testing">Unit Testing: Test a Single Class</h2>
+
+      <h3>Testing a Service with Mocked Dependencies</h3>
+      <pre class="spring-code"><code>// The service to test
+@Service
+public class UserService {
+    private final UserRepository repository;
+    private final EmailService emailService;
+    
+    public UserService(UserRepository repository, EmailService emailService) {
+        this.repository = repository;
+        this.emailService = emailService;
+    }
+    
+    public UserResponse createUser(CreateUserRequest request) {
+        User user = new User();
+        user.setName(request.name());
+        user.setEmail(request.email());
+        
+        User saved = repository.save(user);
+        emailService.sendWelcomeEmail(saved.getEmail());
+        
+        return new UserResponse(saved.getId(), saved.getName(), saved.getEmail());
+    }
+}
+
+// Unit test
+@ExtendWith(MockitoExtension.class)
+public class UserServiceTest {
+    
+    @Mock
+    private UserRepository repository;
+    
+    @Mock
+    private EmailService emailService;
+    
+    @InjectMocks
+    private UserService userService;
+    
+    @Test
+    public void testCreateUserSuccessfully() {
+        // Arrange (Given)
+        CreateUserRequest request = new CreateUserRequest("John", "john@example.com");
+        User savedUser = new User(1L, "John", "john@example.com");
+        when(repository.save(any(User.class))).thenReturn(savedUser);
+        
+        // Act (When)
+        UserResponse response = userService.createUser(request);
+        
+        // Assert (Then)
+        assertEquals("John", response.name());
+        assertEquals("john@example.com", response.email());
+        
+        // Verify interactions
+        verify(repository).save(any(User.class));
+        verify(emailService).sendWelcomeEmail("john@example.com");
+    }
+    
+    @Test
+    public void testCreateUserEmailServiceFailure() {
+        // Test what happens when email sending fails
+        CreateUserRequest request = new CreateUserRequest("John", "john@example.com");
+        when(repository.save(any(User.class))).thenReturn(new User(1L, "John", "john@example.com"));
+        doThrow(new EmailException("SMTP unavailable"))
+            .when(emailService).sendWelcomeEmail(any());
+        
+        // The service should still return user, not crash
+        assertThrows(EmailException.class, () -> userService.createUser(request));
+    }
+}
+</code></pre>
+
+      <h2 id="integration-testing">
+        Integration Testing: Test Components Together
+      </h2>
+
+      <h3>Testing the Database Layer with @DataJpaTest</h3>
+      <pre class="spring-code"><code>@DataJpaTest
+public class UserRepositoryTest {
+    
+    @Autowired
+    private UserRepository repository;
+    
+    @Autowired
+    private TestEntityManager entityManager;
+    
+    @Test
+    public void testFindByEmail() {
+        // Arrange
+        User user = new User();
+        user.setName("John");
+        user.setEmail("john@example.com");
+        entityManager.persistAndFlush(user);
+        
+        // Act
+        Optional&lt;User&gt; found = repository.findByEmail("john@example.com");
+        
+        // Assert
+        assertTrue(found.isPresent());
+        assertEquals("John", found.get().getName());
+    }
+    
+    @Test
+    public void testFindByEmailNotFound() {
+        // Act
+        Optional&lt;User&gt; found = repository.findByEmail("nonexistent@example.com");
+        
+        // Assert
+        assertFalse(found.isPresent());
+    }
+    
+    @Test
+    public void testFindByNameContainingIgnoreCase() {
+        // Arrange
+        User user1 = new User(null, "John Doe", "john@example.com");
+        User user2 = new User(null, "Jane Smith", "jane@example.com");
+        entityManager.persistAndFlush(user1);
+        entityManager.persistAndFlush(user2);
+        
+        // Act
+        List&lt;User&gt; results = repository.findByNameContainingIgnoreCase("john");
+        
+        // Assert
+        assertEquals(1, results.size());
+        assertEquals("John Doe", results.get(0).getName());
+    }
+}
+</code></pre>
+
+      <h3>Testing REST Controllers with MockMvc</h3>
+      <pre class="spring-code"><code>@WebMvcTest(UserController.class)
+public class UserControllerTest {
+    
+    @Autowired
+    private MockMvc mockMvc;
+    
+    @MockBean
+    private UserService userService;
+    
+    @Test
+    public void testGetUserSuccess() throws Exception {
+        // Arrange
+        UserResponse response = new UserResponse(1L, "John", "john@example.com");
+        when(userService.findById(1L)).thenReturn(Optional.of(response));
+        
+        // Act & Assert
+        mockMvc.perform(get("/api/v1/users/1")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value(1))
+            .andExpect(jsonPath("$.name").value("John"))
+            .andExpect(jsonPath("$.email").value("john@example.com"));
+    }
+    
+    @Test
+    public void testGetUserNotFound() throws Exception {
+        // Arrange
+        when(userService.findById(999L)).thenReturn(Optional.empty());
+        
+        // Act & Assert
+        mockMvc.perform(get("/api/v1/users/999"))
+            .andExpect(status().isNotFound());
+    }
+    
+    @Test
+    public void testCreateUserSuccess() throws Exception {
+        // Arrange
+        CreateUserRequest request = new CreateUserRequest("John", "john@example.com");
+        UserResponse response = new UserResponse(1L, "John", "john@example.com");
+        when(userService.create(any())).thenReturn(response);
+        
+        // Act & Assert
+        mockMvc.perform(post("/api/v1/users")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {"name": "John", "email": "john@example.com"}
+                """))
+            .andExpect(status().isCreated())
+            .andExpect(header().exists("Location"))
+            .andExpect(jsonPath("$.id").value(1));
+    }
+    
+    @Test
+    public void testCreateUserValidationError() throws Exception {
+        // Invalid input: missing name
+        mockMvc.perform(post("/api/v1/users")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {"email": "john@example.com"}
+                """))
+            .andExpect(status().isBadRequest());
+    }
+}
+</code></pre>
+
+      <h2 id="full-integration-test">
+        Full Integration Testing with @SpringBootTest
+      </h2>
+
+      <pre class="spring-code"><code>@SpringBootTest
+@AutoConfigureMockMvc
+public class UserIntegrationTest {
+    
+    @Autowired
+    private MockMvc mockMvc;
+    
+    @Autowired
+    private UserRepository userRepository;
+    
+    @BeforeEach
+    public void cleanup() {
+        userRepository.deleteAll();
+    }
+    
+    @Test
+    public void testCreateAndRetrieveUser() throws Exception {
+        // Create a user via API
+        mockMvc.perform(post("/api/v1/users")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {"name": "John Doe", "email": "john@example.com"}
+                """))
+            .andExpect(status().isCreated());
+        
+        // Retrieve the user
+        mockMvc.perform(get("/api/v1/users")
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.content[0].name").value("John Doe"));
+        
+        // Verify in database
+        Optional&lt;User&gt; user = userRepository.findByEmail("john@example.com");
+        assertTrue(user.isPresent());
+        assertEquals("John Doe", user.get().getName());
+    }
+}
+</code></pre>
+
+      <h2 id="testing-annotations">Common Testing Annotations</h2>
+
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Annotation</th>
+              <th>Purpose</th>
+              <th>Use when</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>@ExtendWith(MockitoExtension.class)</code></td>
+              <td>Enable Mockito for unit tests</td>
+              <td>Testing a single class with mocks</td>
+            </tr>
+            <tr>
+              <td><code>@Mock</code></td>
+              <td>Create a mock object</td>
+              <td>Need to replace a dependency</td>
+            </tr>
+            <tr>
+              <td><code>@InjectMocks</code></td>
+              <td>Inject mocks into class under test</td>
+              <td>Auto-inject mocks into constructor</td>
+            </tr>
+            <tr>
+              <td><code>@SpringBootTest</code></td>
+              <td>Load full application context</td>
+              <td>Full integration testing</td>
+            </tr>
+            <tr>
+              <td><code>@WebMvcTest</code></td>
+              <td>Test only REST controllers</td>
+              <td>Controller unit testing</td>
+            </tr>
+            <tr>
+              <td><code>@DataJpaTest</code></td>
+              <td>Test only repository/database layer</td>
+              <td>Repository unit testing</td>
+            </tr>
+            <tr>
+              <td><code>@MockBean</code></td>
+              <td>Mock a Spring bean</td>
+              <td>Replace bean in Spring context</td>
+            </tr>
+            <tr>
+              <td><code>@BeforeEach</code></td>
+              <td>Run before each test</td>
+              <td>Setup/cleanup per test</td>
+            </tr>
+            <tr>
+              <td><code>@BeforeAll</code></td>
+              <td>Run once before all tests</td>
+              <td>Heavy setup (once per class)</td>
+            </tr>
+            <tr>
+              <td><code>@DisplayName</code></td>
+              <td>Human-readable test name</td>
+              <td>Better test reports</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="testing-best-practices">Testing Best Practices</h2>
+
+      <div
+        style="
+          background: #d4edda;
+          padding: 20px;
+          border-radius: 4px;
+          border-left: 4px solid #28a745;
+          margin: 20px 0;
+        "
+      >
+        <ul class="lh-lg" style="margin-bottom: 0">
+          <li>✅ One assertion per test (when possible)</li>
+          <li>
+            ✅ Use descriptive test names: testCreateUserWithValidInput()
+          </li>
+          <li>✅ Use Given-When-Then pattern for clarity</li>
+          <li>✅ Test both success and failure cases</li>
+          <li>✅ Use @BeforeEach to setup each test independently</li>
+          <li>✅ Mock external dependencies (database, API calls)</li>
+          <li>✅ Test edge cases and boundaries</li>
+          <li>
+            ✅ Keep tests fast (use unit tests, not integration tests for
+            everything)
+          </li>
+          <li>✅ Test at the right level (pyramid principle)</li>
+          <li>❌ Don't test framework behavior (Spring knows it works)</li>
+          <li>❌ Don't test library code (trust JUnit, Mockito)</li>
+          <li>❌ Don't make tests interdependent</li>
+          <li>❌ Don't test too much in one test</li>
+        </ul>
+      </div>
+
+      <h2 id="test-coverage">Measuring Test Coverage</h2>
+
+      <p>Use JaCoCo to measure how much of your code is tested:</p>
+
+      <pre class="spring-code"><code>// pom.xml
+&lt;plugin&gt;
+    &lt;groupId&gt;org.jacoco&lt;/groupId&gt;
+    &lt;artifactId&gt;jacoco-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;0.8.8&lt;/version&gt;
+    &lt;executions&gt;
+        &lt;execution&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;prepare-agent&lt;/goal&gt;
+            &lt;/goals&gt;
+        &lt;/execution&gt;
+        &lt;execution&gt;
+            &lt;id&gt;report&lt;/id&gt;
+            &lt;phase&gt;test&lt;/phase&gt;
+            &lt;goals&gt;
+                &lt;goal&gt;report&lt;/goal&gt;
+            &lt;/goals&gt;
+        &lt;/execution&gt;
+    &lt;/executions&gt;
+&lt;/plugin&gt;
+
+// Run: ./mvnw clean test
+// View report: target/site/jacoco/index.html
+</code></pre>
+
+      <p>
+        <strong>Coverage goals:</strong> 80%+ for business logic, 50%+ overall
+        is reasonable
+      </p>
+
+      <a class="btn btn-success" href="testing.html"
+        >See Basic Testing Guide â†’</a
+      >
+    </main>
+    <footer class="py-4 text-center">
+      <p class="mb-0">&copy; 2026 Java Codeex</p>
+    </footer>
+    <script src="./springboot-nav.js"></script>
+    <script src="../site-footer.js"></script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
