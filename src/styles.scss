@@ -37,7 +37,7 @@ p { max-width: 70ch; }
 .legacy-document .section-card, .course-document .section-card { width: 100%; margin-bottom: 3rem; border: 1px solid rgba(226,232,240,.9); border-radius: 1.125rem; background: #fff; box-shadow: 0 .75rem 2rem rgba(16,24,40,.08); }
 .legacy-document .section-title, .course-document .section-title { color: #1e3a8a; border-left: 5px solid #06b6d4; padding-left: .75rem; font-size: clamp(1.35rem, 2.4vw, 1.75rem); }
 .legacy-document .section-card .list-group-item, .course-document .section-card .list-group-item { padding: .7rem 0; border-color: #eef2f7; background: transparent; line-height: 1.6; }
-.legacy-document .section-card .list-group-item a, .course-document .section-card .list-group-item a { color: #1d4ed8; font-weight: 600; text-decoration: none; }
+.legacy-document .section-card .list-group-item a, .course-document .section-card .list-group-item a { color: black; text-decoration: underline; }
 .legacy-document .section-card .list-group-item a:hover, .course-document .section-card .list-group-item a:hover { color: #0891b2; text-decoration: underline; }
 .course-document .spring-hero { width: 100%; margin-bottom: 1.5rem; padding: 2rem 2.5rem; border-radius: 1rem; color: #fff; background: radial-gradient(circle at 85% 10%, rgba(34,211,238,.18), transparent 28%), linear-gradient(135deg,#0b1220,#172554 62%,#164e63); box-shadow: 0 .75rem 2rem rgba(15,23,42,.12); }
 .course-document .spring-hero h1 { margin-bottom: .5rem; color: #fff; font-size: clamp(1.75rem, 3.5vw, 2.75rem); }

@@ -12,6 +12,7 @@ export class NavbarComponent {
   readonly navigationItems = MAIN_NAVIGATION;
   menuOpen = false;
   openDropdown: string | null = null;
+  closedDropdown: string | null = null;
 
   constructor(private readonly router: Router) {
     this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd)).subscribe(() => {
@@ -21,6 +22,13 @@ export class NavbarComponent {
   }
 
   toggleMenu(): void { this.menuOpen = !this.menuOpen; }
-  toggleDropdown(label: string): void { this.openDropdown = this.openDropdown === label ? null : label; }
+  toggleDropdown(label: string): void {
+    this.closedDropdown = null;
+    this.openDropdown = this.openDropdown === label ? null : label;
+  }
+  closeDropdown(label: string): void { this.openDropdown = null; this.closedDropdown = label; }
+  resetDropdown(label: string): void {
+    if (this.closedDropdown === label) this.closedDropdown = null;
+  }
   hasChildren(item: NavigationItem): boolean { return !!item.children?.length; }
 }

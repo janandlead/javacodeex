@@ -6,4 +6,3 @@ export interface NavigationItem {
   readonly external?: boolean;
   readonly children?: readonly NavigationItem[];
 }
-

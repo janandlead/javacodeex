@@ -4,11 +4,11 @@
     <div class="navbar-collapse" [class.show]="menuOpen">
       <ul class="navbar-nav ms-auto align-items-lg-center">
         @for (item of navigationItems; track item.label) {
-          <li class="nav-item" [class.dropdown]="hasChildren(item)">
+          <li class="nav-item" [class.dropdown]="hasChildren(item)" [class.dropdown-closed]="closedDropdown === item.label" (mouseleave)="resetDropdown(item.label)">
             @if (hasChildren(item)) {
               <button class="nav-link dropdown-toggle" type="button" [attr.aria-expanded]="openDropdown === item.label" (click)="toggleDropdown(item.label)">@if (item.icon) { <i [class]="item.icon"></i> } {{ item.label }}</button>
               <ul class="dropdown-menu" [class.show]="openDropdown === item.label">
-                @for (child of item.children; track child.label) { <li><a class="dropdown-item" [routerLink]="child.route" routerLinkActive="active">{{ child.label }}</a></li> }
+                @for (child of item.children; track child.label) { <li><a class="dropdown-item" [routerLink]="child.route" routerLinkActive="active" (click)="closeDropdown(item.label)">{{ child.label }}</a></li> }
               </ul>
             } @else { <a class="nav-link" [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.exact ?? false }">@if (item.icon) { <i [class]="item.icon"></i> } {{ item.label }}</a> }
           </li>

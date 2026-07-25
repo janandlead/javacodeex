@@ -27,7 +27,7 @@ export const MAIN_NAVIGATION: readonly NavigationItem[] = [
   },
   {
     label: 'Spring Boot', route: '/springboot', icon: 'bi bi-leaf', children: [
-      { label: 'Introduction', route: '/springboot/introduction' },
+      { label: 'Spring Core', route: '/springboot/introduction' },
       { label: 'Setup and Installation', route: '/springboot/setup' },
       { label: 'Project Structure', route: '/springboot/project-structure' },
       { label: 'AOP', route: '/springboot/aop' },

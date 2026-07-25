@@ -28,7 +28,7 @@ export class SeoService {
     const category = route.data['category'] as string | undefined;
     const robots = route.data['robots'] as string | undefined ?? 'index, follow, max-image-preview:large';
     const description = route.data['description'] as string | undefined
-      ?? (category ? `Learn ${pageTitle.replace(/ \| Java Codeex$/, '')} with practical examples and clear explanations on Java Codeex.` : 'Practical Java, Spring Boot, programming, database, design pattern, and AI tutorials with clear explanations and real-world examples.');
+      ?? (category ? `Learn ${pageTitle.replace(/ \| Java Codeex$/, '')} with practical examples and clear explanations on Java Codeex.` : 'Learn Java, Spring Boot, databases, and design patterns through practical tutorials, clear examples, and beginner-friendly explanations.');
     const keywords = route.data['keywords'] as string | undefined
       ?? (category === 'Design Patterns' ? 'Java design patterns, Creational Design Patterns, Structural Design Patterns, Behavioral Design Patterns, Singleton Pattern Java, Factory Method Java, Abstract Factory Java, Builder Pattern Java, Prototype Pattern Java, Adapter Pattern Java, Bridge Pattern Java, Composite Pattern Java, Decorator Pattern Java, Facade Pattern Java, Flyweight Pattern Java, Proxy Pattern Java, Observer Pattern Java, Strategy Pattern Java' : 'Java tutorials, Spring Boot tutorials, Java programming, database tutorials, programming courses');
     const path = this.router.url.split(/[?#]/)[0] || '/';
@@ -44,6 +44,7 @@ export class SeoService {
     this.setMeta('og:title', title, 'property');
     this.setMeta('og:description', description, 'property');
     this.setMeta('og:type', 'website', 'property');
+    this.setMeta('og:locale', 'en_IN', 'property');
     this.setMeta('og:url', url, 'property');
     this.setMeta('og:site_name', 'Java Codeex', 'property');
     this.setMeta('og:image', socialImage, 'property');
@@ -54,6 +55,16 @@ export class SeoService {
     this.setMeta('twitter:image', socialImage);
     this.setMeta('twitter:image:alt', 'Java Codeex programming tutorial logo');
     this.setMeta('twitter:url', url);
+    this.setMeta('twitter:site', '@javacodeex');
+
+    let alternate = this.document.head.querySelector<HTMLLinkElement>('link[hreflang="en-in"]');
+    if (!alternate) {
+      alternate = this.document.createElement('link');
+      alternate.rel = 'alternate';
+      alternate.hreflang = 'en-in';
+      this.document.head.appendChild(alternate);
+    }
+    alternate.href = url;
 
     let canonical = this.document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
     if (!canonical) {
@@ -62,10 +73,10 @@ export class SeoService {
       this.document.head.appendChild(canonical);
     }
     canonical.href = url;
-    this.updateStructuredData(title, description, url, category);
+    this.updateStructuredData(title, description, url, category, keywords);
   }
 
-  private updateStructuredData(title: string, description: string, url: string, category?: string): void {
+  private updateStructuredData(title: string, description: string, url: string, category?: string, keywords?: string): void {
     const scriptId = 'dynamic-page-structured-data';
     let script = this.document.head.querySelector<HTMLScriptElement>(`#${scriptId}`);
     if (!script) {
@@ -74,13 +85,17 @@ export class SeoService {
       script.type = 'application/ld+json';
       this.document.head.appendChild(script);
     }
+    const isArticle = category === 'Design Patterns' || category === 'Java' || category === 'Spring Boot';
     script.textContent = JSON.stringify({
       '@context': 'https://schema.org',
-      '@type': category === 'Design Patterns' || category === 'Java' || category === 'Spring Boot' ? 'TechArticle' : 'WebPage',
+      '@type': isArticle ? 'TechArticle' : 'WebPage',
       headline: title,
       name: title,
       description,
       url,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+      image: `${this.siteUrl}/assets/images/javacodeex.jpg`,
+      ...(isArticle ? { articleSection: category, learningResourceType: 'Tutorial', keywords } : {}),
       inLanguage: 'en-IN',
       isPartOf: { '@type': 'WebSite', name: 'Java Codeex', url: `${this.siteUrl}/` },
       author: { '@type': 'Organization', name: 'Java Codeex', url: `${this.siteUrl}/` },

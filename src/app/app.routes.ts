@@ -4,7 +4,7 @@ import { MainLayoutComponent } from './layout/main-layout/main-layout.component'
 export const routes: Routes = [
   {
     path: '', component: MainLayoutComponent, children: [
-      { path: '', title: 'Java Codeex - Learn Programming', loadComponent: () => import('./features/home/home.component').then((m) => m.HomeComponent) },
+      { path: '', title: 'Java & Spring Boot Tutorials | Java Codeex', data: { description: 'Learn Java, Spring Boot, databases, and design patterns through practical tutorials, clear examples, and beginner-friendly explanations.' }, loadComponent: () => import('./features/home/home.component').then((m) => m.HomeComponent) },
       { path: 'home', pathMatch: 'full', redirectTo: '' },
       { path: 'java', loadChildren: () => import('./features/java/java.routes').then((m) => m.JAVA_ROUTES) },
       { path: 'springboot', loadChildren: () => import('./features/springboot/springboot.routes').then((m) => m.SPRINGBOOT_ROUTES) },

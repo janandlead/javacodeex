@@ -56,7 +56,7 @@
     </nav>
     <section class="spring-hero">
       <div class="container-xl">
-        <h1>Spring Boot</h1>
+        <h1>Spring Boot Tutorial</h1>
         <p class="mb-3">
         </p>
         <p class="lead mb-2">
@@ -78,6 +78,182 @@
         structure, then build a REST API, connect a database, add validation and
         security, and finish with testing and deployment.
       </div>
+
+      <!-- What is Spring Boot? -->
+      <div class="card section-card mb-5 p-4">
+        <h2 class="section-title mb-3">What is Spring Boot?</h2>
+        <p>
+          Spring Boot is a Java-based framework used to build web applications,
+          REST APIs, microservices, and enterprise applications quickly and
+          easily. It is built on top of the Spring Framework and reduces the
+          configuration required to create a Spring application.
+        </p>
+        <p>Spring Boot follows the principle:</p>
+        <blockquote><strong>Convention over Configuration</strong></blockquote>
+        <p>
+          Spring Boot provides sensible default configurations so developers can
+          focus on business logic instead of spending most of their time on
+          application setup.
+        </p>
+
+        <h3>Why Do We Need Spring Boot?</h3>
+        <p>Before Spring Boot, developers often had to perform many manual steps:</p>
+        <ul>
+          <li>Configure XML files</li><li>Set up application servers</li>
+          <li>Configure dependencies manually</li><li>Configure database connections</li>
+          <li>Configure component scanning</li><li>Package and deploy the application separately</li>
+        </ul>
+        <p>Spring Boot simplifies these tasks through automatic configuration and built-in tools.</p>
+
+        <h3>How Spring Boot Works</h3>
+        <p>Spring Boot checks the dependencies in the project and automatically configures the application.</p>
+        <p>For example, adding Spring Web configures a web server, Spring MVC, request handling, JSON conversion, and basic error handling.</p>
+        <pre><code>Spring Boot Application
+          ↓
+Checks Project Dependencies
+          ↓
+Applies Auto-Configuration
+          ↓
+Starts Embedded Server
+          ↓
+Application is Ready</code></pre>
+
+        <h3>Key Features of Spring Boot</h3>
+        <h4>1. Auto-Configuration</h4>
+        <p>Spring Boot configures the application based on the libraries available in the project. Adding Spring Data JPA automatically prepares many database-related components.</p>
+
+        <h4>2. Embedded Web Server</h4>
+        <p>Spring Boot includes Tomcat, Jetty, and Undertow. An external application server is not required.</p>
+        <pre><code>java -jar application.jar</code></pre>
+
+        <h4>3. Spring Boot Starters</h4>
+        <p>Starter dependencies group commonly used libraries together:</p>
+        <ul><li><code>spring-boot-starter-web</code></li><li><code>spring-boot-starter-data-jpa</code></li><li><code>spring-boot-starter-security</code></li><li><code>spring-boot-starter-test</code></li></ul>
+        <pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+
+        <h4>4. Minimal Configuration</h4>
+        <p>Most configuration can be handled using annotations and property files such as <code>application.properties</code> or <code>application.yml</code>.</p>
+        <pre><code>server.port=8081
+spring.application.name=employee-service</code></pre>
+
+        <h4>5. Production-Ready Features</h4>
+        <p>Spring Boot Actuator helps monitor application health, memory usage, environment properties, metrics, beans, and HTTP requests.</p>
+        <pre><code>/actuator/health</code></pre>
+
+        <h4>6. Dependency Management</h4>
+        <p>Spring Boot manages compatible dependency versions automatically, reducing conflicts and simplifying maintenance.</p>
+
+        <h4>7. Easy REST API Development</h4>
+        <p>REST APIs can be created with annotations such as <code>@RestController</code>, <code>@RequestMapping</code>, <code>@GetMapping</code>, <code>@PostMapping</code>, <code>@PutMapping</code>, and <code>@DeleteMapping</code>.</p>
+        <pre><code>@RestController
+@RequestMapping("/api")
+public class WelcomeController {
+
+    @GetMapping("/welcome")
+    public String welcome() {
+        return "Welcome to Spring Boot!";
+    }
+}</code></pre>
+        <p>The endpoint can be accessed at <code>http://localhost:8080/api/welcome</code>.</p>
+
+        <h4>8. Microservices Support</h4>
+        <p>Each Spring Boot service can run independently with its own business logic, database, server, and deployment process.</p>
+        <p>Spring Boot integrates with Spring Cloud, Kafka, Docker, Kubernetes, API Gateway, and service discovery.</p>
+
+        <h4>9. Easy Database Integration</h4>
+        <p>Spring Boot supports MySQL, PostgreSQL, Oracle, MongoDB, and SQL Server through Spring JDBC, Spring Data JPA, Hibernate, and Spring Data MongoDB.</p>
+        <pre><code>spring.datasource.url=jdbc:mysql://localhost:3306/company_db
+spring.datasource.username=root
+spring.datasource.password=password</code></pre>
+
+        <h4>10. Easy Testing</h4>
+        <p>Common testing tools include JUnit, Mockito, MockMvc, and Spring Boot Test.</p>
+        <pre><code>@SpringBootTest
+class ApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+}</code></pre>
+
+        <h3>Common Uses of Spring Boot</h3>
+        <h4>REST APIs</h4>
+        <p>Build employee management, payment, order management, and customer APIs.</p>
+        <h4>Web Applications</h4>
+        <p>Spring Boot works with Angular, React, Vue.js, HTML, and Bootstrap.</p>
+        <h4>Microservices</h4>
+        <p>Services can be developed, deployed, and scaled independently.</p>
+        <h4>Enterprise Applications</h4>
+        <p>Spring Boot is widely used in banking, healthcare, insurance, e-commerce, telecommunications, and logistics.</p>
+        <h4>Cloud Applications</h4>
+        <p>Applications can run on AWS, Microsoft Azure, Google Cloud, Docker, and Kubernetes.</p>
+
+        <h3>Simple Spring Boot Application</h3>
+        <pre><code>@SpringBootApplication
+public class SpringBootApplicationExample {
+
+    public static void main(String[] args) {
+        SpringApplication.run(
+            SpringBootApplicationExample.class,
+            args
+        );
+    }
+}</code></pre>
+        <h4>Explanation</h4>
+        <ul>
+          <li><code>@SpringBootApplication</code> enables auto-configuration, component scanning, and configuration support.</li>
+          <li><code>SpringApplication.run()</code> starts the application and embedded web server.</li>
+        </ul>
+
+        <h3>Simple REST Controller Example</h3>
+        <pre><code>@RestController
+public class HelloController {
+
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "Hello from Spring Boot!";
+    }
+}</code></pre>
+        <p>After starting the application, open <code>http://localhost:8080/hello</code> to see <code>Hello from Spring Boot!</code>.</p>
+
+        <h3>Spring Framework vs Spring Boot</h3>
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle">
+            <thead><tr><th>Spring Framework</th><th>Spring Boot</th></tr></thead>
+            <tbody>
+              <tr><td>Requires more manual configuration</td><td>Provides automatic configuration</td></tr>
+              <tr><td>External server may be required</td><td>Includes an embedded server</td></tr>
+              <tr><td>Dependency setup can be complex</td><td>Provides starter dependencies</td></tr>
+              <tr><td>Application setup takes more time</td><td>Application setup is faster</td></tr>
+              <tr><td>Monitoring needs additional setup</td><td>Provides Actuator support</td></tr>
+              <tr><td>More configuration control</td><td>More sensible defaults</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Advantages of Spring Boot</h3>
+        <ul>
+          <li>Faster application development</li><li>Less manual configuration</li>
+          <li>Embedded web server</li><li>Easy dependency management</li>
+          <li>Easy REST API development</li><li>Microservices support</li>
+          <li>Production-ready monitoring</li><li>Easy database integration</li>
+          <li>Easy cloud deployment</li><li>Strong Spring ecosystem support</li>
+        </ul>
+
+        <h3>Summary</h3>
+        <p>
+          Spring Boot simplifies Spring application development with
+          auto-configuration, starter dependencies, embedded servers, minimal
+          configuration, REST API support, database integration, testing support,
+          production monitoring, microservices support, and cloud deployment.
+          Developers can focus on business requirements while Spring Boot handles
+          most application setup and configuration.
+        </p>
+      </div>
+
       <!-- 1. Spring Boot Core -->
       <div id="basics" class="card section-card mb-5 p-4">
         <h2 class="section-title mb-1">Spring Boot Core</h2>
