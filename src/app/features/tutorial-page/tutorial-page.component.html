@@ -1,5 +1,5 @@
 <article class="container-xl tutorial-page">
-  <app-breadcrumb [items]="[{ label: page.category, route: page.category === 'Java' ? '/java' : '/springboot' }, { label: page.title }]" />
+  <app-breadcrumb [items]="[{ label: page.category, route: page.category === 'Java' ? '/java' : '/spring-boot' }, { label: page.title }]" />
   <app-page-header [category]="page.category" [title]="page.title" [description]="page.description" />
   @for (section of page.sections; track section.heading) {
     <section class="tutorial-section">
@@ -8,6 +8,5 @@
       @if (section.code) { <app-code-block language="java" [code]="section.code" /> }
     </section>
   }
-  <a class="btn btn-outline-primary mt-3" [routerLink]="page.category === 'Java' ? '/java' : '/springboot'"><i class="bi bi-arrow-left"></i> Back to {{ page.category }}</a>
+  <a class="btn btn-outline-primary mt-3" [routerLink]="page.category === 'Java' ? '/java' : '/spring-boot'"><i class="bi bi-arrow-left"></i> Back to {{ page.category }}</a>
 </article>
-

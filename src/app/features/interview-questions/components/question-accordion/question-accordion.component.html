@@ -1,0 +1,14 @@
+<section aria-labelledby="questions-heading">
+  <div class="questions-heading"><div><span class="eyebrow">{{ topicName() }} interview questions</span><h2 id="questions-heading">Interview questions</h2></div><span class="result-count">{{ questions().length }} matching</span></div>
+  @if (questions().length) {
+    <div class="simple-question-list">
+      @for (question of questions(); track question.id; let index = $index) {
+        <article class="simple-question" [id]="'question-' + question.id">
+          <h3><span class="simple-question-number">{{ index + 1 }}.</span> {{ question.question }} <span class="difficulty" [class]="'difficulty ' + question.difficulty.toLowerCase()">{{ question.difficulty }}</span></h3>
+          @if (question.answer.trim()) { <div class="simple-answer"><span class="answer-label">Answer</span><p>{{ question.answer }}</p></div> }
+          @if (question.codeExample) { <pre><code>{{ question.codeExample }}</code></pre> }
+        </article>
+      }
+    </div>
+  } @else { <div class="empty-state"><i class="bi bi-search" aria-hidden="true"></i><p>No interview questions found for the selected filters.</p></div> }
+</section>

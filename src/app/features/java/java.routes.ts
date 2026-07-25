@@ -27,7 +27,7 @@ const topics = [
 const routeFor = (slug: string, index: number): Routes[number] => ({
   path: slug,
   title: `${JAVA_PAGES[slug].title} | Java Codeex`,
-  data: { fileName: `${slug}.html`, title: JAVA_PAGES[slug].title, category: 'Java', description: JAVA_PAGES[slug].description, previousRoute: index > 0 ? `/java/${topics[index - 1]}` : '/java', previousLabel: index > 0 ? JAVA_PAGES[topics[index - 1]].title : 'Java Tutorial', nextRoute: index < topics.length - 1 ? `/java/${topics[index + 1]}` : '', nextLabel: index < topics.length - 1 ? JAVA_PAGES[topics[index + 1]].title : '' },
+  data: { fileName: `${slug}.html`, title: JAVA_PAGES[slug].title, category: 'Java', primaryKeyword: JAVA_PAGES[slug].title, description: JAVA_PAGES[slug].description, keywords: `${JAVA_PAGES[slug].title}, Java tutorials, Java programming, learn Java`, seo: { title: `${JAVA_PAGES[slug].title} Tutorial | Java Codeex`, description: JAVA_PAGES[slug].description, keyword: JAVA_PAGES[slug].title, canonicalUrl: `https://javacodeex.in/java/${slug}`, keywords: `${JAVA_PAGES[slug].title}, Java tutorials, Java programming` }, previousRoute: index > 0 ? `/java/${topics[index - 1]}` : '/java', previousLabel: index > 0 ? JAVA_PAGES[topics[index - 1]].title : 'Java Tutorial', nextRoute: index < topics.length - 1 ? `/java/${topics[index + 1]}` : '', nextLabel: index < topics.length - 1 ? JAVA_PAGES[topics[index + 1]].title : '' },
   loadComponent: () => Promise.resolve(JavaDocumentComponent)
 });
 
@@ -35,7 +35,7 @@ export const JAVA_ROUTES: Routes = [
   {
     path: '',
     title: 'Java Tutorial | Java Codeex',
-    data: { fileName: 'index.html', title: 'Java Tutorial', category: 'Java', description: 'Learn Java programming from fundamentals to advanced topics with practical examples and clear explanations.', nextRoute: `/java/${topics[0]}`, nextLabel: JAVA_PAGES[topics[0]].title },
+    data: { fileName: 'index.html', title: 'Java Tutorial', category: 'Java', primaryKeyword: 'Java tutorials', description: 'Learn Java programming from fundamentals to advanced topics with practical examples and clear explanations.', keywords: 'Java tutorials, Java programming tutorial, learn Java, core Java', seo: { title: 'Java Tutorial | Java Codeex', description: 'Learn Java programming from fundamentals to advanced topics with practical examples and clear explanations.', keyword: 'Java tutorials', canonicalUrl: 'https://javacodeex.in/java', keywords: 'Java tutorials, Java programming tutorial, learn Java' }, nextRoute: `/java/${topics[0]}`, nextLabel: JAVA_PAGES[topics[0]].title },
     loadComponent: () => Promise.resolve(JavaDocumentComponent)
   },
   { path: '404', title: 'Java Page Not Found | Java Codeex', data: { fileName: '404.html', title: 'Java Page Not Found', robots: 'noindex, nofollow' }, loadComponent: () => Promise.resolve(JavaDocumentComponent) },

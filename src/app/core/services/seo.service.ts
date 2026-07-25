@@ -2,48 +2,89 @@ import { DOCUMENT } from '@angular/common';
 import { inject, Injectable } from '@angular/core';
 import { Meta, Title } from '@angular/platform-browser';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
+import { SeoConfig, StructuredDataConfig } from '../models/seo.model';
+import { InterviewTopic } from '../../features/interview-questions/models/interview-topic.model';
 import { filter } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SeoService {
   private readonly siteUrl = 'https://javacodeex.in';
+  private readonly defaultImage = `${this.siteUrl}/assets/images/javacodeex.jpg`;
   private readonly document = inject(DOCUMENT);
   private readonly meta = inject(Meta);
   private readonly title = inject(Title);
   private readonly router = inject(Router);
 
   constructor() {
-    this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd)).subscribe(() => {
-      this.update(this.deepestRoute(this.router.routerState.snapshot.root));
+    this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd)).subscribe((event) => {
+      this.update(this.deepestRoute(this.router.routerState.snapshot.root), event.urlAfterRedirects);
     });
+    this.update(this.deepestRoute(this.router.routerState.snapshot.root), this.router.url);
+  }
+
+  updateInterviewTopic(topic: InterviewTopic): void {
+    const topicName = topic.name.replace(/\s+Interview Questions?$/i, '').trim();
+    const title = `${topicName} Interview Questions | Java Codeex`;
+    const description = `Prepare with ${topicName} interview questions covering core concepts, practical scenarios, and production topics for Java developers.`;
+    const url = this.canonicalUrl(this.router.url);
+    const keywords = [
+      `${topicName} interview questions`,
+      'Java interview questions',
+      `${topicName} interview preparation`
+    ];
+    const seo: SeoConfig = {
+      title,
+      description,
+      canonicalUrl: url,
+      keywords,
+      primaryKeyword: `${topicName} interview questions`,
+      articleSection: 'Java Interview Preparation',
+      type: 'article'
+    };
+    this.applyMetadata(seo, keywords, url);
   }
 
   private deepestRoute(route: ActivatedRouteSnapshot): ActivatedRouteSnapshot {
     return route.firstChild ? this.deepestRoute(route.firstChild) : route;
   }
 
-  private update(route: ActivatedRouteSnapshot): void {
-    const pageTitle = route.title ?? route.data['title'] ?? 'Java Codeex';
+  private update(route: ActivatedRouteSnapshot, navigationUrl: string): void {
+    const data = this.routeData(route);
+    const routeSeo = data['seo'] as SeoConfig | undefined;
+    const pageTitle = routeSeo?.title ?? route.title ?? data['title'] as string | undefined ?? 'Programming Tutorials';
     const title = pageTitle.includes('Java Codeex') ? pageTitle : `${pageTitle} | Java Codeex`;
-    const category = route.data['category'] as string | undefined;
-    const robots = route.data['robots'] as string | undefined ?? 'index, follow, max-image-preview:large';
-    const description = route.data['description'] as string | undefined
-      ?? (category ? `Learn ${pageTitle.replace(/ \| Java Codeex$/, '')} with practical examples and clear explanations on Java Codeex.` : 'Learn Java, Spring Boot, databases, and design patterns through practical tutorials, clear examples, and beginner-friendly explanations.');
-    const keywords = route.data['keywords'] as string | undefined
-      ?? (category === 'Design Patterns' ? 'Java design patterns, Creational Design Patterns, Structural Design Patterns, Behavioral Design Patterns, Singleton Pattern Java, Factory Method Java, Abstract Factory Java, Builder Pattern Java, Prototype Pattern Java, Adapter Pattern Java, Bridge Pattern Java, Composite Pattern Java, Decorator Pattern Java, Facade Pattern Java, Flyweight Pattern Java, Proxy Pattern Java, Observer Pattern Java, Strategy Pattern Java' : 'Java tutorials, Spring Boot tutorials, Java programming, database tutorials, programming courses');
-    const path = this.router.url.split(/[?#]/)[0] || '/';
-    const normalizedPath = path === '/' ? '/' : `/${path.replace(/^\/+|\/+$/g, '')}/`;
-    const url = `${this.siteUrl}${normalizedPath}`;
-    const socialImage = `${this.siteUrl}/assets/images/javacodeex.jpg`;
+    const category = data['category'] as string | undefined;
+    const primaryKeyword = routeSeo?.primaryKeyword ?? routeSeo?.keyword ?? data['primaryKeyword'] as string | undefined ?? data['keyword'] as string | undefined ?? this.inferPrimaryKeyword(title, category);
+    const description = routeSeo?.description ?? data['description'] as string | undefined ?? 'Learn programming, web development, cloud, DevOps, databases, AI, system design, and popular frameworks through practical tutorials and projects.';
+    const robots = routeSeo?.robots ?? data['robots'] as string | undefined ?? 'index, follow, max-image-preview:large';
+    const routeKeywords = this.asKeywords(routeSeo?.keywords, primaryKeyword, data['keywords'] as string | undefined);
+    const url = routeSeo?.canonicalUrl ?? this.canonicalUrl(navigationUrl);
+    const socialImage = routeSeo?.imageUrl ?? this.defaultImage;
+    const type = routeSeo?.type ?? (category ? 'article' : 'website');
 
+    this.applyMetadata({ title, description, canonicalUrl: url, keywords: routeKeywords, robots, imageUrl: socialImage, type, articleSection: routeSeo?.articleSection ?? category, publishedTime: routeSeo?.publishedTime, modifiedTime: routeSeo?.modifiedTime, primaryKeyword }, routeKeywords, url, type, category, primaryKeyword, routeSeo);
+  }
+
+  private routeData(route: ActivatedRouteSnapshot): Record<string, unknown> {
+    const chain: ActivatedRouteSnapshot[] = [];
+    let current: ActivatedRouteSnapshot | null = route;
+    while (current) { chain.unshift(current); current = current.parent; }
+    return chain.reduce((data, item) => ({ ...data, ...item.data }), {});
+  }
+
+  private applyMetadata(seo: SeoConfig, routeKeywords: readonly string[], url: string, type: 'website' | 'article' = seo.type ?? 'article', category = 'Java Interview Preparation', primaryKeyword = seo.primaryKeyword ?? routeKeywords[0], routeSeo?: SeoConfig): void {
+    const title = seo.title.includes('Java Codeex') ? seo.title : `${seo.title} | Java Codeex`;
+    const description = seo.description;
+    const socialImage = seo.imageUrl ?? this.defaultImage;
+    const robots = seo.robots ?? 'index, follow, max-image-preview:large';
     this.title.setTitle(title);
     this.setMeta('description', description);
-    this.setMeta('keywords', keywords);
+    this.setMeta('keywords', routeKeywords.join(', '));
     this.setMeta('robots', robots);
     this.setMeta('googlebot', robots.replace(', max-image-preview:large', ''));
     this.setMeta('og:title', title, 'property');
     this.setMeta('og:description', description, 'property');
-    this.setMeta('og:type', 'website', 'property');
+    this.setMeta('og:type', type, 'property');
     this.setMeta('og:locale', 'en_IN', 'property');
     this.setMeta('og:url', url, 'property');
     this.setMeta('og:site_name', 'Java Codeex', 'property');
@@ -56,6 +97,9 @@ export class SeoService {
     this.setMeta('twitter:image:alt', 'Java Codeex programming tutorial logo');
     this.setMeta('twitter:url', url);
     this.setMeta('twitter:site', '@javacodeex');
+    this.setMeta('article:section', seo.articleSection ?? category, 'property');
+    this.setMeta('article:published_time', seo.publishedTime ?? '', 'property');
+    this.setMeta('article:modified_time', seo.modifiedTime ?? '', 'property');
 
     let alternate = this.document.head.querySelector<HTMLLinkElement>('link[hreflang="en-in"]');
     if (!alternate) {
@@ -66,26 +110,48 @@ export class SeoService {
     }
     alternate.href = url;
 
-    let canonical = this.document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    const canonicals = Array.from(this.document.head.querySelectorAll<HTMLLinkElement>('link[rel="canonical"]'));
+    let canonical = canonicals[0];
     if (!canonical) {
       canonical = this.document.createElement('link');
       canonical.rel = 'canonical';
       this.document.head.appendChild(canonical);
     }
     canonical.href = url;
-    this.updateStructuredData(title, description, url, category, keywords);
+    canonicals.slice(1).forEach((link) => link.remove());
+    this.updateStructuredData(title, description, url, category, routeKeywords.join(', '), primaryKeyword, type, routeSeo);
   }
 
-  private updateStructuredData(title: string, description: string, url: string, category?: string, keywords?: string): void {
-    const scriptId = 'dynamic-page-structured-data';
-    let script = this.document.head.querySelector<HTMLScriptElement>(`#${scriptId}`);
+  private canonicalUrl(navigationUrl: string): string {
+    const path = navigationUrl.split(/[?#]/)[0] || '/';
+    const normalized = path === '/' ? '/' : `/${path.replace(/^\/+|\/+$/g, '')}`;
+    return `${this.siteUrl}${normalized}`;
+  }
+
+  private asKeywords(value?: readonly string[] | string, primaryKeyword?: string, fallback?: string): string[] {
+    const keywordText = typeof value === 'string' ? value : fallback;
+    const keywords = Array.isArray(value) ? [...value] : keywordText?.split(',').map((keyword: string) => keyword.trim()).filter(Boolean) ?? [];
+    if (primaryKeyword && !keywords.includes(primaryKeyword)) keywords.unshift(primaryKeyword);
+    return keywords.length ? keywords : ['programming tutorials', 'technology tutorials'];
+  }
+
+  private inferPrimaryKeyword(title: string, category?: string): string {
+    const cleanTitle = title.replace(/\s*\|\s*Java Codeex\s*$/, '').replace(/\s+Course$/, '').trim();
+    if (category === 'Design Patterns' && cleanTitle === 'Design Patterns in Java') return 'Java design patterns';
+    if (cleanTitle === 'Java Codeex - Learn Programming') return 'programming tutorials';
+    return cleanTitle;
+  }
+
+  private updateStructuredData(title: string, description: string, url: string, category?: string, keywords?: string, primaryKeyword?: string, type: 'website' | 'article' = 'website', seo?: SeoConfig, structuredData?: StructuredDataConfig): void {
+    const scriptId = 'page-structured-data';
+    let script = this.document.head.querySelector<HTMLScriptElement>(`#${scriptId}, #dynamic-page-structured-data`);
     if (!script) {
       script = this.document.createElement('script');
       script.id = scriptId;
       script.type = 'application/ld+json';
       this.document.head.appendChild(script);
     }
-    const isArticle = category === 'Design Patterns' || category === 'Java' || category === 'Spring Boot';
+    const isArticle = type === 'article';
     script.textContent = JSON.stringify({
       '@context': 'https://schema.org',
       '@type': isArticle ? 'TechArticle' : 'WebPage',
@@ -94,16 +160,21 @@ export class SeoService {
       description,
       url,
       mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-      image: `${this.siteUrl}/assets/images/javacodeex.jpg`,
-      ...(isArticle ? { articleSection: category, learningResourceType: 'Tutorial', keywords } : {}),
+      image: seo?.imageUrl ?? this.defaultImage,
+      ...(isArticle ? { articleSection: seo?.articleSection ?? category, learningResourceType: 'Tutorial', keywords, about: { '@type': 'Thing', name: primaryKeyword }, ...(seo?.publishedTime ? { datePublished: seo.publishedTime } : {}), ...(seo?.modifiedTime ? { dateModified: seo.modifiedTime } : {}) } : {}),
       inLanguage: 'en-IN',
       isPartOf: { '@type': 'WebSite', name: 'Java Codeex', url: `${this.siteUrl}/` },
       author: { '@type': 'Organization', name: 'Java Codeex', url: `${this.siteUrl}/` },
-      publisher: { '@type': 'Organization', name: 'Java Codeex', url: `${this.siteUrl}/` }
+      publisher: { '@type': 'Organization', name: 'Java Codeex', url: `${this.siteUrl}/` },
+      ...(structuredData?.breadcrumbs?.length ? { breadcrumb: { '@type': 'BreadcrumbList', itemListElement: structuredData.breadcrumbs.map((item, index) => ({ '@type': 'ListItem', position: index + 1, name: item.name, item: item.url })) } } : {})
     });
   }
 
   private setMeta(name: string, content: string, attribute: 'name' | 'property' = 'name'): void {
+    if (!content) {
+      this.meta.removeTag(`${attribute}="${name}"`);
+      return;
+    }
     this.meta.updateTag({ [attribute]: name, content }, `${attribute}="${name}"`);
   }
 }

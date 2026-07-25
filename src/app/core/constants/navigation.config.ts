@@ -26,23 +26,25 @@ export const MAIN_NAVIGATION: readonly NavigationItem[] = [
     ]
   },
   {
-    label: 'Spring Boot', route: '/springboot', icon: 'bi bi-leaf', children: [
-      { label: 'Spring Core', route: '/springboot/introduction' },
-      { label: 'Setup and Installation', route: '/springboot/setup' },
-      { label: 'Project Structure', route: '/springboot/project-structure' },
-      { label: 'AOP', route: '/springboot/aop' },
-      { label: 'Data JPA', route: '/springboot/data-jpa' },
-      { label: 'Security', route: '/springboot/security-comprehensive' },
-      { label: 'Exception Handling', route: '/springboot/exception-handling' },
-      { label: 'REST APIs', route: '/springboot/rest-api' },
-      { label: 'REST API Design', route: '/springboot/rest-api-design' },
-      { label: 'Validation', route: '/springboot/validation' },
-      { label: 'Testing', route: '/springboot/testing' },
-      { label: 'Testing Comprehensive', route: '/springboot/testing-comprehensive' },
-      { label: 'Actuator and Monitoring', route: '/springboot/actuator' },
-      { label: 'Deployment', route: '/springboot/deployment' }
+    label: 'Spring Boot', route: '/spring-boot', icon: 'bi bi-leaf', children: [
+      { label: 'Spring Core', route: '/spring-boot/introduction' },
+      { label: 'Setup and Installation', route: '/spring-boot/setup' },
+      { label: 'Project Structure', route: '/spring-boot/project-structure' },
+      { label: 'AOP', route: '/spring-boot/aop' },
+      { label: 'Data JPA', route: '/spring-boot/data-jpa' },
+      { label: 'Security', route: '/spring-boot/security-comprehensive' },
+      { label: 'Exception Handling', route: '/spring-boot/exception-handling' },
+      { label: 'REST APIs', route: '/spring-boot/rest-api' },
+      { label: 'REST API Design', route: '/spring-boot/rest-api-design' },
+      { label: 'Validation', route: '/spring-boot/validation' },
+      { label: 'Testing', route: '/spring-boot/testing' },
+      { label: 'Testing Comprehensive', route: '/spring-boot/testing-comprehensive' },
+      { label: 'Actuator and Monitoring', route: '/spring-boot/actuator' },
+      { label: 'Deployment', route: '/spring-boot/deployment' }
     ]
   },
+  { label: 'Angular', route: '/angular', icon: 'bi bi-braces' },
+  { label: 'Interviews', route: '/interviews', icon: 'bi bi-person-workspace' },
   { label: 'Python', route: '/python', icon: 'bi bi-code-slash' },
   { label: 'Hibernate', route: '/hibernate', icon: 'bi bi-database-gear' },
   { label: 'MySQL', route: '/mysql', icon: 'bi bi-database' },
@@ -54,7 +56,7 @@ export const MAIN_NAVIGATION: readonly NavigationItem[] = [
 export const FOOTER_NAVIGATION: readonly NavigationItem[] = [
   { label: 'Java', route: '/java' },
   { label: 'Python', route: '/python' },
-  { label: 'Spring Boot', route: '/springboot' },
+  { label: 'Spring Boot', route: '/spring-boot' },
   { label: 'Angular', route: '/angular' },
   { label: 'MySQL', route: '/mysql' },
   { label: 'MongoDB', route: '/mongodb' },

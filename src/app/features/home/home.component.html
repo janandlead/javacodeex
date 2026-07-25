@@ -1,0 +1,19 @@
+<section class="landing-hero">
+  <div class="container-xl">
+    <span class="eyebrow">Learn. Build. Grow.</span>
+    <h1>Learn Programming and Modern Technologies</h1>
+    <p class="lead">Explore easy-to-understand tutorials on programming languages, web development, cloud computing, DevOps, databases, artificial intelligence, system design, and popular frameworks.</p>
+    <p class="hero-supporting-text">Improve your technical skills with practical examples, step-by-step guides, interview questions, coding exercises, and real-world projects.</p>
+    <div class="hero-actions"><a class="btn btn-warning btn-lg" routerLink="/java">Start learning</a><a class="btn btn-outline-light btn-lg" routerLink="/spring-boot">Explore courses</a></div>
+    <div class="hero-stats"><span><strong>7</strong> learning paths</span><span><strong>30+</strong> tutorial topics</span><span><strong>100%</strong> practical focus</span></div>
+  </div>
+</section>
+
+<section class="container-xl py-5" aria-labelledby="course-catalog">
+  <div class="catalog-heading"><div><p class="eyebrow text-primary mb-2">Explore our courses</p><h2 id="course-catalog" class="section-title">Choose your learning path</h2><p class="text-muted mb-0">Whether you are a beginner, software developer, or experienced professional, learn new technologies and build production-ready applications.</p></div><span class="catalog-badge"><i class="bi bi-stars"></i> Learn at your pace</span></div>
+  <div class="row g-4 mt-2">
+    @for (course of courses; track course.name) {
+      <div class="col-md-6 col-xl-4"><a class="course-card" [class.coming-soon]="!course.available" [style.--course-accent]="course.accent" [routerLink]="course.route"><div class="card-top"><span class="course-icon">@if (course.iconUrl) { <img [src]="course.iconUrl" [alt]="course.name + ' icon'" width="46" height="46" loading="lazy" /> } @else { <i [class]="course.icon" aria-hidden="true"></i> }</span><span class="course-status">{{ course.available ? 'Available now' : 'Coming soon' }}</span></div><p class="course-eyebrow">{{ course.eyebrow }}</p><h3>{{ course.name }}</h3><p class="course-description">{{ course.description }}</p><span class="course-link">{{ course.available ? 'Explore course' : 'View learning path' }} <i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></a></div>
+    }
+  </div>
+</section>

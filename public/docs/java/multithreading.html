@@ -212,6 +212,31 @@
         color: #f8a100;
         border-left-color: #f8a100;
       }
+      .interview-question {
+        border: 1px solid #e0e7ef;
+        border-radius: 8px;
+        margin: 0.75rem 0;
+        background: #fff;
+      }
+      .interview-question summary {
+        cursor: pointer;
+        padding: 0.85rem 1rem;
+        font-weight: 700;
+        color: #16213e;
+      }
+      .interview-question summary::marker {
+        color: #f8a100;
+      }
+      .interview-answer {
+        border-top: 1px solid #e0e7ef;
+        padding: 0.85rem 1rem;
+      }
+      .interview-answer p:last-child,
+      .interview-answer ul:last-child,
+      .interview-answer table:last-child,
+      .interview-answer pre:last-child {
+        margin-bottom: 0;
+      }
       footer {
         background: #1a1a2e;
         color: #8a9bb3;
@@ -1235,4 +1260,3 @@ public class VirtualThreadDemo {
     <script src="../site-footer.js"></script>
   </body>
 </html>
-

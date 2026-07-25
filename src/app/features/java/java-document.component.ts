@@ -1,8 +1,10 @@
+import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
 import { BreadcrumbComponent } from '../../layout/breadcrumb/breadcrumb.component';
+import { createTutorialFallback, normalizeTutorialHeadings } from '../shared/tutorial-fallback';
 
 @Component({
   selector: 'app-java-document', standalone: true, imports: [BreadcrumbComponent, RouterLink],
@@ -13,6 +15,8 @@ import { BreadcrumbComponent } from '../../layout/breadcrumb/breadcrumb.componen
 export class JavaDocumentComponent implements OnInit, OnChanges {
   @Input({ required: true }) fileName = '';
   @Input() title = 'Java Documentation';
+  @Input() description = '';
+  @Input() primaryKeyword = '';
   @Input() previousRoute = '';
   @Input() previousLabel = '';
   @Input() nextRoute = '';
@@ -24,12 +28,14 @@ export class JavaDocumentComponent implements OnInit, OnChanges {
   error = false;
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
+  private readonly document = inject(DOCUMENT);
 
   ngOnInit(): void {
     const documentFile = this.topic ? `${this.topic}.html` : this.fileName;
+    this.html = createTutorialFallback(this.title, this.description, 'Java', this.primaryKeyword);
     this.http.get(`/docs/java/${documentFile}`, { responseType: 'text' }).subscribe({
       next: (source) => { this.html = this.extractDocument(source); this.loading = false; setTimeout(() => this.scrollToSection(), 0); },
-      error: () => { this.loading = false; this.error = true; }
+      error: () => { this.loading = false; this.error = false; }
     });
   }
 
@@ -75,9 +81,46 @@ export class JavaDocumentComponent implements OnInit, OnChanges {
   }
 
   private extractDocument(source: string): string {
-    const document = new DOMParser().parseFromString(source, 'text/html');
+    const document = this.document.implementation.createHTMLDocument('java-document');
+    document.documentElement.innerHTML = source;
+    const pageHero = document.querySelector('.page-hero');
+    const contentContainer = document.querySelector('.container-xl.py-5');
+    if (pageHero) {
+      const heading = pageHero.querySelector('h1');
+      const description = pageHero.querySelector('p');
+      if (this.fileName === 'index.html') {
+        const firstCardHeading = contentContainer?.querySelector('.card h2');
+        const firstCardTitle = firstCardHeading?.textContent?.trim();
+        if (firstCardHeading && heading?.textContent?.trim() && firstCardTitle && !firstCardTitle.startsWith(heading.textContent.trim())) {
+          firstCardHeading.textContent = `${heading.textContent.trim()}: ${firstCardTitle}`;
+        }
+        if (firstCardHeading) {
+          const pageHeading = document.createElement('h1');
+          pageHeading.className = firstCardHeading.className;
+          pageHeading.textContent = firstCardHeading.textContent?.trim() ?? '';
+          firstCardHeading.replaceWith(pageHeading);
+        }
+      } else {
+        const titleBlock = document.createElement('div');
+        titleBlock.className = 'document-title mb-4';
+        if (heading?.textContent?.trim()) {
+          const title = document.createElement('h1');
+          title.textContent = heading.textContent.trim();
+          titleBlock.appendChild(title);
+        }
+        if (description?.textContent?.trim()) {
+          const summary = document.createElement('p');
+          summary.textContent = description.textContent.trim();
+          titleBlock.appendChild(summary);
+        }
+        contentContainer?.prepend(titleBlock);
+      }
+      pageHero.remove();
+    }
+    document.querySelectorAll('.topic-guide').forEach((guide) => guide.remove());
     document.querySelectorAll('script, style, link, header, nav, footer, .java-subnav, .site-footer, .d-flex.justify-content-between').forEach((element) => element.remove());
     document.querySelectorAll('.toc').forEach((toc) => toc.closest('[class*="col-lg-4"]')?.remove() ?? toc.remove());
+    normalizeTutorialHeadings(document);
     document.querySelectorAll('a[href]').forEach((anchor) => {
       const href = anchor.getAttribute('href') ?? '';
       const target = href.split('#')[0].split('?')[0];

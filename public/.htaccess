@@ -1,10 +1,9 @@
 RewriteEngine On
-RewriteBase /
 
-# Serve real files and folders directly.
+# Preserve real files such as assets, robots.txt, sitemap.xml, and favicon.ico.
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# Send Angular routes to the SPA entry point.
+# Let Angular Router resolve every public client-side route on refresh.
 RewriteRule ^ index.html [L]

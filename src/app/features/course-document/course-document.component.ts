@@ -1,8 +1,10 @@
+import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
 import { BreadcrumbComponent } from '../../layout/breadcrumb/breadcrumb.component';
+import { createTutorialFallback, normalizeTutorialHeadings } from '../shared/tutorial-fallback';
 
 @Component({
   selector: 'app-course-document', standalone: true, imports: [BreadcrumbComponent, RouterLink],
@@ -14,6 +16,8 @@ export class CourseDocumentComponent implements OnInit, OnChanges {
   @Input({ required: true }) fileName = '';
   @Input() title = 'Course Documentation';
   @Input() category = 'Course';
+  @Input() description = '';
+  @Input() primaryKeyword = '';
   @Input() backRoute = '/';
   @Input() assetFolder = 'springboot';
   @Input() previousRoute = '';
@@ -28,12 +32,14 @@ export class CourseDocumentComponent implements OnInit, OnChanges {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
   private readonly host = inject(ElementRef<HTMLElement>);
+  private readonly document = inject(DOCUMENT);
 
   ngOnInit(): void {
     const documentFile = this.topic ? `${this.topic}.html` : this.fileName;
+    this.html = createTutorialFallback(this.title, this.description, this.category, this.primaryKeyword);
     this.http.get(`/docs/${this.assetFolder}/${documentFile}`, { responseType: 'text' }).subscribe({
       next: (source) => { this.html = this.extractDocument(source); this.loading = false; setTimeout(() => this.scrollToSection(), 0); },
-      error: () => { this.loading = false; this.error = true; }
+      error: () => { this.loading = false; this.error = false; }
     });
   }
 
@@ -93,7 +99,7 @@ export class CourseDocumentComponent implements OnInit, OnChanges {
     const headings = (Array.from(body.querySelectorAll('h2')) as HTMLElement[])
       .filter((heading) => sidebarSections.has(heading.textContent?.trim() ?? ''));
     if (!headings.length) return;
-    const basePath = this.topic ? `/springboot/${this.topic}` : this.router.url.split(/[?#]/)[0].replace(/\/$/, '');
+    const basePath = this.topic ? `/spring-boot/${this.topic}` : this.router.url.split(/[?#]/)[0].replace(/\/$/, '');
     const toc = document.createElement('aside');
     toc.className = 'document-toc';
     toc.setAttribute('aria-label', 'On this page');
@@ -127,8 +133,32 @@ export class CourseDocumentComponent implements OnInit, OnChanges {
   }
 
   private extractDocument(source: string): string {
-    const document = new DOMParser().parseFromString(source, 'text/html');
+    const document = this.document.implementation.createHTMLDocument('course-document');
+    document.documentElement.innerHTML = source;
+    if (this.fileName !== 'index.html') {
+      const pageHero = document.querySelector('.spring-hero');
+      const contentContainer = document.querySelector('.container-xl.py-5');
+      if (pageHero) {
+        const heading = pageHero.querySelector('h1');
+        const description = pageHero.querySelector('p');
+        const titleBlock = document.createElement('div');
+        titleBlock.className = 'document-title mb-4';
+        if (heading?.textContent?.trim()) {
+          const title = document.createElement('h1');
+          title.textContent = heading.textContent.trim();
+          titleBlock.appendChild(title);
+        }
+        if (description?.textContent?.trim()) {
+          const summary = document.createElement('p');
+          summary.textContent = description.textContent.trim();
+          titleBlock.appendChild(summary);
+        }
+        contentContainer?.prepend(titleBlock);
+        pageHero.remove();
+      }
+    }
     document.querySelectorAll('script, style, link, header, nav, footer, .java-subnav, .site-footer, .spring-pill, .toc, .d-flex.justify-content-between, a.btn-success').forEach((element) => element.remove());
+    normalizeTutorialHeadings(document);
     document.querySelectorAll('a[href]').forEach((anchor) => {
       const href = anchor.getAttribute('href') ?? '';
       const target = href.split('#')[0].split('?')[0];
