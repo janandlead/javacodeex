@@ -6,7 +6,6 @@ const topics = [
   'introduction',
   'setup',
   'project-structure',
-  'dependency-injection',
   'aop',
   'data-jpa',
   'security-comprehensive',
@@ -33,5 +32,6 @@ export const SPRINGBOOT_ROUTES: Routes = [
     data: { fileName: 'index.html', title: 'Spring Boot Tutorial', category: 'Spring Boot', backRoute: '/springboot', assetFolder: 'springboot', nextRoute: `/springboot/${topics[0]}`, nextLabel: SPRINGBOOT_PAGES[topics[0]].title },
     loadComponent: () => Promise.resolve(CourseDocumentComponent)
   },
-  ...topics.map(routeFor)
+  ...topics.map(routeFor),
+  { path: ':topic/:section', title: 'Spring Boot Tutorial | Java Codeex', data: { category: 'Spring Boot', assetFolder: 'springboot' }, loadComponent: () => Promise.resolve(CourseDocumentComponent) }
 ];

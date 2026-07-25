@@ -30,7 +30,6 @@ export const MAIN_NAVIGATION: readonly NavigationItem[] = [
       { label: 'Introduction', route: '/springboot/introduction' },
       { label: 'Setup and Installation', route: '/springboot/setup' },
       { label: 'Project Structure', route: '/springboot/project-structure' },
-      { label: 'Dependency Injection', route: '/springboot/dependency-injection' },
       { label: 'AOP', route: '/springboot/aop' },
       { label: 'Data JPA', route: '/springboot/data-jpa' },
       { label: 'Security', route: '/springboot/security-comprehensive' },

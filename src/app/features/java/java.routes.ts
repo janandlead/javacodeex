@@ -39,5 +39,6 @@ export const JAVA_ROUTES: Routes = [
     loadComponent: () => Promise.resolve(JavaDocumentComponent)
   },
   { path: '404', title: 'Java Page Not Found | Java Codeex', data: { fileName: '404.html', title: 'Java Page Not Found', robots: 'noindex, nofollow' }, loadComponent: () => Promise.resolve(JavaDocumentComponent) },
-  ...topics.map(routeFor)
+  ...topics.map(routeFor),
+  { path: ':topic/:section', title: 'Java Tutorial | Java Codeex', data: { category: 'Java' }, loadComponent: () => Promise.resolve(JavaDocumentComponent) }
 ];
