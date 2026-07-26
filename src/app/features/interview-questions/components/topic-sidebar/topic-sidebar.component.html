@@ -1,17 +1,14 @@
-<aside class="topic-sidebar card border-0 shadow-sm" [class.is-closed]="!isOpen()" aria-label="Interview topics">
+<aside class="topic-sidebar card border-0 shadow-sm" aria-label="Interview topics">
   <div class="sidebar-heading">
-    @if (isOpen()) { <div><span class="eyebrow">Prepare smarter</span><h2>Topics</h2></div> }
-    <button type="button" class="sidebar-toggle btn btn-light" [attr.aria-label]="isOpen() ? 'Collapse interview topics' : 'Expand interview topics'" [attr.aria-expanded]="isOpen()" (click)="toggleSidebar()">
-      <i [class]="isOpen() ? 'bi bi-chevron-left' : 'bi bi-chevron-right'" aria-hidden="true"></i>
-    </button>
+    <div><span class="eyebrow">Prepare smarter</span><h2>Topics</h2></div>
   </div>
   <nav aria-label="Interview question topics">
     @for (topic of topLevelTopics(); track topic.id) {
       <button type="button" class="topic-link" [class.active]="selectedTopicId() === topic.id" [attr.aria-current]="selectedTopicId() === topic.id ? 'page' : null" [attr.title]="topic.name" [attr.aria-expanded]="childTopics(topic.id).length ? expandedTopicId() === topic.id : null" (click)="selectOrToggleTopic(topic)">
         <i [class]="topic.icon" aria-hidden="true"></i>
-        @if (isOpen()) { <span class="topic-copy"><strong>{{ topic.name }}</strong><small>{{ topic.questionCount }} questions</small></span><i [class]="childTopics(topic.id).length ? (expandedTopicId() === topic.id ? 'bi bi-chevron-up topic-arrow' : 'bi bi-chevron-down topic-arrow') : 'bi bi-arrow-right-short topic-arrow'" aria-hidden="true"></i> }
+        <span class="topic-copy"><strong>{{ topic.name }}</strong><small>{{ topic.questionCount }} questions</small></span><i [class]="childTopics(topic.id).length ? (expandedTopicId() === topic.id ? 'bi bi-chevron-up topic-arrow' : 'bi bi-chevron-down topic-arrow') : 'bi bi-arrow-right-short topic-arrow'" aria-hidden="true"></i>
       </button>
-      @if (isOpen() && childTopics(topic.id).length && expandedTopicId() === topic.id) {
+      @if (childTopics(topic.id).length && expandedTopicId() === topic.id) {
         <div class="topic-children" [attr.aria-label]="topic.name + ' interview topics'">
           @for (child of childTopics(topic.id); track child.id) {
             <button type="button" class="topic-link child-topic" [class.active]="selectedTopicId() === child.id" [attr.aria-current]="selectedTopicId() === child.id ? 'page' : null" (click)="selectTopic(child.id)"><i [class]="child.icon" aria-hidden="true"></i><span class="topic-copy"><strong>{{ child.name }}</strong><small>{{ child.questionCount }} questions</small></span></button>

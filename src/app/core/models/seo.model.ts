@@ -11,6 +11,7 @@ export interface SeoConfig {
   readonly modifiedTime?: string;
   readonly primaryKeyword?: string;
   readonly articleSection?: string;
+  readonly breadcrumbs?: readonly { name: string; url: string }[];
 }
 
 export interface StructuredDataConfig {

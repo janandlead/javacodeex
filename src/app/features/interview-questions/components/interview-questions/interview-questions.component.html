@@ -1,11 +1,15 @@
 <article class="interview-page container-xl">
-  <div class="mobile-toolbar"><button type="button" class="btn btn-primary" [attr.aria-expanded]="sidebarOpen()" (click)="toggleSidebar(true)"><i class="bi bi-list" aria-hidden="true"></i> Browse topics</button></div>
-  <div class="interview-layout" [class.sidebar-collapsed]="!sidebarOpen()">
-    <app-topic-sidebar [topics]="topics()" [selectedTopicId]="selectedTopicId()" [isOpen]="sidebarOpen()" (topicSelected)="selectTopic($event)" (sidebarToggled)="toggleSidebar($event)" />
+  <div class="interview-content">
     <section class="question-panel" aria-label="Interview questions">
-      <div class="topic-intro"><span class="topic-icon"><i [class]="selectedTopic()?.icon ?? 'bi bi-question-circle'" aria-hidden="true"></i></span><div><h1>{{ selectedTopicName() }} Interview Questions</h1><p>{{ selectedTopic()?.description }}</p></div></div>
+      <div class="topic-intro"><span class="topic-icon"><i [class]="selectedTopic()?.icon ?? 'bi bi-question-circle'" aria-hidden="true"></i></span><div><h1>{{ pageHeading() }}</h1><p>{{ selectedTopic()?.description }}</p></div></div>
       <form class="filter-card" aria-label="Filter interview questions"><div class="search-field"><label for="question-search">Search questions</label><div class="input-group"><span class="input-group-text"><i class="bi bi-search" aria-hidden="true"></i></span><input id="question-search" class="form-control" type="search" [formControl]="searchControl" placeholder="Search by question, tag, or difficulty" /></div></div><div class="difficulty-field"><label for="difficulty-filter">Difficulty</label><select id="difficulty-filter" class="form-select" [formControl]="difficultyControl"><option value="All">All</option><option value="Beginner">Beginner</option><option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option></select></div></form>
       <app-question-accordion [questions]="filteredQuestions()" [topicName]="selectedTopicName()" />
+      <section class="interview-seo-content" aria-labelledby="java-interview-preparation">
+        <h2 id="java-interview-preparation">How to Prepare for Java Technical Interviews</h2>
+        <p>Use this Java technical interview question bank to revise core concepts and practise explaining your decisions clearly. The questions cover Java fundamentals, object-oriented programming, collections, exceptions, multithreading, Spring Boot, Hibernate, databases, and other topics used in real software development interviews.</p>
+        <p>Start with the fundamentals, then move to scenario-based questions and advanced topics. Filter questions by difficulty to build confidence gradually. A strong answer should define the concept, explain why it matters, and include a practical example when appropriate.</p>
+        <p>Continue your preparation with the <a routerLink="/java-tutorial-overview">Java tutorials</a>, or explore <a routerLink="/interviews">all interview preparation tracks</a> for managerial and company-focused questions.</p>
+      </section>
     </section>
   </div>
 </article>

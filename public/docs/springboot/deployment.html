@@ -3,7 +3,22 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Deploy Spring Boot Applications | Java Codeex</title>
+    <meta name="description" content="Learn Spring Boot deployment with executable JARs, Docker, Docker Compose, Kubernetes, CI/CD, external configuration, health checks, security, logging, and rollback strategies." />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://javacodeex.in/spring-boot-deployment" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta property="og:title" content="Spring Boot Deployment Tutorial | Java Codeex" />
+    <meta property="og:description" content="Learn Spring Boot deployment with executable JARs, Docker, Docker Compose, Kubernetes, CI/CD, external configuration, health checks, security, logging, and rollback strategies." />
+    <meta property="og:url" content="https://javacodeex.in/spring-boot-deployment" />
+    <meta property="og:image" content="https://javacodeex.in/assets/images/javacodeex.jpg" />
+    <meta property="og:image:alt" content="Spring Boot deployment tutorial" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Spring Boot Deployment Tutorial | Java Codeex" />
+    <meta name="twitter:description" content="Learn Spring Boot deployment with executable JARs, Docker, Docker Compose, Kubernetes, CI/CD, external configuration, health checks, security, logging, and rollback strategies." />
+    <meta name="twitter:image" content="https://javacodeex.in/assets/images/javacodeex.jpg" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Spring Boot Deployment Tutorial","description":"Learn Spring Boot deployment with executable JARs, Docker, Docker Compose, Kubernetes, CI/CD, external configuration, health checks, security, logging, and rollback strategies.","url":"https://javacodeex.in/spring-boot-deployment","image":"https://javacodeex.in/assets/images/javacodeex.jpg","author":{"@type":"Organization","name":"Java Codeex"},"publisher":{"@type":"Organization","name":"Java Codeex"},"dateModified":"2026-07-26","mainEntityOfPage":{"@type":"WebPage","@id":"https://javacodeex.in/spring-boot-deployment"}}</script>
+    <title>Spring Boot Deployment Tutorial | Java Codeex</title>
     <link rel="icon" href="../icons/javacodeex.jpg" />
     <link
       rel="stylesheet"
@@ -15,9 +30,9 @@
   <body>
     <nav class="java-subnav">
       <div class="container-xl">
-        <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" /></a>
+        <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" width="40" height="40" /></a>
         <a class="topic-link" href="./index.html#basics">Overview</a>
-        <a class="topic-link" href="https://javacodeex.com/springboot/project-structure.html"
+        <a class="topic-link" href="/project-structure"
           >Project Structure</a
         >
         <a class="topic-link" href="./aop.html">AOP</a>
@@ -36,7 +51,7 @@
     <section class="spring-hero">
       <div class="container-xl">
         <span class="spring-pill">Java Codeex</span>
-        <h1 class="mt-3">Deployment</h1>
+        <h1 class="mt-3">Deploy Spring Boot Applications</h1>
         <p class="lead">
           Package your application and run it consistently in a production
           environment.
@@ -408,6 +423,13 @@ kubectl logs &lt;pod-name&gt;</code></pre>
         <li>Document rollback steps and test them.</li>
         <li>Use HTTPS, least privilege, and restricted Actuator endpoints.</li>
       </ul>
+      <h2 id="deployment-faq">Spring Boot Deployment FAQs</h2>
+      <h3>Should configuration be packaged inside the JAR?</h3>
+      <p>Package safe defaults only. Keep environment-specific URLs, credentials, feature flags, and secrets outside the artifact.</p>
+      <h3>Should Spring Boot applications run in Docker?</h3>
+      <p>Docker is useful when you need repeatable environments and consistent promotion from development to production. Use a small runtime image and scan it regularly.</p>
+      <h3>What should a CI/CD pipeline verify?</h3>
+      <p>Build and unit tests, integration tests, dependency and image scans, configuration checks, health verification, deployment status, and rollback readiness.</p>
       <a class="btn btn-success" href="index.html"
         >Back to Spring Boot Course</a
       >

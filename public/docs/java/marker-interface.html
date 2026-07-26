@@ -3,12 +3,48 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="canonical" href="https://javacodeex.in/java/marker-interface/" />
+    <meta name="author" content="Java Codeex" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="keywords" content="Java marker interfaces, Serializable, Cloneable, Remote, Externalizable, serialVersionUID, transient, Java serialization" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <link rel="canonical" href="https://javacodeex.in/java/marker-interface" />
     <meta
       name="description"
-      content="Beginner-friendly Java marker interfaces tutorial covering Serializable, deserialization, serialVersionUID, Externalizable, Cloneable, shallow copy, and deep copy."
+      content="Learn Java marker interfaces with examples of Serializable, Cloneable, Remote, Externalizable, serialVersionUID, transient fields, and object serialization."
     />
-    <title>Java Marker Interfaces: Serializable and Cloneable</title>
+    <title>Java Marker Interfaces Tutorial: Serializable, Cloneable &amp; Remote | Java Codeex</title>
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta property="og:title" content="Java Marker Interfaces Tutorial: Serializable, Cloneable &amp; Remote | Java Codeex" />
+    <meta property="og:description" content="Learn Java marker interfaces with examples of Serializable, Cloneable, Remote, Externalizable, serialVersionUID, transient fields, and object serialization." />
+    <meta property="og:url" content="https://javacodeex.in/java/marker-interface" />
+    <meta property="og:image" content="https://javacodeex.in/icons/javacodeex.jpg" />
+    <meta property="og:image:alt" content="Java Codeex logo" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="article:section" content="Java Fundamentals" />
+    <meta property="article:modified_time" content="2026-07-25" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Java Marker Interfaces Tutorial: Serializable, Cloneable &amp; Remote | Java Codeex" />
+    <meta name="twitter:description" content="Learn Java marker interfaces with examples of Serializable, Cloneable, Remote, Externalizable, serialVersionUID, transient fields, and object serialization." />
+    <meta name="twitter:image" content="https://javacodeex.in/icons/javacodeex.jpg" />
+    <meta name="twitter:image:alt" content="Java Codeex logo" />
+    <meta name="twitter:url" content="https://javacodeex.in/java/marker-interface" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Java Marker Interfaces Tutorial: Serializable, Cloneable and Remote",
+        "description": "Learn Java marker interfaces with examples of Serializable, Cloneable, Remote, Externalizable, serialVersionUID, transient fields, and object serialization.",
+        "url": "https://javacodeex.in/java/marker-interface",
+        "inLanguage": "en-IN",
+        "articleSection": "Java Fundamentals",
+        "keywords": "Java marker interfaces, Serializable, Cloneable, Remote, Externalizable, serialVersionUID, transient, Java serialization",
+        "dateModified": "2026-07-25",
+        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://javacodeex.in/java/marker-interface" },
+        "author": { "@type": "Organization", "name": "Java Codeex", "url": "https://javacodeex.in/" },
+        "publisher": { "@type": "Organization", "name": "Java Codeex", "url": "https://javacodeex.in/" }
+      }
+    </script>
     <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
     <link
       rel="stylesheet"
@@ -142,7 +178,9 @@ Employee implements Serializable
           <code>java.io.Serializable</code>,
           <code>java.io.Externalizable</code>,
           <code>java.lang.Cloneable</code>, and
-          <code>java.util.RandomAccess</code>.
+          <code>java.util.RandomAccess</code>. Another classic example is
+          <code>java.rmi.Remote</code>, which identifies an interface whose
+          methods may be invoked from another JVM through Java RMI.
         </p>
         <h3 id="how-marker-interfaces-work">How Does a Marker Interface Work?</h3>
         <p>
@@ -311,6 +349,27 @@ private void readObject(ObjectInputStream input)
     }
 }</pre>
 
+        <h2 id="remote">Remote</h2>
+        <p>
+          <code>java.rmi.Remote</code> is a marker interface used by Java RMI.
+          An interface that extends it declares methods that may be called by a
+          client in another JVM. Remote methods normally declare
+          <code>RemoteException</code> because network communication can fail.
+        </p>
+        <pre>
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+
+public interface PaymentService extends Remote {
+    void processPayment(long orderId) throws RemoteException;
+}</pre>
+        <div class="info-box">
+          <strong>How it is used:</strong> the RMI runtime and generated
+          proxies inspect the remote contract and route calls across JVM
+          boundaries. The marker does not provide the method implementation;
+          it identifies the remote capability.
+        </div>
+
         <h2 id="externalizable">Externalizable</h2>
         <p>
           <code>Externalizable</code> gives the class complete control over what
@@ -459,6 +518,7 @@ Employee copy = new Employee(original);</pre>
           <li><strong>Serializable:</strong> legacy cache files, session replication, and Java-only object storage.</li>
           <li><strong>Externalizable:</strong> compact binary formats where the application controls every field.</li>
           <li><strong>Cloneable:</strong> legacy APIs that require cloning or simple prototypes.</li>
+          <li><strong>Remote:</strong> Java RMI contracts whose methods can cross JVM boundaries.</li>
           <li><strong>Custom markers:</strong> internal rules such as <code>Auditable</code>, <code>Exportable</code>, or <code>Cacheable</code>.</li>
         </ul>
 
@@ -482,6 +542,11 @@ Employee copy = new Employee(original);</pre>
               <td><code>Cloneable</code></td>
               <td>Allow object cloning</td>
               <td>Shallow-copy surprises</td>
+            </tr>
+            <tr>
+              <td><code>Remote</code></td>
+              <td>Identify RMI remote contracts</td>
+              <td>Remote failures and network boundaries</td>
             </tr>
           </tbody>
         </table>

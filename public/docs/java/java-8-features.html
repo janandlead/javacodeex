@@ -933,6 +933,45 @@ public class StreamBasics {
               Result: 20
             </div>
 
+            <h3 id="stream-sources">Stream Sources and Primitive Streams</h3>
+            <p>
+              Streams can be created from collections, arrays, individual
+              values, generators, and I/O APIs. Use the primitive stream types
+              <code class="inline">IntStream</code>,
+              <code class="inline">LongStream</code>, and
+              <code class="inline">DoubleStream</code> when processing numbers
+              to avoid unnecessary boxing and to access numeric operations such
+              as <code class="inline">sum</code> and
+              <code class="inline">average</code>.
+            </p>
+            <pre>
+import java.util.Arrays;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+Stream&lt;String&gt; fromValues = Stream.of("Java", "Spring", "SQL");
+Stream&lt;String&gt; fromArray = Arrays.stream(new String[]{"A", "B", "C"});
+IntStream numbers = IntStream.rangeClosed(1, 5);
+
+int sum = numbers.sum();
+int[] doubled = IntStream.of(1, 2, 3)
+    .map(n -&gt; n * 2)
+    .toArray();
+
+System.out.println("Sum: " + sum);
+System.out.println("Doubled: " + Arrays.toString(doubled));</pre>
+            <div class="output-box">
+              Sum: 15<br />
+              Doubled: [2, 4, 6]
+            </div>
+            <div class="note-box">
+              <p>
+                <strong>Remember:</strong> A stream is consumed by its terminal
+                operation. Store the source collection if the data must be
+                processed again; do not try to reuse an already-consumed stream.
+              </p>
+            </div>
+
             <!-- Section 9 -->
             <h2 id="stream-operations">9. Common Stream Operations</h2>
             <p>
@@ -1040,6 +1079,61 @@ public class StreamOperations {
               names uppercase: ALICE BOB CHARLIE DAVID EVE<br />
               flatMap: [1, 2, 3, 4, 5, 6, 7, 8, 9]
             </div>
+            <h3 id="stream-short-circuiting">Short-Circuiting and Safe Pipelines</h3>
+            <p>
+              Operations such as <code class="inline">findFirst</code>,
+              <code class="inline">findAny</code>,
+              <code class="inline">anyMatch</code>,
+              <code class="inline">allMatch</code>,
+              <code class="inline">noneMatch</code>, and
+              <code class="inline">limit</code> can stop processing as soon as
+              the result is known. Keep stream lambdas stateless and avoid
+              changing external collections inside <code class="inline">map</code>
+              or <code class="inline">filter</code>; side effects make ordering,
+              parallel execution, and debugging harder to reason about.
+            </p>
+            <pre>
+import java.util.Arrays;
+import java.util.List;
+
+List&lt;String&gt; names = Arrays.asList("Alice", "Bob", "Charlie", "Diana");
+
+String firstLongName = names.stream()
+    .filter(name -&gt; name.length() &gt; 4)
+    .findFirst()
+    .orElse("No match");
+
+boolean hasShortName = names.stream()
+    .anyMatch(name -&gt; name.length() &lt; 4);
+
+System.out.println(firstLongName);
+System.out.println(hasShortName);</pre>
+            <div class="output-box">
+              Alice<br />
+              true
+            </div>
+            <h3 id="parallel-streams">Parallel Streams</h3>
+            <p>
+              A stream can run in parallel with
+              <code class="inline">parallelStream()</code> or
+              <code class="inline">parallel()</code>. Parallelism is not
+              automatically faster: it is most useful for large, CPU-bound,
+              independent workloads. Avoid shared mutable state, blocking I/O,
+              and order-sensitive operations unless their costs and behavior
+              are understood. Use <code class="inline">sequential()</code> to
+              return to sequential processing when needed.
+            </p>
+            <pre>
+import java.util.Arrays;
+import java.util.List;
+
+List&lt;Integer&gt; values = Arrays.asList(1, 2, 3, 4, 5, 6);
+int total = values.parallelStream()
+    .mapToInt(Integer::intValue)
+    .sum();
+
+System.out.println("Parallel sum: " + total);</pre>
+            <div class="output-box">Parallel sum: 21</div>
 
             <!-- Section 10 -->
             <h2 id="optional">10. Optional&lt;T&gt;</h2>
@@ -1200,6 +1294,11 @@ public class CollectorsDemo {
             + " avg=" + stats.getAverage()
             + " min=" + stats.getMin()
             + " max=" + stats.getMax());
+
+        // partitioningBy — split values into true and false groups
+        Map&lt;Boolean, List&lt;Integer&gt;&gt; partitions = nums.stream()
+            .collect(Collectors.partitioningBy(n -&gt; n % 2 == 0));
+        System.out.println("partitions: " + partitions);
     }
 }</pre>
             <div class="output-box">
@@ -1212,7 +1311,8 @@ public class CollectorsDemo {
               countByLetter: {A=3, B=2, C=1}<br />
               joining: [Apple, Banana, Cherry, Avocado, Blueberry, Apricot]<br />
               counting (len&gt;5): 4<br />
-              sum=15 avg=3.0 min=1 max=5
+              sum=15 avg=3.0 min=1 max=5<br />
+              partitions: {false=[1, 3, 5], true=[2, 4]}
             </div>
 
             <!-- Section 12 -->
@@ -1359,7 +1459,10 @@ try (var executor = java.util.concurrent.Executors.newVirtualThreadPerTaskExecut
               >7. Function&lt;T,R&gt; and Method References</a
             >
             <a href="#stream-api">8. Stream API</a>
+            <a href="#stream-sources">Stream Sources and Primitive Streams</a>
             <a href="#stream-operations">9. Common Stream Operations</a>
+            <a href="#stream-short-circuiting">Short-Circuiting and Safe Pipelines</a>
+            <a href="#parallel-streams">Parallel Streams</a>
             <a href="#optional">10. Optional&lt;T&gt;</a>
             <a href="#collectors">11. Collectors</a>
             <a href="#java9-21-highlights">12. Java 9–21 Highlights</a>
@@ -1385,5 +1488,3 @@ try (var executor = java.util.concurrent.Executors.newVirtualThreadPerTaskExecut
     <script src="../site-footer.js"></script>
   </body>
 </html>
-
-

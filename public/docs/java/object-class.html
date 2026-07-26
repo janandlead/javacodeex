@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Learn Java's java.lang.Object methods, including toString(), equals(), hashCode(), getClass(), clone(), wait(), notify(), and the equals-hashCode contract." />
+    <meta name="keywords" content="Java Object class, java.lang.Object methods, equals and hashCode, toString, getClass, clone, wait notify, Java tutorial" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="author" content="Java Codeex" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <link rel="canonical" href="https://javacodeex.in/java/object-class" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta property="og:title" content="Java Object Class Tutorial: equals() and hashCode() | Java Codeex" />
+    <meta property="og:description" content="Learn Java's java.lang.Object methods, including toString(), equals(), hashCode(), getClass(), clone(), wait(), notify(), and the equals-hashCode contract." />
+    <meta property="og:url" content="https://javacodeex.in/java/object-class" />
+    <meta property="og:image" content="https://javacodeex.in/icons/javacodeex.jpg" />
+    <meta property="og:image:alt" content="Java Codeex logo" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="article:section" content="Java Fundamentals" />
+    <meta property="article:modified_time" content="2026-07-25" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Java Object Class Tutorial: equals() and hashCode() | Java Codeex" />
+    <meta name="twitter:description" content="Learn Java's java.lang.Object methods, including toString(), equals(), hashCode(), getClass(), clone(), wait(), notify(), and the equals-hashCode contract." />
+    <meta name="twitter:image" content="https://javacodeex.in/icons/javacodeex.jpg" />
+    <meta name="twitter:image:alt" content="Java Codeex logo" />
+    <meta name="twitter:url" content="https://javacodeex.in/java/object-class" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Java Object Class Tutorial: equals() and hashCode() | Java Codeex</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Java Object Class Tutorial: equals() and hashCode()",
+        "description": "Learn Java's java.lang.Object methods, including toString(), equals(), hashCode(), getClass(), clone(), wait(), notify(), and the equals-hashCode contract.",
+        "url": "https://javacodeex.in/java/object-class",
+        "inLanguage": "en-IN",
+        "articleSection": "Java Fundamentals",
+        "keywords": "Java Object class, java.lang.Object methods, equals and hashCode, toString, getClass, clone, wait notify",
+        "dateModified": "2026-07-25",
+        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://javacodeex.in/java/object-class" },
+        "author": { "@type": "Organization", "name": "Java Codeex", "url": "https://javacodeex.in/" },
+        "publisher": { "@type": "Organization", "name": "Java Codeex", "url": "https://javacodeex.in/" }
+      }
+    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+    <style>
+      body { color: #222; }
+      .page-hero { background: linear-gradient(135deg, #1a1a2e, #16213e 60%, #0f3460); color: #fff; padding: 48px 0 36px; }
+      .page-hero h1 { font-size: 2.2rem; font-weight: 800; }
+      .breadcrumb-item a { color: #f8a100; text-decoration: none; }
+      .breadcrumb-item.active { color: #cdd6f4; }
+      .content-wrapper { max-width: 900px; }
+      h2 { margin-top: 2.4rem; color: #0f3460; border-left: 5px solid #f8a100; padding-left: 12px; }
+      h3 { margin-top: 1.7rem; color: #16213e; }
+      p, li { line-height: 1.8; }
+      pre { background: #1e1e2e; color: #cdd6f4; border-radius: 8px; padding: 1.2rem 1.4rem; overflow-x: auto; }
+      code.inline { background: #eef2ff; color: #0f3460; padding: 1px 6px; border-radius: 4px; }
+      .note-box, .warn-box { margin: 1.2rem 0; padding: 1rem 1.2rem; border-radius: 6px; }
+      .note-box { background: #eaf4ff; border-left: 5px solid #3b82f6; }
+      .warn-box { background: #fff8e1; border-left: 5px solid #f8a100; }
+      .note-box p, .warn-box p { margin: 0; }
+      .toc { position: sticky; top: 72px; padding: 1.2rem; background: #f8f9fc; border: 1px solid #e0e7ef; border-radius: 10px; }
+      .toc a { display: block; padding: 4px 0; color: #1d4ed8; text-decoration: none; }
+      .toc a:hover { color: #f8a100; }
+    </style>
+  </head>
+  <body>
+    <nav class="java-subnav"><div class="container-xl py-2"><a href="../index.html#basics">Basics</a> · <a href="../index.html#oop">OOP</a> · <a href="../index.html#collections">Collections</a> · <a href="../index.html#java8">Java 8+</a></div></nav>
+    <section class="page-hero"><div class="container-xl"><nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../index.html">Java Codeex</a></li><li class="breadcrumb-item"><a href="../index.html#basics">Java</a></li><li class="breadcrumb-item active">Java Object Class</li></ol></nav><h1>Java Object Class</h1><p class="mb-0">Understand java.lang.Object, its major methods, and the equals()–hashCode() contract.</p></div></section>
+    <div class="container-xl py-5"><div class="row g-5"><div class="col-lg-8"><article class="content-wrapper">
+      <h2 id="introduction">Introduction</h2>
+      <p><code class="inline">java.lang.Object</code> is the root of Java's class hierarchy. Every class directly or indirectly extends it, even when no superclass is written.</p>
+      <pre>public class Employee { }
+
+// Conceptually equivalent to:
+public class Employee extends Object { }</pre>
+      <p>That inheritance gives every object common operations for text representation, logical comparison, hashing, runtime type information, copying, and monitor-based thread coordination.</p>
+      <p>An <code class="inline">Object</code> reference can point to any class instance. The declared reference controls which methods are available at compile time, while overridden methods still use the object's runtime implementation.</p>
+      <pre>Object value = "Java";
+System.out.println(value);              // String's toString()
+System.out.println(value.getClass());   // class java.lang.String</pre>
+
+      <h2 id="methods">Methods in Object</h2>
+      <table class="table table-bordered"><thead><tr><th>Method</th><th>Purpose</th></tr></thead><tbody>
+        <tr><td><code class="inline">getClass()</code></td><td>Returns runtime class information.</td></tr>
+        <tr><td><code class="inline">toString()</code></td><td>Returns a textual representation.</td></tr>
+        <tr><td><code class="inline">equals(Object)</code></td><td>Tests logical equality when overridden.</td></tr>
+        <tr><td><code class="inline">hashCode()</code></td><td>Returns a value used by hash-based collections.</td></tr>
+        <tr><td><code class="inline">clone()</code></td><td>Creates a shallow field-by-field copy when supported.</td></tr>
+        <tr><td><code class="inline">wait()</code>, <code class="inline">notify()</code>, <code class="inline">notifyAll()</code></td><td>Coordinate threads through an object's monitor.</td></tr>
+        <tr><td><code class="inline">finalize()</code></td><td>Deprecated cleanup hook; do not use it.</td></tr>
+      </tbody></table>
+      <h3 id="method-signatures">Important Method Signatures</h3>
+      <pre>public final Class&lt;?&gt; getClass();
+public int hashCode();
+public boolean equals(Object object);
+protected Object clone() throws CloneNotSupportedException;
+public String toString();
+public final void wait() throws InterruptedException;
+public final void wait(long timeout) throws InterruptedException;
+public final void wait(long timeout, int nanos)
+        throws InterruptedException;
+public final void notify();
+public final void notifyAll();
+@Deprecated
+protected void finalize() throws Throwable;</pre>
+      <p><code class="inline">getClass()</code>, <code class="inline">wait()</code>, <code class="inline">notify()</code>, and <code class="inline">notifyAll()</code> are final. <code class="inline">clone()</code> and <code class="inline">finalize()</code> are protected, so ordinary application code cannot call them through an arbitrary reference without a class-level decision.</p>
+
+      <h2 id="get-class">getClass()</h2>
+      <p><code class="inline">getClass()</code> is final and returns the runtime type of an object. It is useful for reflection, diagnostics, and strict equality checks.</p>
+      <pre>Object value = "Java";
+System.out.println(value.getClass().getName());
+System.out.println(value.getClass().getSimpleName());</pre>
+      <div class="note-box"><p>Possible output is <code class="inline">java.lang.String</code> and <code class="inline">String</code>. The result describes the runtime object, not merely the declared reference type.</p></div>
+
+      <h2 id="to-string">toString()</h2>
+      <p>The default form is usually a class name followed by <code class="inline">@</code> and a hexadecimal hash-related value. Override it to make logs and debugging useful, but never expose passwords, tokens, or other sensitive data.</p>
+      <pre>final class Employee {
+    private final long id;
+    private final String name;
+
+    Employee(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{id=" + id + ", name='" + name + "'}";
+    }
+}</pre>
+
+      <h2 id="equals">equals() and ==</h2>
+      <p>For object references, <code class="inline">==</code> compares identity: whether two references point to the same object. The default <code class="inline">Object.equals()</code> behaves similarly, but classes such as <code class="inline">String</code> override it to compare logical content.</p>
+      <pre>String first = new String("Java");
+String second = new String("Java");
+
+System.out.println(first == second);      // false
+System.out.println(first.equals(second)); // true</pre>
+      <p>Override <code class="inline">equals()</code> when separate instances should represent the same value according to stable business or value-object fields.</p>
+
+      <h2 id="equals-contract">The equals() Contract</h2>
+      <ul><li><strong>Reflexive:</strong> <code class="inline">x.equals(x)</code> is true.</li><li><strong>Symmetric:</strong> <code class="inline">x.equals(y)</code> and <code class="inline">y.equals(x)</code> agree.</li><li><strong>Transitive:</strong> if x equals y and y equals z, x equals z.</li><li><strong>Consistent:</strong> repeated calls are stable while relevant state is unchanged.</li><li><strong>Non-null:</strong> <code class="inline">x.equals(null)</code> is false.</li></ul>
+      <p>Use a same-reference check, a null/type check, and null-safe field comparisons:</p>
+      <pre>import java.util.Objects;
+
+@Override
+public boolean equals(Object object) {
+    if (this == object) return true;
+    if (object == null || getClass() != object.getClass()) return false;
+    Employee other = (Employee) object;
+    return Objects.equals(id, other.id)
+        &amp;&amp; Objects.equals(name, other.name);
+}</pre>
+      <p>An exact <code class="inline">getClass()</code> check avoids many inheritance symmetry problems. <code class="inline">instanceof</code> can be appropriate for designed type hierarchies, but subclasses must not introduce equality rules that break symmetry or transitivity.</p>
+
+      <h2 id="hash-code">hashCode()</h2>
+      <p>Hash-based collections such as <code class="inline">HashMap</code>, <code class="inline">HashSet</code>, <code class="inline">LinkedHashMap</code>, and <code class="inline">ConcurrentHashMap</code> use a hash code to locate a candidate bucket, then use <code class="inline">equals()</code> to confirm a match.</p>
+      <div class="concept-diagram"><strong>hashCode() → candidate bucket → equals() → matching key or value</strong></div>
+      <h3 id="hash-contract">The hashCode() Contract</h3>
+      <ul><li>Equal objects must have equal hash codes.</li><li>Unequal objects may share a hash code; this is a collision.</li><li>The result should remain stable while fields used by the calculation remain unchanged.</li></ul>
+      <pre>@Override
+public int hashCode() {
+    return Objects.hash(id, name);
+}</pre>
+      <div class="warn-box"><p>Whenever <code class="inline">equals()</code> is overridden, override <code class="inline">hashCode()</code> using the same equality fields. Otherwise <code class="inline">HashSet</code> and <code class="inline">HashMap</code> can fail to find logically equal objects.</p></div>
+
+      <h2 id="complete-equality-example">Complete Equality Example</h2>
+      <pre>import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+final class Employee {
+    private final Long id;
+    private final String name;
+    private final String department;
+
+    Employee(Long id, String name, String department) {
+        this.id = id;
+        this.name = name;
+        this.department = department;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Employee other = (Employee) object;
+        return Objects.equals(id, other.id)
+            &amp;&amp; Objects.equals(name, other.name)
+            &amp;&amp; Objects.equals(department, other.department);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, department);
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{id=" + id + ", name='" + name
+            + "', department='" + department + "'}";
+    }
+}
+
+Employee first = new Employee(101L, "Anand", "Engineering");
+Employee second = new Employee(101L, "Anand", "Engineering");
+Set&lt;Employee&gt; employees = new HashSet&lt;&gt;();
+employees.add(first);
+employees.add(second);
+System.out.println(first.equals(second)); // true
+System.out.println(employees.size());     // 1</pre>
+
+      <h2 id="mutable-fields">Mutable Fields and Hash Collections</h2>
+      <p>Do not change fields used by <code class="inline">equals()</code> or <code class="inline">hashCode()</code> after inserting an object into a hash-based collection. A changed hash can point to a different bucket, making the object appear to disappear.</p>
+      <pre>Set&lt;Employee&gt; employees = new HashSet&lt;&gt;();
+employees.add(employee);
+employee.setEmail("new@example.com"); // dangerous if email is hashed
+employees.contains(employee);          // may now be false</pre>
+      <p>Prefer immutable identifiers, stable natural keys, and immutable value objects. Avoid mutable collections, timestamps, lazy relationships, and frequently changing status fields in equality.</p>
+
+      <h2 id="objects-utility">Objects Utility Methods</h2>
+      <p><code class="inline">java.util.Objects</code> makes implementations safer and shorter:</p>
+      <pre>Objects.equals(first, second); // null-safe comparison
+Objects.hash(id, name);        // combines fields
+Objects.requireNonNull(name);  // validates a required value</pre>
+      <p>For arrays, use <code class="inline">Arrays.equals()</code>, <code class="inline">Arrays.deepEquals()</code>, <code class="inline">Arrays.hashCode()</code>, or <code class="inline">Arrays.deepHashCode()</code> rather than treating an array like an ordinary object.</p>
+
+      <h2 id="clone">clone()</h2>
+      <p><code class="inline">Object.clone()</code> performs a shallow field-by-field copy and is protected. A class usually needs to implement <code class="inline">Cloneable</code> and handle <code class="inline">CloneNotSupportedException</code>. References to nested mutable objects are still shared in a shallow copy.</p>
+      <pre>final class Employee implements Cloneable {
+    @Override
+    public Employee clone() {
+        try {
+            return (Employee) super.clone();
+        } catch (CloneNotSupportedException exception) {
+            throw new AssertionError(exception);
+        }
+    }
+}</pre>
+      <p>Prefer a copy constructor, static factory, or builder for explicit copying. These approaches make deep-copy decisions visible and avoid the surprising parts of the legacy clone mechanism.</p>
+
+      <h2 id="thread-methods">wait(), notify(), and notifyAll()</h2>
+      <p>These final methods coordinate threads through an object's monitor. They must be called while holding that object's monitor, normally inside a <code class="inline">synchronized</code> block.</p>
+      <pre>synchronized (lock) {
+    while (!conditionIsReady) {
+        lock.wait();
+    }
+}
+
+synchronized (lock) {
+    conditionIsReady = true;
+    lock.notifyAll();
+}</pre>
+      <ul><li><code class="inline">wait()</code> releases the monitor and waits.</li><li><code class="inline">notify()</code> wakes one waiting thread.</li><li><code class="inline">notifyAll()</code> wakes all waiting threads.</li></ul>
+      <p>Use a loop around <code class="inline">wait()</code> because spurious wakeups can occur and another thread may consume the condition first. For new concurrent code, prefer higher-level tools such as <code class="inline">BlockingQueue</code>, <code class="inline">CountDownLatch</code>, or <code class="inline">CompletableFuture</code> when they express the problem better.</p>
+
+      <h2 id="wait-sleep">wait() versus sleep()</h2>
+      <table class="table table-bordered"><thead><tr><th>wait()</th><th>Thread.sleep()</th></tr></thead><tbody><tr><td>Defined in Object</td><td>Defined in Thread</td></tr><tr><td>Releases the monitor</td><td>Does not release held locks</td></tr><tr><td>Used for coordination</td><td>Pauses execution for a duration</td></tr><tr><td>Requires synchronized context</td><td>Does not require synchronization</td></tr></tbody></table>
+
+      <h2 id="finalize">finalize()</h2>
+      <p><code class="inline">finalize()</code> is deprecated and unreliable. It may never run, has unpredictable timing, adds overhead, and can create security and resurrection problems. Never use it for resource cleanup.</p>
+      <p>Use try-with-resources and <code class="inline">AutoCloseable</code> instead:</p>
+      <pre>try (var connection = dataSource.getConnection()) {
+    // use the connection
+} // closed automatically</pre>
+
+      <h2 id="testing">Testing the equals() Contract</h2>
+      <pre>assertEquals(first, first);          // reflexive
+assertEquals(first, second);        // symmetric with reverse check
+assertEquals(second, third);        // transitive setup
+assertEquals(first, third);
+assertNotEquals(first, null);       // non-null rule
+assertEquals(first.hashCode(),
+             second.hashCode());    // equal objects hash equally</pre>
+      <p>Test equality independently from string formatting. Also test hash-based collection behavior with duplicate logical values and with keys that must be looked up using a different but equal instance.</p>
+
+      <h2 id="best-practices">Best Practices</h2>
+      <ul><li>Override <code class="inline">equals()</code> and <code class="inline">hashCode()</code> together.</li><li>Use exactly the same stable fields in both methods.</li><li>Prefer immutable value objects and stable business keys.</li><li>Keep lazy relationships and large object graphs out of equality.</li><li>Override <code class="inline">toString()</code> without exposing secrets.</li><li>Prefer copy constructors over <code class="inline">clone()</code>.</li><li>Use higher-level concurrency utilities instead of low-level monitor methods when practical.</li><li>Never use <code class="inline">finalize()</code> for cleanup.</li></ul>
+
+      <h2 id="summary">Quick Summary</h2>
+      <div class="note-box"><p><strong>Object</strong> is the root class. <strong>getClass()</strong> returns runtime type information. <strong>toString()</strong> describes an object. <strong>equals()</strong> defines logical equality. <strong>hashCode()</strong> supports hash-based lookup. <strong>clone()</strong> makes a shallow copy by default. <strong>wait()</strong>, <strong>notify()</strong>, and <strong>notifyAll()</strong> coordinate monitor waiters. <strong>finalize()</strong> is deprecated and should not be used.</p></div>
+      <div class="d-flex justify-content-between mt-5 pt-3 border-top"><a href="./oop-concepts.html" class="btn btn-outline-secondary">&larr; OOP Concepts</a><a href="./interfaces.html" class="btn btn-primary">Interfaces &rarr;</a></div>
+    </article></div><div class="col-lg-4 d-none d-lg-block"><nav class="toc" aria-label="On this page"><strong>On this page</strong><a href="#introduction">Introduction</a><a href="#methods">Object Methods</a><a href="#get-class">getClass()</a><a href="#to-string">toString()</a><a href="#equals">equals() and ==</a><a href="#equals-contract">equals() Contract</a><a href="#hash-code">hashCode()</a><a href="#complete-equality-example">Complete Example</a><a href="#mutable-fields">Mutable Fields</a><a href="#objects-utility">Objects Utilities</a><a href="#clone">clone()</a><a href="#thread-methods">Thread Methods</a><a href="#wait-sleep">wait() versus sleep()</a><a href="#finalize">finalize()</a><a href="#testing">Testing</a><a href="#best-practices">Best Practices</a></nav></div></div></div>
+  </body>
+</html>

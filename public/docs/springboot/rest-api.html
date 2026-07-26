@@ -3,7 +3,23 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Spring Boot REST APIs | Java Codeex</title>
+    <meta
+      name="description"
+      content="Learn Spring Boot REST API development with controllers, HTTP methods, CRUD operations, DTOs, validation, pagination, versioning, and practical Java examples."
+    />
+    <link rel="canonical" href="https://javacodeex.in/spring-boot-rest-api" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta property="og:title" content="Spring Boot REST API Tutorial | Java Codeex" />
+    <meta property="og:description" content="Learn Spring Boot REST API development with controllers, HTTP methods, CRUD operations, DTOs, validation, pagination, versioning, and practical Java examples." />
+    <meta property="og:url" content="https://javacodeex.in/spring-boot-rest-api" />
+    <meta property="og:image" content="https://javacodeex.in/assets/images/javacodeex.jpg" />
+    <meta property="og:image:alt" content="Java Codeex Spring Boot REST API tutorial" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Spring Boot REST API Tutorial | Java Codeex" />
+    <meta name="twitter:description" content="Learn Spring Boot REST API development with controllers, HTTP methods, CRUD operations, DTOs, validation, pagination, versioning, and practical Java examples." />
+    <meta name="twitter:image" content="https://javacodeex.in/assets/images/javacodeex.jpg" />
+    <title>Spring Boot REST API Tutorial | Java Codeex</title>
     <link rel="icon" href="../icons/javacodeex.jpg" />
     <link
       rel="stylesheet"
@@ -15,9 +31,9 @@
   <body>
     <nav class="java-subnav">
       <div class="container-xl">
-        <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" /></a>
+        <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" width="40" height="40" /></a>
         <a class="topic-link" href="./index.html#basics">Overview</a>
-        <a class="topic-link" href="https://javacodeex.com/springboot/project-structure.html"
+        <a class="topic-link" href="/project-structure"
           >Project Structure</a
         >
         <a class="topic-link" href="./aop.html">AOP</a>
@@ -36,7 +52,7 @@
     <section class="spring-hero">
       <div class="container-xl">
         <span class="spring-pill">Java Codeex</span>
-        <h1 class="mt-3">Building REST APIs</h1>
+        <h1 class="mt-3">Spring Boot REST API Tutorial</h1>
         <p class="lead">
           Create HTTP endpoints that receive requests and return useful
           responses.
@@ -470,6 +486,214 @@ curl -X PATCH http://localhost:8080/api/products/1 \
 # Delete a product
 curl -X DELETE http://localhost:8080/api/products/1</code></pre>
 
+      <h2 id="postgresql-crud-api">Build a PostgreSQL-backed CRUD API</h2>
+      <p>
+        An in-memory list is useful for learning controller mappings, but real
+        applications need durable storage. PostgreSQL keeps records after a
+        restart, supports transactions and constraints, and gives the API a
+        reliable source of truth. Spring Boot connects the HTTP layer to
+        PostgreSQL through Spring Data JPA and the PostgreSQL JDBC driver.
+      </p>
+      <figure class="concept-diagram" aria-labelledby="postgres-architecture-caption">
+        <figcaption id="postgres-architecture-caption">PostgreSQL CRUD request flow</figcaption>
+        <div class="diagram-row">
+          <div class="diagram-node"><strong>REST client</strong><small>JSON request</small></div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node"><strong>Controller</strong><small>HTTP contract</small></div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node"><strong>Service</strong><small>Business rules</small></div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node"><strong>Repository</strong><small>JPA queries</small></div>
+          <div class="diagram-arrow">&rarr;</div>
+          <div class="diagram-node"><strong>PostgreSQL</strong><small>Persistent rows</small></div>
+        </div>
+      </figure>
+
+      <h3 id="postgresql-dependencies">1. Add the PostgreSQL dependencies</h3>
+      <p>
+        Generate a Spring Boot project with Spring Web, Spring Data JPA,
+        PostgreSQL Driver, and Validation. Spring Web handles HTTP requests,
+        JPA maps entities to tables, the driver opens the database connection,
+        and Validation checks request data before it reaches the service.
+      </p>
+      <pre class="spring-code"><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+    &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+
+      <h3 id="postgresql-configuration">2. Configure PostgreSQL safely</h3>
+      <p>
+        Create a database such as <code>taskdb</code>, then configure the
+        connection in <code>application.properties</code>. Do not commit a
+        real password. Use environment variables or a secret manager outside
+        local development.
+      </p>
+      <pre class="spring-code"><code>spring.datasource.url=jdbc:postgresql://localhost:5432/taskdb
+spring.datasource.username=${DB_USERNAME:postgres}
+spring.datasource.password=${DB_PASSWORD:change-me}
+spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.open-in-view=false
+spring.jpa.show-sql=false</code></pre>
+      <p>
+        <code>ddl-auto=validate</code> checks that the schema matches the
+        entities without silently changing production tables. Use Flyway or
+        Liquibase for versioned schema migrations. For a throwaway local demo,
+        <code>create-drop</code> or <code>update</code> can be convenient, but
+        they should not replace controlled migrations in production.
+      </p>
+
+      <h3 id="postgresql-entity-repository">3. Map the entity and repository</h3>
+      <p>
+        The entity represents a database row. The repository provides the
+        common CRUD operations without handwritten SQL. Keep request and
+        response DTOs separate from the entity so internal columns are not
+        accidentally exposed by the REST API.
+      </p>
+      <pre class="spring-code"><code>@Entity
+@Table(name = "tasks")
+public class Task {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, length = 160)
+    private String title;
+    private boolean done;
+    // getters and setters
+}
+
+public interface TaskRepository extends JpaRepository&lt;Task, Long&gt; {
+    Page&lt;Task&gt; findByTitleContainingIgnoreCase(String title, Pageable pageable);
+}</code></pre>
+
+      <h3 id="postgresql-service-crud">4. Put CRUD rules in the service</h3>
+      <p>
+        The service is the boundary for database transactions and business
+        rules. It should decide whether a missing record becomes a not-found
+        error, apply updates, and return data that the controller can map to a
+        safe DTO.
+      </p>
+      <pre class="spring-code"><code>@Service
+@Transactional
+class TaskService {
+    private final TaskRepository repository;
+
+    TaskService(TaskRepository repository) {
+        this.repository = repository;
+    }
+
+    @Transactional(readOnly = true)
+    Page&lt;Task&gt; findAll(Pageable pageable) {
+        return repository.findAll(pageable);
+    }
+
+    Task findRequired(Long id) {
+        return repository.findById(id)
+            .orElseThrow(() -&gt; new TaskNotFoundException(id));
+    }
+
+    Task create(CreateTaskRequest request) {
+        Task task = new Task();
+        task.setTitle(request.title());
+        return repository.save(task);
+    }
+
+    Task replace(Long id, UpdateTaskRequest request) {
+        Task task = findRequired(id);
+        task.setTitle(request.title());
+        task.setDone(request.done());
+        return task;
+    }
+
+    void delete(Long id) {
+        repository.delete(findRequired(id));
+    }
+}</code></pre>
+
+      <h3 id="postgresql-crud-endpoints">5. Expose all CRUD endpoints</h3>
+      <p>
+        The controller translates HTTP requests into service calls. Create
+        returns <code>201 Created</code>, reads return <code>200 OK</code>, a
+        successful replacement returns <code>200 OK</code> or
+        <code>204 No Content</code>, and deletion returns
+        <code>204 No Content</code>. Missing IDs should consistently return
+        <code>404 Not Found</code> through the global exception handler.
+      </p>
+      <pre class="spring-code"><code>@RestController
+@RequestMapping("/api/tasks")
+class TaskController {
+    private final TaskService service;
+
+    @GetMapping
+    Page&lt;TaskResponse&gt; list(Pageable pageable) {
+        return service.findAll(pageable).map(TaskResponse::from);
+    }
+
+    @GetMapping("/{id}")
+    TaskResponse get(@PathVariable Long id) {
+        return TaskResponse.from(service.findRequired(id));
+    }
+
+    @PostMapping
+    ResponseEntity&lt;TaskResponse&gt; create(@Valid @RequestBody CreateTaskRequest request) {
+        TaskResponse response = TaskResponse.from(service.create(request));
+        URI location = URI.create("/api/tasks/" + response.id());
+        return ResponseEntity.created(location).body(response);
+    }
+
+    @PutMapping("/{id}")
+    TaskResponse replace(@PathVariable Long id,
+                         @Valid @RequestBody UpdateTaskRequest request) {
+        return TaskResponse.from(service.replace(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void delete(@PathVariable Long id) {
+        service.delete(id);
+    }
+}</code></pre>
+
+      <h3 id="postgresql-test-crud">6. Test the PostgreSQL CRUD flow</h3>
+      <p>
+        Test the complete lifecycle against a dedicated local database or a
+        disposable container. Verify both the HTTP contract and the database
+        state: a created row should be readable, an update should persist after
+        a new request, and a deleted row should return 404 on the next read.
+      </p>
+      <pre class="spring-code"><code># Create
+curl -i -X POST http://localhost:8080/api/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Connect PostgreSQL","done":false}'
+
+# Read all and read one
+curl "http://localhost:8080/api/tasks?page=0&amp;size=10"
+curl http://localhost:8080/api/tasks/1
+
+# Replace the complete resource
+curl -i -X PUT http://localhost:8080/api/tasks/1 \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Verify PostgreSQL CRUD","done":true}'
+
+# Delete
+curl -i -X DELETE http://localhost:8080/api/tasks/1</code></pre>
+
+      <div class="spring-callout">
+        <strong>Production checklist:</strong> Use migrations, environment-based
+        credentials, database constraints, pagination, DTOs, transaction
+        boundaries, validation, and integration tests before exposing a
+        PostgreSQL-backed CRUD API to real clients.
+      </div>
+
       <h2 id="path-variables-and-parameters">
         @PathVariable, @RequestParam, and @RequestBody
       </h2>
@@ -877,6 +1101,124 @@ class TaskMapper {
         can rename database columns, split tables, or change relationships
         without breaking clients, as long as the DTO shape stays the same.
       </div>
+      <h2 id="response-entity">Control responses with ResponseEntity</h2>
+      <p>
+        Returning an object is convenient when every successful request has the
+        same response behavior. Use <code>ResponseEntity&lt;T&gt;</code> when the
+        controller must choose the HTTP status, headers, or body at runtime.
+        This is useful for created resources, validation failures, missing
+        records, and responses that need location metadata.
+      </p>
+      <pre class="spring-code"><code>@PostMapping
+ResponseEntity&lt;TaskResponse&gt; create(@Valid @RequestBody CreateTaskRequest request) {
+    Task task = taskService.create(request);
+    URI location = URI.create("/api/tasks/" + task.getId());
+
+    return ResponseEntity
+        .created(location)
+        .body(taskMapper.toResponse(task));
+}
+
+@GetMapping("/{id}")
+ResponseEntity&lt;TaskResponse&gt; findOne(@PathVariable long id) {
+    return taskService.findById(id)
+        .map(task -&gt; ResponseEntity.ok(taskMapper.toResponse(task)))
+        .orElseGet(() -&gt; ResponseEntity.notFound().build());
+}</code></pre>
+      <p>
+        Common builder methods include <code>ok()</code> for a successful body,
+        <code>created(location)</code> for a new resource,
+        <code>noContent()</code> when there is nothing to return, and
+        <code>badRequest()</code> or <code>notFound()</code> for client errors.
+        Prefer a consistent error body across the API so clients can handle
+        failures without endpoint-specific rules.
+      </p>
+      <h2 id="http-headers">Read and write HTTP headers</h2>
+      <p>
+        HTTP headers carry metadata around a request or response. Spring MVC
+        can bind a single header with <code>@RequestHeader</code>, while
+        <code>HttpHeaders</code> is useful when an endpoint needs to inspect
+        several values or add response metadata.
+      </p>
+      <pre class="spring-code"><code>@GetMapping("/search")
+ResponseEntity&lt;List&lt;TaskResponse&gt;&gt; search(
+        @RequestHeader(value = "X-Correlation-Id", required = false) String correlationId,
+        @RequestParam String query) {
+    List&lt;TaskResponse&gt; results = taskService.search(query);
+    HttpHeaders headers = new HttpHeaders();
+    headers.set("X-Correlation-Id", correlationId != null ? correlationId : UUID.randomUUID().toString());
+    headers.setCacheControl(CacheControl.noCache());
+    return new ResponseEntity&lt;&gt;(results, headers, HttpStatus.OK);
+}</code></pre>
+      <p>
+        Use standard headers such as <code>Location</code>,
+        <code>Cache-Control</code>, <code>ETag</code>, and
+        <code>Content-Type</code> when they describe real HTTP behavior. Do not
+        place passwords, access tokens, or other secrets in custom headers or
+        log them without redaction. Headers are part of the public API contract,
+        so document required values and validate them at the boundary.
+      </p>
+      <h2 id="put-vs-post">PUT vs POST in REST APIs</h2>
+      <p>
+        Choose the HTTP method based on the operation's meaning. POST usually
+        asks the server to create a new resource under a collection. The server
+        chooses the identifier, so repeating the same request may create more
+        than one resource. Return <code>201 Created</code> and a
+        <code>Location</code> header when creation succeeds.
+      </p>
+      <p>
+        PUT replaces the representation at a client-known URI, such as
+        <code>/api/tasks/42</code>. A well-designed PUT is idempotent: sending
+        the same complete representation several times leaves the resource in
+        the same state. Return <code>200 OK</code> with a representation or
+        <code>204 No Content</code> when the update succeeds without a body.
+        Use PATCH when the API intentionally supports partial updates.
+      </p>
+      <div class="table-responsive">
+        <table class="table table-bordered spring-table">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Typical use</th>
+              <th>Example</th>
+              <th>Idempotent?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>POST</code></td>
+              <td>Create under a collection or trigger a command</td>
+              <td><code>POST /api/tasks</code></td>
+              <td>Usually no</td>
+            </tr>
+            <tr>
+              <td><code>PUT</code></td>
+              <td>Replace a known resource</td>
+              <td><code>PUT /api/tasks/42</code></td>
+              <td>Yes, when designed correctly</td>
+            </tr>
+            <tr>
+              <td><code>PATCH</code></td>
+              <td>Apply selected field changes</td>
+              <td><code>PATCH /api/tasks/42</code></td>
+              <td>Depends on the operation</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <h2 id="controller-testing">Test response status and headers</h2>
+      <p>
+        REST tests should verify more than a response body. Check the status
+        code, content type, important headers, and JSON fields that form the
+        client contract. A focused MVC test keeps the feedback loop fast while
+        still checking controller mappings and validation behavior.
+      </p>
+      <pre class="spring-code"><code>mockMvc.perform(post("/api/tasks")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content("{\"title\":\"Write tests\"}"))
+    .andExpect(status().isCreated())
+    .andExpect(header().exists(HttpHeaders.LOCATION))
+    .andExpect(jsonPath("$.title").value("Write tests"));</code></pre>
       <a class="btn btn-success" href="validation.html"
         >Next: Validation &rarr;</a
       >

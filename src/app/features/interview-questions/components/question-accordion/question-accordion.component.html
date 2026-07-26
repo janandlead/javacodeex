@@ -5,7 +5,7 @@
       @for (question of questions(); track question.id; let index = $index) {
         <article class="simple-question" [id]="'question-' + question.id">
           <h3><span class="simple-question-number">{{ index + 1 }}.</span> {{ question.question }} <span class="difficulty" [class]="'difficulty ' + question.difficulty.toLowerCase()">{{ question.difficulty }}</span></h3>
-          @if (question.answer.trim()) { <div class="simple-answer"><span class="answer-label">Answer</span><p>{{ question.answer }}</p></div> }
+          @if (question.answer.trim()) { <div class="simple-answer"><p>{{ question.answer }}</p></div> }
           @if (question.codeExample) { <pre><code>{{ question.codeExample }}</code></pre> }
         </article>
       }

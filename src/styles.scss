@@ -140,6 +140,7 @@ p { max-width: 70ch; }
 .pager-link.next { text-align: right; }
 .pager-direction { margin-bottom: .35rem; color: #0891b2; font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .pager-link strong { font-size: 1rem; }
+.pager-link.disabled { visibility: hidden; pointer-events: none; }
 @media (max-width: 575.98px) { .course-pager { grid-template-columns: 1fr; } .pager-link.next { text-align: left; } }
 
 @media (min-width: 768px) {
@@ -154,3 +155,5 @@ p { max-width: 70ch; }
 .behavioral-page .state-overview-points, .behavioral-page .strategy-overview-points, .behavioral-page .chain-overview-points, .behavioral-page .command-overview-points, .behavioral-page .memento-overview-points, .behavioral-page .observer-overview-points { margin: 0; padding-left: 1.25rem; color: #334155; }
 .behavioral-page .state-overview-points li, .behavioral-page .strategy-overview-points li, .behavioral-page .chain-overview-points li, .behavioral-page .command-overview-points li, .behavioral-page .memento-overview-points li, .behavioral-page .observer-overview-points li { margin-bottom: .65rem; line-height: 1.75; }
 .behavioral-page .pattern-hero h1 { max-width: none; }
+.pattern-page .pattern-toc, .creational-page .pattern-toc, .factory-page .factory-toc, .structural-page .pattern-toc, .behavioral-page .pattern-toc { display: none; }
+.pattern-page .pattern-layout, .creational-page .pattern-layout, .factory-page .factory-layout, .structural-page .pattern-layout, .behavioral-page .pattern-layout { grid-template-columns: minmax(0, 1fr) !important; }

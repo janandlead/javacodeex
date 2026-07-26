@@ -1,8 +1,7 @@
-.topic-sidebar { position: sticky; top: 1rem; padding: 1rem; transition: width .25s ease, padding .25s ease; }
+.topic-sidebar { position: sticky; top: 1rem; z-index: 10; padding: 1rem; }
 .sidebar-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: .5rem; min-height: 3.5rem; }
 .eyebrow { color: #0891b2; font-size: .7rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 h2 { margin: .2rem 0 0; color: #1e3a8a; font-size: 1.35rem; }
-.sidebar-toggle { display: grid; width: 2.5rem; height: 2.5rem; flex: 0 0 2.5rem; place-items: center; color: #1e3a8a; }
 .topic-sidebar nav { display: grid; gap: .35rem; margin-top: 1rem; }
 .topic-link { display: flex; align-items: center; gap: .75rem; width: 100%; min-height: 3.5rem; padding: .7rem .8rem; border: 1px solid transparent; border-radius: .75rem; color: #475569; background: transparent; text-align: left; transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease; }
 .topic-link:hover, .topic-link:focus-visible { color: #1e3a8a; background: #eff6ff; }
@@ -17,7 +16,4 @@ h2 { margin: .2rem 0 0; color: #1e3a8a; font-size: 1.35rem; }
 .child-topic > i:first-child { font-size: 1rem; }
 .child-topic .topic-copy strong { font-size: .82rem; }
 .child-topic .topic-copy small { font-size: .7rem; }
-.is-closed { padding-inline: .65rem; }
-.is-closed .sidebar-heading { justify-content: center; }
-.is-closed .topic-link { justify-content: center; padding-inline: .5rem; }
-@media (max-width: 767.98px) { .topic-sidebar { position: fixed; top: 0; bottom: 0; left: 0; z-index: 1050; width: min(86vw, 20rem); overflow-y: auto; border-radius: 0 !important; transform: translateX(0); transition: transform .25s ease; } .topic-sidebar.is-closed { width: min(86vw, 20rem); padding: 1rem; transform: translateX(-105%); } .topic-sidebar.is-closed .sidebar-heading { justify-content: flex-end; } .topic-sidebar.is-closed .sidebar-toggle i { transform: rotate(180deg); } }
+@media (max-width: 767.98px) { .topic-sidebar { top: .75rem; margin-bottom: 1rem; } }

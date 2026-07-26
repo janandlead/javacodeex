@@ -12,7 +12,7 @@
     />
     <meta name="robots" content="index, follow" />
     <meta name="author" content="Java Codeex" />
-    <link rel="canonical" href="https://javacodeex.in/java/arrays/" />
+    <link rel="canonical" href="https://javacodeex.in/java/arrays" />
     <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
     <link
       rel="shortcut icon"
@@ -26,7 +26,7 @@
     <meta property="og:site_name" content="Java Codeex" />
     <meta
       property="og:title"
-      content="Java Arrays - Single, Multi-Dimensional and Jagged Arrays | Java Codeex"
+      content="Arrays in Java Tutorial | Java Codeex"
     />
     <meta
       property="og:description"
@@ -36,12 +36,12 @@
       property="og:image"
       content="https://javacodeex.in/icons/javacodeex.jpg"
     />
-    <meta property="og:url" content="https://javacodeex.in/arrays/" />
+    <meta property="og:url" content="https://javacodeex.in/java/arrays" />
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="Java Arrays - Single, Multi-Dimensional and Jagged Arrays | Java Codeex"
+      content="Arrays in Java Tutorial | Java Codeex"
     />
     <meta
       name="twitter:description"
@@ -53,7 +53,7 @@
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
-      Java Arrays - Single, Multi-Dimensional and Jagged Arrays | Java Codeex
+      Arrays in Java Tutorial | Java Codeex
     </title>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -344,6 +344,8 @@
           ><img
             src="../icons/javacodeex.jpg"
             alt="Java Codeex"
+            width="32"
+            height="32"
             style="
               height: 32px;
               width: 32px;
@@ -454,15 +456,15 @@
     </section>
     <aside class="topic-guide" aria-label="Learning guide">
       <div class="topic-guide-step">
-        <span>01</span><strong>Create arrays</strong
+        <span>01</span><strong>Declare arrays</strong
         ><small>Declare a fixed-size container</small>
       </div>
       <div class="topic-guide-step">
-        <span>02</span><strong>Create arrays</strong
+        <span>02</span><strong>Access values</strong
         ><small>Access and update elements</small>
       </div>
       <div class="topic-guide-step">
-        <span>03</span><strong>Create arrays</strong
+        <span>03</span><strong>Traverse arrays</strong
         ><small>Traverse with loops</small>
       </div>
       <p class="topic-guide-summary">
@@ -578,10 +580,205 @@ char[]  vowels  = {'a', 'e', 'i', 'o', 'u'};</pre>
               </tr>
               <tr>
                 <td><code class="inline">char</code></td>
-                <td><code class="inline">'</code></td>
+                <td><code class="inline">'\\u0000'</code></td>
               </tr>
             </tbody>
           </table>
+          <h2 id="array-characteristics">3. Java Array Characteristics</h2>
+          <p>
+            Java arrays are fixed-size objects that store values of one declared
+            type. They are zero-indexed, so valid positions range from
+            <code class="inline">0</code> to
+            <code class="inline">array.length - 1</code>. The
+            <code class="inline">length</code> property is a field, not a method.
+          </p>
+          <table class="table table-bordered table-hover mb-3">
+            <thead><tr><th>Characteristic</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td>Fixed size</td><td>The length is decided when the array is created.</td></tr>
+              <tr><td>Single type</td><td>Every element uses the declared primitive or reference type.</td></tr>
+              <tr><td>Zero-indexed</td><td>The first item is at index 0 and the last is length minus 1.</td></tr>
+              <tr><td>Object in Java</td><td>An array is allocated on the heap and the variable stores its reference.</td></tr>
+              <tr><td>Direct access</td><td>Reading or writing a known index is generally an O(1) operation.</td></tr>
+            </tbody>
+          </table>
+          <div class="note-box"><p><strong>Use arrays when:</strong> the number of elements is known, indexed access matters, or primitive values should be stored without collection boxing.</p></div>
+
+          <h2 id="access-update-traverse">4. Accessing, Updating, and Traversing</h2>
+          <p>
+            Use square brackets to read or replace an element. An invalid index
+            throws <code class="inline">ArrayIndexOutOfBoundsException</code>.
+            Use an index-based loop when the position is needed and an enhanced
+            loop when only the value is required.
+          </p>
+          <pre>// Read and update values
+int[] scores = {85, 92, 78};
+int first = scores[0];       // 85
+scores[2] = 81;              // replace 78
+System.out.println(scores.length); // 3
+
+for (int index = 0; index &lt; scores.length; index++) {
+    System.out.println(index + ": " + scores[index]);
+}
+
+for (int score : scores) {
+    System.out.println(score);
+}</pre>
+          <p>
+            Assigning the enhanced-loop variable does not update the array. Use
+            an index-based loop when you need to modify elements in place.
+          </p>
+
+          <h2 id="array-memory-model">5. Array Memory and References</h2>
+          <p>
+            An array variable holds a reference to an array object. Primitive
+            arrays store primitive values, while reference arrays store
+            references to other objects. Assigning one array variable to another
+            copies the reference, not the elements.
+          </p>
+          <pre>int[] original = {1, 2, 3};
+int[] alias = original;
+alias[0] = 99; // original[0] is also 99
+
+int[] copy = java.util.Arrays.copyOf(original, original.length);
+copy[0] = 1; // original is unaffected</pre>
+          <p>
+            Use <code class="inline">Arrays.copyOf</code> or another deliberate
+            copying strategy when callers should not share mutable array state.
+          </p>
+
+          <h2 id="multidimensional-arrays">6. Multidimensional Arrays</h2>
+          <p>
+            Java models a multidimensional array as an array whose elements are
+            other arrays. A two-dimensional array is useful for grids and
+            matrix-like data. Each row is a separate array object.
+          </p>
+          <pre>int[][] matrix = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+
+for (int row = 0; row &lt; matrix.length; row++) {
+    for (int column = 0; column &lt; matrix[row].length; column++) {
+        System.out.print(matrix[row][column] + " ");
+    }
+    System.out.println();
+}</pre>
+          <h3>Jagged arrays</h3>
+          <p>
+            Because each row is independent, rows may have different lengths.
+            This is a jagged or ragged array. Always use
+            <code class="inline">matrix[row].length</code> for the current row.
+          </p>
+          <pre>int[][] jagged = new int[3][];
+jagged[0] = new int[2];
+jagged[1] = new int[4];
+jagged[2] = new int[1];</pre>
+
+          <h2 id="arrays-utility-class">7. The java.util.Arrays Utility Class</h2>
+          <p>
+            The <code class="inline">java.util.Arrays</code> class provides
+            tested helpers for sorting, searching, copying, comparing, and
+            printing arrays.
+          </p>
+          <pre>import java.util.Arrays;
+
+int[] values = {40, 10, 30, 20};
+Arrays.sort(values);                    // [10, 20, 30, 40]
+int position = Arrays.binarySearch(values, 30); // 2
+int[] larger = Arrays.copyOf(values, 6);
+Arrays.fill(larger, 4, 6, 0);
+System.out.println(Arrays.toString(values));
+
+int[][] left = {{1, 2}, {3, 4}};
+int[][] right = {{1, 2}, {3, 4}};
+System.out.println(Arrays.deepEquals(left, right)); // true</pre>
+          <div class="warn-box"><p><strong>Remember:</strong> call <code class="inline">binarySearch</code> only on a sorted array. For nested arrays, use <code class="inline">deepToString</code> and <code class="inline">deepEquals</code>.</p></div>
+
+          <h2 id="array-advantages-limitations">8. Advantages and Limitations</h2>
+          <table class="table table-bordered table-hover mb-3">
+            <thead><tr><th>Advantage</th><th>Limitation</th></tr></thead>
+            <tbody>
+              <tr><td>Fast direct access by index</td><td>Length cannot grow or shrink</td></tr>
+              <tr><td>Low overhead for primitive values</td><td>Insertion and deletion require shifting or copying</td></tr>
+              <tr><td>Strong compile-time element type</td><td>Only one element type is supported</td></tr>
+              <tr><td>Useful for fixed-size data</td><td>Few operations are available directly on the array</td></tr>
+            </tbody>
+          </table>
+
+          <h2 id="arrays-vs-collections">9. Arrays vs. Collections</h2>
+          <p>
+            Choose an array when size and indexed access are central to the
+            problem. Choose a collection when data grows, shrinks, or needs
+            higher-level operations such as filtering and membership checks.
+          </p>
+          <table class="table table-bordered table-hover mb-3">
+            <thead><tr><th>Feature</th><th>Array</th><th>ArrayList</th></tr></thead>
+            <tbody>
+              <tr><td>Size</td><td>Fixed after creation</td><td>Dynamic capacity</td></tr>
+              <tr><td>Primitive values</td><td>Supported directly</td><td>Uses wrapper objects and boxing</td></tr>
+              <tr><td>API</td><td><code class="inline">length</code> and utility methods</td><td><code class="inline">add</code>, <code class="inline">remove</code>, and <code class="inline">contains</code></td></tr>
+              <tr><td>Generics</td><td>Generic arrays cannot be created directly</td><td>Works with <code class="inline">List&lt;T&gt;</code></td></tr>
+            </tbody>
+          </table>
+          <pre>int[] fixedScores = {80, 90, 85};
+java.util.List&lt;Integer&gt; changingScores = new java.util.ArrayList&lt;&gt;();
+changingScores.add(80);
+changingScores.add(90);</pre>
+
+          <h2 id="array-interview-programs">10. Common Java Array Interview Programs</h2>
+          <h3>Reverse an array in place</h3>
+          <pre>static void reverse(int[] values) {
+    int left = 0;
+    int right = values.length - 1;
+    while (left &lt; right) {
+        int temporary = values[left];
+        values[left++] = values[right];
+        values[right--] = temporary;
+    }
+}</pre>
+          <h3>Find a missing number from 1 to N</h3>
+          <pre>static int missingNumber(int[] values, int n) {
+    int expected = n * (n + 1) / 2;
+    int actual = 0;
+    for (int value : values) actual += value;
+    return expected - actual;
+}
+// missingNumber(new int[]{1, 2, 4, 5, 6}, 6) returns 3</pre>
+          <h3>Rotate an array to the right</h3>
+          <pre>static void rotateRight(int[] values, int steps) {
+    if (values.length == 0) return;
+    steps %= values.length;
+    reverse(values, 0, values.length - 1);
+    reverse(values, 0, steps - 1);
+    reverse(values, steps, values.length - 1);
+}</pre>
+          <h3>Find two values that add to a target</h3>
+          <pre>static int[] twoSum(int[] values, int target) {
+    java.util.Map&lt;Integer, Integer&gt; seen = new java.util.HashMap&lt;&gt;();
+    for (int index = 0; index &lt; values.length; index++) {
+        int needed = target - values[index];
+        if (seen.containsKey(needed)) return new int[]{seen.get(needed), index};
+        seen.put(values[index], index);
+    }
+    throw new IllegalArgumentException("No pair found");
+}</pre>
+          <p>
+            Reverse and rotation use O(1) extra space. The missing-number
+            solution uses O(n) time and O(1) extra space, while the hash-map
+            two-sum solution uses O(n) additional space to achieve O(n) time.
+          </p>
+
+          <h2 id="array-best-practices">11. Best Practices and Common Mistakes</h2>
+          <ul>
+            <li>Use <code class="inline">int[] values</code> rather than the less readable <code class="inline">int values[]</code>.</li>
+            <li>Use <code class="inline">array.length</code>, not <code class="inline">array.length()</code>.</li>
+            <li>Validate indexes and handle empty arrays before reading the first element.</li>
+            <li>Use <code class="inline">Arrays.equals</code> instead of <code class="inline">==</code> when comparing contents.</li>
+            <li>Use <code class="inline">ArrayList</code> when the number of values changes frequently.</li>
+            <li>Use a defensive copy when callers should not mutate internal array state.</li>
+          </ul>
         </div>
       </div>
     </div>

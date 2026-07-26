@@ -7,11 +7,11 @@ type SearchResultType = 'Tutorial' | 'Interview topic' | 'Interview question';
 interface SearchResult { readonly title: string; readonly route: string; readonly category: string; readonly type: SearchResultType; readonly searchableText: string; }
 
 const navigationResults = MAIN_NAVIGATION.flatMap((item) => [
-  { title: item.label, route: item.route === '/interviews' ? '/interview-questions/java' : item.route ?? '/', category: item.label, type: 'Tutorial' as const },
+  { title: item.label, route: item.route === '/interviews' ? '/interviews' : item.route ?? '/', category: item.label, type: 'Tutorial' as const },
   ...(item.children ?? []).map((child) => ({ title: child.label, route: child.route ?? '/', category: item.label, type: 'Tutorial' as const }))
 ]);
 const tutorialResults = [
-  ...Object.entries(JAVA_PAGES).map(([slug, page]) => ({ title: page.title, route: `/java/${slug}`, category: 'Java', type: 'Tutorial' as const, text: `${page.title} ${page.description}` })),
+  ...Object.entries(JAVA_PAGES).map(([slug, page]) => ({ title: page.title, route: `/java-${slug}`, category: 'Java', type: 'Tutorial' as const, text: `${page.title} ${page.description}` })),
   ...Object.entries(SPRINGBOOT_PAGES).map(([slug, page]) => ({ title: page.title, route: `/spring-boot/${slug}`, category: 'Spring Boot', type: 'Tutorial' as const, text: `${page.title} ${page.description}` }))
 ];
 const BASE_SEARCH_INDEX: readonly SearchResult[] = [...navigationResults, ...tutorialResults]

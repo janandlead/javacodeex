@@ -3,7 +3,22 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Spring Boot Validation | Java Codeex</title>
+    <meta name="description" content="Learn Spring Boot request validation with Bean Validation annotations, DTOs, nested objects, method parameters, business rules, database constraints, and clear REST error responses." />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://javacodeex.in/spring-boot-validation" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta property="og:title" content="Spring Boot Request Validation Tutorial | Java Codeex" />
+    <meta property="og:description" content="Learn Spring Boot request validation with Bean Validation annotations, DTOs, nested objects, method parameters, business rules, database constraints, and clear REST error responses." />
+    <meta property="og:url" content="https://javacodeex.in/spring-boot-validation" />
+    <meta property="og:image" content="https://javacodeex.in/assets/images/javacodeex.jpg" />
+    <meta property="og:image:alt" content="Spring Boot request validation tutorial" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Spring Boot Request Validation Tutorial | Java Codeex" />
+    <meta name="twitter:description" content="Learn Spring Boot request validation with Bean Validation annotations, DTOs, nested objects, method parameters, business rules, database constraints, and clear REST error responses." />
+    <meta name="twitter:image" content="https://javacodeex.in/assets/images/javacodeex.jpg" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Spring Boot Request Validation Tutorial","description":"Learn Spring Boot request validation with Bean Validation annotations, DTOs, nested objects, method parameters, business rules, database constraints, and clear REST error responses.","url":"https://javacodeex.in/spring-boot-validation","image":"https://javacodeex.in/assets/images/javacodeex.jpg","author":{"@type":"Organization","name":"Java Codeex"},"publisher":{"@type":"Organization","name":"Java Codeex"},"dateModified":"2026-07-26","mainEntityOfPage":{"@type":"WebPage","@id":"https://javacodeex.in/spring-boot-validation"}}</script>
+    <title>Spring Boot Request Validation Tutorial | Java Codeex</title>
     <link rel="icon" href="../icons/javacodeex.jpg" />
     <link
       rel="stylesheet"
@@ -15,9 +30,9 @@
   <body>
     <nav class="java-subnav">
       <div class="container-xl">
-        <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" /></a>
+        <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" width="40" height="40" /></a>
         <a class="topic-link" href="./index.html#basics">Overview</a>
-        <a class="topic-link" href="https://javacodeex.com/springboot/project-structure.html"
+        <a class="topic-link" href="/project-structure"
           >Project Structure</a
         >
         <a class="topic-link" href="./aop.html">AOP</a>
@@ -36,7 +51,7 @@
     <section class="spring-hero">
       <div class="container-xl">
         <span class="spring-pill">Java Codeex</span>
-        <h1 class="mt-3">Request Validation</h1>
+        <h1 class="mt-3">Spring Boot Request Validation</h1>
         <p class="lead">
           Reject incomplete or invalid data at the API boundary.
         </p>
@@ -483,6 +498,13 @@ Content-Type: application/json
           logs.
         </li>
       </ul>
+      <h2 id="validation-faq">Spring Boot Request Validation FAQs</h2>
+      <h3>What is the difference between @Valid and @Validated?</h3>
+      <p><code>@Valid</code> triggers standard Bean Validation, while <code>@Validated</code> also supports validation groups and method-level validation.</p>
+      <h3>Where should business validation happen?</h3>
+      <p>Business validation belongs in the service layer because it may require database access or coordination between multiple fields and records.</p>
+      <h3>Can validation guarantee unique values?</h3>
+      <p>No. Check for a friendly error in the service, but enforce uniqueness with a database constraint to handle concurrent requests safely.</p>
       <a class="btn btn-success" href="exception-handling.html"
         >Next: Global Exception Handling</a
       >

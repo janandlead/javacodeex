@@ -3,7 +3,22 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Testing Spring Boot Applications | Java Codeex</title>
+    <meta name="description" content="Learn Spring Boot testing with JUnit, Mockito, @WebMvcTest, @DataJpaTest, @SpringBootTest, Testcontainers, controller tests, repository tests, and integration testing." />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://javacodeex.in/spring-boot-testing" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta property="og:title" content="Spring Boot Testing Tutorial | Java Codeex" />
+    <meta property="og:description" content="Learn Spring Boot testing with JUnit, Mockito, @WebMvcTest, @DataJpaTest, @SpringBootTest, Testcontainers, controller tests, repository tests, and integration testing." />
+    <meta property="og:url" content="https://javacodeex.in/spring-boot-testing" />
+    <meta property="og:image" content="https://javacodeex.in/assets/images/javacodeex.jpg" />
+    <meta property="og:image:alt" content="Spring Boot testing tutorial" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Spring Boot Testing Tutorial | Java Codeex" />
+    <meta name="twitter:description" content="Learn Spring Boot testing with JUnit, Mockito, @WebMvcTest, @DataJpaTest, @SpringBootTest, Testcontainers, controller tests, repository tests, and integration testing." />
+    <meta name="twitter:image" content="https://javacodeex.in/assets/images/javacodeex.jpg" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Spring Boot Testing Tutorial","description":"Learn Spring Boot testing with JUnit, Mockito, @WebMvcTest, @DataJpaTest, @SpringBootTest, Testcontainers, controller tests, repository tests, and integration testing.","url":"https://javacodeex.in/spring-boot-testing","image":"https://javacodeex.in/assets/images/javacodeex.jpg","author":{"@type":"Organization","name":"Java Codeex"},"publisher":{"@type":"Organization","name":"Java Codeex"},"dateModified":"2026-07-26","mainEntityOfPage":{"@type":"WebPage","@id":"https://javacodeex.in/spring-boot-testing"}}</script>
+    <title>Spring Boot Testing Tutorial | Java Codeex</title>
     <link rel="icon" href="../icons/javacodeex.jpg" />
     <link
       rel="stylesheet"
@@ -15,9 +30,9 @@
   <body>
     <nav class="java-subnav">
       <div class="container-xl">
-        <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" /></a>
+        <a class="course-home-link" href="../index.html#courses" title="Back to courses" aria-label="Back to courses"><img src="../icons/javacodeex.jpg" alt="Java Codeex" width="40" height="40" /></a>
         <a class="topic-link" href="./index.html#basics">Overview</a>
-        <a class="topic-link" href="https://javacodeex.com/springboot/project-structure.html"
+        <a class="topic-link" href="/project-structure"
           >Project Structure</a
         >
         <a class="topic-link" href="./aop.html">AOP</a>
@@ -36,7 +51,7 @@
     <section class="spring-hero">
       <div class="container-xl">
         <span class="spring-pill">Java Codeex</span>
-        <h1 class="mt-3">Testing Spring Boot Applications</h1>
+        <h1 class="mt-3">Spring Boot Testing</h1>
         <p class="lead">
           Test behavior at the right level: small unit tests, focused slices,
           and realistic integration tests.
@@ -531,6 +546,13 @@ class EmployeeApiIntegrationTest {
         configuration, and real application work together; use slice and
         integration tests for that confidence.
       </div>
+      <h2 id="testing-faq">Spring Boot Testing FAQs</h2>
+      <h3>What is the difference between @WebMvcTest and @SpringBootTest?</h3>
+      <p><code>@WebMvcTest</code> loads the MVC layer for focused controller tests. <code>@SpringBootTest</code> loads the application context and is better for wiring and integration behavior.</p>
+      <h3>When should Testcontainers be used?</h3>
+      <p>Use Testcontainers when an embedded substitute cannot accurately reproduce the behavior of PostgreSQL, Kafka, Redis, or another external dependency.</p>
+      <h3>Should every service method have a unit test?</h3>
+      <p>Test meaningful behavior and business risk rather than chasing line coverage. A small number of clear tests is more valuable than repetitive tests for implementation details.</p>
       <a class="btn btn-success" href="actuator.html">Next: Actuator</a>
     </main>
     <footer class="py-4 text-center">

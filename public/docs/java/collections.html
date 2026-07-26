@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta
       name="description"
-      content="Java Collections Framework complete guide - ArrayList, HashMap, HashSet, TreeSet, LinkedList, Queue, Deque, Comparable vs Comparator with examples."
+      content="Learn the Java Collections Framework with clear examples of List, Set, Map, Queue, Deque, ArrayList, HashMap, TreeSet, iterators, and sorting."
     />
     <meta
       name="keywords"
@@ -12,7 +12,7 @@
     />
     <meta name="robots" content="index, follow" />
     <meta name="author" content="Java Codeex" />
-    <link rel="canonical" href="https://javacodeex.in/java/collections/" />
+    <link rel="canonical" href="https://javacodeex.in/java/collections" />
     <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
     <link
       rel="shortcut icon"
@@ -26,35 +26,63 @@
     <meta property="og:site_name" content="Java Codeex" />
     <meta
       property="og:title"
-      content="Java Collections Framework - List, Set, Map, Queue | Java Codeex"
+      content="Java Collections Framework: List, Set, Map &amp; Queue | Java Codeex"
     />
     <meta
       property="og:description"
-      content="Java Collections Framework complete guide - ArrayList, HashMap, HashSet, TreeSet, LinkedList, Queue, Deque, Comparable vs Comparator with examples."
+      content="Learn the Java Collections Framework with clear examples of List, Set, Map, Queue, Deque, ArrayList, HashMap, TreeSet, iterators, and sorting."
     />
     <meta
       property="og:image"
       content="https://javacodeex.in/icons/javacodeex.jpg"
     />
-    <meta property="og:url" content="https://javacodeex.in/collections/" />
+    <meta property="og:image:alt" content="Java Codeex logo" />
+    <meta property="og:url" content="https://javacodeex.in/java/collections" />
+    <meta property="og:locale" content="en_IN" />
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="Java Collections Framework - List, Set, Map, Queue | Java Codeex"
+      content="Java Collections Framework: List, Set, Map &amp; Queue | Java Codeex"
     />
     <meta
       name="twitter:description"
-      content="Java Collections Framework complete guide - ArrayList, HashMap, HashSet, TreeSet, LinkedList, Queue, Deque, Comparable vs Comparator with examples."
+      content="Learn the Java Collections Framework with clear examples of List, Set, Map, Queue, Deque, ArrayList, HashMap, TreeSet, iterators, and sorting."
     />
     <meta
       name="twitter:image"
       content="https://javacodeex.in/icons/javacodeex.jpg"
     />
+    <meta name="twitter:image:alt" content="Java Codeex logo" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
-      Java Collections Framework - List, Set, Map, Queue | Java Codeex
+      Java Collections Framework: List, Set, Map &amp; Queue | Java Codeex
     </title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Java Collections Framework: List, Set, Map and Queue",
+        "description": "Learn the Java Collections Framework with clear examples of List, Set, Map, Queue, Deque, ArrayList, HashMap, TreeSet, iterators, and sorting.",
+        "url": "https://javacodeex.in/java/collections",
+        "inLanguage": "en",
+        "author": {
+          "@type": "Organization",
+          "name": "Java Codeex",
+          "url": "https://javacodeex.in/"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Java Codeex",
+          "url": "https://javacodeex.in/"
+        },
+        "isPartOf": {
+          "@type": "Course",
+          "name": "Java Tutorial",
+          "url": "https://javacodeex.in/java"
+        }
+      }
+    </script>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -377,16 +405,13 @@
     </section>
     <aside class="topic-guide" aria-label="Learning guide">
       <div class="topic-guide-step">
-        <span>01</span><strong>Choose a collection</strong
-        ><small>List, Set, Map, or Queue</small>
+        <strong>Choose a collection</strong><small>List, Set, Map, or Queue</small>
       </div>
       <div class="topic-guide-step">
-        <span>02</span><strong>Choose a collection</strong
-        ><small>Add and retrieve data</small>
+        <strong>Use collection operations</strong><small>Add and retrieve data</small>
       </div>
       <div class="topic-guide-step">
-        <span>03</span><strong>Choose a collection</strong
-        ><small>Use the right structure</small>
+        <strong>Compare implementations</strong><small>Use the right structure</small>
       </div>
       <p class="topic-guide-summary">
         <strong>Learning goal:</strong> Collections help programs manage
@@ -401,9 +426,7 @@
         <div class="col-lg-8">
           <article class="content-wrapper">
             <!-- Section 1 -->
-            <h2 id="what-is-collections">
-              1. What is the Collections Framework?
-            </h2>
+            <h2 id="what-is-collections">What is the Collections Framework?</h2>
             <p>
               The Java Collections Framework (JCF) is a unified architecture for
               storing and manipulating groups of objects. It provides a set of
@@ -446,6 +469,19 @@ java.util.Map                 (key-value pairs, separate hierarchy)
             </p>
             <div class="note-box">
               <p>
+                <strong>Important:</strong> <code class="inline">Iterable</code>
+                is the root of the hierarchy and provides
+                <code class="inline">iterator()</code>. The
+                <code class="inline">Collection</code> interface extends it and
+                adds common operations such as <code class="inline">add</code>,
+                <code class="inline">remove</code>, <code class="inline">size</code>,
+                and <code class="inline">contains</code>. A
+                <code class="inline">Map</code> is part of the framework but is
+                not a subtype of <code class="inline">Collection</code>.
+              </p>
+            </div>
+            <div class="note-box">
+              <p>
                 <strong>Note:</strong> <code class="inline">Map</code> does not
                 extend <code class="inline">Collection</code>. It is a separate
                 top-level interface in the framework.
@@ -453,7 +489,7 @@ java.util.Map                 (key-value pairs, separate hierarchy)
             </div>
 
             <!-- Section 2 -->
-            <h2 id="collection-vs-collections">2. Collection vs Collections</h2>
+            <h2 id="collection-vs-collections">Collection vs Collections</h2>
             <p>
               These two are frequently confused but serve very different
               purposes:
@@ -506,7 +542,7 @@ public class CollectionVsCollections {
             </div>
 
             <!-- Section 3 -->
-            <h2 id="list-interface">3. List Interface</h2>
+            <h2 id="list-interface">List Interface</h2>
             <p>
               The <code class="inline">List</code> interface represents an
               ordered (sequenced) collection that allows duplicate elements.
@@ -573,7 +609,7 @@ public class CollectionVsCollections {
             </div>
 
             <!-- Section 4 -->
-            <h2 id="arraylist">4. ArrayList</h2>
+            <h2 id="arraylist">ArrayList</h2>
             <p>
               <code class="inline">ArrayList</code> is backed by a resizable
               array. When the array is full, a new array of 1.5× the size is
@@ -644,7 +680,7 @@ public class ArrayListDemo {
             </div>
 
             <!-- Section 5 -->
-            <h2 id="linkedlist">5. LinkedList</h2>
+            <h2 id="linkedlist">LinkedList</h2>
             <p>
               <code class="inline">LinkedList</code> implements both
               <code class="inline">List</code> and
@@ -695,6 +731,52 @@ public class LinkedListDemo {
               Pop: 30<br />
               Stack after pop: [20, 10]
             </div>
+            <h3 id="vector">Vector</h3>
+            <p>
+              <code class="inline">Vector</code> is a legacy, synchronized,
+              growable array implementation of <code class="inline">List</code>.
+              Its methods are synchronized, which can add overhead. Prefer
+              <code class="inline">ArrayList</code> for single-threaded code and
+              use an explicit concurrent collection when thread-safe behavior is
+              required.
+            </p>
+            <pre>
+import java.util.Vector;
+
+Vector&lt;String&gt; colors = new Vector&lt;&gt;();
+colors.add("Red");
+colors.add("Green");
+colors.add("Blue");
+System.out.println(colors);
+System.out.println("First: " + colors.firstElement());</pre>
+            <div class="output-box">
+              [Red, Green, Blue]<br />
+              First: Red
+            </div>
+            <h3 id="stack">Stack</h3>
+            <p>
+              <code class="inline">Stack</code> extends
+              <code class="inline">Vector</code> and models last-in, first-out
+              (LIFO) behavior. Its main operations are
+              <code class="inline">push</code>, <code class="inline">pop</code>,
+              and <code class="inline">peek</code>. For new code, prefer
+              <code class="inline">Deque</code> with
+              <code class="inline">ArrayDeque</code> because it has a clearer
+              stack API and is usually faster.
+            </p>
+            <pre>
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+Deque&lt;String&gt; stack = new ArrayDeque&lt;&gt;();
+stack.push("First");
+stack.push("Second");
+System.out.println("Top: " + stack.peek());
+System.out.println("Removed: " + stack.pop());</pre>
+            <div class="output-box">
+              Top: Second<br />
+              Removed: Second
+            </div>
             <div class="note-box">
               <p>
                 <strong>When to use LinkedList over ArrayList:</strong> When
@@ -706,7 +788,7 @@ public class LinkedListDemo {
             </div>
 
             <!-- Section 6 -->
-            <h2 id="set-interface">6. Set Interface</h2>
+            <h2 id="set-interface">Set Interface</h2>
             <p>
               A <code class="inline">Set</code> is a collection that contains
               <strong>no duplicate elements</strong>. It models the mathematical
@@ -759,7 +841,7 @@ public class LinkedListDemo {
             </div>
 
             <!-- Section 7 -->
-            <h2 id="hashset">7. HashSet</h2>
+            <h2 id="hashset">HashSet</h2>
             <p>
               <code class="inline">HashSet</code> is backed by a
               <code class="inline">HashMap</code>. Elements are stored as keys
@@ -819,9 +901,52 @@ public class HashSetDemo {
               Union: [Java, Go, Python, Kotlin, Swift]<br />
               Intersection: [Java]
             </div>
+            <h3 id="linkedhashset">LinkedHashSet</h3>
+            <p>
+              <code class="inline">LinkedHashSet</code> combines the uniqueness
+              of <code class="inline">HashSet</code> with predictable insertion
+              order. It is useful when duplicates must be removed without
+              changing the order in which values first appeared.
+            </p>
+            <pre>
+import java.util.LinkedHashSet;
+
+LinkedHashSet&lt;String&gt; languages = new LinkedHashSet&lt;&gt;();
+languages.add("Java");
+languages.add("Python");
+languages.add("Java"); // ignored
+languages.add("Go");
+System.out.println(languages);</pre>
+            <div class="output-box">[Java, Python, Go]</div>
+            <h3 id="sortedset">SortedSet and TreeSet</h3>
+            <p>
+              <code class="inline">SortedSet</code> extends
+              <code class="inline">Set</code> and describes a set whose
+              elements have a total ordering. The usual implementation is
+              <code class="inline">TreeSet</code>, which stores unique values in
+              ascending natural order or in the order supplied by a
+              <code class="inline">Comparator</code>. Basic lookup and update
+              operations take O(log n) time.
+            </p>
+            <pre>
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+SortedSet&lt;String&gt; names = new TreeSet&lt;&gt;();
+names.add("Rahul");
+names.add("Priya");
+names.add("Amit");
+System.out.println(names);
+System.out.println("First: " + names.first());
+System.out.println("Range: " + names.headSet("Rahul"));</pre>
+            <div class="output-box">
+              [Amit, Priya, Rahul]<br />
+              First: Amit<br />
+              Range: [Amit, Priya]
+            </div>
 
             <!-- Section 8 -->
-            <h2 id="queue-deque">8. Queue and Deque</h2>
+            <h2 id="queue-deque">Queue and Deque</h2>
             <p>
               A <code class="inline">Queue</code> is designed for holding
               elements prior to processing. Most queues order elements in FIFO
@@ -892,7 +1017,7 @@ public class QueueDequeDemo {
             </div>
 
             <!-- Section 9 -->
-            <h2 id="priorityqueue">9. PriorityQueue</h2>
+            <h2 id="priorityqueue">PriorityQueue</h2>
             <p>
               <code class="inline">PriorityQueue</code> orders elements
               according to their <em>natural ordering</em> (for
@@ -951,7 +1076,7 @@ public class PriorityQueueDemo {
             </div>
 
             <!-- Section 10 -->
-            <h2 id="map-interface">10. Map Interface</h2>
+            <h2 id="map-interface">Map Interface</h2>
             <p>
               A <code class="inline">Map</code> stores key-value pairs. Each key
               is unique; each key maps to exactly one value. Maps are not part
@@ -1010,7 +1135,7 @@ public class PriorityQueueDemo {
             </div>
 
             <!-- Section 11 -->
-            <h2 id="hashmap">11. HashMap</h2>
+            <h2 id="hashmap">HashMap</h2>
             <p>
               <code class="inline">HashMap</code> is the most widely used
               <code class="inline">Map</code> implementation. It stores entries
@@ -1086,9 +1211,48 @@ public class HashMapDemo {
               Keys: Alice Bob Charlie<br />
               Values: 95 90 91
             </div>
+            <h3 id="linkedhashmap">LinkedHashMap</h3>
+            <p>
+              <code class="inline">LinkedHashMap</code> preserves insertion
+              order while providing hash-table lookup. It is a good choice when
+              a map must be fast and deterministic to iterate. It can also be
+              configured for access order, which is useful for simple LRU caches.
+            </p>
+            <pre>
+import java.util.LinkedHashMap;
+
+LinkedHashMap&lt;String, Integer&gt; counts = new LinkedHashMap&lt;&gt;();
+counts.put("Java", 1);
+counts.put("Spring", 2);
+counts.put("SQL", 3);
+System.out.println(counts);</pre>
+            <div class="output-box">{Java=1, Spring=2, SQL=3}</div>
+            <h3 id="treemap">TreeMap</h3>
+            <p>
+              <code class="inline">TreeMap</code> implements
+              <code class="inline">NavigableMap</code> and keeps entries sorted
+              by key. It is backed by a balanced tree, so
+              <code class="inline">get</code>, <code class="inline">put</code>,
+              and <code class="inline">remove</code> take O(log n) time. Use it
+              when sorted keys or range operations such as
+              <code class="inline">subMap</code> are important.
+            </p>
+            <pre>
+import java.util.TreeMap;
+
+TreeMap&lt;Integer, String&gt; ranks = new TreeMap&lt;&gt;();
+ranks.put(3, "Bronze");
+ranks.put(1, "Gold");
+ranks.put(2, "Silver");
+System.out.println(ranks);
+System.out.println("At or above 2: " + ranks.tailMap(2));</pre>
+            <div class="output-box">
+              {1=Gold, 2=Silver, 3=Bronze}<br />
+              At or above 2: {2=Silver, 3=Bronze}
+            </div>
 
             <!-- Section 12 -->
-            <h2 id="iterator">12. Iterator</h2>
+            <h2 id="iterator">Iterator</h2>
             <p>
               The <code class="inline">Iterator</code> interface provides a
               standard way to traverse any collection one element at a time. It
@@ -1141,7 +1305,7 @@ public class IteratorDemo {
             </div>
 
             <!-- Section 13 -->
-            <h2 id="comparable-comparator">13. Comparable vs Comparator</h2>
+            <h2 id="comparable-comparator">Comparable vs Comparator</h2>
             <p>Java provides two interfaces to define object ordering:</p>
             <ul>
               <li>
@@ -1233,7 +1397,37 @@ public class ComparableComparatorDemo {
             </div>
 
             <!-- Section 14 -->
-            <h2 id="choosing-collection">14. Choosing the Right Collection</h2>
+            <h2 id="collections-utilities">Collections Utility Class</h2>
+            <p>
+              The <code class="inline">java.util.Collections</code> class
+              provides static algorithms and wrappers for collection objects.
+              Common methods include <code class="inline">sort</code>,
+              <code class="inline">reverse</code>, <code class="inline">shuffle</code>,
+              <code class="inline">min</code>, <code class="inline">max</code>,
+              <code class="inline">binarySearch</code>, and
+              <code class="inline">frequency</code>. The collection itself is
+              still supplied by an implementation such as
+              <code class="inline">ArrayList</code>.
+            </p>
+            <pre>
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+List&lt;Integer&gt; values = new ArrayList&lt;&gt;(List.of(4, 1, 3, 2, 2));
+Collections.sort(values);
+int position = Collections.binarySearch(values, 3);
+System.out.println(values);
+System.out.println("Index of 3: " + position);
+System.out.println("Twos: " + Collections.frequency(values, 2));</pre>
+            <div class="output-box">
+              [1, 2, 2, 3, 4]<br />
+              Index of 3: 3<br />
+              Twos: 2
+            </div>
+
+            <!-- Section 15 -->
+            <h2 id="choosing-collection">Choosing the Right Collection</h2>
             <p>
               Use this decision table to pick the best collection for your use
               case:
@@ -1329,24 +1523,25 @@ public class ComparableComparatorDemo {
         <div class="col-lg-4 d-none d-lg-block">
           <nav class="toc">
             <h6>On This Page</h6>
-            <a href="#what-is-collections"
-              >1. What is the Collections Framework?</a
-            >
-            <a href="#collection-vs-collections"
-              >2. Collection vs Collections</a
-            >
-            <a href="#list-interface">3. List Interface</a>
-            <a href="#arraylist">4. ArrayList</a>
-            <a href="#linkedlist">5. LinkedList</a>
-            <a href="#set-interface">6. Set Interface</a>
-            <a href="#hashset">7. HashSet</a>
-            <a href="#queue-deque">8. Queue and Deque</a>
-            <a href="#priorityqueue">9. PriorityQueue</a>
-            <a href="#map-interface">10. Map Interface</a>
-            <a href="#hashmap">11. HashMap</a>
-            <a href="#iterator">12. Iterator</a>
-            <a href="#comparable-comparator">13. Comparable vs Comparator</a>
-            <a href="#choosing-collection">14. Choosing the Right Collection</a>
+            <a href="#what-is-collections">What is the Collections Framework?</a>
+            <a href="#collection-vs-collections">Collection vs Collections</a>
+            <a href="#list-interface">List Interface</a>
+            <a href="#arraylist">ArrayList</a>
+            <a href="#linkedlist">LinkedList</a>
+            <a href="#set-interface">Set Interface</a>
+            <a href="#hashset">HashSet</a>
+            <a href="#linkedhashset">LinkedHashSet</a>
+            <a href="#sortedset">SortedSet and TreeSet</a>
+            <a href="#queue-deque">Queue and Deque</a>
+            <a href="#priorityqueue">PriorityQueue</a>
+            <a href="#map-interface">Map Interface</a>
+            <a href="#hashmap">HashMap</a>
+            <a href="#linkedhashmap">LinkedHashMap</a>
+            <a href="#treemap">TreeMap</a>
+            <a href="#iterator">Iterator</a>
+            <a href="#comparable-comparator">Comparable vs Comparator</a>
+            <a href="#collections-utilities">Collections Utility Class</a>
+            <a href="#choosing-collection">Choosing the Right Collection</a>
           </nav>
         </div>
       </div>
@@ -1369,5 +1564,3 @@ public class ComparableComparatorDemo {
     <script src="../site-footer.js"></script>
   </body>
 </html>
-
-

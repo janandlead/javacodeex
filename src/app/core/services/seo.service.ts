@@ -41,7 +41,23 @@ export class SeoService {
       articleSection: 'Java Interview Preparation',
       type: 'article'
     };
-    this.applyMetadata(seo, keywords, url);
+    this.updatePageSeo(seo);
+  }
+
+  updatePageSeo(config: SeoConfig): void {
+    const keywords = config.keywords?.length || config.keyword || config.primaryKeyword
+      ? this.asKeywords(config.keywords, config.primaryKeyword ?? config.keyword)
+      : [];
+    const canonicalUrl = config.canonicalUrl || this.canonicalUrl(this.router.url);
+    this.applyMetadata(
+      { ...config, canonicalUrl, keywords },
+      keywords,
+      canonicalUrl,
+      config.type ?? 'article',
+      config.articleSection,
+      config.primaryKeyword ?? config.keyword ?? keywords[0],
+      config
+    );
   }
 
   private deepestRoute(route: ActivatedRouteSnapshot): ActivatedRouteSnapshot {
@@ -62,7 +78,7 @@ export class SeoService {
     const socialImage = routeSeo?.imageUrl ?? this.defaultImage;
     const type = routeSeo?.type ?? (category ? 'article' : 'website');
 
-    this.applyMetadata({ title, description, canonicalUrl: url, keywords: routeKeywords, robots, imageUrl: socialImage, type, articleSection: routeSeo?.articleSection ?? category, publishedTime: routeSeo?.publishedTime, modifiedTime: routeSeo?.modifiedTime, primaryKeyword }, routeKeywords, url, type, category, primaryKeyword, routeSeo);
+    this.updatePageSeo({ title, description, canonicalUrl: url, keywords: routeKeywords, robots, imageUrl: socialImage, type, articleSection: routeSeo?.articleSection ?? category, publishedTime: routeSeo?.publishedTime, modifiedTime: routeSeo?.modifiedTime, primaryKeyword, breadcrumbs: routeSeo?.breadcrumbs ?? data['breadcrumbs'] as SeoConfig['breadcrumbs'] });
   }
 
   private routeData(route: ActivatedRouteSnapshot): Record<string, unknown> {
@@ -161,12 +177,12 @@ export class SeoService {
       url,
       mainEntityOfPage: { '@type': 'WebPage', '@id': url },
       image: seo?.imageUrl ?? this.defaultImage,
-      ...(isArticle ? { articleSection: seo?.articleSection ?? category, learningResourceType: 'Tutorial', keywords, about: { '@type': 'Thing', name: primaryKeyword }, ...(seo?.publishedTime ? { datePublished: seo.publishedTime } : {}), ...(seo?.modifiedTime ? { dateModified: seo.modifiedTime } : {}) } : {}),
+      ...(isArticle ? { articleSection: seo?.articleSection ?? category, learningResourceType: 'Tutorial', keywords, about: { '@type': 'Thing', name: primaryKeyword }, ...(seo?.publishedTime ? { datePublished: seo.publishedTime } : {}), dateModified: seo?.modifiedTime ?? '2026-07-26' } : {}),
       inLanguage: 'en-IN',
       isPartOf: { '@type': 'WebSite', name: 'Java Codeex', url: `${this.siteUrl}/` },
       author: { '@type': 'Organization', name: 'Java Codeex', url: `${this.siteUrl}/` },
       publisher: { '@type': 'Organization', name: 'Java Codeex', url: `${this.siteUrl}/` },
-      ...(structuredData?.breadcrumbs?.length ? { breadcrumb: { '@type': 'BreadcrumbList', itemListElement: structuredData.breadcrumbs.map((item, index) => ({ '@type': 'ListItem', position: index + 1, name: item.name, item: item.url })) } } : {})
+      ...((seo?.breadcrumbs ?? structuredData?.breadcrumbs)?.length ? { breadcrumb: { '@type': 'BreadcrumbList', itemListElement: (seo?.breadcrumbs ?? structuredData?.breadcrumbs)?.map((item, index) => ({ '@type': 'ListItem', position: index + 1, name: item.name, item: item.url })) } } : {})
     });
   }
 

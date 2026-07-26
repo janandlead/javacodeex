@@ -11,9 +11,7 @@ import { InterviewTopic } from '../../models/interview-topic.model';
 export class TopicSidebarComponent {
   readonly topics = input<readonly InterviewTopic[]>([]);
   readonly selectedTopicId = input('');
-  readonly isOpen = input(true);
   readonly topicSelected = output<string>();
-  readonly sidebarToggled = output<boolean>();
   readonly expandedTopicId = signal('java');
   readonly topLevelTopics = computed(() => this.topics().filter((topic) => !topic.parentId));
 
@@ -26,6 +24,5 @@ export class TopicSidebarComponent {
     if (this.childTopics(topic.id).length) this.toggleTopicGroup(topic.id);
     this.selectTopic(topic.id);
   }
-  toggleSidebar(): void { this.sidebarToggled.emit(!this.isOpen()); }
   toggleTopicGroup(topicId: string): void { this.expandedTopicId.update((current) => current === topicId ? '' : topicId); }
 }

@@ -10,6 +10,7 @@ const topics = [
   'arrays',
   'strings',
   'oop-concepts',
+  'object-class',
   'interfaces',
   'exception-handling',
   'regex',
@@ -24,20 +25,42 @@ const topics = [
   'jdbc',
   'marker-interface'
 ];
-const routeFor = (slug: string, index: number): Routes[number] => ({
-  path: slug,
-  title: `${JAVA_PAGES[slug].title} | Java Codeex`,
-  data: { fileName: `${slug}.html`, title: JAVA_PAGES[slug].title, category: 'Java', primaryKeyword: JAVA_PAGES[slug].title, description: JAVA_PAGES[slug].description, keywords: `${JAVA_PAGES[slug].title}, Java tutorials, Java programming, learn Java`, seo: { title: `${JAVA_PAGES[slug].title} Tutorial | Java Codeex`, description: JAVA_PAGES[slug].description, keyword: JAVA_PAGES[slug].title, canonicalUrl: `https://javacodeex.in/java/${slug}`, keywords: `${JAVA_PAGES[slug].title}, Java tutorials, Java programming` }, previousRoute: index > 0 ? `/java/${topics[index - 1]}` : '/java', previousLabel: index > 0 ? JAVA_PAGES[topics[index - 1]].title : 'Java Tutorial', nextRoute: index < topics.length - 1 ? `/java/${topics[index + 1]}` : '', nextLabel: index < topics.length - 1 ? JAVA_PAGES[topics[index + 1]].title : '' },
-  loadComponent: () => Promise.resolve(JavaDocumentComponent)
-});
+const javaRoute = (slug: string): string => slug === 'introduction-to-java' || slug.startsWith('java-') ? slug : `java-${slug}`;
+const routeFor = (slug: string, index: number): Routes[number] => {
+  const page = JAVA_PAGES[slug];
+  const isObjectClass = slug === 'object-class';
+  const isMarkerInterface = slug === 'marker-interface';
+  const title = isObjectClass
+    ? 'Java Object Class Tutorial: equals() and hashCode() | Java Codeex'
+    : isMarkerInterface
+      ? 'Java Marker Interfaces Tutorial: Serializable, Cloneable & Remote | Java Codeex'
+      : `${page.title} Tutorial | Java Codeex`;
+  const keywords = isObjectClass
+    ? 'Java Object class, java.lang.Object methods, equals and hashCode, toString, getClass, clone, wait notify, Java tutorial'
+    : isMarkerInterface
+      ? 'Java marker interfaces, Serializable, Cloneable, Remote, Externalizable, serialVersionUID, transient, Java serialization'
+      : `${page.title}, Java tutorials, Java programming, learn Java`;
+  return {
+    path: javaRoute(slug),
+    title,
+    data: {
+      fileName: `${slug}.html`, title: page.title, category: 'Java', primaryKeyword: isObjectClass ? 'Java Object class' : isMarkerInterface ? 'Java marker interfaces' : page.title,
+      description: page.description, keywords,
+      seo: {
+        title, description: page.description, keyword: isObjectClass ? 'Java Object class' : isMarkerInterface ? 'Java marker interfaces' : page.title,
+        canonicalUrl: `https://javacodeex.in/${javaRoute(slug)}`, keywords,
+        breadcrumbs: [{ name: 'Home', url: 'https://javacodeex.in/' }, { name: 'Java', url: 'https://javacodeex.in/java-tutorial-overview' }, { name: page.title, url: `https://javacodeex.in/${javaRoute(slug)}` }],
+        ...((isObjectClass || isMarkerInterface) ? { articleSection: 'Java Fundamentals', modifiedTime: '2026-07-25' } : {})
+      },
+      previousRoute: index > 0 ? `/${javaRoute(topics[index - 1])}` : '/java-tutorial-overview', previousLabel: index > 0 ? JAVA_PAGES[topics[index - 1]].title : 'Java Tutorial Overview',
+      nextRoute: index < topics.length - 1 ? `/${javaRoute(topics[index + 1])}` : '', nextLabel: index < topics.length - 1 ? JAVA_PAGES[topics[index + 1]].title : ''
+    },
+    loadComponent: () => Promise.resolve(JavaDocumentComponent)
+  };
+};
 
 export const JAVA_ROUTES: Routes = [
-  {
-    path: '',
-    title: 'Java Tutorial | Java Codeex',
-    data: { fileName: 'index.html', title: 'Java Tutorial', category: 'Java', primaryKeyword: 'Java tutorials', description: 'Learn Java programming from fundamentals to advanced topics with practical examples and clear explanations.', keywords: 'Java tutorials, Java programming tutorial, learn Java, core Java', seo: { title: 'Java Tutorial | Java Codeex', description: 'Learn Java programming from fundamentals to advanced topics with practical examples and clear explanations.', keyword: 'Java tutorials', canonicalUrl: 'https://javacodeex.in/java', keywords: 'Java tutorials, Java programming tutorial, learn Java' }, nextRoute: `/java/${topics[0]}`, nextLabel: JAVA_PAGES[topics[0]].title },
-    loadComponent: () => Promise.resolve(JavaDocumentComponent)
-  },
+  { path: '', pathMatch: 'full', redirectTo: '/java-tutorial-overview' },
   { path: '404', title: 'Java Page Not Found | Java Codeex', data: { fileName: '404.html', title: 'Java Page Not Found', robots: 'noindex, nofollow' }, loadComponent: () => Promise.resolve(JavaDocumentComponent) },
   ...topics.map(routeFor),
   { path: ':topic/:section', title: 'Java Tutorial | Java Codeex', data: { category: 'Java' }, loadComponent: () => Promise.resolve(JavaDocumentComponent) }
