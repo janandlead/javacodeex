@@ -75,7 +75,7 @@ export class HomeComponent {
     }
     const { fullName, mobile, email } = this.enrollmentForm.getRawValue();
     const message = encodeURIComponent(`Course enrollment request\nCourse: ${this.selectedEnrollmentCourse}\nFee: ${this.selectedEnrollmentFee}\nDuration: ${this.selectedEnrollmentDuration}\nFull name: ${fullName}\nMobile: ${mobile}\nEmail: ${email}\nTerms accepted: Yes (payment is non-refundable after payment)`);
-    window.open(`https://wa.me/919963990620?text=${message}`, '_blank', 'noopener');
+    window.open(`https://wa.me/919390416489?text=${message}`, '_blank', 'noopener');
     this.enrollmentMessage = 'WhatsApp is opening with the enrollment details.';
   }
 }

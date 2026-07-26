@@ -8,7 +8,7 @@ import { filter } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SeoService {
-  private readonly siteUrl = 'https://javacodeex.in';
+  private readonly siteUrl = 'https://javacodeex.com';
   private readonly defaultImage = `${this.siteUrl}/assets/images/javacodeex.jpg`;
   private readonly document = inject(DOCUMENT);
   private readonly meta = inject(Meta);

@@ -4,4 +4,4 @@ Allow: /
 # Legacy source documents are rendered through canonical Angular routes.
 Disallow: /docs/
 
-Sitemap: https://javacodeex.in/sitemap.xml
+Sitemap: https://javacodeex.com/sitemap.xml

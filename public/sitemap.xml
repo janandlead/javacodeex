@@ -1,455 +1,483 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://javacodeex.in/</loc>
+    <loc>https://javacodeex.com/</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-tutorial-overview</loc>
+    <loc>https://javacodeex.com/java-tutorial-overview</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/introduction-to-java</loc>
+    <loc>https://javacodeex.com/introduction-to-java</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-download-and-install-java</loc>
+    <loc>https://javacodeex.com/java-download-and-install-java</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-download-and-install-intellij-idea</loc>
+    <loc>https://javacodeex.com/java-download-and-install-intellij-idea</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-methods</loc>
+    <loc>https://javacodeex.com/java-methods</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-arrays</loc>
+    <loc>https://javacodeex.com/java-arrays</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-strings</loc>
+    <loc>https://javacodeex.com/java-strings</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-oop-concepts</loc>
+    <loc>https://javacodeex.com/java-oop-concepts</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-object-class</loc>
+    <loc>https://javacodeex.com/java-object-class</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-interfaces</loc>
+    <loc>https://javacodeex.com/java-interfaces</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-exception-handling</loc>
+    <loc>https://javacodeex.com/java-exception-handling</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-regex</loc>
+    <loc>https://javacodeex.com/java-regex</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-memory-allocation</loc>
+    <loc>https://javacodeex.com/java-memory-allocation</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-generics</loc>
+    <loc>https://javacodeex.com/java-generics</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-collections</loc>
+    <loc>https://javacodeex.com/java-collections</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-8-features</loc>
+    <loc>https://javacodeex.com/java-8-features</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-date-and-time-api</loc>
+    <loc>https://javacodeex.com/java-date-and-time-api</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-multithreading</loc>
+    <loc>https://javacodeex.com/java-multithreading</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-file-handling</loc>
+    <loc>https://javacodeex.com/java-file-handling</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-networking</loc>
+    <loc>https://javacodeex.com/java-networking</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-jdbc</loc>
+    <loc>https://javacodeex.com/java-jdbc</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-marker-interface</loc>
+    <loc>https://javacodeex.com/java-marker-interface</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/spring-boot</loc>
+    <loc>https://javacodeex.com/spring-boot</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/spring-boot-core</loc>
+    <loc>https://javacodeex.com/spring-boot-core</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/spring-boot/setup</loc>
+    <loc>https://javacodeex.com/spring-boot/setup</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/spring-boot/project-structure</loc>
+    <loc>https://javacodeex.com/spring-boot/project-structure</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/spring-boot-aop</loc>
+    <loc>https://javacodeex.com/spring-boot-aop</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/spring-boot-data-jpa</loc>
+    <loc>https://javacodeex.com/spring-boot-data-jpa</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/spring-boot-security</loc>
+    <loc>https://javacodeex.com/spring-boot-security</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/spring-boot-global-exception-handling</loc>
+    <loc>https://javacodeex.com/spring-boot-global-exception-handling</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/spring-boot-rest-api</loc>
+    <loc>https://javacodeex.com/spring-boot-rest-api</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/spring-boot-rest-api-design</loc>
+    <loc>https://javacodeex.com/spring-boot-rest-api-design</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/spring-boot-validation</loc>
+    <loc>https://javacodeex.com/spring-boot-validation</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/spring-boot/testing</loc>
+    <loc>https://javacodeex.com/spring-boot/testing</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/spring-boot/testing-comprehensive</loc>
+    <loc>https://javacodeex.com/spring-boot/testing-comprehensive</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/spring-boot-actuator</loc>
+    <loc>https://javacodeex.com/spring-boot-actuator</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/spring-boot-deployment</loc>
+    <loc>https://javacodeex.com/spring-boot-deployment</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/hibernate-tutorial</loc>
+    <loc>https://javacodeex.com/hibernate-tutorial</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/hibernate-architecture</loc>
+    <loc>https://javacodeex.com/hibernate-architecture</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/hibernate-first-example</loc>
+    <loc>https://javacodeex.com/hibernate-first-example</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/hibernate-example</loc>
+    <loc>https://javacodeex.com/hibernate-example</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/hibernate-generator-classes</loc>
+    <loc>https://javacodeex.com/hibernate-generator-classes</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/hibernate/dialects</loc>
+    <loc>https://javacodeex.com/hibernate/dialects</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/hibernate/collection-mapping</loc>
+    <loc>https://javacodeex.com/hibernate/collection-mapping</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/hibernate/mapping-list</loc>
+    <loc>https://javacodeex.com/hibernate/mapping-list</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/hibernate/mapping-bag</loc>
+    <loc>https://javacodeex.com/hibernate/mapping-bag</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/hibernate-one-to-many-mapping-using-annotation-example</loc>
+    <loc>https://javacodeex.com/hibernate-one-to-many-mapping-using-annotation-example</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/hibernate-many-to-many-example-using-annotation</loc>
+    <loc>https://javacodeex.com/hibernate-many-to-many-example-using-annotation</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/hibernate-one-to-one-example-using-annotation</loc>
+    <loc>https://javacodeex.com/hibernate-one-to-one-example-using-annotation</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/hibernate-many-to-one-example-using-annotation</loc>
+    <loc>https://javacodeex.com/hibernate-many-to-one-example-using-annotation</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/hibernate/bidirectional-association</loc>
+    <loc>https://javacodeex.com/hibernate/bidirectional-association</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/hibernate-transaction-management-example</loc>
+    <loc>https://javacodeex.com/hibernate-transaction-management-example</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/hibernate-first-level-cache</loc>
+    <loc>https://javacodeex.com/hibernate-first-level-cache</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/hibernate-second-level-cache</loc>
+    <loc>https://javacodeex.com/hibernate-second-level-cache</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/python</loc>
+    <loc>https://javacodeex.com/python</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/angular</loc>
+    <loc>https://javacodeex.com/angular</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/mysql</loc>
+    <loc>https://javacodeex.com/mysql</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/mongodb</loc>
+    <loc>https://javacodeex.com/mongodb</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/postgresql</loc>
+    <loc>https://javacodeex.com/postgresql</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/spring-ai</loc>
+    <loc>https://javacodeex.com/spring-ai</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns</loc>
+    <loc>https://javacodeex.com/design-patterns</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interviews</loc>
+    <loc>https://javacodeex.com/interviews</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/java-technical-interview-questions</loc>
+    <loc>https://javacodeex.com/java-technical-interview-questions</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/java-oops</loc>
+    <loc>https://javacodeex.com/interview-questions/java-oops</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/java-exception-handling</loc>
+    <loc>https://javacodeex.com/interview-questions/java-exception-handling</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/java-collections</loc>
+    <loc>https://javacodeex.com/interview-questions/java-collections</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/java-garbage-collection</loc>
+    <loc>https://javacodeex.com/interview-questions/java-garbage-collection</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/java-multithreading</loc>
+    <loc>https://javacodeex.com/interview-questions/java-multithreading</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/java-strings</loc>
+    <loc>https://javacodeex.com/interview-questions/java-strings</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/java-design-patterns</loc>
+    <loc>https://javacodeex.com/interview-questions/java-design-patterns</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/spring-boot</loc>
+    <loc>https://javacodeex.com/interview-questions/spring-boot</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/spring-boot-fundamentals</loc>
+    <loc>https://javacodeex.com/interview-questions/spring-boot-fundamentals</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/spring-boot-auto-configuration</loc>
+    <loc>https://javacodeex.com/interview-questions/spring-boot-auto-configuration</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/spring-boot-annotations</loc>
+    <loc>https://javacodeex.com/interview-questions/spring-boot-annotations</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/spring-boot-dependency-injection</loc>
+    <loc>https://javacodeex.com/interview-questions/spring-boot-dependency-injection</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/spring-boot-rest-api</loc>
+    <loc>https://javacodeex.com/interview-questions/spring-boot-rest-api</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/spring-boot-configuration</loc>
+    <loc>https://javacodeex.com/interview-questions/spring-boot-configuration</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/spring-boot-data-jpa</loc>
+    <loc>https://javacodeex.com/interview-questions/spring-boot-data-jpa</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/spring-boot-transactions</loc>
+    <loc>https://javacodeex.com/interview-questions/spring-boot-transactions</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/spring-boot-security</loc>
+    <loc>https://javacodeex.com/interview-questions/spring-boot-security</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/spring-boot-actuator</loc>
+    <loc>https://javacodeex.com/interview-questions/spring-boot-actuator</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/spring-boot-logging</loc>
+    <loc>https://javacodeex.com/interview-questions/spring-boot-logging</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/spring-boot-caching</loc>
+    <loc>https://javacodeex.com/interview-questions/spring-boot-caching</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/spring-boot-production-performance</loc>
+    <loc>https://javacodeex.com/interview-questions/spring-boot-production-performance</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/spring-boot-3</loc>
+    <loc>https://javacodeex.com/interview-questions/spring-boot-3</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/hibernate</loc>
+    <loc>https://javacodeex.com/interview-questions/hibernate</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/kafka</loc>
+    <loc>https://javacodeex.com/interview-questions/kafka</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/microservices</loc>
+    <loc>https://javacodeex.com/interview-questions/microservices</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/interview-questions/database</loc>
+    <loc>https://javacodeex.com/interview-questions/database</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/singleton</loc>
+    <loc>https://javacodeex.com/about</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/factory-method</loc>
+    <loc>https://javacodeex.com/author</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/abstract-factory</loc>
+    <loc>https://javacodeex.com/categories</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/builder</loc>
+    <loc>https://javacodeex.com/contact</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/prototype</loc>
+    <loc>https://javacodeex.com/privacy-policy</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/adapter</loc>
+    <loc>https://javacodeex.com/terms-and-conditions</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/bridge</loc>
+    <loc>https://javacodeex.com/disclaimer</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/composite</loc>
+    <loc>https://javacodeex.com/design-patterns/singleton</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/decorator</loc>
+    <loc>https://javacodeex.com/design-patterns/factory-method</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/facade</loc>
+    <loc>https://javacodeex.com/design-patterns/abstract-factory</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/flyweight</loc>
+    <loc>https://javacodeex.com/design-patterns/builder</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/proxy</loc>
+    <loc>https://javacodeex.com/design-patterns/prototype</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/chain-of-responsibility</loc>
+    <loc>https://javacodeex.com/design-patterns/adapter</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/command</loc>
+    <loc>https://javacodeex.com/design-patterns/bridge</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/interpreter</loc>
+    <loc>https://javacodeex.com/design-patterns/composite</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/iterator</loc>
+    <loc>https://javacodeex.com/design-patterns/decorator</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/mediator</loc>
+    <loc>https://javacodeex.com/design-patterns/facade</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/memento</loc>
+    <loc>https://javacodeex.com/design-patterns/flyweight</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/observer</loc>
+    <loc>https://javacodeex.com/design-patterns/proxy</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/state</loc>
+    <loc>https://javacodeex.com/design-patterns/chain-of-responsibility</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/strategy</loc>
+    <loc>https://javacodeex.com/design-patterns/command</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/template-method</loc>
+    <loc>https://javacodeex.com/design-patterns/interpreter</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://javacodeex.in/design-patterns/visitor</loc>
+    <loc>https://javacodeex.com/design-patterns/iterator</loc>
+    <lastmod>2026-07-26</lastmod>
+  </url>
+  <url>
+    <loc>https://javacodeex.com/design-patterns/mediator</loc>
+    <lastmod>2026-07-26</lastmod>
+  </url>
+  <url>
+    <loc>https://javacodeex.com/design-patterns/memento</loc>
+    <lastmod>2026-07-26</lastmod>
+  </url>
+  <url>
+    <loc>https://javacodeex.com/design-patterns/observer</loc>
+    <lastmod>2026-07-26</lastmod>
+  </url>
+  <url>
+    <loc>https://javacodeex.com/design-patterns/state</loc>
+    <lastmod>2026-07-26</lastmod>
+  </url>
+  <url>
+    <loc>https://javacodeex.com/design-patterns/strategy</loc>
+    <lastmod>2026-07-26</lastmod>
+  </url>
+  <url>
+    <loc>https://javacodeex.com/design-patterns/template-method</loc>
+    <lastmod>2026-07-26</lastmod>
+  </url>
+  <url>
+    <loc>https://javacodeex.com/design-patterns/visitor</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
 </urlset>

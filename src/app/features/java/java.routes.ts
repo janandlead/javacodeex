@@ -48,8 +48,8 @@ const routeFor = (slug: string, index: number): Routes[number] => {
       description: page.description, keywords,
       seo: {
         title, description: page.description, keyword: isObjectClass ? 'Java Object class' : isMarkerInterface ? 'Java marker interfaces' : page.title,
-        canonicalUrl: `https://javacodeex.in/${javaRoute(slug)}`, keywords,
-        breadcrumbs: [{ name: 'Home', url: 'https://javacodeex.in/' }, { name: 'Java', url: 'https://javacodeex.in/java-tutorial-overview' }, { name: page.title, url: `https://javacodeex.in/${javaRoute(slug)}` }],
+        canonicalUrl: `https://javacodeex.com/${javaRoute(slug)}`, keywords,
+        breadcrumbs: [{ name: 'Home', url: 'https://javacodeex.com/' }, { name: 'Java', url: 'https://javacodeex.com/java-tutorial-overview' }, { name: page.title, url: `https://javacodeex.com/${javaRoute(slug)}` }],
         ...((isObjectClass || isMarkerInterface) ? { articleSection: 'Java Fundamentals', modifiedTime: '2026-07-25' } : {})
       },
       previousRoute: index > 0 ? `/${javaRoute(topics[index - 1])}` : '/java-tutorial-overview', previousLabel: index > 0 ? JAVA_PAGES[topics[index - 1]].title : 'Java Tutorial Overview',

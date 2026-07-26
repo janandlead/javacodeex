@@ -88,6 +88,13 @@
 /interview-questions/kafka
 /interview-questions/microservices
 /interview-questions/database
+/about
+/author
+/categories
+/contact
+/privacy-policy
+/terms-and-conditions
+/disclaimer
 /design-patterns/singleton
 /design-patterns/factory-method
 /design-patterns/abstract-factory
