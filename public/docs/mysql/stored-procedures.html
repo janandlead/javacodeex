@@ -1,0 +1,8 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">MySQL SQL</p><h1>MySQL Stored Procedures</h1><p>Store a reusable sequence of SQL statements in the database.</p></section><pre><code>DELIMITER //
+CREATE PROCEDURE GetProducts()
+BEGIN
+  SELECT * FROM products;
+END //
+DELIMITER ;
+
+CALL GetProducts();</code></pre><p>Use parameters and controlled privileges for reusable database operations. Keep procedure definitions in migrations.</p></main>

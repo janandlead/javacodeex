@@ -32,7 +32,7 @@ const routeFor = (slug: string, index: number): Routes[number] => {
   const isObjectClass = slug === 'object-class';
   const isMarkerInterface = slug === 'marker-interface';
   const title = isObjectClass
-    ? 'Java Object Class Tutorial: equals() and hashCode() | Java Codeex'
+    ? 'Java Object Class: equals() and hashCode() | Java Codeex'
     : isMarkerInterface
       ? 'Java Marker Interfaces: Serializable, Cloneable & Remote'
       : `${page.title} Tutorial | Java Codeex`;

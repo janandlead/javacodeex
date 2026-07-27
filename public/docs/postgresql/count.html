@@ -1,0 +1,4 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">PostgreSQL</p><h1>PostgreSQL COUNT</h1><p>Count rows or non-null values in PostgreSQL.</p></section><h2>Count rows</h2><pre><code>SELECT COUNT(*) AS product_count
+FROM products;</code></pre><p><code>COUNT(*)</code> counts rows, while <code>COUNT(column_name)</code> counts only non-null values in that column.</p><pre><code>SELECT year, COUNT(*) AS products_in_year
+FROM products
+GROUP BY year;</code></pre></main>

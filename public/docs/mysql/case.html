@@ -1,0 +1,5 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">MySQL SQL</p><h1>MySQL CASE</h1><p>Return conditional values from a query.</p></section><pre><code>SELECT name,
+CASE WHEN price &gt;= 1000 THEN 'Premium'
+     WHEN price &gt;= 500 THEN 'Standard'
+     ELSE 'Budget' END AS tier
+FROM products;</code></pre><p>WHEN conditions are checked in order and the first matching result is returned.</p></main>

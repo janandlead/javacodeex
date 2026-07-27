@@ -1,0 +1,2 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">MySQL SQL</p><h1>MySQL ANY</h1><p>Compare a value with one or more values returned by a subquery.</p></section><pre><code>SELECT * FROM products
+WHERE price &gt; ANY (SELECT price FROM clearance_products);</code></pre><p>The comparison is true if it succeeds for at least one subquery value.</p></main>

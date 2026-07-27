@@ -1,0 +1,40 @@
+<main class="container-xl py-5">
+  <section class="spring-hero page-hero">
+    <p class="spring-pill">PostgreSQL</p>
+    <h1>PostgreSQL DELETE</h1>
+    <p>Safely remove selected records from a PostgreSQL table with the <code>DELETE</code> statement.</p>
+  </section>
+  <h2 id="delete-statement">The DELETE statement</h2>
+  <p>
+    The <code>DELETE</code> statement removes existing records from a table. Use the
+    <code>WHERE</code> clause to specify which record or records should be deleted.
+    The condition is evaluated for every row, and matching rows are removed.
+  </p>
+
+  <h2 id="delete-row">Delete matching records</h2>
+  <p>To delete all records where <code>name</code> is <code>Laptop</code>, use:</p>
+  <pre><code>DELETE FROM products
+WHERE name = 'Laptop';</code></pre>
+  <p>
+    This removes every product whose name is <code>Laptop</code>. Before executing
+    the delete, verify the matching records with:
+  </p>
+  <pre><code>SELECT * FROM products
+WHERE name = 'Laptop';</code></pre>
+
+  <h2 id="delete-result">Result</h2>
+  <p>After the delete runs, PostgreSQL reports:</p>
+  <pre><code>DELETE 1</code></pre>
+  <p>This means that one row was deleted. If several rows match the condition, the number will reflect the total rows removed.</p>
+
+  <h2 id="display-table">Display the table</h2>
+  <p>To check the remaining records, display the table with:</p>
+  <pre><code>SELECT * FROM products;</code></pre>
+
+  <div class="note-box">
+    <strong>Warning: always review WHERE.</strong> If you omit the
+    <code>WHERE</code> clause, PostgreSQL deletes every record in the table:
+  </div>
+  <pre><code>DELETE FROM products;</code></pre>
+  <p>This removes all rows but leaves the <code>products</code> table itself in place.</p>
+</main>

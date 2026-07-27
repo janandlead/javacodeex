@@ -1,0 +1,6 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">PostgreSQL</p><h1>PostgreSQL Operators</h1><p>Use operators to compare values, combine conditions, calculate values, and match patterns.</p></section><h2>Comparison operators</h2><p>Comparison operators return true or false. Common operators include <code>=</code>, <code>&lt;&gt;</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, and <code>&lt;=</code>.</p><pre><code>SELECT * FROM products
+WHERE year &gt;= 2025;</code></pre><h2>Logical and arithmetic operators</h2><pre><code>SELECT * FROM products
+WHERE year &gt;= 2024 AND name &lt;&gt; 'Laptop';
+
+SELECT year + 1 AS next_year
+FROM products;</code></pre><p>Use <code>AND</code>, <code>OR</code>, and <code>NOT</code> to combine conditions. Parentheses make complex conditions clear.</p></main>

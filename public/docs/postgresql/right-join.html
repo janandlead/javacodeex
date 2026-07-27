@@ -1,0 +1,4 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">PostgreSQL</p><h1>PostgreSQL RIGHT JOIN</h1><p>Keep every row from the right table and matching rows from the left table.</p></section><h2>Use RIGHT JOIN</h2><pre><code>SELECT p.name, c.name AS category
+FROM products AS p
+RIGHT JOIN categories AS c
+  ON c.id = p.category_id;</code></pre><p>Categories without products are still returned. In practice, reversing the table order and using <code>LEFT JOIN</code> is often easier to read.</p></main>

@@ -1,0 +1,2 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">MySQL SQL</p><h1>MySQL ALL</h1><p>Compare a value with every value returned by a subquery.</p></section><pre><code>SELECT * FROM products
+WHERE price &gt; ALL (SELECT price FROM clearance_products);</code></pre><p>The comparison is true only when it succeeds for every returned value.</p></main>

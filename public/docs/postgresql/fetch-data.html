@@ -1,0 +1,95 @@
+<main class="container-xl py-5">
+  <section class="spring-hero page-hero">
+    <p class="spring-pill">PostgreSQL</p>
+    <h1>PostgreSQL Select Data</h1>
+    <p>Retrieve data from a PostgreSQL table with the <code>SELECT</code> statement.</p>
+  </section>
+
+  <div class="note-box">
+    <strong>Before you begin:</strong> Connect to the target database in pgAdmin 4
+    and make sure the <code>products</code> table exists. You can create it with the
+    <a href="/postgresql/create-table">Create Table guide</a> and add rows with the
+    <a href="/postgresql/insert-data">Insert Data guide</a>.
+  </div>
+
+  <h2 id="select-data">Select data</h2>
+  <p>
+    To retrieve data from a database, use the <code>SELECT</code> statement. A basic
+    query has this structure:
+  </p>
+  <pre><code>SELECT column_name FROM table_name;</code></pre>
+  <p>
+    <code>SELECT</code> identifies the information to read, and <code>FROM</code>
+    identifies the table that contains it. By default, the query returns every row
+    that matches the statement.
+  </p>
+
+  <h2 id="select-specific-columns">Fetch specific columns</h2>
+  <p>
+    Specify the column names when you want to choose which columns to return. For
+    example, this query returns the product name and year:
+  </p>
+  <pre><code>SELECT name, year
+FROM products;</code></pre>
+  <p>
+    The result contains only the <code>name</code> and <code>year</code> columns.
+    You can select multiple columns by separating their names with commas. The
+    column names must exist in the table.
+  </p>
+
+  <h2 id="select-all-data">Return all columns</h2>
+  <p>
+    Use an asterisk (<code>*</code>) instead of column names to return every column
+    in the table:
+  </p>
+  <pre><code>SELECT * FROM products;</code></pre>
+  <p>
+    This query returns all columns and all rows from <code>products</code>. For the
+    table created in the previous lesson, the output includes <code>name</code>,
+    <code>model</code>, and <code>year</code>. Selecting specific columns is usually
+    clearer when an application needs only part of the table.
+  </p>
+
+  <p>Run either query in pgAdmin 4's Query Tool and view the results in the Data Output panel.</p>
+
+  <h2 id="filter-data">Filter rows with WHERE</h2>
+  <p>
+    Add a <code>WHERE</code> clause when you want only rows that match a condition:
+  </p>
+  <pre><code>SELECT name, model, year
+FROM products
+WHERE year = 2025;</code></pre>
+  <p>
+    This query returns products released in 2025. Text conditions use single
+    quotation marks, for example <code>WHERE name = 'Laptop'</code>. Common
+    comparison operators include <code>=</code>, <code>&gt;</code>,
+    <code>&lt;</code>, <code>&gt;=</code>, and <code>&lt;=</code>.
+  </p>
+
+  <h2 id="sort-and-limit-data">Sort and limit results</h2>
+  <p>Use <code>ORDER BY</code> to sort results and <code>LIMIT</code> to return only a specified number of rows:</p>
+  <pre><code>SELECT name, model, year
+FROM products
+ORDER BY year DESC
+LIMIT 5;</code></pre>
+  <p>
+    <code>DESC</code> sorts from highest to lowest. Use <code>ASC</code> for lowest
+    to highest; ascending order is the default. This example displays the five
+    newest products.
+  </p>
+
+  <h2 id="query-explained">Query explained</h2>
+  <ul>
+    <li><code>SELECT</code> chooses the columns to display.</li>
+    <li><code>FROM products</code> identifies the table to read.</li>
+    <li><code>WHERE</code> filters rows before they are returned.</li>
+    <li><code>ORDER BY</code> controls the result order.</li>
+    <li><code>LIMIT</code> restricts the number of rows in the result.</li>
+  </ul>
+
+  <div class="note-box">
+    <strong>Next step:</strong> Practice combining <code>SELECT</code> with
+    <code>WHERE</code>, <code>ORDER BY</code>, and <code>LIMIT</code>. Later, learn
+    how <code>JOIN</code> combines data from multiple tables.
+  </div>
+</main>

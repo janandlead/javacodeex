@@ -1,0 +1,4 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">MySQL Database</p><h1>MySQL Views</h1><p>Save a query as a reusable virtual table.</p></section><pre><code>CREATE VIEW available_products AS
+SELECT id, name, price
+FROM products
+WHERE stock &gt; 0;</code></pre><p>Query a view like a table. A normal view stores the query definition, not a separate copy of the result.</p></main>

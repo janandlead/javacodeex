@@ -1,0 +1,47 @@
+<main class="container-xl py-5">
+  <section class="spring-hero page-hero">
+    <p class="spring-pill">PostgreSQL</p>
+    <h1>PostgreSQL UPDATE</h1>
+    <p>Modify existing rows in a PostgreSQL table with the <code>UPDATE</code> statement.</p>
+  </section>
+  <div class="note-box">
+    <strong>Before you begin:</strong> Make sure the <code>products</code> table has
+    <code>name</code> and <code>color</code> columns, then check the rows with
+    <code>SELECT</code> before updating them.
+  </div>
+
+  <h2 id="update-row">Update a row</h2>
+  <p>
+    Use <code>UPDATE</code> with <code>SET</code> to assign a new value and
+    <code>WHERE</code> to identify the row to change. For example, set the color of
+    the Laptop to <code>red</code>:
+  </p>
+  <pre><code>UPDATE products
+SET color = 'red'
+WHERE name = 'Laptop';</code></pre>
+  <p>
+    The <code>WHERE name = 'Laptop'</code> condition limits the update to rows whose
+    name is <code>Laptop</code>. Text values use single quotation marks, while
+    numeric values do not.
+  </p>
+
+  <h2 id="update-result">Result</h2>
+  <p>PostgreSQL reports:</p>
+  <pre><code>UPDATE 1</code></pre>
+  <p>This means that one row was affected by the <code>UPDATE</code> statement. If multiple products match the condition, the number will be larger.</p>
+
+  <h2 id="display-table">Display the table</h2>
+  <p>To check the updated value, display the table with this statement:</p>
+  <pre><code>SELECT * FROM products;</code></pre>
+
+  <h2 id="update-warning">Warning: remember WHERE</h2>
+  <p>
+    Be careful when updating records. If you omit the <code>WHERE</code> clause,
+    PostgreSQL updates every row in the table.
+  </p>
+  <pre><code>UPDATE products
+SET color = 'red';</code></pre>
+  <p>If the table contains four rows, PostgreSQL reports:</p>
+  <pre><code>UPDATE 4</code></pre>
+  <p>All four rows were updated, not just the Laptop row.</p>
+</main>

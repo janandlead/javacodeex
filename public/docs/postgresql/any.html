@@ -1,0 +1,4 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">PostgreSQL</p><h1>PostgreSQL ANY</h1><p>Compare a value with at least one value returned by a subquery.</p></section><h2>Use ANY</h2><pre><code>SELECT * FROM products
+WHERE year &gt; ANY (
+  SELECT year FROM featured_products
+);</code></pre><p>The condition is true when the comparison succeeds for one or more subquery results. <code>SOME</code> is an equivalent keyword.</p></main>

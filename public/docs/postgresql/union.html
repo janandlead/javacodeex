@@ -1,0 +1,3 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">PostgreSQL</p><h1>PostgreSQL UNION</h1><p>Combine the results of compatible SELECT statements.</p></section><h2>Combine result sets</h2><pre><code>SELECT name FROM products
+UNION
+SELECT name FROM archived_products;</code></pre><p>Both queries must return the same number of compatible columns. <code>UNION</code> removes duplicate rows; use <code>UNION ALL</code> to keep them.</p></main>

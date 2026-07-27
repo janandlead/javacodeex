@@ -1,0 +1,3 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">PostgreSQL</p><h1>PostgreSQL LIKE</h1><p>Search text values using wildcard patterns.</p></section><h2>Match text patterns</h2><pre><code>SELECT * FROM products
+WHERE name LIKE 'Lap%';</code></pre><p><code>%</code> matches any number of characters and <code>_</code> matches one character. PostgreSQL's <code>ILIKE</code> performs a case-insensitive match.</p><pre><code>SELECT * FROM products
+WHERE name ILIKE '%book%';</code></pre></main>

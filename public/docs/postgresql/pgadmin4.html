@@ -1,0 +1,100 @@
+<main class="container-xl py-5">
+  <section class="spring-hero page-hero">
+    <p class="spring-pill">PostgreSQL</p>
+    <h1>PostgreSQL - pgAdmin 4</h1>
+    <p>Use pgAdmin 4 to connect to PostgreSQL, manage databases, and run SQL queries.</p>
+  </section>
+
+  <div class="note-box">
+    <strong>Before you begin:</strong> Install PostgreSQL and keep the password you
+    created for the <code>postgres</code> user ready. pgAdmin 4 is included with the
+    standard Windows PostgreSQL installer.
+  </div>
+
+  <h2 id="what-is-pgadmin">What is pgAdmin 4?</h2>
+  <p>
+    The pgAdmin 4 application comes with the PostgreSQL installation. It provides
+    a user-friendly graphical alternative to the command-based SQL Shell (psql)
+    application for interacting with a PostgreSQL database.
+  </p>
+
+  <h2 id="open-pgadmin">1. Open pgAdmin 4</h2>
+  <p>
+    Open the Start menu, search for <strong>pgAdmin 4</strong>, and launch the
+    application. The first launch may open pgAdmin in a desktop window or in your
+    default web browser.
+  </p>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/pgadmin4-01-search.png" alt="Windows search result for pgAdmin 4" loading="lazy" />
+    <figcaption>Search for pgAdmin 4 in the Windows Start menu.</figcaption>
+  </figure>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/pgadmin4-02-enter-password.png" alt="pgAdmin 4 connect to server password dialog" loading="lazy" />
+    <figcaption>After opening pgAdmin 4, the connection dialog may request the PostgreSQL password.</figcaption>
+  </figure>
+
+  <h2 id="connect-server">2. Connect to the PostgreSQL server</h2>
+  <ol>
+    <li>Expand <strong>Servers</strong> in the Browser panel.</li>
+    <li>Select the PostgreSQL server installed on your computer.</li>
+    <li>Enter the password for the <code>postgres</code> user.</li>
+    <li>Select <strong>Save password</strong> only on a trusted development machine.</li>
+  </ol>
+  <p>
+    A local PostgreSQL connection commonly uses host <code>localhost</code> and
+    port <code>5432</code>. Use the port selected during installation if it is different.
+  </p>
+
+  <h2 id="create-database">3. Create a database</h2>
+  <ol>
+    <li>Expand the connected server.</li>
+    <li>Right-click <strong>Databases</strong> and choose <strong>Create &gt; Database</strong>.</li>
+    <li>Enter a database name, such as <code>taskdb</code>.</li>
+    <li>Select the owner and click <strong>Save</strong>.</li>
+  </ol>
+
+  <h2 id="run-sql">4. Run a SQL query</h2>
+  <p>
+    Select the database, open <strong>Tools &gt; Query Tool</strong>, and run a query such as:
+  </p>
+  <pre><code>CREATE TABLE tasks (
+  id BIGSERIAL PRIMARY KEY,
+  title VARCHAR(200) NOT NULL,
+  completed BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+INSERT INTO tasks (title) VALUES ('Explore pgAdmin 4');
+
+SELECT * FROM tasks;</code></pre>
+  <p>Use the execute button or press <strong>F5</strong> to run the selected SQL.</p>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/pgadmin4-03-query-tool.png" alt="pgAdmin 4 Query Tool" loading="lazy" />
+    <figcaption>Use the Query Tool to write and execute PostgreSQL SQL.</figcaption>
+  </figure>
+
+  <h2 id="browse-tables">5. Browse tables and data</h2>
+  <p>
+    Refresh the database tree, then expand <strong>Schemas &gt; public &gt; Tables</strong>.
+    Right-click a table and choose <strong>View/Edit Data</strong> to inspect rows.
+    Use the Query Tool for repeatable changes and application scripts.
+  </p>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/pgadmin4-04-browser-tree.png" alt="pgAdmin 4 object browser showing a PostgreSQL database" loading="lazy" />
+    <figcaption>Browse servers, databases, schemas, tables, and other PostgreSQL objects.</figcaption>
+  </figure>
+
+  <h2 id="pgadmin-best-practices">pgAdmin 4 best practices</h2>
+  <ul>
+    <li>Use separate roles for applications instead of connecting applications as <code>postgres</code>.</li>
+    <li>Prefer migration scripts and version control for schema changes.</li>
+    <li>Do not save database passwords on shared or untrusted computers.</li>
+    <li>Use transactions when making related data changes.</li>
+    <li>Refresh the object tree after creating or changing database objects.</li>
+  </ul>
+
+  <div class="note-box">
+    <strong>Next step:</strong> Learn more about PostgreSQL in the
+    <a href="/postgresql/introduction">PostgreSQL Introduction</a> or install it with the
+    <a href="/postgresql/installation">PostgreSQL installation guide</a>.
+  </div>
+</main>

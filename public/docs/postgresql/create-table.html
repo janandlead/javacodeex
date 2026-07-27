@@ -1,0 +1,70 @@
+<main class="container-xl py-5">
+  <section class="spring-hero page-hero">
+    <p class="spring-pill">PostgreSQL</p>
+    <h1>PostgreSQL Create Table</h1>
+    <p>Create a PostgreSQL table with SQL, define columns, and verify the result in pgAdmin 4.</p>
+  </section>
+
+  <div class="note-box">
+    <strong>Before you begin:</strong> Connect to a PostgreSQL database in pgAdmin 4
+    and open the Query Tool. If you are not connected yet, follow the
+    <a href="/postgresql/pgadmin4">pgAdmin 4 guide</a> first.
+  </div>
+
+  <h2 id="connect-database">Connect to the database</h2>
+  <p>
+    Once you are connected to the database, you can write SQL statements in the
+    Query Tool. The example below creates a table named <code>products</code>.
+  </p>
+
+  <h2 id="create-table">Create a table</h2>
+  <p>Run the following SQL statement:</p>
+  <pre><code>CREATE TABLE products (
+  name VARCHAR(255),
+  model VARCHAR(255),
+  year INT
+);</code></pre>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/create-table-01-sql-statement.png" alt="CREATE TABLE products SQL statement in pgAdmin 4" loading="lazy" />
+    <figcaption>Write the CREATE TABLE statement in the pgAdmin 4 Query Tool.</figcaption>
+  </figure>
+  <p>
+    The statement creates an empty <code>products</code> table with three fields:
+    <code>name</code>, <code>model</code>, and <code>year</code>. Execute the statement
+    with the run button or by pressing <strong>F5</strong>.
+  </p>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/create-table-02-success-message.png" alt="Successful CREATE TABLE message in pgAdmin 4" loading="lazy" />
+    <figcaption>pgAdmin 4 confirms that the CREATE TABLE statement completed successfully.</figcaption>
+  </figure>
+
+  <h2 id="sql-statement-explained">SQL statement explained</h2>
+  <p>
+    Every column needs a data type. The <code>VARCHAR(255)</code> type stores text
+    with up to 255 characters, which is suitable for the product name and model.
+    The <code>INT</code> type stores whole numbers, which fits the product year.
+  </p>
+  <p>
+    In production tables, also consider adding a primary key, <code>NOT NULL</code>
+    constraints, and suitable indexes. For example, an application table often
+    uses an identity or sequence-backed numeric identifier.
+  </p>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/create-table-03-table-browser.png" alt="Products table visible in the pgAdmin 4 browser" loading="lazy" />
+    <figcaption>Refresh the object browser to see the new products table.</figcaption>
+  </figure>
+
+  <h2 id="display-table">Display the table</h2>
+  <p>Use a SELECT statement to read the table:</p>
+  <pre><code>SELECT * FROM products;</code></pre>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/create-table-04-select-table.png" alt="SELECT query and products table output in pgAdmin 4" loading="lazy" />
+    <figcaption>Query the products table and view its columns in the Data Output panel.</figcaption>
+  </figure>
+
+  <div class="note-box">
+    <strong>Next step:</strong> Add rows with <code>INSERT</code>, change rows with
+    <code>UPDATE</code>, and remove rows with <code>DELETE</code>. Keep schema changes
+    in version-controlled migration scripts for application projects.
+  </div>
+</main>

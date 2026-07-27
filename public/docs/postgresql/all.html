@@ -1,0 +1,4 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">PostgreSQL</p><h1>PostgreSQL ALL</h1><p>Compare a value with every value returned by a subquery.</p></section><h2>Use ALL</h2><pre><code>SELECT * FROM products
+WHERE year &gt; ALL (
+  SELECT year FROM discontinued_products
+);</code></pre><p>The condition is true only when the comparison succeeds for every subquery result. Be aware that null values can produce an unknown result.</p></main>

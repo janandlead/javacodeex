@@ -1,0 +1,117 @@
+<main class="container-xl py-5">
+  <section class="spring-hero page-hero">
+    <p class="spring-pill">PostgreSQL</p>
+    <h1>PostgreSQL installation</h1>
+    <p>Install PostgreSQL on Windows using the official PostgreSQL installer.</p>
+  </section>
+
+  <div class="note-box">
+    <strong>Before you begin:</strong> Use a Windows account with permission to
+    install applications. Keep the database password safe; PostgreSQL will ask
+    for it when you connect as the <code>postgres</code> user.
+  </div>
+
+  <h2 id="download-postgresql">1. Download PostgreSQL</h2>
+  <p>
+    Open the official PostgreSQL download page:
+    <a href="https://www.postgresql.org/download/" target="_blank" rel="noopener noreferrer">postgresql.org/download</a>.
+    Select <strong>Windows</strong>, then choose <strong>Download the installer</strong>.
+  </p>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/01-download-page.png" alt="PostgreSQL download page" loading="lazy" />
+    <figcaption>Open the official PostgreSQL download page.</figcaption>
+  </figure>
+
+  <h2 id="choose-windows-installer">2. Choose the Windows installer</h2>
+  <p>Select the Windows operating system and download the installer provided by EDB.</p>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/02-windows-os.png" alt="Windows option on the PostgreSQL download page" loading="lazy" />
+    <figcaption>Select Windows.</figcaption>
+  </figure>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/03-download-installer.png" alt="Download the PostgreSQL Windows installer" loading="lazy" />
+    <figcaption>Choose Download the installer.</figcaption>
+  </figure>
+  <figure class="postgresql-installation-visual wide">
+    <img src="/assets/images/postgresql/04-download-progress.png" alt="PostgreSQL installer download in progress" loading="lazy" />
+    <figcaption>Wait for the installer download to finish.</figcaption>
+  </figure>
+
+  <h2 id="start-installation">3. Start the installation</h2>
+  <p>Open the downloaded installer to begin the PostgreSQL setup wizard.</p>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/05-launch-installer.png" alt="PostgreSQL installer launch screen" loading="lazy" />
+    <figcaption>Open the downloaded installer.</figcaption>
+  </figure>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/06-installation-welcome.png" alt="PostgreSQL installation welcome screen" loading="lazy" />
+    <figcaption>Continue through the installation welcome screen.</figcaption>
+  </figure>
+
+  <h2 id="select-components">4. Select the components</h2>
+  <p>
+    Select the components you need. The standard setup includes the PostgreSQL
+    server, pgAdmin 4, Stack Builder, and command-line tools. Continue with the
+    default selections unless your project requires a different setup.
+  </p>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/07-select-components.png" alt="PostgreSQL component selection screen" loading="lazy" />
+    <figcaption>Select the PostgreSQL components to install.</figcaption>
+  </figure>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/08-component-selection.png" alt="PostgreSQL component selection confirmation" loading="lazy" />
+    <figcaption>Review the selected components.</figcaption>
+  </figure>
+
+  <h2 id="set-password">5. Set the database password</h2>
+  <p>
+    Create a strong password for the PostgreSQL superuser. You will use this
+    password when connecting with the default <code>postgres</code> user.
+  </p>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/09-password-setup.png" alt="PostgreSQL password setup screen" loading="lazy" />
+    <figcaption>Set a password for the PostgreSQL server.</figcaption>
+  </figure>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/10-password-confirmation.png" alt="PostgreSQL password confirmation screen" loading="lazy" />
+    <figcaption>Confirm the password.</figcaption>
+  </figure>
+
+  <h2 id="finish-setup">6. Finish the setup</h2>
+  <p>
+    Review the remaining installation settings, accept the default port unless
+    another service already uses it, and start the installation.
+  </p>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/11-additional-settings.png" alt="PostgreSQL installation settings screen" loading="lazy" />
+    <figcaption>Review the additional setup settings.</figcaption>
+  </figure>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/12-ready-to-install.png" alt="PostgreSQL ready to install screen" loading="lazy" />
+    <figcaption>Confirm that the installer is ready.</figcaption>
+  </figure>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/13-installation-progress.png" alt="PostgreSQL installation progress screen" loading="lazy" />
+    <figcaption>Wait while PostgreSQL is installed.</figcaption>
+  </figure>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/14-installation-complete.png" alt="PostgreSQL installation completed screen" loading="lazy" />
+    <figcaption>PostgreSQL installation completed successfully.</figcaption>
+  </figure>
+
+  <h2 id="after-installation">7. After installation</h2>
+  <p>
+    You can now open pgAdmin 4 or use <code>psql</code> to connect to the local
+    server. Stack Builder is optional and can be used later to add drivers,
+    extensions, and other PostgreSQL tools.
+  </p>
+  <figure class="postgresql-installation-visual">
+    <img src="/assets/images/postgresql/15-stack-builder.png" alt="PostgreSQL Stack Builder screen" loading="lazy" />
+    <figcaption>Stack Builder can install optional PostgreSQL tools.</figcaption>
+  </figure>
+
+  <div class="note-box">
+    <strong>Quick check:</strong> Open pgAdmin 4 and connect to the local server
+    with the <code>postgres</code> username and the password you created during setup.
+  </div>
+</main>

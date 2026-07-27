@@ -28,7 +28,7 @@ const hibernateRoutes = [
 ];
 
 const interviewRoutes = [
-  '/java-technical-interview-questions', '/interview-questions/java-oops', '/interview-questions/java-exception-handling',
+  '/company-interview-questions', '/company-interview-questions/example-technology-company-java-backend', '/java-technical-interview-questions', '/interview-questions/java-oops', '/interview-questions/java-exception-handling',
   '/interview-questions/java-collections', '/interview-questions/java-garbage-collection', '/interview-questions/java-multithreading',
   '/interview-questions/java-strings', '/interview-questions/java-design-patterns', '/interview-questions/spring-boot',
   '/interview-questions/spring-boot-fundamentals', '/interview-questions/spring-boot-auto-configuration',
@@ -44,9 +44,18 @@ const interviewRoutes = [
 
 const patternRoutes = ['singleton', 'factory-method', 'abstract-factory', 'builder', 'prototype', 'adapter', 'bridge', 'composite', 'decorator', 'facade', 'flyweight', 'proxy', 'chain-of-responsibility', 'command', 'interpreter', 'iterator', 'mediator', 'memento', 'observer', 'state', 'strategy', 'template-method', 'visitor'].map((pattern) => `/design-patterns/${pattern}`);
 
+const postgresqlRoutes = [
+  'introduction', 'installation', 'pgadmin4', 'create-table', 'insert-data', 'fetch-data', 'add-column', 'update-data', 'alter-column', 'drop-column', 'delete-data', 'drop-table',
+  'operators', 'select', 'select-distinct', 'where', 'order-by', 'limit', 'min-max', 'count', 'sum', 'avg', 'like', 'in', 'between', 'as', 'joins', 'inner-join', 'left-join', 'right-join', 'full-join', 'cross-join', 'union', 'group-by', 'having', 'exists', 'any', 'all', 'case'
+].map((route) => `/postgresql/${route}`);
+
+const mysqlRoutes = [
+  'sql', 'select', 'select-distinct', 'where', 'order-by', 'and', 'or', 'not', 'insert-into', 'null-values', 'update', 'delete', 'limit', 'aggregate-functions', 'min', 'max', 'count', 'sum', 'avg', 'like', 'wildcards', 'in', 'between', 'aliases', 'joins', 'inner-join', 'left-join', 'right-join', 'cross-join', 'self-join', 'union', 'union-all', 'group-by', 'having', 'exists', 'any', 'all', 'insert-select', 'case', 'null-functions', 'stored-procedures', 'comments', 'operators', 'create-db', 'drop-db', 'create-table', 'drop-table', 'alter-table', 'constraints', 'not-null', 'unique', 'primary-key', 'foreign-key', 'check', 'default', 'create-index', 'auto-increment', 'dates', 'views', 'injection', 'prepared-statements'
+].map((route) => `/mysql/${route}`);
+
 export const publicRoutes = [
   '/', ...javaRoutes, ...springBootRoutes, ...hibernateRoutes,
-  '/spring-boot-2-to-3-migration', '/python', '/angular', '/mysql', '/mongodb', '/postgresql',
+  '/spring-boot-2-to-3-migration', '/python', '/angular', '/mysql', '/mongodb', ...mysqlRoutes, ...postgresqlRoutes,
   '/spring-ai', '/design-patterns', '/interviews', ...interviewRoutes,
   '/about', '/author', '/categories', '/contact', '/privacy-policy', '/terms-and-conditions', '/disclaimer',
   ...patternRoutes

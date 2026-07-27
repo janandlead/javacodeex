@@ -1,0 +1,4 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">PostgreSQL</p><h1>PostgreSQL HAVING</h1><p>Filter groups after PostgreSQL calculates aggregates.</p></section><h2>Use HAVING</h2><pre><code>SELECT year, COUNT(*) AS product_count
+FROM products
+GROUP BY year
+HAVING COUNT(*) &gt; 1;</code></pre><p>Use <code>WHERE</code> to filter individual rows before grouping. Use <code>HAVING</code> to filter the grouped results.</p></main>

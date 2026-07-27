@@ -1,0 +1,5 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">MySQL Database</p><h1>MySQL Foreign Key</h1><p>Enforce a relationship between related tables.</p></section><pre><code>CREATE TABLE orders (
+  id INT PRIMARY KEY,
+  customer_id INT,
+  FOREIGN KEY (customer_id) REFERENCES customers(id)
+);</code></pre><p>The referenced value must exist in the parent table, preserving referential integrity.</p></main>

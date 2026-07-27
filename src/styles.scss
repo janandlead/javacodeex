@@ -179,6 +179,27 @@ p { max-width: 70ch; }
   font-size: .9rem;
 }
 
+.legacy-document .document-body .memory-visual {
+  width: min(100%, 980px);
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.legacy-document .document-body .memory-visual img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #dbeafe;
+  border-radius: 1rem;
+  box-shadow: 0 .75rem 2rem rgba(15, 23, 42, .1);
+}
+
+.legacy-document .document-body .memory-visual figcaption {
+  margin-top: .65rem;
+  color: #64748b;
+  font-size: .9rem;
+}
+
 .legacy-document .document-body .lesson-video {
   width: min(100%, 820px);
   margin: 0 auto 2rem;
@@ -202,6 +223,11 @@ p { max-width: 70ch; }
   .legacy-document .document-body .marker-interface-visual {
     width: 100%;
     margin: 1.25rem auto 1.5rem;
+  }
+
+  .legacy-document .document-body .memory-visual {
+    width: 100%;
+    margin: 1.25rem 0 1.5rem;
   }
 
   .legacy-document .document-body .lesson-video iframe {
@@ -290,6 +316,35 @@ p { max-width: 70ch; }
 
 .course-document .document-body .security-visual figcaption {
   margin-top: .65rem;
+  color: #64748b;
+  font-size: .9rem;
+}
+
+.course-document .document-body .postgresql-installation-visual {
+  max-width: 58rem;
+  margin: 1.5rem auto 2rem;
+  padding: 1rem;
+  border: 1px solid #dbeafe;
+  border-radius: 1rem;
+  background: #f8fbff;
+  text-align: center;
+}
+
+.course-document .document-body .postgresql-installation-visual img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  margin: 0 auto;
+  border-radius: .5rem;
+  box-shadow: 0 .5rem 1.25rem rgba(15,23,42,.08);
+}
+
+.course-document .document-body .postgresql-installation-visual.wide img {
+  width: 100%;
+}
+
+.course-document .document-body .postgresql-installation-visual figcaption {
+  margin-top: .75rem;
   color: #64748b;
   font-size: .9rem;
 }

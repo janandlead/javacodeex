@@ -1,0 +1,45 @@
+<main class="container-xl py-5">
+  <section class="spring-hero page-hero">
+    <p class="spring-pill">PostgreSQL</p>
+    <h1>PostgreSQL DROP COLUMN</h1>
+    <p>Remove an unwanted column from an existing PostgreSQL table with <code>ALTER TABLE</code>.</p>
+  </section>
+  <h2 id="alter-table-statement">The ALTER TABLE statement</h2>
+  <p>
+    To remove a column from a table, use the <code>ALTER TABLE</code> statement. It
+    can also be used to add or modify columns and to add or drop constraints on an
+    existing table.
+  </p>
+
+  <h2 id="drop-column">DROP COLUMN</h2>
+  <p>
+    We will remove the column named <code>color</code> from the
+    <code>products</code> table. Use <code>DROP COLUMN</code> to remove the column
+    and the data stored in it:
+  </p>
+  <p>
+    Remove the <code>color</code> column with this statement:
+  </p>
+  <pre><code>ALTER TABLE products
+DROP COLUMN color;</code></pre>
+
+  <h2 id="alter-table-result">Result</h2>
+  <p>PostgreSQL reports:</p>
+  <pre><code>ALTER TABLE</code></pre>
+  <p>This confirms that the table structure was changed successfully.</p>
+
+  <h2 id="display-table">Display the table</h2>
+  <p>To check the result, display the table with this statement:</p>
+  <pre><code>SELECT * FROM products;</code></pre>
+  <p>
+    The <code>color</code> column is no longer included in the result. Dropping a
+    column also removes all data stored in that column, so confirm the column is no
+    longer needed before executing the statement.
+  </p>
+
+  <div class="note-box">
+    <strong>Warning:</strong> Check dependencies and update application code before
+    dropping a column. Use <code>DROP COLUMN IF EXISTS color</code> when you want to
+    avoid an error if the column has already been removed.
+  </div>
+</main>

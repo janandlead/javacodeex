@@ -27,12 +27,12 @@ import { RouterLink } from '@angular/router';
             <p>Practice leadership, communication, delivery, mentoring, stakeholder management, and people-management questions.</p>
             <span class="category-link">Manager interview preparation</span>
           </article>
-          <article class="interview-category-card coming-soon">
-            <span class="category-icon"><i class="bi bi-building" aria-hidden="true"></i></span><span class="category-status">Coming soon</span>
+          <a class="interview-category-card featured" routerLink="/company-interview-questions">
+            <span class="category-icon"><i class="bi bi-building" aria-hidden="true"></i></span><span class="category-status">Available now</span>
             <h2>Company Interview Questions</h2>
-            <p>Explore company-focused interview preparation, hiring patterns, role expectations, and frequently asked questions.</p>
-            <span class="category-link">Company interview preparation</span>
-          </article>
+            <p>Review company interview experiences using a clear format for the interview date, candidate experience, and technology stack.</p>
+            <span class="category-link">View company interview format <i class="bi bi-arrow-right" aria-hidden="true"></i></span>
+          </a>
         </section>
         <section class="interview-seo-content" aria-labelledby="interview-preparation-guide">
           <h2 id="interview-preparation-guide">Choose the Right Interview Preparation Track</h2>

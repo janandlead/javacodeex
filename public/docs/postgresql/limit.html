@@ -1,0 +1,5 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">PostgreSQL</p><h1>PostgreSQL LIMIT</h1><p>Restrict how many rows a query returns.</p></section><h2>Limit results</h2><pre><code>SELECT * FROM products
+ORDER BY year DESC
+LIMIT 5;</code></pre><p>Use <code>OFFSET</code> to skip rows, commonly for pagination. Always use <code>ORDER BY</code> when the selected rows must be predictable.</p><pre><code>SELECT * FROM products
+ORDER BY name
+LIMIT 10 OFFSET 20;</code></pre></main>

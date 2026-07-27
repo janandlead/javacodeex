@@ -102,6 +102,7 @@ export class JavaDocumentComponent implements OnInit, OnChanges {
     this.applicationRef.attachView(this.videoRef.hostView);
     this.videoRef.setInput('videoUrl', 'https://youtu.be/smMODFC5Ewk?si=eFtMoSgop4gyogqI');
     this.videoRef.setInput('title', 'Java Marker Interfaces Tutorial');
+    this.videoRef.changeDetectorRef.detectChanges();
   }
 
   private extractDocument(source: string): string {

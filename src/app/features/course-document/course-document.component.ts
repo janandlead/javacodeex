@@ -64,6 +64,52 @@ const SPRING_BOOT_LEGACY_ROUTES: Record<string, string> = {
   'dependency-injection': '/spring-boot-core'
 };
 
+const POSTGRESQL_LESSONS = [
+  ['/postgresql/introduction', 'PostgreSQL Introduction'],
+  ['/postgresql/installation', 'PostgreSQL Installation'],
+  ['/postgresql/pgadmin4', 'PostgreSQL pgAdmin 4'],
+  ['/postgresql/create-table', 'PostgreSQL Create Table'],
+  ['/postgresql/insert-data', 'PostgreSQL Insert Data'],
+  ['/postgresql/fetch-data', 'PostgreSQL Select Data'],
+  ['/postgresql/add-column', 'PostgreSQL ADD COLUMN'],
+  ['/postgresql/update-data', 'PostgreSQL UPDATE'],
+  ['/postgresql/alter-column', 'PostgreSQL ALTER COLUMN'],
+  ['/postgresql/drop-column', 'PostgreSQL DROP COLUMN'],
+  ['/postgresql/delete-data', 'PostgreSQL DELETE'],
+  ['/postgresql/drop-table', 'PostgreSQL DROP TABLE'],
+  ['/postgresql/operators', 'PostgreSQL Operators'],
+  ['/postgresql/select', 'PostgreSQL SELECT'],
+  ['/postgresql/select-distinct', 'PostgreSQL SELECT DISTINCT'],
+  ['/postgresql/where', 'PostgreSQL WHERE'],
+  ['/postgresql/order-by', 'PostgreSQL ORDER BY'],
+  ['/postgresql/limit', 'PostgreSQL LIMIT'],
+  ['/postgresql/min-max', 'PostgreSQL MIN and MAX'],
+  ['/postgresql/count', 'PostgreSQL COUNT'],
+  ['/postgresql/sum', 'PostgreSQL SUM'],
+  ['/postgresql/avg', 'PostgreSQL AVG'],
+  ['/postgresql/like', 'PostgreSQL LIKE'],
+  ['/postgresql/in', 'PostgreSQL IN'],
+  ['/postgresql/between', 'PostgreSQL BETWEEN'],
+  ['/postgresql/as', 'PostgreSQL AS'],
+  ['/postgresql/joins', 'PostgreSQL Joins'],
+  ['/postgresql/inner-join', 'PostgreSQL INNER JOIN'],
+  ['/postgresql/left-join', 'PostgreSQL LEFT JOIN'],
+  ['/postgresql/right-join', 'PostgreSQL RIGHT JOIN'],
+  ['/postgresql/full-join', 'PostgreSQL FULL JOIN'],
+  ['/postgresql/cross-join', 'PostgreSQL CROSS JOIN'],
+  ['/postgresql/union', 'PostgreSQL UNION'],
+  ['/postgresql/group-by', 'PostgreSQL GROUP BY'],
+  ['/postgresql/having', 'PostgreSQL HAVING'],
+  ['/postgresql/exists', 'PostgreSQL EXISTS'],
+  ['/postgresql/any', 'PostgreSQL ANY'],
+  ['/postgresql/all', 'PostgreSQL ALL'],
+  ['/postgresql/case', 'PostgreSQL CASE']
+] as const;
+
+const MYSQL_LESSONS = [
+  ['/mysql/sql', 'MySQL SQL'], ['/mysql/select', 'MySQL SELECT'], ['/mysql/select-distinct', 'MySQL SELECT DISTINCT'], ['/mysql/where', 'MySQL WHERE'], ['/mysql/order-by', 'MySQL ORDER BY'], ['/mysql/and', 'MySQL AND'], ['/mysql/or', 'MySQL OR'], ['/mysql/not', 'MySQL NOT'], ['/mysql/insert-into', 'MySQL INSERT INTO'], ['/mysql/null-values', 'MySQL NULL Values'], ['/mysql/update', 'MySQL UPDATE'], ['/mysql/delete', 'MySQL DELETE'], ['/mysql/limit', 'MySQL LIMIT'], ['/mysql/aggregate-functions', 'MySQL Aggregate Functions'], ['/mysql/min', 'MySQL MIN()'], ['/mysql/max', 'MySQL MAX()'], ['/mysql/count', 'MySQL COUNT()'], ['/mysql/sum', 'MySQL SUM()'], ['/mysql/avg', 'MySQL AVG()'], ['/mysql/like', 'MySQL LIKE'], ['/mysql/wildcards', 'MySQL Wildcards'], ['/mysql/in', 'MySQL IN'], ['/mysql/between', 'MySQL BETWEEN'], ['/mysql/aliases', 'MySQL Aliases'], ['/mysql/joins', 'MySQL Joins'], ['/mysql/inner-join', 'MySQL INNER JOIN'], ['/mysql/left-join', 'MySQL LEFT JOIN'], ['/mysql/right-join', 'MySQL RIGHT JOIN'], ['/mysql/cross-join', 'MySQL CROSS JOIN'], ['/mysql/self-join', 'MySQL Self Join'], ['/mysql/union', 'MySQL UNION'], ['/mysql/union-all', 'MySQL UNION ALL'], ['/mysql/group-by', 'MySQL GROUP BY'], ['/mysql/having', 'MySQL HAVING'], ['/mysql/exists', 'MySQL EXISTS'], ['/mysql/any', 'MySQL ANY'], ['/mysql/all', 'MySQL ALL'], ['/mysql/insert-select', 'MySQL INSERT SELECT'], ['/mysql/case', 'MySQL CASE'], ['/mysql/null-functions', 'MySQL Null Functions'], ['/mysql/stored-procedures', 'MySQL Stored Procedures'], ['/mysql/comments', 'MySQL Comments'], ['/mysql/operators', 'MySQL Operators'], ['/mysql/create-db', 'MySQL Create DB'], ['/mysql/drop-db', 'MySQL Drop DB'], ['/mysql/create-table', 'MySQL Create Table'], ['/mysql/drop-table', 'MySQL Drop Table'], ['/mysql/alter-table', 'MySQL Alter Table'], ['/mysql/constraints', 'MySQL Constraints'], ['/mysql/not-null', 'MySQL Not Null'], ['/mysql/unique', 'MySQL Unique'], ['/mysql/primary-key', 'MySQL Primary Key'], ['/mysql/foreign-key', 'MySQL Foreign Key'], ['/mysql/check', 'MySQL Check'], ['/mysql/default', 'MySQL Default'], ['/mysql/create-index', 'MySQL Create Index'], ['/mysql/auto-increment', 'MySQL Auto Increment'], ['/mysql/dates', 'MySQL Dates'], ['/mysql/views', 'MySQL Views'], ['/mysql/injection', 'MySQL Injection'], ['/mysql/prepared-statements', 'MySQL Prepared Statements']
+] as const;
+
 @Component({
   selector: 'app-course-document', standalone: true, imports: [RouterLink, YoutubeVideoComponent],
   encapsulation: ViewEncapsulation.None,
@@ -99,12 +145,20 @@ export class CourseDocumentComponent implements OnInit, OnChanges {
   private videoRef?: ComponentRef<YoutubeVideoComponent>;
 
   ngOnInit(): void {
-    const documentFile = this.topic ? `${this.topic}.html` : this.fileName;
     if (this.assetFolder === 'springboot' && this.fileName === 'index.html' && !this.nextRoute) {
       this.nextRoute = '/spring-boot-core';
       this.nextLabel = 'Spring Boot Core';
     }
+    this.setPostgreSqlNavigation();
+    this.setMySqlNavigation();
+    this.loadDocument();
+  }
+
+  private loadDocument(): void {
+    const documentFile = this.topic ? `${this.topic}.html` : this.fileName;
     this.html = createTutorialFallback(this.title, this.description, this.category, this.primaryKeyword);
+    this.loading = true;
+    this.error = false;
     this.http.get(`/docs/${this.assetFolder}/${documentFile}`, { responseType: 'text' }).subscribe({
       next: (source) => { this.html = this.extractDocument(source); this.loading = false; setTimeout(() => { this.renderVideoComponent(); this.scrollToSection(); }, 0); },
       error: () => { this.loading = false; this.error = false; }
@@ -112,9 +166,53 @@ export class CourseDocumentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    if ((changes['fileName'] || changes['topic'] || changes['assetFolder']) && !changes['fileName']?.firstChange && !changes['topic']?.firstChange) {
+      this.setPostgreSqlNavigation();
+      this.setMySqlNavigation();
+      this.resetVideoComponent();
+      this.loadDocument();
+      return;
+    }
     if (changes['section'] && !changes['section'].firstChange && !this.loading) {
       setTimeout(() => this.scrollToSection(), 0);
     }
+  }
+
+  private setPostgreSqlNavigation(): void {
+    if (this.assetFolder !== 'postgresql') return;
+    const path = this.router.url.split(/[?#]/)[0].replace(/\/$/, '');
+    const index = POSTGRESQL_LESSONS.findIndex(([route]) => route === path);
+    if (index < 0) return;
+    const previous = POSTGRESQL_LESSONS[index - 1];
+    const next = POSTGRESQL_LESSONS[index + 1];
+    this.backRoute = '/postgresql/introduction';
+    this.previousRoute = previous?.[0] ?? '';
+    this.previousLabel = previous?.[1] ?? 'PostgreSQL Tutorials';
+    this.nextRoute = next?.[0] ?? '';
+    this.nextLabel = next?.[1] ?? '';
+  }
+
+  private setMySqlNavigation(): void {
+    if (this.assetFolder !== 'mysql') return;
+    const path = this.router.url.split(/[?#]/)[0].replace(/\/$/, '');
+    const index = MYSQL_LESSONS.findIndex(([route]) => route === path);
+    if (index < 0) return;
+    const previous = MYSQL_LESSONS[index - 1];
+    const next = MYSQL_LESSONS[index + 1];
+    this.backRoute = '/mysql';
+    this.previousRoute = previous?.[0] ?? '/mysql';
+    this.previousLabel = previous?.[1] ?? 'MySQL';
+    this.nextRoute = next?.[0] ?? '';
+    this.nextLabel = next?.[1] ?? '';
+  }
+
+  private resetVideoComponent(): void {
+    if (this.videoRef) {
+      this.applicationRef.detachView(this.videoRef.hostView);
+      this.videoRef.destroy();
+      this.videoRef = undefined;
+    }
+    this.host.nativeElement.querySelector('.course-document-video')?.remove();
   }
 
   @HostListener('click', ['$event'])
@@ -168,6 +266,7 @@ export class CourseDocumentComponent implements OnInit, OnChanges {
     this.applicationRef.attachView(this.videoRef.hostView);
     this.videoRef.setInput('videoUrl', video.url);
     this.videoRef.setInput('title', video.title);
+    this.videoRef.changeDetectorRef.detectChanges();
   }
 
   private renderPageToc(): void {
@@ -267,14 +366,23 @@ export class CourseDocumentComponent implements OnInit, OnChanges {
         anchor.setAttribute('href', `${currentPath}#${section}`);
       }
     });
+    const readingPageKey = this.assetFolder === 'postgresql'
+      ? `postgresql-${this.topic || this.fileName.replace(/\.html$/, '')}`
+      : this.assetFolder === 'mysql'
+        ? `mysql-${this.topic || this.fileName.replace(/\.html$/, '')}`
+      : this.assetFolder === 'springboot' && this.fileName === 'index.html' ? 'springboot-index' : this.topic || this.fileName.replace(/\.html$/, '');
     appendFurtherReading(
       document,
-      this.assetFolder === 'springboot' && this.fileName === 'index.html' ? 'springboot-index' : this.topic || this.fileName.replace(/\.html$/, ''),
+      readingPageKey,
       [
         ...(this.previousRoute ? [{ label: this.previousLabel, href: this.previousRoute }] : []),
         ...(this.nextRoute ? [{ label: this.nextLabel, href: this.nextRoute }] : [])
       ],
-      { label: 'Spring Boot Tutorial Overview', href: '/spring-boot-overview' }
+      this.assetFolder === 'postgresql'
+        ? { label: 'PostgreSQL Introduction', href: '/postgresql/introduction' }
+        : this.assetFolder === 'mysql'
+          ? { label: 'MySQL Tutorials', href: '/mysql' }
+          : { label: 'Spring Boot Tutorial Overview', href: '/spring-boot-overview' }
     );
     return document.body.innerHTML;
   }

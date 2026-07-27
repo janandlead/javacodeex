@@ -1,0 +1,98 @@
+<main class="container-xl py-5">
+  <section class="spring-hero page-hero">
+    <p class="spring-pill">PostgreSQL</p>
+    <h1>PostgreSQL Introduction</h1>
+    <p>Understand PostgreSQL, its strengths, and the concepts used in everyday database development.</p>
+  </section>
+
+  <div class="note-box">
+    <strong>Learning path:</strong> Start here to understand the database, then continue with
+    <a href="/postgresql/installation">PostgreSQL installation</a> to set up a local Windows environment.
+  </div>
+
+  <h2 id="what-is-postgresql">What is PostgreSQL?</h2>
+  <p>
+    PostgreSQL is a free, open-source database system that supports relational
+    SQL queries and non-relational JSON data. It stores structured data in
+    tables while also supporting flexible document-style data through JSON and
+    JSONB columns.
+  </p>
+  <p>
+    PostgreSQL is often used as the back-end database for dynamic websites, web
+    applications, APIs, analytics systems, and business platforms that need
+    reliable transactions and strong data integrity.
+  </p>
+
+  <h3 id="supported-languages">Supported programming languages</h3>
+  <p>PostgreSQL can be used with many popular programming languages, including:</p>
+  <ul>
+    <li>Python</li>
+    <li>Java</li>
+    <li>C and C++</li>
+    <li>C#</li>
+    <li>Node.js</li>
+    <li>Go</li>
+    <li>Ruby</li>
+    <li>Perl</li>
+    <li>Tcl</li>
+  </ul>
+  <p>
+    PostgreSQL supports the important capabilities found in other database
+    management systems, including tables, relationships, indexes, transactions,
+    constraints, views, functions, and user access control.
+  </p>
+
+  <h2 id="postgresql-history">PostgreSQL History</h2>
+  <p>
+    PostgreSQL was created in the Computer Science Department at the University
+    of California, Berkeley. The project began in 1986 with the goal of creating
+    a database system with the basic features needed to support multiple data
+    types.
+  </p>
+  <p>
+    PostgreSQL originally ran on UNIX platforms. It now runs on many operating
+    systems, including Windows and macOS, making it suitable for local
+    development as well as production deployments.
+  </p>
+
+  <h2 id="why-use-postgresql">Why use PostgreSQL?</h2>
+  <ul>
+    <li><strong>Reliable transactions:</strong> ACID behavior helps keep related changes consistent.</li>
+    <li><strong>Strong data integrity:</strong> Constraints protect relationships and valid values.</li>
+    <li><strong>Powerful SQL:</strong> Joins, common table expressions, window functions, and aggregates support complex queries.</li>
+    <li><strong>Extensibility:</strong> Extensions, custom types, functions, and operators support specialized workloads.</li>
+    <li><strong>Production-ready:</strong> Replication, backups, roles, indexes, and observability support real applications.</li>
+  </ul>
+
+  <h2 id="core-concepts">Core PostgreSQL concepts</h2>
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle">
+      <thead>
+        <tr><th>Concept</th><th>Purpose</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Server</td><td>The PostgreSQL process that accepts connections and manages databases.</td></tr>
+        <tr><td>Database</td><td>A logical container for schemas and application data.</td></tr>
+        <tr><td>Schema</td><td>A namespace used to organize tables, views, functions, and other objects.</td></tr>
+        <tr><td>Table</td><td>A structured collection of rows and columns.</td></tr>
+        <tr><td>Role</td><td>A PostgreSQL identity used for authentication and authorization.</td></tr>
+        <tr><td>Transaction</td><td>A group of operations committed or rolled back as one unit.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="basic-workflow">A basic PostgreSQL workflow</h2>
+  <ol>
+    <li>Install PostgreSQL and start the server.</li>
+    <li>Create a database and an application role.</li>
+    <li>Design tables with keys, relationships, and constraints.</li>
+    <li>Use SQL or a database client such as pgAdmin 4 to work with the data.</li>
+    <li>Connect your Java or Spring Boot application using the PostgreSQL JDBC driver.</li>
+    <li>Add backups, migrations, indexes, monitoring, and least-privilege access as the application grows.</li>
+  </ol>
+
+  <div class="note-box">
+    <strong>Next step:</strong> Install PostgreSQL on Windows using the
+    <a href="/postgresql/installation">PostgreSQL installation guide</a>.
+  </div>
+</main>

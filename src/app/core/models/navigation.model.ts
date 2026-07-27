@@ -4,5 +4,6 @@ export interface NavigationItem {
   readonly icon?: string;
   readonly exact?: boolean;
   readonly external?: boolean;
+  readonly heading?: boolean;
   readonly children?: readonly NavigationItem[];
 }

@@ -5,6 +5,7 @@ export interface SeoConfig {
   readonly keywords?: readonly string[];
   readonly keyword?: string;
   readonly imageUrl?: string;
+  readonly imageAlt?: string;
   readonly robots?: string;
   readonly type?: 'website' | 'article';
   readonly publishedTime?: string;
@@ -12,6 +13,11 @@ export interface SeoConfig {
   readonly primaryKeyword?: string;
   readonly articleSection?: string;
   readonly breadcrumbs?: readonly { name: string; url: string }[];
+  readonly howTo?: {
+    readonly name: string;
+    readonly description: string;
+    readonly steps: readonly { name: string; text: string }[];
+  };
   readonly video?: {
     readonly name: string;
     readonly description: string;

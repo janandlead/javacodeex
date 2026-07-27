@@ -78,7 +78,7 @@ export class SeoService {
     const socialImage = routeSeo?.imageUrl ?? this.defaultImage;
     const type = routeSeo?.type ?? (category && !/overview/i.test(title) ? 'article' : 'website');
 
-    this.updatePageSeo({ title, description, canonicalUrl: url, keywords: routeKeywords, robots, imageUrl: socialImage, type, articleSection: routeSeo?.articleSection ?? category, publishedTime: routeSeo?.publishedTime, modifiedTime: routeSeo?.modifiedTime, primaryKeyword, breadcrumbs: routeSeo?.breadcrumbs ?? data['breadcrumbs'] as SeoConfig['breadcrumbs'], video: routeSeo?.video });
+    this.updatePageSeo({ title, description, canonicalUrl: url, keywords: routeKeywords, robots, imageUrl: socialImage, imageAlt: routeSeo?.imageAlt, type, articleSection: routeSeo?.articleSection ?? category, publishedTime: routeSeo?.publishedTime, modifiedTime: routeSeo?.modifiedTime, primaryKeyword, breadcrumbs: routeSeo?.breadcrumbs ?? data['breadcrumbs'] as SeoConfig['breadcrumbs'], video: routeSeo?.video, howTo: routeSeo?.howTo });
   }
 
   private routeData(route: ActivatedRouteSnapshot): Record<string, unknown> {
@@ -105,12 +105,12 @@ export class SeoService {
     this.setMeta('og:url', url, 'property');
     this.setMeta('og:site_name', 'Java Codeex', 'property');
     this.setMeta('og:image', socialImage, 'property');
-    this.setMeta('og:image:alt', 'Java Codeex programming tutorial logo', 'property');
+    this.setMeta('og:image:alt', seo.imageAlt ?? 'Java Codeex programming tutorial logo', 'property');
     this.setMeta('twitter:card', 'summary_large_image');
     this.setMeta('twitter:title', title);
     this.setMeta('twitter:description', description);
     this.setMeta('twitter:image', socialImage);
-    this.setMeta('twitter:image:alt', 'Java Codeex programming tutorial logo');
+    this.setMeta('twitter:image:alt', seo.imageAlt ?? 'Java Codeex programming tutorial logo');
     this.setMeta('twitter:url', url);
     this.setMeta('twitter:site', '@javacodeex');
     this.setMeta('article:section', seo.articleSection ?? category, 'property');
@@ -168,7 +168,7 @@ export class SeoService {
       this.document.head.appendChild(script);
     }
     const isArticle = type === 'article';
-    script.textContent = JSON.stringify({
+    const pageStructuredData = {
       '@context': 'https://schema.org',
       '@type': isArticle ? 'TechArticle' : 'WebPage',
       headline: title,
@@ -184,7 +184,16 @@ export class SeoService {
       publisher: { '@type': 'Organization', name: 'Java Codeex', url: `${this.siteUrl}/` },
       ...(seo?.video ? { video: { '@type': 'VideoObject', ...seo.video, url } } : {}),
       ...((seo?.breadcrumbs ?? structuredData?.breadcrumbs)?.length ? { breadcrumb: { '@type': 'BreadcrumbList', itemListElement: (seo?.breadcrumbs ?? structuredData?.breadcrumbs)?.map((item, index) => ({ '@type': 'ListItem', position: index + 1, name: item.name, item: item.url })) } } : {})
-    });
+    };
+    script.textContent = JSON.stringify(seo?.howTo ? {
+      '@context': 'https://schema.org',
+      '@graph': [pageStructuredData, {
+        '@type': 'HowTo',
+        name: seo.howTo.name,
+        description: seo.howTo.description,
+        step: seo.howTo.steps.map((step, index) => ({ '@type': 'HowToStep', position: index + 1, name: step.name, text: step.text }))
+      }]
+    } : pageStructuredData);
   }
 
   private setMeta(name: string, content: string, attribute: 'name' | 'property' = 'name'): void {

@@ -1,0 +1,3 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">PostgreSQL</p><h1>PostgreSQL IN</h1><p>Check whether a value matches one of several values.</p></section><h2>Match a list</h2><pre><code>SELECT * FROM products
+WHERE year IN (2024, 2025, 2026);</code></pre><p><code>IN</code> is a concise alternative to several <code>OR</code> comparisons. It can also compare against a subquery.</p><pre><code>SELECT * FROM products
+WHERE year IN (SELECT year FROM featured_products);</code></pre></main>

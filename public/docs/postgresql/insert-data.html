@@ -1,0 +1,97 @@
+<main class="container-xl py-5">
+  <section class="spring-hero page-hero">
+    <p class="spring-pill">PostgreSQL</p>
+    <h1>PostgreSQL INSERT INTO</h1>
+    <p>Insert one or more rows into a PostgreSQL table and verify the saved data.</p>
+  </section>
+
+  <div class="note-box">
+    <strong>Before you begin:</strong> Connect to the target database in pgAdmin 4
+    and make sure the table already exists. This guide uses the <code>products</code>
+    table from the <a href="/postgresql/create-table">Create Table guide</a>.
+  </div>
+
+  <h2 id="insert-one-row">Insert one row</h2>
+  <p>
+    To add a row to a PostgreSQL table, use <code>INSERT INTO</code> followed by the
+    table name, the columns you want to fill, and a <code>VALUES</code> clause:
+  </p>
+  <pre><code>INSERT INTO products (name, model, year)
+VALUES ('Laptop', 'Pro 14', 2025);</code></pre>
+  <p>
+    This statement inserts one product into the <code>products</code> table. The
+    first value is stored in <code>name</code>, the second in <code>model</code>,
+    and the third in <code>year</code>. The column order must match the value order.
+    Listing the columns explicitly makes the statement easier to read and protects
+    it from changes to the table's column order.
+  </p>
+
+  <h2 id="sql-statement-explained">SQL statement explained</h2>
+  <ul>
+    <li><code>INSERT INTO products</code> identifies the table that receives the new row.</li>
+    <li><code>(name, model, year)</code> identifies the columns that will receive values.</li>
+    <li><code>VALUES</code> begins the data to insert.</li>
+    <li><code>('Laptop', 'Pro 14', 2025)</code> contains the values in the same order as the columns.</li>
+  </ul>
+  <p>
+    Text values must be enclosed in single quotation marks. Numeric values such as
+    <code>2025</code> are written without quotation marks. A semicolon marks the end
+    of the SQL statement.
+  </p>
+
+  <h2 id="insert-result">Read the insert result</h2>
+  <p>
+    If you run the statement in the PostgreSQL SQL Shell (psql), it reports:
+  </p>
+  <pre><code>INSERT 0 1</code></pre>
+  <p>
+    The final number, <code>1</code>, means that one row was inserted. The middle
+    number is an older object-identifier field and is normally <code>0</code> in
+    modern PostgreSQL tables, so it can be ignored here. In pgAdmin 4, a successful
+    execution is shown in the Query Tool's messages area.
+  </p>
+
+  <h2 id="insert-multiple-rows">Insert multiple rows</h2>
+  <p>Insert several rows with one statement by separating value groups with commas:</p>
+  <pre><code>INSERT INTO products (name, model, year)
+VALUES
+  ('Laptop', 'Pro 14', 2025),
+  ('Monitor', 'UltraView 27', 2024),
+  ('Keyboard', 'Mechanical K1', 2023);</code></pre>
+
+  <h2 id="verify-inserted-data">Verify the inserted data</h2>
+  <p>Use a <code>SELECT</code> query to display the rows in the table:</p>
+  <pre><code>SELECT * FROM products;</code></pre>
+  <p>
+    In pgAdmin 4, run the query in the Query Tool and inspect the Data Output panel.
+    After the single insert above, the result will look like this:
+  </p>
+  <pre><code>  name  |  model  | year
+--------+---------+------
+ Laptop | Pro 14  | 2025
+(1 row)</code></pre>
+
+  <h2 id="insert-returning">Return inserted values</h2>
+  <p>
+    When a table has a generated identifier, PostgreSQL can return the inserted
+    row immediately with <code>RETURNING</code>:
+  </p>
+  <pre><code>INSERT INTO products (name, model, year)
+VALUES ('Tablet', 'Air 11', 2025)
+RETURNING *;</code></pre>
+
+  <h2 id="insert-best-practices">Insert data best practices</h2>
+  <ul>
+    <li>List the target columns explicitly instead of relying on table order.</li>
+    <li>Use parameters in application code instead of concatenating user input into SQL.</li>
+    <li>Use a transaction when several inserts must succeed or fail together.</li>
+    <li>Validate values and use constraints such as <code>NOT NULL</code> and <code>UNIQUE</code>.</li>
+    <li>Use <code>RETURNING</code> when the application needs generated values immediately.</li>
+  </ul>
+
+  <div class="note-box">
+    <strong>Continue learning:</strong> After inserting data, practice filtering with
+    <code>WHERE</code>, changing rows with <code>UPDATE</code>, and removing rows with
+    <code>DELETE</code>.
+  </div>
+</main>

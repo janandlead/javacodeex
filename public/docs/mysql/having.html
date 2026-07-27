@@ -1,0 +1,4 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">MySQL SQL</p><h1>MySQL HAVING</h1><p>Filter groups after aggregation.</p></section><pre><code>SELECT category, COUNT(*) AS product_count
+FROM products
+GROUP BY category
+HAVING COUNT(*) &gt; 5;</code></pre><p>Use WHERE for rows before grouping and HAVING for grouped results.</p></main>

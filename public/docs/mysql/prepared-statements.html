@@ -1,0 +1,5 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">MySQL Database</p><h1>MySQL Prepared Statements</h1><p>Execute parameterized SQL safely and efficiently.</p></section><pre><code>PREPARE product_query FROM
+  'SELECT * FROM products WHERE id = ?';
+SET @product_id = 10;
+EXECUTE product_query USING @product_id;
+DEALLOCATE PREPARE product_query;</code></pre><p>Application drivers normally expose a simpler parameter-binding API. Values remain separate from SQL syntax, helping prevent injection.</p></main>

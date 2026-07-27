@@ -1,0 +1,4 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">PostgreSQL</p><h1>PostgreSQL AS</h1><p>Give columns and tables readable aliases.</p></section><h2>Column aliases</h2><pre><code>SELECT name AS product_name,
+       year AS release_year
+FROM products;</code></pre><p>Use <code>AS</code> to label an output column without changing the table. Table aliases make joins shorter and clearer.</p><pre><code>SELECT p.name
+FROM products AS p;</code></pre></main>

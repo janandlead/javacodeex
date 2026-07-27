@@ -1,0 +1,4 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">PostgreSQL</p><h1>PostgreSQL LEFT JOIN</h1><p>Keep every row from the left table and matching rows from the right table.</p></section><h2>Use LEFT JOIN</h2><pre><code>SELECT p.name, c.name AS category
+FROM products AS p
+LEFT JOIN categories AS c
+  ON c.id = p.category_id;</code></pre><p>Products without a category are still returned; the category columns are <code>NULL</code>.</p></main>

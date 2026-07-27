@@ -173,6 +173,90 @@ const JAVA_READING: Record<string, FurtherReadingLink[]> = {
   ]
 };
 
+const POSTGRESQL_READING: Record<string, FurtherReadingLink[]> = {
+  introduction: [
+    { label: 'PostgreSQL Installation', href: '/postgresql/installation' },
+    { label: 'PostgreSQL pgAdmin 4', href: '/postgresql/pgadmin4' },
+    { label: 'PostgreSQL Create Table', href: '/postgresql/create-table' }
+  ],
+  installation: [
+    { label: 'PostgreSQL Introduction', href: '/postgresql/introduction' },
+    { label: 'PostgreSQL pgAdmin 4', href: '/postgresql/pgadmin4' },
+    { label: 'PostgreSQL Create Table', href: '/postgresql/create-table' }
+  ],
+  pgadmin4: [
+    { label: 'PostgreSQL Create Table', href: '/postgresql/create-table' },
+    { label: 'PostgreSQL Insert Data', href: '/postgresql/insert-data' },
+    { label: 'PostgreSQL Select Data', href: '/postgresql/fetch-data' }
+  ],
+  'create-table': [
+    { label: 'PostgreSQL Insert Data', href: '/postgresql/insert-data' },
+    { label: 'PostgreSQL Select Data', href: '/postgresql/fetch-data' },
+    { label: 'PostgreSQL ADD COLUMN', href: '/postgresql/add-column' }
+  ],
+  'insert-data': [
+    { label: 'PostgreSQL Select Data', href: '/postgresql/fetch-data' },
+    { label: 'PostgreSQL UPDATE', href: '/postgresql/update-data' },
+    { label: 'PostgreSQL DELETE', href: '/postgresql/delete-data' }
+  ],
+  'fetch-data': [
+    { label: 'PostgreSQL Insert Data', href: '/postgresql/insert-data' },
+    { label: 'PostgreSQL UPDATE', href: '/postgresql/update-data' },
+    { label: 'PostgreSQL DELETE', href: '/postgresql/delete-data' }
+  ],
+  'add-column': [
+    { label: 'PostgreSQL ALTER COLUMN', href: '/postgresql/alter-column' },
+    { label: 'PostgreSQL DROP COLUMN', href: '/postgresql/drop-column' },
+    { label: 'PostgreSQL Create Table', href: '/postgresql/create-table' }
+  ],
+  'update-data': [
+    { label: 'PostgreSQL Select Data', href: '/postgresql/fetch-data' },
+    { label: 'PostgreSQL Insert Data', href: '/postgresql/insert-data' },
+    { label: 'PostgreSQL DELETE', href: '/postgresql/delete-data' }
+  ],
+  'alter-column': [
+    { label: 'PostgreSQL ADD COLUMN', href: '/postgresql/add-column' },
+    { label: 'PostgreSQL DROP COLUMN', href: '/postgresql/drop-column' },
+    { label: 'PostgreSQL Create Table', href: '/postgresql/create-table' }
+  ],
+  'drop-column': [
+    { label: 'PostgreSQL ADD COLUMN', href: '/postgresql/add-column' },
+    { label: 'PostgreSQL ALTER COLUMN', href: '/postgresql/alter-column' },
+    { label: 'PostgreSQL DROP TABLE', href: '/postgresql/drop-table' }
+  ],
+  'delete-data': [
+    { label: 'PostgreSQL Select Data', href: '/postgresql/fetch-data' },
+    { label: 'PostgreSQL UPDATE', href: '/postgresql/update-data' },
+    { label: 'PostgreSQL DROP TABLE', href: '/postgresql/drop-table' }
+  ],
+  'drop-table': [
+    { label: 'PostgreSQL Create Table', href: '/postgresql/create-table' },
+    { label: 'PostgreSQL DELETE', href: '/postgresql/delete-data' },
+    { label: 'PostgreSQL ADD COLUMN', href: '/postgresql/add-column' }
+  ]
+};
+
+const POSTGRESQL_ALL_READING: FurtherReadingLink[] = [
+  { label: 'PostgreSQL SELECT', href: '/postgresql/select' },
+  { label: 'PostgreSQL WHERE', href: '/postgresql/where' },
+  { label: 'PostgreSQL ORDER BY', href: '/postgresql/order-by' },
+  { label: 'PostgreSQL Joins', href: '/postgresql/joins' },
+  { label: 'PostgreSQL GROUP BY', href: '/postgresql/group-by' },
+  { label: 'PostgreSQL HAVING', href: '/postgresql/having' },
+  { label: 'PostgreSQL CASE', href: '/postgresql/case' }
+];
+
+const MYSQL_ALL_READING: FurtherReadingLink[] = [
+  { label: 'MySQL SQL', href: '/mysql/sql' },
+  { label: 'MySQL SELECT', href: '/mysql/select' },
+  { label: 'MySQL WHERE', href: '/mysql/where' },
+  { label: 'MySQL Joins', href: '/mysql/joins' },
+  { label: 'MySQL GROUP BY', href: '/mysql/group-by' },
+  { label: 'MySQL Create Table', href: '/mysql/create-table' },
+  { label: 'MySQL Constraints', href: '/mysql/constraints' },
+  { label: 'MySQL Prepared Statements', href: '/mysql/prepared-statements' }
+];
+
 export function appendFurtherReading(
   document: Document,
   pageKey: string,
@@ -184,7 +268,11 @@ export function appendFurtherReading(
   );
   if (alreadyPresent) return;
 
-  const links = pageKey === 'springboot-index'
+  const links = pageKey.startsWith('mysql-')
+    ? MYSQL_ALL_READING
+    : pageKey.startsWith('postgresql-')
+    ? POSTGRESQL_READING[pageKey.replace('postgresql-', '')] ?? POSTGRESQL_ALL_READING
+    : pageKey === 'springboot-index'
     ? SPRING_BOOT_ALL_READING
     : pageKey === 'java-index'
       ? JAVA_ALL_READING
@@ -194,7 +282,9 @@ export function appendFurtherReading(
       ? JAVA_READING[pageKey]
       : fallbackLinks;
   const isOverview = pageKey === 'springboot-index' || pageKey === 'java-index';
-  const uniqueLinks = (isOverview ? links : [overviewLink, ...links])
+  const isPostgreSql = pageKey.startsWith('postgresql-');
+  const isMySql = pageKey.startsWith('mysql-');
+  const uniqueLinks = (isOverview || isPostgreSql || isMySql ? links : [overviewLink, ...links])
     .filter((link, index, all) => all.findIndex((item) => item.href === link.href) === index)
     .slice(0, isOverview ? undefined : 4);
 
@@ -204,7 +294,11 @@ export function appendFurtherReading(
   heading.textContent = 'Further Reading';
   section.appendChild(heading);
   const paragraph = document.createElement('p');
-  paragraph.textContent = 'Continue learning with these related Java and Spring Boot tutorials:';
+  paragraph.textContent = isMySql
+    ? 'Continue learning with these related MySQL tutorials:'
+    : isPostgreSql
+    ? 'Continue learning with these related PostgreSQL tutorials:'
+    : 'Continue learning with these related Java and Spring Boot tutorials:';
   section.appendChild(paragraph);
   const list = document.createElement('ul');
   uniqueLinks.forEach((link) => {

@@ -1,0 +1,51 @@
+<main class="container-xl py-5">
+  <section class="spring-hero page-hero">
+    <p class="spring-pill">PostgreSQL</p>
+    <h1>PostgreSQL ADD COLUMN</h1>
+    <p>Add a new column to an existing PostgreSQL table with the <code>ALTER TABLE</code> statement.</p>
+  </section>
+  <div class="note-box">
+    <strong>Before you begin:</strong> Make sure the <code>products</code> table exists
+    and connect to the database in pgAdmin 4's Query Tool.
+  </div>
+
+  <h2 id="alter-table-statement">The ALTER TABLE statement</h2>
+  <p>
+    To add a column to an existing table, use the <code>ALTER TABLE</code> statement.
+    It can also be used to delete or modify columns and to add or remove constraints
+    from an existing table.
+  </p>
+
+  <h2 id="add-column">ADD COLUMN</h2>
+  <p>
+    We will add a column named <code>color</code> to the <code>products</code> table.
+    When adding a column, specify its data type. The <code>VARCHAR(255)</code> type
+    stores text with a maximum length of 255 characters.
+  </p>
+  <pre><code>ALTER TABLE products
+ADD COLUMN color VARCHAR(255);</code></pre>
+  <p>
+    <code>ALTER TABLE products</code> identifies the table to change,
+    <code>ADD COLUMN color</code> gives the new column its name, and
+    <code>VARCHAR(255)</code> defines the kind of data it can store.
+  </p>
+
+  <h2 id="alter-table-result">Result</h2>
+  <p>After you execute the statement, PostgreSQL reports:</p>
+  <pre><code>ALTER TABLE</code></pre>
+  <p>This confirms that the table structure was changed successfully.</p>
+
+  <h2 id="display-table">Display the table</h2>
+  <p>To check the result, use a <code>SELECT</code> statement:</p>
+  <pre><code>SELECT * FROM products;</code></pre>
+  <p>
+    The query displays all rows and columns in <code>products</code>. The new
+    <code>color</code> column will appear in the result. Existing rows contain
+    <code>NULL</code> in this column until a color is assigned.
+  </p>
+
+  <div class="note-box">
+    <strong>Remember:</strong> <code>ALTER TABLE</code> changes the table structure.
+    Test schema changes before applying them to production databases.
+  </div>
+</main>

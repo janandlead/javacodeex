@@ -1,0 +1,2 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">PostgreSQL</p><h1>PostgreSQL SUM</h1><p>Calculate the total of numeric values.</p></section><h2>Calculate a total</h2><p>Assuming the table has a numeric <code>price</code> column, use <code>SUM</code> to add its non-null values:</p><pre><code>SELECT SUM(price) AS total_price
+FROM products;</code></pre><p>Use <code>COALESCE(SUM(price), 0)</code> when you want zero instead of null for a table with no matching values.</p></main>

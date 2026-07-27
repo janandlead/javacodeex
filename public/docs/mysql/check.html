@@ -1,0 +1,4 @@
+<main class="container-xl py-5"><section class="spring-hero page-hero"><p class="spring-pill">MySQL Database</p><h1>MySQL Check</h1><p>Restrict values with a Boolean condition.</p></section><pre><code>CREATE TABLE products (
+  price DECIMAL(10, 2),
+  CHECK (price &gt;= 0)
+);</code></pre><p>CHECK prevents rows that violate the declared condition.</p></main>

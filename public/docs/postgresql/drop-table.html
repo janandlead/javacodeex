@@ -1,0 +1,41 @@
+<main class="container-xl py-5">
+  <section class="spring-hero page-hero">
+    <p class="spring-pill">PostgreSQL</p>
+    <h1>PostgreSQL DROP TABLE</h1>
+    <p>Permanently remove an existing PostgreSQL table and all data stored in it.</p>
+  </section>
+  <h2 id="drop-table-statement">The DROP TABLE statement</h2>
+  <p>
+    The <code>DROP TABLE</code> statement removes an existing table from the database.
+    Unlike <code>DELETE</code>, which removes rows while keeping the table,
+    <code>DROP TABLE</code> removes the table structure as well.
+  </p>
+
+  <div class="note-box">
+    <strong>Warning:</strong> Dropping a table permanently removes all rows, columns,
+    indexes, and constraints belonging to that table. Confirm the table name and
+    create a backup before running this statement.
+  </div>
+
+  <h2 id="drop-table">Drop the products table</h2>
+  <p>To remove the existing <code>products</code> table, run:</p>
+  <pre><code>DROP TABLE products;</code></pre>
+  <h2 id="drop-table-result">Result</h2>
+  <p>PostgreSQL reports:</p>
+  <pre><code>DROP TABLE</code></pre>
+  <p>This confirms that the table was removed successfully.</p>
+
+  <h2 id="display-table">Display the table</h2>
+  <p>If you try to query the removed table:</p>
+  <pre><code>SELECT * FROM products;</code></pre>
+  <p>PostgreSQL returns an error because the table no longer exists:</p>
+  <pre><code>ERROR: relation "products" does not exist
+LINE 1: SELECT * FROM products;</code></pre>
+
+  <h2 id="drop-if-exists">Avoid an error when the table is missing</h2>
+  <pre><code>DROP TABLE IF EXISTS products;</code></pre>
+  <p>
+    <code>IF EXISTS</code> allows the statement to complete without an error when
+    the table has already been removed.
+  </p>
+</main>

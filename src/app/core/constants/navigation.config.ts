@@ -73,8 +73,76 @@ export const MAIN_NAVIGATION: readonly NavigationItem[] = [
       { label: 'Hibernate Second-Level Cache', route: '/hibernate-second-level-cache' }
     ]
   },
-  { label: 'MySQL', route: '/mysql', icon: 'bi bi-database' },
-  { label: 'PostgreSQL', route: '/postgresql', icon: 'bi bi-server' },
+  {
+    label: 'MySQL', route: '/mysql', icon: 'bi bi-database', children: [
+      { label: 'MySQL SQL', heading: true },
+      { label: 'MySQL SQL', route: '/mysql/sql' }, { label: 'MySQL SELECT', route: '/mysql/select' }, { label: 'MySQL SELECT DISTINCT', route: '/mysql/select-distinct' },
+      { label: 'MySQL WHERE', route: '/mysql/where' }, { label: 'MySQL ORDER BY', route: '/mysql/order-by' }, { label: 'MySQL AND', route: '/mysql/and' },
+      { label: 'MySQL OR', route: '/mysql/or' }, { label: 'MySQL NOT', route: '/mysql/not' }, { label: 'MySQL INSERT INTO', route: '/mysql/insert-into' },
+      { label: 'MySQL NULL Values', route: '/mysql/null-values' }, { label: 'MySQL UPDATE', route: '/mysql/update' }, { label: 'MySQL DELETE', route: '/mysql/delete' },
+      { label: 'MySQL LIMIT', route: '/mysql/limit' }, { label: 'MySQL Aggregate Functions', route: '/mysql/aggregate-functions' }, { label: 'MySQL MIN()', route: '/mysql/min' },
+      { label: 'MySQL MAX()', route: '/mysql/max' }, { label: 'MySQL COUNT()', route: '/mysql/count' }, { label: 'MySQL SUM()', route: '/mysql/sum' },
+      { label: 'MySQL AVG()', route: '/mysql/avg' }, { label: 'MySQL LIKE', route: '/mysql/like' }, { label: 'MySQL Wildcards', route: '/mysql/wildcards' },
+      { label: 'MySQL IN', route: '/mysql/in' }, { label: 'MySQL BETWEEN', route: '/mysql/between' }, { label: 'MySQL Aliases', route: '/mysql/aliases' },
+      { label: 'MySQL Joins', route: '/mysql/joins' }, { label: 'MySQL INNER JOIN', route: '/mysql/inner-join' }, { label: 'MySQL LEFT JOIN', route: '/mysql/left-join' },
+      { label: 'MySQL RIGHT JOIN', route: '/mysql/right-join' }, { label: 'MySQL CROSS JOIN', route: '/mysql/cross-join' }, { label: 'MySQL Self Join', route: '/mysql/self-join' },
+      { label: 'MySQL UNION', route: '/mysql/union' }, { label: 'MySQL UNION ALL', route: '/mysql/union-all' }, { label: 'MySQL GROUP BY', route: '/mysql/group-by' },
+      { label: 'MySQL HAVING', route: '/mysql/having' }, { label: 'MySQL EXISTS', route: '/mysql/exists' }, { label: 'MySQL ANY', route: '/mysql/any' },
+      { label: 'MySQL ALL', route: '/mysql/all' }, { label: 'MySQL INSERT SELECT', route: '/mysql/insert-select' }, { label: 'MySQL CASE', route: '/mysql/case' },
+      { label: 'MySQL Null Functions', route: '/mysql/null-functions' }, { label: 'MySQL Stored Procedures', route: '/mysql/stored-procedures' }, { label: 'MySQL Comments', route: '/mysql/comments' },
+      { label: 'MySQL Operators', route: '/mysql/operators' },
+      { label: 'MySQL Database', heading: true },
+      { label: 'MySQL Create DB', route: '/mysql/create-db' }, { label: 'MySQL Drop DB', route: '/mysql/drop-db' }, { label: 'MySQL Create Table', route: '/mysql/create-table' },
+      { label: 'MySQL Drop Table', route: '/mysql/drop-table' }, { label: 'MySQL Alter Table', route: '/mysql/alter-table' }, { label: 'MySQL Constraints', route: '/mysql/constraints' },
+      { label: 'MySQL Not Null', route: '/mysql/not-null' }, { label: 'MySQL Unique', route: '/mysql/unique' }, { label: 'MySQL Primary Key', route: '/mysql/primary-key' },
+      { label: 'MySQL Foreign Key', route: '/mysql/foreign-key' }, { label: 'MySQL Check', route: '/mysql/check' }, { label: 'MySQL Default', route: '/mysql/default' },
+      { label: 'MySQL Create Index', route: '/mysql/create-index' }, { label: 'MySQL Auto Increment', route: '/mysql/auto-increment' }, { label: 'MySQL Dates', route: '/mysql/dates' },
+      { label: 'MySQL Views', route: '/mysql/views' }, { label: 'MySQL Injection', route: '/mysql/injection' }, { label: 'MySQL Prepared Statements', route: '/mysql/prepared-statements' }
+    ]
+  },
+  {
+    label: 'PostgreSQL', route: '/postgresql/introduction', icon: 'bi bi-server', children: [
+      { label: 'PostgreSQL Introduction', route: '/postgresql/introduction' },
+      { label: 'PostgreSQL installation', route: '/postgresql/installation' },
+      { label: 'PostgreSQL - pgAdmin4', route: '/postgresql/pgadmin4' },
+      { label: 'PostgreSQL Create Table', route: '/postgresql/create-table' },
+      { label: 'PostgreSQL Insert Data', route: '/postgresql/insert-data' },
+      { label: 'PostgreSQL Select Data', route: '/postgresql/fetch-data' },
+      { label: 'PostgreSQL ADD COLUMN', route: '/postgresql/add-column' },
+      { label: 'PostgreSQL UPDATE', route: '/postgresql/update-data' },
+      { label: 'PostgreSQL ALTER COLUMN', route: '/postgresql/alter-column' },
+      { label: 'PostgreSQL DROP COLUMN', route: '/postgresql/drop-column' },
+      { label: 'PostgreSQL DELETE', route: '/postgresql/delete-data' },
+      { label: 'PostgreSQL DROP TABLE', route: '/postgresql/drop-table' },
+      { label: 'PostgreSQL Operators', route: '/postgresql/operators' },
+      { label: 'PostgreSQL SELECT', route: '/postgresql/select' },
+      { label: 'PostgreSQL SELECT DISTINCT', route: '/postgresql/select-distinct' },
+      { label: 'PostgreSQL WHERE', route: '/postgresql/where' },
+      { label: 'PostgreSQL ORDER BY', route: '/postgresql/order-by' },
+      { label: 'PostgreSQL LIMIT', route: '/postgresql/limit' },
+      { label: 'PostgreSQL MIN and MAX', route: '/postgresql/min-max' },
+      { label: 'PostgreSQL COUNT', route: '/postgresql/count' },
+      { label: 'PostgreSQL SUM', route: '/postgresql/sum' },
+      { label: 'PostgreSQL AVG', route: '/postgresql/avg' },
+      { label: 'PostgreSQL LIKE', route: '/postgresql/like' },
+      { label: 'PostgreSQL IN', route: '/postgresql/in' },
+      { label: 'PostgreSQL BETWEEN', route: '/postgresql/between' },
+      { label: 'PostgreSQL AS', route: '/postgresql/as' },
+      { label: 'PostgreSQL Joins', route: '/postgresql/joins' },
+      { label: 'PostgreSQL INNER JOIN', route: '/postgresql/inner-join' },
+      { label: 'PostgreSQL LEFT JOIN', route: '/postgresql/left-join' },
+      { label: 'PostgreSQL RIGHT JOIN', route: '/postgresql/right-join' },
+      { label: 'PostgreSQL FULL JOIN', route: '/postgresql/full-join' },
+      { label: 'PostgreSQL CROSS JOIN', route: '/postgresql/cross-join' },
+      { label: 'PostgreSQL UNION', route: '/postgresql/union' },
+      { label: 'PostgreSQL GROUP BY', route: '/postgresql/group-by' },
+      { label: 'PostgreSQL HAVING', route: '/postgresql/having' },
+      { label: 'PostgreSQL EXISTS', route: '/postgresql/exists' },
+      { label: 'PostgreSQL ANY', route: '/postgresql/any' },
+      { label: 'PostgreSQL ALL', route: '/postgresql/all' },
+      { label: 'PostgreSQL CASE', route: '/postgresql/case' }
+    ]
+  },
   { label: 'Design Patterns', route: '/design-patterns', icon: 'bi bi-diagram-3' },
   { label: 'Spring AI', route: '/spring-ai', icon: 'bi bi-stars' }
 ];
@@ -86,5 +154,5 @@ export const FOOTER_NAVIGATION: readonly NavigationItem[] = [
   { label: 'Angular', route: '/angular' },
   { label: 'MySQL', route: '/mysql' },
   { label: 'MongoDB', route: '/mongodb' },
-  { label: 'PostgreSQL', route: '/postgresql' }
+  { label: 'PostgreSQL', route: '/postgresql/introduction' }
 ];

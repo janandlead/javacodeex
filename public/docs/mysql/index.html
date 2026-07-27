@@ -1,0 +1,25 @@
+<main class="container-xl py-5">
+  <section class="spring-hero page-hero">
+    <p class="spring-pill">MySQL</p>
+    <h1>MySQL Tutorials</h1>
+    <p>Learn MySQL SQL, database design, relationships, performance, and secure application practices through practical examples.</p>
+  </section>
+  <div class="note-box"><strong>Learning path:</strong> Start with SQL queries, then learn data changes, aggregation and joins, and finally database structure and security.</div>
+  <h2 id="mysql-sql">MySQL SQL</h2>
+  <p>MySQL is a relational database management system. SQL lets an application create tables, insert records, retrieve data, update existing rows, and remove records. A reliable query names the table and columns clearly, filters deliberately, and uses parameters for user-supplied values.</p>
+  <pre><code>SELECT name, price
+FROM products
+WHERE price &gt; 500
+ORDER BY price DESC
+LIMIT 10;</code></pre>
+  <p>This query selects specific columns, filters products, sorts the result, and limits the output. The individual lessons explain each clause and how clauses work together.</p>
+  <h2 id="data-changes">Changing data safely</h2>
+  <p><code>INSERT INTO</code> adds rows, <code>UPDATE</code> changes rows, and <code>DELETE</code> removes rows. Always list columns for inserts, preview the rows matched by a condition, and use a precise <code>WHERE</code> clause for updates and deletes. Transactions make related changes succeed or fail together.</p>
+  <h2 id="aggregation-and-joins">Aggregation and joins</h2>
+  <p>Aggregate functions such as <code>COUNT()</code>, <code>SUM()</code>, and <code>AVG()</code> summarize data. <code>GROUP BY</code> creates groups and <code>HAVING</code> filters those groups. Joins combine related tables through keys; choose INNER, LEFT, RIGHT, CROSS, or self joins according to how unmatched rows should be handled.</p>
+  <h2 id="database-design">Database structure</h2>
+  <p>Tables should use appropriate data types and constraints. Primary keys identify rows, foreign keys protect relationships, and NOT NULL, UNIQUE, CHECK, and DEFAULT rules protect valid values. Indexes can speed common lookups, but they also add storage and write cost. Views can provide a reusable read-only query interface.</p>
+  <h2 id="security">Security and production practice</h2>
+  <p>Never concatenate untrusted input into SQL. Use prepared statements, validate inputs, give application accounts only the privileges they need, protect credentials, and avoid exposing detailed database errors. Test schema changes and destructive statements on a safe copy before production.</p>
+  <div class="note-box"><strong>Next step:</strong> Open the MySQL SQL section in the left navigation and work through SELECT, WHERE, ORDER BY, INSERT, UPDATE, DELETE, joins, and aggregate functions in order.</div>
+</main>

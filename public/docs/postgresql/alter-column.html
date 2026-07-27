@@ -1,0 +1,51 @@
+<main class="container-xl py-5">
+  <section class="spring-hero page-hero">
+    <p class="spring-pill">PostgreSQL</p>
+    <h1>PostgreSQL ALTER COLUMN</h1>
+    <p>Change the data type or maximum size of a column in an existing PostgreSQL table.</p>
+  </section>
+  <h2 id="alter-table-statement">The ALTER TABLE statement</h2>
+  <p>
+    To change the data type or size of a table column, use the
+    <code>ALTER TABLE</code> statement. It can also add, delete, or modify columns
+    and add or drop constraints on an existing table.
+  </p>
+
+  <h2 id="change-type">ALTER COLUMN</h2>
+  <p>
+    We will change the data type of the <code>year</code> column in the
+    <code>products</code> table from <code>INT</code> to <code>VARCHAR(4)</code>.
+    Use <code>ALTER COLUMN</code>, followed by the <code>TYPE</code> keyword and the
+    new data type:
+  </p>
+  <pre><code>ALTER TABLE products
+ALTER COLUMN year TYPE VARCHAR(4);</code></pre>
+  <p>PostgreSQL reports:</p>
+  <pre><code>ALTER TABLE</code></pre>
+  <p>This confirms that the column definition was changed successfully.</p>
+
+  <div class="note-box">
+    <strong>Important:</strong> Existing values must be convertible to the new data
+    type. Numbers can usually be converted to text, but text cannot always be
+    converted to numbers. Always test a type change when the table already contains data.
+  </div>
+
+  <h2 id="change-size">Change the maximum allowed characters</h2>
+  <p>
+    You can use the same syntax to change the maximum length of the
+    <code>color</code> column from <code>VARCHAR(255)</code> to
+    <code>VARCHAR(30)</code>:
+  </p>
+  <pre><code>ALTER TABLE products
+ALTER COLUMN color TYPE VARCHAR(30);</code></pre>
+  <p>PostgreSQL reports:</p>
+  <pre><code>ALTER TABLE</code></pre>
+  <p>
+    The <code>color</code> column now accepts text with up to 30 characters. Existing
+    values longer than the new limit must be handled before reducing the column size.
+  </p>
+
+  <h2 id="verify-column">Verify the change</h2>
+  <pre><code>SELECT year, color
+FROM products;</code></pre>
+</main>
