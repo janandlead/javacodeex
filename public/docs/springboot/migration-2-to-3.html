@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Learn Spring Boot 2 to 3 migration with Java 17, Jakarta EE, Security, Hibernate, tracing, testing, and deployment steps." />
+    <meta name="keywords" content="Spring Boot 2 to 3 migration, Spring Boot 3 upgrade, Jakarta EE migration, Java 17 Spring Boot, Micrometer Tracing" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://javacodeex.com/spring-boot-2-to-3-migration" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta property="og:title" content="Spring Boot 2 to 3 Migration Guide | Java Codeex" />
+    <meta property="og:description" content="A practical guide to migrating Spring Boot 2 applications to Spring Boot 3, covering Java 17, Jakarta packages, Hibernate, Security, Actuator, tracing, AOT, and testing." />
+    <meta property="og:url" content="https://javacodeex.com/spring-boot-2-to-3-migration" />
+    <meta property="og:image" content="https://javacodeex.com/assets/images/javacodeex.jpg" />
+    <meta property="og:image:alt" content="Spring Boot 2 to 3 migration guide" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Spring Boot 2 to 3 Migration Guide | Java Codeex" />
+    <meta name="twitter:description" content="Migrate Spring Boot 2 applications to Spring Boot 3 with Java 17, Jakarta EE, Security 6, Micrometer Tracing, and a complete testing checklist." />
+    <meta name="twitter:image" content="https://javacodeex.com/assets/images/javacodeex.jpg" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Spring Boot 2 to 3 Migration Guide","description":"Learn Spring Boot 2 to 3 migration with Java 17, Jakarta EE, Security, Hibernate, tracing, testing, and deployment steps.","url":"https://javacodeex.com/spring-boot-2-to-3-migration","image":"https://javacodeex.com/assets/images/javacodeex.jpg","author":{"@type":"Organization","name":"Java Codeex"},"publisher":{"@type":"Organization","name":"Java Codeex"},"dateModified":"2026-07-27","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https://javacodeex.com/spring-boot-2-to-3-migration"}}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoObject","name":"Spring Boot 2 to Spring Boot 3 Migration Tutorial","description":"A practical video guide to migrating a Spring Boot 2 application to Spring Boot 3.","thumbnailUrl":"https://i.ytimg.com/vi/0eKF-mkZYXo/maxresdefault.jpg","embedUrl":"https://www.youtube.com/embed/0eKF-mkZYXo","contentUrl":"https://youtu.be/0eKF-mkZYXo?si=8q1ltC9mliMGKA1I","url":"https://javacodeex.com/spring-boot-2-to-3-migration","isPartOf":{"@type":"WebPage","@id":"https://javacodeex.com/spring-boot-2-to-3-migration"}}</script>
+    <title>Spring Boot 2 to 3 Migration Guide | Java Codeex</title>
+    <link rel="stylesheet" href="../site-theme.css" />
+    <link rel="stylesheet" href="./springboot.css" />
+  </head>
+  <body>
+    <section class="spring-hero"><div class="container-xl"><span class="spring-pill">Java Codeex</span><h1 class="mt-3">Spring Boot 2 to 3 Migration Guide</h1><p class="lead">A practical checklist for upgrading Java applications from Spring Boot 2 to Spring Boot 3.</p></div></section>
+    <main class="container-xl py-5">
+      <div class="spring-callout mb-4"><strong>Migration overview:</strong> Spring Boot 3 requires Java 17, Spring Framework 6, Jakarta EE namespaces, compatible dependencies, and updated security and observability configuration.</div>
+      <p class="migration-related-links"><strong>Related Spring Boot guides:</strong> <a href="/spring-boot-security">Spring Boot Security</a>, <a href="/spring-boot-actuator">Actuator and Monitoring</a>, <a href="/spring-boot-testing">Spring Boot Testing</a>, <a href="/spring-boot-data-jpa">Spring Data JPA</a>, and <a href="/spring-boot-deployment">Spring Boot Deployment</a>.</p>
+      <h2 id="java-version">1. Java Version Requirement</h2>
+      <figure class="migration-visual"><img src="/assets/images/spring-boot-migration/01-java-version.png" width="386" height="336" alt="Spring Boot 2 and Spring Boot 3 Java version comparison" loading="lazy" /><figcaption>Java version support comparison</figcaption></figure>
+      <div class="table-responsive"><table class="table table-bordered"><thead><tr><th>Spring Boot 2</th><th>Spring Boot 3</th></tr></thead><tbody><tr><td>Supports Java 8, 11, or 17 depending on the version.</td><td>Requires Java 17 minimum.</td></tr><tr><td>Older projects can run on Java 8 or 11.</td><td>Uses Java 17 features and modern JVM support.</td></tr></tbody></table></div>
+      <p>Configure Java 17 in Maven, CI, Docker, and production:</p>
+      <pre><code>&lt;properties&gt;
+    &lt;java.version&gt;17&lt;/java.version&gt;
+&lt;/properties&gt;</code></pre>
+
+      <h2 id="jakarta-migration">2. Jakarta EE Migration</h2>
+      <figure class="migration-visual"><img src="/assets/images/spring-boot-migration/02-jakarta-ee.png" width="385" height="334" alt="Spring Boot 2 javax and Spring Boot 3 jakarta package comparison" loading="lazy" /><figcaption>Jakarta EE namespace migration</figcaption></figure>
+      <p>This is the biggest change. Spring Boot 2 uses <code>javax.*</code> packages from Java EE, while Spring Boot 3 uses <code>jakarta.*</code> packages from Jakarta EE 10.</p>
+      <pre><code>// Spring Boot 2
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+
+// Spring Boot 3
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;</code></pre>
+      <div class="table-responsive"><table class="table table-bordered"><thead><tr><th>Spring Boot 2</th><th>Spring Boot 3</th></tr></thead><tbody><tr><td><code>javax.persistence.*</code></td><td><code>jakarta.persistence.*</code></td></tr><tr><td><code>javax.validation.*</code></td><td><code>jakarta.validation.*</code></td></tr><tr><td><code>javax.servlet.*</code></td><td><code>jakarta.servlet.*</code></td></tr><tr><td><code>javax.annotation.*</code></td><td><code>jakarta.annotation.*</code></td></tr></tbody></table></div>
+
+      <h2 id="spring-framework">3. Spring Framework Version</h2>
+      <figure class="migration-visual"><img src="/assets/images/spring-boot-migration/03-spring-framework.png" width="355" height="336" alt="Spring Framework 5 and Spring Framework 6 comparison for Spring Boot migration" loading="lazy" /><figcaption>Spring Framework 5 to 6 upgrade</figcaption></figure>
+      <div class="table-responsive"><table class="table table-bordered"><thead><tr><th>Spring Boot 2</th><th>Spring Boot 3</th></tr></thead><tbody><tr><td>Uses Spring Framework 5.</td><td>Uses Spring Framework 6.</td></tr><tr><td>Supports older Java versions.</td><td>Built for Java 17 and newer.</td></tr><tr><td>Less native image focus.</td><td>Better AOT and native image support.</td></tr></tbody></table></div>
+
+      <h2 id="hibernate-version">4. Hibernate Version</h2>
+      <figure class="migration-visual"><img src="/assets/images/spring-boot-migration/04-hibernate.png" width="370" height="336" alt="Hibernate 5 and Hibernate 6 comparison for Spring Boot 2 to 3 migration" loading="lazy" /><figcaption>Hibernate and JPA compatibility changes</figcaption></figure>
+      <div class="table-responsive"><table class="table table-bordered"><thead><tr><th>Spring Boot 2</th><th>Spring Boot 3</th></tr></thead><tbody><tr><td>Hibernate 5.x and <code>javax.persistence</code>.</td><td>Hibernate 6.x and <code>jakarta.persistence</code>.</td></tr><tr><td>Older query handling.</td><td>Improved SQL generation and type system.</td></tr></tbody></table></div>
+      <p>Update entities and review queries, dialects, identifiers, and custom Hibernate types:</p>
+      <pre><code>import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Employee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private Double salary;
+}</code></pre>
+
+      <h2 id="security-changes">5. Security Changes</h2>
+      <figure class="migration-visual"><img src="/assets/images/spring-boot-migration/05-security.png" width="386" height="334" alt="Spring Security configuration changes from Spring Boot 2 to Spring Boot 3" loading="lazy" /><figcaption>Spring Security configuration changes</figcaption></figure>
+      <p>Spring Boot 2 commonly used <code>WebSecurityConfigurerAdapter</code>. In Spring Boot 3, it is removed and security is configured with a <code>SecurityFilterChain</code> bean.</p>
+      <pre><code>// Spring Boot 2
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+            .antMatchers("/public/**").permitAll()
+            .anyRequest().authenticated();
+    }
+}</code></pre>
+      <pre><code>// Spring Boot 3
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(auth -&gt; auth
+            .requestMatchers("/public/**").permitAll()
+            .anyRequest().authenticated());
+        return http.build();
+    }
+}</code></pre>
+      <p><strong>Important changes:</strong> <code>authorizeRequests()</code> becomes <code>authorizeHttpRequests()</code>; <code>antMatchers()</code> becomes <code>requestMatchers()</code>; and <code>WebSecurityConfigurerAdapter</code> is removed.</p>
+
+      <h2 id="actuator">6. Actuator Endpoint Changes</h2>
+      <figure class="migration-visual"><img src="/assets/images/spring-boot-migration/06-actuator.png" width="355" height="334" alt="Spring Boot Actuator and metrics comparison for Spring Boot 2 to 3" loading="lazy" /><figcaption>Actuator and metrics improvements</figcaption></figure>
+      <p>Spring Boot 3 improves Actuator metrics and observability support through Micrometer. Add the Actuator starter and expose only the endpoints you need.</p>
+      <pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+      <pre><code>management.endpoints.web.exposure.include=health,info,metrics,prometheus</code></pre>
+
+      <h2 id="observability">7. Observability and Tracing</h2>
+      <figure class="migration-visual"><img src="/assets/images/spring-boot-migration/07-observability.png" width="355" height="334" alt="Spring Cloud Sleuth and Micrometer Tracing comparison for Spring Boot migration" loading="lazy" /><figcaption>Tracing and observability migration</figcaption></figure>
+      <p>Spring Boot 2 applications often use Spring Cloud Sleuth. Spring Boot 3 uses Micrometer Tracing and the Micrometer Observation API.</p>
+      <div class="table-responsive"><table class="table table-bordered"><thead><tr><th>Spring Boot 2</th><th>Spring Boot 3</th></tr></thead><tbody><tr><td>Spring Cloud Sleuth.</td><td>Micrometer Tracing.</td></tr><tr><td>Sleuth-managed trace and span IDs.</td><td>Micrometer Observation API.</td></tr><tr><td>Older tracing model.</td><td>Modern observability model.</td></tr></tbody></table></div>
+      <pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;io.micrometer&lt;/groupId&gt;
+    &lt;artifactId&gt;micrometer-tracing-bridge-brave&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.zipkin.reporter2&lt;/groupId&gt;
+    &lt;artifactId&gt;zipkin-reporter-brave&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+
+      <h2 id="native-image">8. Native Image and AOT Support</h2>
+      <figure class="migration-visual"><img src="/assets/images/spring-boot-migration/08-native-image-aot.png" width="370" height="334" alt="Spring Boot 2 and Spring Boot 3 native image and AOT support comparison" loading="lazy" /><figcaption>Native image and AOT support</figcaption></figure>
+      <div class="table-responsive"><table class="table table-bordered"><thead><tr><th>Spring Boot 2</th><th>Spring Boot 3</th></tr></thead><tbody><tr><td>Limited native support.</td><td>Strong AOT and GraalVM native support.</td></tr><tr><td>Slower startup and higher memory usage compared with native.</td><td>Faster startup and lower memory usage are possible.</td></tr></tbody></table></div>
+      <pre><code>&lt;plugin&gt;
+    &lt;groupId&gt;org.graalvm.buildtools&lt;/groupId&gt;
+    &lt;artifactId&gt;native-maven-plugin&lt;/artifactId&gt;
+&lt;/plugin&gt;</code></pre>
+      <p>Spring Boot 3 native images are useful for serverless applications, AWS Lambda, Kubernetes scale-to-zero applications, and fast-startup microservices.</p>
+
+      <h2 id="configuration-binding">9. Configuration Property Binding</h2>
+      <p>Spring Boot 3 has stricter configuration binding. Invalid or mismatched configuration can fail faster, helping catch issues early.</p>
+      <pre><code>@ConfigurationProperties(prefix = "app")
+public class AppProperties {
+    private String name;
+    private int timeout;
+    // getters and setters
+}
+
+app.name=order-service
+app.timeout=30</code></pre>
+
+      <h2 id="rest-api">10. REST API Example Difference</h2>
+      <p>The controller structure can remain the same; the key migration is the validation import.</p>
+      <pre><code>// Spring Boot 2
+import javax.validation.Valid;
+
+// Spring Boot 3
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/employees")
+public class EmployeeController {
+    @PostMapping
+    public Employee createEmployee(@Valid @RequestBody Employee employee) {
+        return employee;
+    }
+}</code></pre>
+
+      <h2 id="servlet-api">11. Servlet API Change</h2>
+      <pre><code>// Spring Boot 2
+import javax.servlet.http.HttpServletRequest;
+
+// Spring Boot 3
+import jakarta.servlet.http.HttpServletRequest;</code></pre>
+      <p>Example interceptor in Spring Boot 3:</p>
+      <pre><code>import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.servlet.HandlerInterceptor;
+
+public class RequestInterceptor implements HandlerInterceptor {
+    @Override
+    public boolean preHandle(HttpServletRequest request,
+                             HttpServletResponse response,
+                             Object handler) {
+        String correlationId = request.getHeader("X-Correlation-ID");
+        System.out.println("Correlation ID: " + correlationId);
+        return true;
+    }
+}</code></pre>
+
+      <h2 id="dependency-compatibility">12. Dependency Compatibility</h2>
+      <p>Spring Boot 3 requires compatible third-party libraries. Old libraries that still depend on <code>javax.*</code> may fail at startup or runtime.</p>
+      <div class="spring-callout"><strong>Common error:</strong> <code>ClassNotFoundException: javax.servlet.Filter</code></div>
+      <p><strong>Solution:</strong> upgrade the dependency to a version that supports <code>jakarta.*</code>, then run the dependency tree and application startup tests again.</p>
+
+      <h2 id="testing-changes">13. Testing Changes</h2>
+      <p>Spring Boot 3 uses newer versions of JUnit, Mockito, Spring Test, and Jakarta APIs. Run unit, slice, integration, security, persistence, and full application startup tests.</p>
+      <pre><code>@SpringBootTest
+class EmployeeServiceTest {
+    @Autowired
+    private EmployeeService employeeService;
+
+    @Test
+    void testCreateEmployee() {
+        Employee employee = new Employee();
+        employee.setName("Anand");
+        Employee saved = employeeService.save(employee);
+        assertNotNull(saved);
+    }
+}</code></pre>
+
+      <h2 id="migration-checklist">Migration Checklist: Spring Boot 2 to Spring Boot 3</h2>
+      <ol><li>Upgrade Java version to 17.</li><li>Upgrade Spring Boot version to 3.x.</li><li>Replace <code>javax.*</code> imports with <code>jakarta.*</code>.</li><li>Upgrade Spring Security configuration.</li><li>Replace <code>WebSecurityConfigurerAdapter</code>.</li><li>Upgrade Hibernate and JPA dependencies.</li><li>Update third-party libraries.</li><li>Check Actuator and tracing configuration.</li><li>Replace Spring Cloud Sleuth with Micrometer Tracing.</li><li>Run all unit and integration tests.</li><li>Fix deprecated APIs.</li><li>Validate application properties.</li><li>Test Docker and Kubernetes deployment.</li></ol>
+
+      <h2 id="common-questions">Spring Boot 2 to 3 Migration FAQs</h2>
+      <h3>What is the biggest Spring Boot 2 to 3 change?</h3><p>The Jakarta EE namespace migration from <code>javax.*</code> to <code>jakarta.*</code>, together with the Java 17 requirement, affects application code and dependencies.</p>
+      <h3>Can I migrate directly to Spring Boot 3?</h3><p>Use the latest suitable Spring Boot 2.7 release first, resolve deprecations, then upgrade the parent or BOM to Spring Boot 3.</p>
+      <h3>Why does a third-party library fail after migration?</h3><p>It may still reference Java EE <code>javax.*</code> classes. Upgrade it to a Jakarta-compatible version instead of changing third-party code blindly.</p>
+      <p><a class="btn btn-success" href="index.html">Back to Spring Boot Course</a></p>
+    </main>
+  </body>
+</html>

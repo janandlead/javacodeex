@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build && node scripts/prerender-documents.mjs",
     "sitemap": "node scripts/generate-sitemap.mjs",
     "seo:audit": "node scripts/seo-audit.mjs",
     "watch": "ng build --watch --configuration development",

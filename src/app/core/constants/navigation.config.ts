@@ -37,13 +37,16 @@ export const MAIN_NAVIGATION: readonly NavigationItem[] = [
       { label: 'Spring Boot Data JPA', route: '/spring-boot-data-jpa' },
       { label: 'Spring Boot Security', route: '/spring-boot-security' },
       { label: 'Spring Boot Global Exception Handling', route: '/spring-boot-global-exception-handling' },
+      { label: 'Spring Boot Profiles', route: '/spring-boot-profiles' },
+      { label: 'Spring Boot Scheduler', route: '/spring-boot-scheduler' },
       { label: 'Spring Boot REST API', route: '/spring-boot-rest-api' },
       { label: 'REST API Design Best Practices', route: '/spring-boot-rest-api-design' },
       { label: 'Spring Boot Request Validation', route: '/spring-boot-validation' },
       { label: 'Spring Boot Testing', route: '/spring-boot-testing' },
       { label: 'Spring Boot Testing Comprehensive Guide', route: '/spring-boot/testing-comprehensive' },
       { label: 'Spring Boot Actuator and Monitoring', route: '/spring-boot-actuator' },
-      { label: 'Spring Boot Deployment', route: '/spring-boot-deployment' }
+      { label: 'Spring Boot Deployment', route: '/spring-boot-deployment' },
+      { label: 'Spring Boot 2 to 3 Migration', route: '/spring-boot-2-to-3-migration' }
     ]
   },
   { label: 'Angular', route: '/angular', icon: 'bi bi-braces' },

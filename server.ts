@@ -24,6 +24,10 @@ export function app(): express.Express {
     maxAge: '1y'
   }));
 
+  server.get('/spring-boot-2-to-3-migration', (_req, res) => {
+    res.sendFile(join(browserDistFolder, 'spring-boot-2-to-3-migration', 'index.html'));
+  });
+
   // All regular routes use the Angular engine
   server.get('*', (req, res, next) => {
     const { protocol, originalUrl, baseUrl, headers } = req;

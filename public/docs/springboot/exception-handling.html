@@ -87,8 +87,16 @@
           </div>
         </div>
       </div>
+      <figure class="exception-handling-visual">
+        <img src="/assets/images/springboot/exception-handling-flow.png" width="1664" height="936" alt="Spring Boot exception handling flow from REST client through controller, service, exception, RestControllerAdvice, and consistent JSON error response" loading="lazy" />
+        <figcaption>How Spring Boot converts exceptions into safe, consistent API responses</figcaption>
+      </figure>
 
       <h2 id="error-response">Choose the correct HTTP status</h2>
+      <figure class="exception-handling-visual">
+        <img src="/assets/images/springboot/http-error-status-codes.png" width="1664" height="936" alt="HTTP status code guide for Spring Boot APIs covering 400, 401, 403, 404, 409, and 500 errors" loading="lazy" />
+        <figcaption>Choose the HTTP status that matches the failure</figcaption>
+      </figure>
       <div class="table-responsive">
         <table class="table table-bordered spring-table">
           <thead>
@@ -168,6 +176,10 @@ public class GlobalExceptionHandler {
 }</code></pre>
 
       <h2 id="api-error-response">Create one consistent error response</h2>
+      <figure class="exception-handling-visual">
+        <img src="/assets/images/springboot/consistent-api-error-response.png" width="1664" height="936" alt="Consistent Spring Boot API error response containing timestamp, status, error, message, and path fields" loading="lazy" />
+        <figcaption>A predictable error response is easier for clients to consume and test</figcaption>
+      </figure>
       <pre class="spring-code"><code>public record ApiError(
         Instant timestamp,
         int status,

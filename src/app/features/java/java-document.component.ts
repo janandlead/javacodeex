@@ -1,9 +1,11 @@
 import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation, inject } from '@angular/core';
+import { ApplicationRef, Component, ComponentRef, EnvironmentInjector, HostListener, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation, createComponent, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Router } from '@angular/router';
 import { createTutorialFallback, normalizeTutorialHeadings } from '../shared/tutorial-fallback';
+import { appendFurtherReading } from '../../shared/tutorial-further-reading';
+import { YoutubeVideoComponent } from '../../shared/components/youtube-video/youtube-video.component';
 
 @Component({
   selector: 'app-java-document', standalone: true, imports: [RouterLink],
@@ -28,12 +30,15 @@ export class JavaDocumentComponent implements OnInit, OnChanges {
   private readonly http = inject(HttpClient);
   private readonly router = inject(Router);
   private readonly document = inject(DOCUMENT);
+  private readonly applicationRef = inject(ApplicationRef);
+  private readonly environmentInjector = inject(EnvironmentInjector);
+  private videoRef?: ComponentRef<YoutubeVideoComponent>;
 
   ngOnInit(): void {
     const documentFile = this.topic ? `${this.topic}.html` : this.fileName;
     this.html = createTutorialFallback(this.title, this.description, 'Java', this.primaryKeyword);
     this.http.get(`/docs/java/${documentFile}`, { responseType: 'text' }).subscribe({
-      next: (source) => { this.html = this.extractDocument(source); this.loading = false; setTimeout(() => this.scrollToSection(), 0); },
+      next: (source) => { this.html = this.extractDocument(source); this.loading = false; setTimeout(() => { this.renderVideoComponent(); this.scrollToSection(); }, 0); },
       error: () => { this.loading = false; this.error = false; }
     });
   }
@@ -77,6 +82,26 @@ export class JavaDocumentComponent implements OnInit, OnChanges {
     if (!section) return;
     const target = document.getElementById(decodeURIComponent(section));
     target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  private renderVideoComponent(): void {
+    if (this.fileName !== 'marker-interface.html' || this.videoRef) return;
+    const article = this.document.querySelector<HTMLElement>('.legacy-document');
+    const body = article?.querySelector<HTMLElement>('.document-body');
+    if (!article || !body) return;
+    article.querySelector('.lesson-video')?.remove();
+    const host = this.document.createElement('div');
+    host.className = 'java-document-video';
+    const titleBlock = body.querySelector<HTMLElement>('.document-title');
+    if (titleBlock) {
+      titleBlock.insertAdjacentElement('afterend', host);
+    } else {
+      body.prepend(host);
+    }
+    this.videoRef = createComponent(YoutubeVideoComponent, { environmentInjector: this.environmentInjector, hostElement: host });
+    this.applicationRef.attachView(this.videoRef.hostView);
+    this.videoRef.setInput('videoUrl', 'https://youtu.be/smMODFC5Ewk?si=eFtMoSgop4gyogqI');
+    this.videoRef.setInput('title', 'Java Marker Interfaces Tutorial');
   }
 
   private extractDocument(source: string): string {
@@ -125,6 +150,9 @@ export class JavaDocumentComponent implements OnInit, OnChanges {
     document.querySelectorAll('script, style, link, header, nav, footer, .java-subnav, .site-footer, .d-flex.justify-content-between').forEach((element) => element.remove());
     document.querySelectorAll('.toc').forEach((toc) => toc.closest('[class*="col-lg-4"]')?.remove() ?? toc.remove());
     normalizeTutorialHeadings(document);
+    if (this.fileName === 'index.html') {
+      document.querySelectorAll('.section-card[id] ul.list-group').forEach((list) => list.remove());
+    }
     document.querySelectorAll('a[href]').forEach((anchor) => {
       const href = anchor.getAttribute('href') ?? '';
       const target = href.split('#')[0].split('?')[0];
@@ -148,6 +176,15 @@ export class JavaDocumentComponent implements OnInit, OnChanges {
       if (!image.getAttribute('height')) image.setAttribute('height', '500');
       if (!image.getAttribute('loading')) image.setAttribute('loading', sourcePath.includes('javacodeex') ? 'eager' : 'lazy');
     });
+    appendFurtherReading(
+      document,
+      this.fileName === 'index.html' ? 'java-index' : this.topic || this.fileName.replace(/\.html$/, ''),
+      [
+        ...(this.previousRoute ? [{ label: this.previousLabel, href: this.previousRoute }] : []),
+        ...(this.nextRoute ? [{ label: this.nextLabel, href: this.nextRoute }] : [])
+      ],
+      { label: 'Java Tutorial Overview', href: '/java-tutorial-overview' }
+    );
     return document.body.innerHTML;
   }
 }

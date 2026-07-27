@@ -152,6 +152,10 @@
           </li>
         </ul>
       </div>
+      <figure class="project-structure-visual">
+        <img src="/assets/images/springboot/project-structure-overview.png" width="1664" height="936" alt="Spring Boot project structure showing src main Java packages, resources, tests, and Maven pom.xml" loading="lazy" />
+        <figcaption>Typical Spring Boot project structure and package layout</figcaption>
+      </figure>
       <h2 id="package-responsibilities">Package responsibilities</h2>
       <div class="table-responsive">
         <table class="table table-bordered spring-table">
@@ -405,7 +409,6 @@ SPRING_PROFILES_ACTIVE=prod</code></pre>
       </ul>
       <h2 id="package-rules">Package and layering rules</h2>
       <div class="concept-diagram">
-        <figcaption>Typical request flow</figcaption>
         <div class="flowchart">
           <div class="flowchart-node">HTTP client</div>
           <div class="flowchart-arrow">&darr;</div>
@@ -418,6 +421,10 @@ SPRING_PROFILES_ACTIVE=prod</code></pre>
           <div class="flowchart-node result">Response DTO -> HTTP client</div>
         </div>
       </div>
+      <figure class="project-structure-visual">
+        <img src="/assets/images/springboot/project-structure-request-flow.png" width="1664" height="936" alt="Spring Boot request flow from HTTP client through controller, request DTO, service, repository, database, and response DTO" loading="lazy" />
+        <figcaption>How a request moves through Spring Boot application layers</figcaption>
+      </figure>
       <ul class="lh-lg">
         <li>Controllers depend on services, not directly on repositories.</li>
         <li>

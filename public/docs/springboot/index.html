@@ -259,9 +259,11 @@ public class HelloController {
       <div id="basics" class="card section-card mb-5 p-4">
         <h2 class="section-title mb-1">Spring Boot Core</h2>
         <p class="text-muted mb-3">
-          Understand the Spring Boot foundation: application startup,
-          auto-configuration, starters, beans, dependency injection, scopes, and
-          configuration.
+          Understand how a Spring Boot application starts and how its core
+          building blocks work together. This foundation covers auto-configuration,
+          starters, application context, dependency injection, bean lifecycle,
+          configuration properties, and profiles so you can build a maintainable
+          application before adding web or database features.
         </p>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
@@ -339,13 +341,14 @@ public class HelloController {
       <div id="aop" class="card section-card mb-5 p-4">
         <h2 class="section-title mb-1">Aspect-Oriented Programming (AOP)</h2>
         <p class="text-muted mb-3">
-          Learn how Spring separates cross-cutting concerns such as logging,
-          transactions, security, caching, and performance monitoring from
-          business logic.
+          Learn how AOP keeps cross-cutting behavior such as logging,
+          transactions, security, caching, and performance monitoring separate
+          from business logic. You will understand advice, pointcuts, aspects,
+          custom annotations, and the situations where AOP improves a design.
         </p>
         <ul class="list-group list-group-flush mb-3">
           <li class="list-group-item">
-            <a href="https://javacodeex.com/springboot/index.html#aop">Introduction to AOP</a>
+            <a href="./aop.html">Introduction to AOP</a>
           </li>
           <li class="list-group-item">
             <a href="./aop.html#aop-terminology">AOP Terminology</a>
@@ -374,8 +377,11 @@ public class HelloController {
       <div id="data-jpa" class="card section-card mb-5 p-4">
         <h2 class="section-title mb-1">Spring Data JPA</h2>
         <p class="text-muted mb-3">
-          Learn how Spring Boot maps Java objects to database tables and
-          provides clean, reliable data-access operations.
+          Learn how Spring Data JPA connects Java domain objects with relational
+          databases through entities, repositories, relationships, queries, and
+          transactions. The topic also explains CRUD workflows, pagination,
+          database configuration, MongoDB integration, auditing, and common
+          performance issues such as the N+1 query problem.
         </p>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
@@ -529,8 +535,11 @@ public class HelloController {
       <div id="security" class="card section-card mb-5 p-4">
         <h2 class="section-title mb-1">Spring Security</h2>
         <p class="text-muted mb-3">
-          Learn how Spring Security authenticates users, protects endpoints, and
-          applies authorization rules.
+          Build secure applications by understanding authentication,
+          authorization, password encoding, roles, permissions, CSRF, CORS,
+          JWT-based APIs, filter chains, and method security. The focus is on
+          designing a complete security flow that protects both users and
+          backend endpoints.
         </p>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
@@ -583,8 +592,10 @@ public class HelloController {
       <div id="exception-handling" class="card section-card mb-5 p-4">
         <h2 class="section-title mb-1">Global Exception Handling</h2>
         <p class="text-muted mb-3">
-          Create one consistent error-handling layer for your REST API instead
-          of repeating try/catch blocks in every controller.
+          Create one consistent error-handling layer for a REST API instead of
+          repeating try/catch blocks in every controller. This topic covers
+          global handlers, custom exceptions, validation failures, structured
+          error responses, safe logging, and practical error-handling practices.
         </p>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
@@ -638,8 +649,11 @@ public class HelloController {
       <div id="rest-api" class="card section-card mb-5 p-4">
         <h2 class="section-title mb-1">REST APIs</h2>
         <p class="text-muted mb-3">
-          Build clean HTTP APIs with controllers, resources, status codes,
-          request data, DTOs, pagination, and versioning.
+          Design clean HTTP APIs with controllers, resources, status codes,
+          request mappings, DTOs, pagination, validation, and versioning. You
+          will follow a complete request from the HTTP layer through the
+          repository and service layers, including practical CRUD and product API
+          examples.
         </p>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
@@ -752,8 +766,11 @@ public class HelloController {
       <div id="validation" class="card section-card mb-5 p-4">
         <h2 class="section-title mb-1">Validation</h2>
         <p class="text-muted mb-3">
-          Validate request data, entity fields, business rules, nested objects,
-          and database constraints before invalid data reaches the application.
+          Keep invalid data out of your application by validating request DTOs,
+          path and query parameters, nested objects, entity fields, service
+          methods, and business rules. The topic also covers custom validators,
+          database uniqueness checks, consistent validation errors, and a
+          complete registration flow.
         </p>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
@@ -837,7 +854,9 @@ public class HelloController {
         <h2 class="section-title mb-1">Testing</h2>
         <p class="text-muted mb-3">
           Verify controllers, services, repositories, and complete application
-          flows with reliable Spring Boot tests.
+          flows with focused, reliable tests. Learn when to use Mockito,
+          @WebMvcTest, @DataJpaTest, and @SpringBootTest, how to test realistic
+          domain behavior, and how to keep test suites maintainable.
         </p>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
@@ -897,8 +916,11 @@ public class HelloController {
       <div id="actuator" class="card section-card mb-5 p-4">
         <h2 class="section-title mb-1">Actuator and Monitoring</h2>
         <p class="text-muted mb-3">
-          Monitor application health, metrics, information, and operational
-          behavior safely in production.
+          Make production behavior visible with health checks, liveness and
+          readiness probes, metrics, application information, endpoint exposure,
+          security, custom indicators, Prometheus, Grafana, and operational
+          logging. The goal is to monitor an application safely without exposing
+          unnecessary management endpoints.
         </p>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
@@ -965,8 +987,10 @@ public class HelloController {
       <div id="deployment" class="card section-card mb-5 p-4">
         <h2 class="section-title mb-1">Deployment</h2>
         <p class="text-muted mb-3">
-          Package, configure, containerize, and operate a Spring Boot
-          application reliably in production.
+          Prepare a Spring Boot application for production by packaging an
+          executable JAR, managing environment-specific configuration,
+          containerizing with Docker, adding health checks, and planning logs,
+          Kubernetes, CI/CD, rollback, and operational troubleshooting.
         </p>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">

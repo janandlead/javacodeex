@@ -10,28 +10,36 @@ const topics = [
   'data-jpa',
   'security-comprehensive',
   'exception-handling',
+  'profiles',
+  'scheduler',
   'rest-api',
   'rest-api-design',
   'validation',
   'testing',
   'testing-comprehensive',
   'actuator',
-  'deployment'
+  'deployment',
+  'migration-2-to-3'
 ];
 const routeNames: Record<string, string> = {
   introduction: 'spring-boot-core',
+  'project-structure': 'project-structure',
   aop: 'spring-boot-aop',
   'data-jpa': 'spring-boot-data-jpa',
   'security-comprehensive': 'spring-boot-security',
   'exception-handling': 'spring-boot-global-exception-handling',
+  profiles: 'spring-boot-profiles',
+  scheduler: 'spring-boot-scheduler',
   'rest-api': 'spring-boot-rest-api',
   validation: 'spring-boot-validation',
   'rest-api-design': 'spring-boot-rest-api-design',
   testing: 'spring-boot-testing',
   actuator: 'spring-boot-actuator',
-  deployment: 'spring-boot-deployment'
+  deployment: 'spring-boot-deployment',
+  'migration-2-to-3': 'spring-boot-2-to-3-migration'
 };
 const routeSlug = (slug: string): string => routeNames[slug] ?? slug;
+const canonicalRoute = (slug: string): string => routeNames[slug] ? `/${routeNames[slug]}` : `/spring-boot/${slug}`;
 const restApiDesignSeoDates = { modifiedTime: '2026-07-26' };
 const restApiDesignRouteTitle = 'REST API Design Best Practices Tutorial | Java Codeex';
 const springBootValidationSeoDates = { modifiedTime: '2026-07-26' };
@@ -42,12 +50,16 @@ const springBootActuatorSeoDates = { modifiedTime: '2026-07-26' };
 const springBootActuatorRouteTitle = 'Spring Boot Actuator Tutorial | Java Codeex';
 const springBootDeploymentSeoDates = { modifiedTime: '2026-07-26' };
 const springBootDeploymentRouteTitle = 'Spring Boot Deployment Tutorial | Java Codeex';
-const routeFor = (slug: string, index: number): Routes[number] => {
+const springBootMigrationRouteTitle = 'Spring Boot 2 to 3 Migration Guide | Java Codeex';
+const springBootSecurityRouteTitle = 'Spring Boot Security Tutorial | Java Codeex';
+const springBootRestApiVideo = { name: 'Spring Boot REST API Tutorial', description: 'Learn Spring Boot REST API development with controllers, HTTP methods, CRUD operations, DTOs, validation, pagination, versioning, and practical Java examples.', thumbnailUrl: 'https://i.ytimg.com/vi/7MCAMleg8Mw/maxresdefault.jpg', embedUrl: 'https://www.youtube.com/embed/7MCAMleg8Mw', contentUrl: 'https://youtu.be/7MCAMleg8Mw?si=y6lE5F8fYeKUZa5y' };
+const routeFor = (slug: string): Routes[number] => {
+  const index = topics.indexOf(slug);
   const nextTopic = index < topics.length - 1 ? topics[index + 1] : '';
   return ({
   path: routeSlug(slug),
-  title: slug === 'rest-api-design' ? restApiDesignRouteTitle : slug === 'validation' ? springBootValidationRouteTitle : slug === 'testing' ? springBootTestingRouteTitle : slug === 'actuator' ? springBootActuatorRouteTitle : slug === 'deployment' ? springBootDeploymentRouteTitle : `${SPRINGBOOT_PAGES[slug].title} | Java Codeex`,
-  data: { fileName: `${slug}.html`, title: SPRINGBOOT_PAGES[slug].title, category: 'Spring Boot', primaryKeyword: slug === 'introduction' ? 'Spring Boot tutorial' : SPRINGBOOT_PAGES[slug].title, description: SPRINGBOOT_PAGES[slug].description, keywords: `${SPRINGBOOT_PAGES[slug].title}, Spring Boot tutorial, Spring Boot, Java backend`, seo: { title: slug === 'validation' ? springBootValidationRouteTitle : slug === 'testing' ? springBootTestingRouteTitle : slug === 'actuator' ? springBootActuatorRouteTitle : `${SPRINGBOOT_PAGES[slug].title} Tutorial | Java Codeex`, description: SPRINGBOOT_PAGES[slug].description, keyword: slug === 'introduction' ? 'Spring Boot tutorial' : SPRINGBOOT_PAGES[slug].title, canonicalUrl: `https://javacodeex.com/spring-boot/${routeSlug(slug)}`, keywords: `${SPRINGBOOT_PAGES[slug].title}, Spring Boot tutorial, Spring Boot, Java backend`, ...(slug === 'rest-api-design' ? restApiDesignSeoDates : {}), ...(slug === 'validation' ? springBootValidationSeoDates : {}), ...(slug === 'testing' ? springBootTestingSeoDates : {}), ...(slug === 'actuator' ? springBootActuatorSeoDates : {}), breadcrumbs: [{ name: 'Home', url: 'https://javacodeex.com/' }, { name: 'Spring Boot', url: 'https://javacodeex.com/spring-boot-overview' }, { name: SPRINGBOOT_PAGES[slug].title, url: `https://javacodeex.com/spring-boot/${routeSlug(slug)}` }] }, backRoute: '/spring-boot', assetFolder: 'springboot', previousRoute: index > 0 ? `/spring-boot/${routeSlug(topics[index - 1])}` : '/spring-boot', previousLabel: index > 0 ? SPRINGBOOT_PAGES[topics[index - 1]].title : 'Spring Boot Tutorial', nextRoute: index < topics.length - 1 ? `/spring-boot/${routeSlug(topics[index + 1])}` : '', nextLabel: nextTopic ? SPRINGBOOT_PAGES[nextTopic].title : '' },
+  title: slug === 'rest-api-design' ? restApiDesignRouteTitle : slug === 'validation' ? springBootValidationRouteTitle : slug === 'testing' ? springBootTestingRouteTitle : slug === 'actuator' ? springBootActuatorRouteTitle : slug === 'deployment' ? springBootDeploymentRouteTitle : slug === 'migration-2-to-3' ? springBootMigrationRouteTitle : slug === 'security-comprehensive' ? springBootSecurityRouteTitle : `${SPRINGBOOT_PAGES[slug].title} | Java Codeex`,
+  data: { fileName: `${slug}.html`, title: SPRINGBOOT_PAGES[slug].title, category: 'Spring Boot', primaryKeyword: slug === 'migration-2-to-3' ? 'Spring Boot 2 to 3 migration' : slug === 'security-comprehensive' ? 'Spring Boot Security' : slug === 'introduction' ? 'Spring Boot tutorial' : SPRINGBOOT_PAGES[slug].title, description: SPRINGBOOT_PAGES[slug].description, keywords: `${SPRINGBOOT_PAGES[slug].title}, Spring Boot Security, authentication, authorization, JWT, Spring Boot tutorial`, seo: { title: slug === 'validation' ? springBootValidationRouteTitle : slug === 'testing' ? springBootTestingRouteTitle : slug === 'actuator' ? springBootActuatorRouteTitle : slug === 'migration-2-to-3' ? springBootMigrationRouteTitle : slug === 'security-comprehensive' ? springBootSecurityRouteTitle : `${SPRINGBOOT_PAGES[slug].title} Tutorial | Java Codeex`, description: SPRINGBOOT_PAGES[slug].description, keyword: slug === 'migration-2-to-3' ? 'Spring Boot 2 to 3 migration' : slug === 'security-comprehensive' ? 'Spring Boot Security' : slug === 'introduction' ? 'Spring Boot tutorial' : SPRINGBOOT_PAGES[slug].title, canonicalUrl: `https://javacodeex.com${canonicalRoute(slug)}`, keywords: `${SPRINGBOOT_PAGES[slug].title}, Spring Boot Security, authentication, authorization, JWT, Spring Boot tutorial`, ...(slug === 'rest-api-design' ? restApiDesignSeoDates : {}), ...(slug === 'validation' ? springBootValidationSeoDates : {}), ...(slug === 'testing' ? springBootTestingSeoDates : {}), ...(slug === 'actuator' ? springBootActuatorSeoDates : {}), ...(slug === 'migration-2-to-3' ? { modifiedTime: '2026-07-27' } : {}), ...(slug === 'rest-api' ? { video: springBootRestApiVideo } : {}), breadcrumbs: [{ name: 'Home', url: 'https://javacodeex.com/' }, { name: 'Spring Boot', url: 'https://javacodeex.com/spring-boot-overview' }, { name: SPRINGBOOT_PAGES[slug].title, url: `https://javacodeex.com${canonicalRoute(slug)}` }] }, backRoute: '/spring-boot-overview', assetFolder: 'springboot', previousRoute: index > 0 ? canonicalRoute(topics[index - 1]) : '/spring-boot-overview', previousLabel: index > 0 ? SPRINGBOOT_PAGES[topics[index - 1]].title : 'Spring Boot Tutorial', nextRoute: index < topics.length - 1 ? canonicalRoute(topics[index + 1]) : '', nextLabel: nextTopic ? SPRINGBOOT_PAGES[nextTopic].title : '' },
   loadComponent: () => Promise.resolve(CourseDocumentComponent)
   });
 };

@@ -67,6 +67,19 @@
         and path to a piece of behavior, and returns a status code that tells
         the client what actually happened.
       </div>
+      <figure class="tutorial-visual my-4">
+        <img
+          src="/assets/images/springboot/rest-api-request-lifecycle.png"
+          alt="REST API request flow from a client through the Spring Boot controller, service, repository, and database, returning a JSON response"
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>
+          The usual Spring Boot REST API path: a request enters the controller,
+          business rules run in the service, data access happens in the
+          repository, and the client receives JSON.
+        </figcaption>
+      </figure>
       <div class="concept-diagram">
         <figcaption>Typical API request flow</figcaption>
         <div class="diagram-row">
@@ -181,6 +194,19 @@
         </table>
       </div>
 
+      <figure class="tutorial-visual my-4">
+        <img
+          src="/assets/images/springboot/rest-api-crud-operations.png"
+          alt="REST API CRUD operations infographic showing GET Read, POST Create, PUT Update, and DELETE Remove with product endpoints"
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>
+          CRUD maps the four core data actions to familiar HTTP methods. PATCH
+          is also useful when only selected fields need to change.
+        </figcaption>
+      </figure>
+
       <h3 id="get-method">GET: read resources</h3>
       <p>
         Use GET when the client wants data and does not want to change the
@@ -251,6 +277,19 @@ Content-Type: application/json
 204 No Content</code></pre>
 
       <h2 id="crud-walkthrough">A complete CRUD example</h2>
+      <figure class="tutorial-visual my-4">
+        <img
+          src="/assets/images/springboot/rest-api-spring-mvc-flow.png"
+          alt="Detailed Spring Boot REST API execution flow from a client request through the servlet container, DispatcherServlet, filters, controller, service, repository, database, and response"
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>
+          Your REST API reference diagram shows the deeper Spring MVC lifecycle,
+          including filters, controller dispatch, exception handling, and the
+          response flow back to the client.
+        </figcaption>
+      </figure>
       <p>
         The controller below manages a simple <code>Task</code> resource. It
         supports listing, reading one task, creating, updating, and deleting

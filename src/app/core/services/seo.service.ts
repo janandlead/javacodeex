@@ -76,9 +76,9 @@ export class SeoService {
     const routeKeywords = this.asKeywords(routeSeo?.keywords, primaryKeyword, data['keywords'] as string | undefined);
     const url = routeSeo?.canonicalUrl ?? this.canonicalUrl(navigationUrl);
     const socialImage = routeSeo?.imageUrl ?? this.defaultImage;
-    const type = routeSeo?.type ?? (category ? 'article' : 'website');
+    const type = routeSeo?.type ?? (category && !/overview/i.test(title) ? 'article' : 'website');
 
-    this.updatePageSeo({ title, description, canonicalUrl: url, keywords: routeKeywords, robots, imageUrl: socialImage, type, articleSection: routeSeo?.articleSection ?? category, publishedTime: routeSeo?.publishedTime, modifiedTime: routeSeo?.modifiedTime, primaryKeyword, breadcrumbs: routeSeo?.breadcrumbs ?? data['breadcrumbs'] as SeoConfig['breadcrumbs'] });
+    this.updatePageSeo({ title, description, canonicalUrl: url, keywords: routeKeywords, robots, imageUrl: socialImage, type, articleSection: routeSeo?.articleSection ?? category, publishedTime: routeSeo?.publishedTime, modifiedTime: routeSeo?.modifiedTime, primaryKeyword, breadcrumbs: routeSeo?.breadcrumbs ?? data['breadcrumbs'] as SeoConfig['breadcrumbs'], video: routeSeo?.video });
   }
 
   private routeData(route: ActivatedRouteSnapshot): Record<string, unknown> {
@@ -182,6 +182,7 @@ export class SeoService {
       isPartOf: { '@type': 'WebSite', name: 'Java Codeex', url: `${this.siteUrl}/` },
       author: { '@type': 'Organization', name: 'Java Codeex', url: `${this.siteUrl}/` },
       publisher: { '@type': 'Organization', name: 'Java Codeex', url: `${this.siteUrl}/` },
+      ...(seo?.video ? { video: { '@type': 'VideoObject', ...seo.video, url } } : {}),
       ...((seo?.breadcrumbs ?? structuredData?.breadcrumbs)?.length ? { breadcrumb: { '@type': 'BreadcrumbList', itemListElement: (seo?.breadcrumbs ?? structuredData?.breadcrumbs)?.map((item, index) => ({ '@type': 'ListItem', position: index + 1, name: item.name, item: item.url })) } } : {})
     });
   }

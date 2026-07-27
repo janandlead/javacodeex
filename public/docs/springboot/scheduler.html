@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="description" content="Learn Spring Boot scheduling with @Scheduled, cron expressions, fixed rate, fixed delay, thread pools, testing, and production safeguards." />
+    <meta name="keywords" content="Spring Boot Scheduler, @Scheduled, @EnableScheduling, Spring cron expression, fixedRate, fixedDelay, task scheduling" />
+    <link rel="canonical" href="https://javacodeex.com/spring-boot-scheduler" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Java Codeex" />
+    <meta property="og:title" content="Spring Boot Scheduler Tutorial | Java Codeex" />
+    <meta property="og:description" content="Build reliable scheduled tasks in Spring Boot with @Scheduled, cron, fixed rate, fixed delay, thread pools, time zones, and production practices." />
+    <meta property="og:url" content="https://javacodeex.com/spring-boot-scheduler" />
+    <meta property="og:image" content="https://javacodeex.com/assets/images/javacodeex.jpg" />
+    <meta property="og:image:alt" content="Spring Boot Scheduler tutorial" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Spring Boot Scheduler Tutorial | Java Codeex" />
+    <meta name="twitter:description" content="Learn Spring Boot scheduled tasks with fixed rate, fixed delay, cron, thread pools, time zones, and safe production execution." />
+    <meta name="twitter:image" content="https://javacodeex.com/assets/images/javacodeex.jpg" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Spring Boot Scheduler Tutorial","description":"Learn Spring Boot scheduling with @Scheduled, cron expressions, fixed rate, fixed delay, thread pools, testing, and production safeguards.","url":"https://javacodeex.com/spring-boot-scheduler","image":"https://javacodeex.com/assets/images/javacodeex.jpg","author":{"@type":"Organization","name":"Java Codeex"},"publisher":{"@type":"Organization","name":"Java Codeex"},"dateModified":"2026-07-27","inLanguage":"en","mainEntityOfPage":{"@type":"WebPage","@id":"https://javacodeex.com/spring-boot-scheduler"},"video":{"@type":"VideoObject","name":"Spring Boot Scheduler Tutorial","description":"Learn Spring Boot scheduling with @EnableScheduling, @Scheduled, fixed rate, fixed delay, and cron expressions.","thumbnailUrl":"https://i.ytimg.com/vi/81Gd8-zaKIg/maxresdefault.jpg","embedUrl":"https://www.youtube.com/embed/81Gd8-zaKIg","contentUrl":"https://youtu.be/81Gd8-zaKIg?si=q55pdz-NBmZm94I0","url":"https://javacodeex.com/spring-boot-scheduler"}}</script>
+    <title>Spring Boot Scheduler Tutorial | Java Codeex</title>
+    <link rel="stylesheet" href="../site-theme.css" />
+    <link rel="stylesheet" href="./springboot.css" />
+  </head>
+  <body>
+    <section class="spring-hero"><div class="container-xl"><span class="spring-pill">Java Codeex</span><h1 class="mt-3">Spring Boot Scheduler</h1><p class="lead">Run recurring jobs reliably with <code>@Scheduled</code>, cron expressions, fixed rates, and fixed delays.</p></div></section>
+    <main class="container-xl py-5">
+      <div class="spring-callout mb-4"><strong>What you will learn:</strong> Enable scheduling, create recurring jobs, choose the right trigger, configure a thread pool, handle time zones, test scheduled services, and avoid duplicate work in production.</div>
+      <p>Spring Boot scheduling is useful for cleanup jobs, notifications, report generation, data synchronization, cache refreshes, and periodic health checks. The scheduler should coordinate small, observable units of work; long-running or distributed workflows may need a queue, batch platform, or Quartz.</p>
+
+      <h2 id="enable-scheduling">Enable scheduling</h2>
+      <p>Add <code>@EnableScheduling</code> to a configuration or application class. Spring then detects <code>@Scheduled</code> methods on beans.</p>
+      <pre><code>import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
+@SpringBootApplication
+@EnableScheduling
+public class OrderApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(OrderApplication.class, args);
+    }
+}</code></pre>
+      <p>A scheduled method must be on a Spring-managed bean. Keep its signature simple: it should not require arguments, and its return value is not used by the scheduler.</p>
+
+      <h2 id="scheduled-method">Create a scheduled task</h2>
+      <pre><code>import java.time.Instant;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+@Component
+public class OrderCleanupJob {
+    @Scheduled(fixedDelay = 10_000)
+    public void removeExpiredOrders() {
+        System.out.println("Cleanup started at " + Instant.now());
+    }
+}</code></pre>
+      <p>By default, scheduling is triggered by the Spring application context. Do not create the job with <code>new</code>; otherwise Spring cannot apply its scheduling infrastructure.</p>
+
+      <h2 id="fixed-rate-delay">Fixed rate versus fixed delay</h2>
+      <div class="table-responsive"><table class="table table-bordered"><thead><tr><th>Trigger</th><th>Meaning</th><th>Use when</th></tr></thead><tbody>
+        <tr><td><code>fixedRate</code></td><td>Starts on a regular interval measured from the scheduled start time.</td><td>Runs should follow a regular cadence.</td></tr>
+        <tr><td><code>fixedDelay</code></td><td>Waits for the previous invocation to finish, then waits the configured delay.</td><td>The next run must wait until the previous run completes.</td></tr>
+        <tr><td><code>initialDelay</code></td><td>Waits before the first invocation.</td><td>The application needs time to finish startup.</td></tr>
+      </tbody></table></div>
+      <pre><code>@Scheduled(fixedRate = 60_000, initialDelay = 10_000)
+public void refreshCache() { }
+
+@Scheduled(fixedDelay = 5_000)
+public void publishPendingEvents() { }</code></pre>
+      <p>Use <code>java.util.concurrent.TimeUnit</code> to make units explicit:</p>
+      <pre><code>import java.util.concurrent.TimeUnit;
+
+@Scheduled(fixedDelay = 30, timeUnit = TimeUnit.SECONDS)
+public void checkPendingPayments() { }</code></pre>
+
+      <h2 id="cron-expressions">Use cron expressions</h2>
+      <p>Use cron when a job must run at a calendar time. Spring cron expressions use six fields: second, minute, hour, day of month, month, and day of week.</p>
+      <pre><code>@Scheduled(cron = "0 0 2 * * *")
+public void createDailyReport() { }
+
+@Scheduled(cron = "0 */15 * * * *")
+public void syncEveryFifteenMinutes() { }
+
+@Scheduled(cron = "0 0 9 * * MON-FRI", zone = "Asia/Kolkata")
+public void sendWeekdayReminder() { }</code></pre>
+      <div class="table-responsive"><table class="table table-bordered"><thead><tr><th>Expression</th><th>Schedule</th></tr></thead><tbody><tr><td><code>0 0 2 * * *</code></td><td>Every day at 02:00:00.</td></tr><tr><td><code>0 */15 * * * *</code></td><td>Every 15 minutes.</td></tr><tr><td><code>0 0 9 * * MON-FRI</code></td><td>Weekdays at 09:00 in the configured time zone.</td></tr></tbody></table></div>
+      <p>Externalize expressions when operations teams need to change the schedule without editing Java code:</p>
+      <pre><code>orders.cleanup.cron=0 0 2 * * *
+
+@Scheduled(cron = "${orders.cleanup.cron}", zone = "UTC")
+public void removeExpiredOrders() { }</code></pre>
+
+      <h2 id="thread-pool">Configure a scheduler thread pool</h2>
+      <p>A production application should make scheduler capacity explicit. Configure a pool size when jobs may overlap or when several jobs must run independently.</p>
+      <pre><code>spring.task.scheduling.pool.size=4
+spring.task.scheduling.thread-name-prefix=orders-scheduler-
+spring.task.scheduling.shutdown.await-termination=true
+spring.task.scheduling.shutdown.await-termination-period=30s</code></pre>
+      <p>Keep the pool size proportional to the work. More threads do not make a database or downstream API faster; they can increase contention. Measure execution time, queueing, failures, and downstream capacity.</p>
+      <h3 id="custom-scheduler">Define a custom scheduler when needed</h3>
+      <pre><code>import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+
+@Configuration
+public class SchedulingConfig {
+    @Bean
+    TaskScheduler taskScheduler() {
+        ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+        scheduler.setPoolSize(4);
+        scheduler.setThreadNamePrefix("orders-scheduler-");
+        scheduler.setWaitForTasksToCompleteOnShutdown(true);
+        scheduler.setAwaitTerminationSeconds(30);
+        return scheduler;
+    }
+}</code></pre>
+
+      <h2 id="prevent-overlap">Prevent overlapping and duplicate work</h2>
+      <p>Each application instance can execute its own scheduled task. In a multi-instance deployment, the same job may run more than once at the same time. Choose a strategy based on the job:</p>
+      <ul><li>Make the operation idempotent so repeating it is safe.</li><li>Use a database lock, unique key, or lease for short critical sections.</li><li>Use a distributed scheduler or a library such as ShedLock when one cluster-wide execution is required.</li><li>Use a queue or batch system for long-running, retryable, or high-volume work.</li><li>Use Quartz when you need persistent triggers, calendars, misfire handling, or richer job management.</li></ul>
+      <p>Do not rely on an in-memory scheduler alone for a business-critical job whose execution history must survive a restart.</p>
+
+      <h2 id="error-handling">Handle failures and observe jobs</h2>
+      <p>Scheduled exceptions should be visible in logs and metrics. Catch only exceptions you can handle, preserve the cause, and let monitoring alert on repeated failures.</p>
+      <pre><code>@Scheduled(cron = "${orders.sync.cron}")
+public void synchronizeOrders() {
+    try {
+        orderSyncService.sync();
+    } catch (TransientSyncException ex) {
+        log.warn("Order synchronization will be retried", ex);
+    }
+}</code></pre>
+      <p>For production, record job name, start time, duration, result, item count, and failure reason. Avoid logging passwords, tokens, full request bodies, or sensitive customer data.</p>
+
+      <h2 id="testing-scheduler">Test scheduled services</h2>
+      <p>Keep scheduling separate from business logic so most tests can call the service directly. Use a test profile or property to disable automatic scheduling during tests.</p>
+      <pre><code># application-test.properties
+spring.task.scheduling.enabled=false</code></pre>
+      <pre><code>@SpringBootTest
+@ActiveProfiles("test")
+class OrderCleanupJobTest {
+    @Autowired
+    private OrderCleanupJob job;
+
+    @Test
+    void removesExpiredOrdersWhenJobRuns() {
+        job.removeExpiredOrders();
+        // Assert the service or repository interaction.
+    }
+}</code></pre>
+      <p>Use integration tests for scheduler wiring and focused unit tests for the work performed by each job. Avoid tests that wait for real-time cron intervals.</p>
+
+      <h2 id="scheduler-best-practices">Spring Boot Scheduler best practices</h2>
+      <ol><li>Keep scheduled methods small and delegate business work to a service.</li><li>Choose <code>fixedDelay</code>, <code>fixedRate</code>, or cron based on the business requirement.</li><li>Specify a time zone for calendar-sensitive jobs.</li><li>Externalize schedules so operations can change them safely.</li><li>Configure thread-pool capacity and graceful shutdown.</li><li>Make jobs idempotent and safe to retry.</li><li>Protect multi-instance jobs with a distributed coordination strategy.</li><li>Measure duration, success, failure, and skipped work.</li><li>Use a queue, Spring Batch, or Quartz when simple in-memory scheduling is not enough.</li></ol>
+
+      <h2 id="scheduler-faq">Spring Boot Scheduler FAQs</h2>
+      <h3>What annotation enables scheduled tasks?</h3><p>Add <code>@EnableScheduling</code> to a configuration class, then place <code>@Scheduled</code> on a method in a Spring-managed bean.</p>
+      <h3>What is the difference between fixed rate and fixed delay?</h3><p><code>fixedRate</code> follows a regular start-time cadence, while <code>fixedDelay</code> waits for the previous invocation to finish before starting the delay.</p>
+      <h3>Can a scheduled task run twice in a cluster?</h3><p>Yes. Each application instance has its own scheduler unless you add distributed coordination. Make work idempotent or use a lock, queue, or persistent scheduler.</p>
+      <h3>When should I use Quartz instead of @Scheduled?</h3><p>Use Quartz when you need persistent jobs, calendars, misfire policies, richer trigger management, or durable execution history.</p>
+      <p><a class="btn btn-success" href="index.html">Back to Spring Boot Course</a></p>
+    </main>
+  </body>
+</html>

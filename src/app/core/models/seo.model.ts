@@ -12,6 +12,13 @@ export interface SeoConfig {
   readonly primaryKeyword?: string;
   readonly articleSection?: string;
   readonly breadcrumbs?: readonly { name: string; url: string }[];
+  readonly video?: {
+    readonly name: string;
+    readonly description: string;
+    readonly thumbnailUrl: string;
+    readonly embedUrl: string;
+    readonly contentUrl?: string;
+  };
 }
 
 export interface StructuredDataConfig {

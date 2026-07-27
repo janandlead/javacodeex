@@ -157,3 +157,165 @@ p { max-width: 70ch; }
 .behavioral-page .pattern-hero h1 { max-width: none; }
 .pattern-page .pattern-toc, .creational-page .pattern-toc, .factory-page .factory-toc, .structural-page .pattern-toc, .behavioral-page .pattern-toc { display: none; }
 .pattern-page .pattern-layout, .creational-page .pattern-layout, .factory-page .factory-layout, .structural-page .pattern-layout, .behavioral-page .pattern-layout { grid-template-columns: minmax(0, 1fr) !important; }
+
+.legacy-document .document-body .marker-interface-visual {
+  width: min(100%, 820px);
+  margin: 1.5rem auto 2rem;
+  text-align: center;
+}
+
+.legacy-document .document-body .marker-interface-visual img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #dbeafe;
+  border-radius: 14px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, .1);
+}
+
+.legacy-document .document-body .marker-interface-visual figcaption {
+  margin-top: .6rem;
+  color: #64748b;
+  font-size: .9rem;
+}
+
+.legacy-document .document-body .lesson-video {
+  width: min(100%, 820px);
+  margin: 0 auto 2rem;
+}
+
+.legacy-document .document-body .lesson-video iframe {
+  display: block;
+  width: 100%;
+  min-height: 420px;
+  border: 0;
+  border-radius: 14px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, .12);
+}
+
+.legacy-document .document-body .lesson-video a {
+  display: inline-block;
+  margin-top: .75rem;
+}
+
+@media (max-width: 767.98px) {
+  .legacy-document .document-body .marker-interface-visual {
+    width: 100%;
+    margin: 1.25rem auto 1.5rem;
+  }
+
+  .legacy-document .document-body .lesson-video iframe {
+    min-height: 220px;
+  }
+}
+
+.course-document .document-body .migration-visual {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin: 1.5rem auto;
+}
+
+.course-document .document-body .migration-visual img {
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+}
+
+.course-document .document-body .migration-visual figcaption {
+  margin-top: .6rem;
+  color: #64748b;
+  font-size: .9rem;
+  text-align: center;
+}
+
+.course-document .document-body .project-structure-visual {
+  width: min(100%, 980px);
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.course-document .document-body .project-structure-visual img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #dbeafe;
+  border-radius: 1rem;
+  box-shadow: 0 .75rem 2rem rgba(15, 23, 42, .1);
+}
+
+.course-document .document-body .project-structure-visual figcaption {
+  margin-top: .65rem;
+  color: #64748b;
+  font-size: .9rem;
+}
+
+.course-document .document-body .exception-handling-visual {
+  width: min(100%, 980px);
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.course-document .document-body .exception-handling-visual img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #dbeafe;
+  border-radius: 1rem;
+  box-shadow: 0 .75rem 2rem rgba(15, 23, 42, .1);
+}
+
+.course-document .document-body .exception-handling-visual figcaption {
+  margin-top: .65rem;
+  color: #64748b;
+  font-size: .9rem;
+}
+
+.course-document .document-body .security-visual {
+  width: 100%;
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.course-document .document-body .security-visual img {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  border: 1px solid #dbeafe;
+  border-radius: 1rem;
+  box-shadow: 0 .75rem 2rem rgba(15, 23, 42, .1);
+}
+
+.course-document .document-body .security-visual figcaption {
+  margin-top: .65rem;
+  color: #64748b;
+  font-size: .9rem;
+}
+
+@media (max-width: 767.98px) {
+  .course-document .document-body .migration-visual {
+    width: 100%;
+    margin: 1.25rem 0;
+  }
+
+  .course-document .document-body .migration-visual img {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .course-document .document-body .project-structure-visual {
+    width: 100%;
+    margin: 1.5rem 0;
+  }
+
+  .course-document .document-body .exception-handling-visual {
+    width: 100%;
+    margin: 1.5rem 0;
+  }
+
+  .course-document .document-body .security-visual {
+    margin: 1.5rem 0;
+  }
+}
