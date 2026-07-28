@@ -1,4 +1,6 @@
 /
+/workshops
+/spring-boot-ai-workshop
 /java-tutorial-overview
 /introduction-to-java
 /java-download-and-install-java

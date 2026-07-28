@@ -25,6 +25,14 @@ export interface SeoConfig {
     readonly embedUrl: string;
     readonly contentUrl?: string;
   };
+  readonly event?: {
+    readonly name: string;
+    readonly startDate: string;
+    readonly endDate?: string;
+    readonly locationName: string;
+    readonly locationUrl?: string;
+    readonly attendanceMode?: string;
+  };
 }
 
 export interface StructuredDataConfig {

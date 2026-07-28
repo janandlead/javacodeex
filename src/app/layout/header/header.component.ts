@@ -18,7 +18,7 @@ const COURSE_LINKS = [
       <a class="brand" routerLink="/" aria-label="Java Codeex home"><span class="brand-mark-wrap"><img src="/assets/images/javacodeex.jpg" alt="" /></span><span class="brand-copy"><span class="brand-name">Java Codeex</span><span class="brand-subtitle">Practical programming, made clear</span></span></a>
       <app-project-search />
       <details class="header-courses"><summary><i class="bi bi-grid-3x3-gap" aria-hidden="true"></i><span>Courses</span></summary><div class="course-menu">@for (item of courseLinks; track item[0]) { <a [routerLink]="item[1]" (click)="closeCourses($event)"><i [class]="item[2]" aria-hidden="true"></i><span>{{ item[0] }}</span><i class="bi bi-arrow-up-right course-arrow" aria-hidden="true"></i></a> }</div></details>
-      <a class="start-learning" routerLink="/java-tutorial-overview"><i class="bi bi-rocket-takeoff" aria-hidden="true"></i><span>Start Learning</span></a>
+      <a class="workshops-link" routerLink="/workshops"><i class="bi bi-calendar2-week" aria-hidden="true"></i><span>Workshops</span></a><a class="start-learning" routerLink="/java-tutorial-overview"><i class="bi bi-rocket-takeoff" aria-hidden="true"></i><span>Start Learning</span></a>
     </div></header>`,
   styles: [`
     .site-header{position:relative;z-index:1100;overflow:visible;color:#fff;background:radial-gradient(circle at 82% 15%,rgba(34,211,238,.22),transparent 28%),linear-gradient(135deg,#081226,#172554 62%,#164e63);box-shadow:0 .35rem 1rem rgba(15,23,42,.16)}
