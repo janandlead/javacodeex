@@ -8,6 +8,14 @@ import { appendFurtherReading } from '../../shared/tutorial-further-reading';
 import { YoutubeVideoComponent } from '../../shared/components/youtube-video/youtube-video.component';
 
 const DOCUMENT_VIDEOS: Record<string, { url: string; title: string }> = {
+  'redis-cache.html': {
+    url: 'https://youtu.be/0a-RlJx09rg?si=TtjX94qBcUcdGCS0',
+    title: 'Spring Boot Redis Cache Tutorial'
+  },
+  'hikari-connection-pool.html': {
+    url: 'https://youtu.be/BubglSQmaig?si=A6A-6sxOdBQx0SbR',
+    title: 'Spring Boot HikariCP Connection Pool Tutorial'
+  },
   'migration-2-to-3.html': {
     url: 'https://youtu.be/0eKF-mkZYXo?si=8q1ltC9mliMGKA1I',
     title: 'Spring Boot 2 to Spring Boot 3 Migration Tutorial'
@@ -320,9 +328,9 @@ export class CourseDocumentComponent implements OnInit, OnChanges {
   private extractDocument(source: string): string {
     const document = this.document.implementation.createHTMLDocument('course-document');
     document.documentElement.innerHTML = source;
+    const contentContainer = document.querySelector<HTMLElement>('.container-xl.py-5') ?? document.body;
     if (this.fileName !== 'index.html') {
       const pageHero = document.querySelector('.spring-hero');
-      const contentContainer = document.querySelector('.container-xl.py-5');
       if (pageHero) {
         const heading = pageHero.querySelector('h1');
         const description = pageHero.querySelector('p');
@@ -340,12 +348,35 @@ export class CourseDocumentComponent implements OnInit, OnChanges {
         }
         contentContainer?.prepend(titleBlock);
         pageHero.remove();
+      } else if (this.assetFolder === 'springboot' && !contentContainer.querySelector('.document-title')) {
+        const titleBlock = document.createElement('div');
+        titleBlock.className = 'document-title mb-4';
+        const title = document.createElement('h1');
+        title.textContent = this.title;
+        titleBlock.appendChild(title);
+        if (this.description) {
+          const summary = document.createElement('p');
+          summary.textContent = this.description;
+          titleBlock.appendChild(summary);
+        }
+        contentContainer.prepend(titleBlock);
       }
     }
     document.querySelectorAll('script, style, link, header, nav, footer, .java-subnav, .site-footer, .spring-pill, .toc, .d-flex.justify-content-between, a.btn-success').forEach((element) => element.remove());
     normalizeTutorialHeadings(document);
     if (this.assetFolder === 'springboot' && this.fileName === 'index.html') {
       document.querySelectorAll('.section-card ul.list-group, .spring-topic-nav, .spring-subtopic-nav').forEach((element) => element.remove());
+    } else if (this.assetFolder === 'springboot' && contentContainer) {
+      contentContainer.classList.add('spring-article-container');
+      let sectionCard: HTMLElement | undefined;
+      Array.from(contentContainer.children).forEach((child) => {
+        if (child.tagName === 'H2') {
+          sectionCard = document.createElement('section');
+          sectionCard.className = 'section-card';
+          contentContainer.insertBefore(sectionCard, child);
+        }
+        sectionCard?.appendChild(child);
+      });
     }
     document.querySelectorAll('a[href]').forEach((anchor) => {
       const href = anchor.getAttribute('href') ?? '';
@@ -366,6 +397,10 @@ export class CourseDocumentComponent implements OnInit, OnChanges {
         anchor.setAttribute('href', `${currentPath}#${section}`);
       }
     });
+    if (this.assetFolder === 'mysql') {
+      document.querySelectorAll('.further-reading').forEach((section) => section.remove());
+      return document.body.innerHTML;
+    }
     const readingPageKey = this.assetFolder === 'postgresql'
       ? `postgresql-${this.topic || this.fileName.replace(/\.html$/, '')}`
       : this.assetFolder === 'mysql'
@@ -382,7 +417,8 @@ export class CourseDocumentComponent implements OnInit, OnChanges {
         ? { label: 'PostgreSQL Introduction', href: '/postgresql/introduction' }
         : this.assetFolder === 'mysql'
           ? { label: 'MySQL Tutorials', href: '/mysql' }
-          : { label: 'Spring Boot Tutorial Overview', href: '/spring-boot-overview' }
+          : { label: 'Spring Boot Tutorial Overview', href: '/spring-boot-overview' },
+      this.router.url.split(/[?#]/)[0].replace(/\/$/, '')
     );
     return document.body.innerHTML;
   }

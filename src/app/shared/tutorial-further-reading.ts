@@ -1,3 +1,5 @@
+import { PYTHON_TOPICS } from '../core/constants/python-topics';
+
 export interface FurtherReadingLink {
   label: string;
   href: string;
@@ -77,21 +79,25 @@ const SPRING_BOOT_READING: Record<string, FurtherReadingLink[]> = {
 };
 
 const SPRING_BOOT_ALL_READING: FurtherReadingLink[] = [
-  { label: 'Spring Boot Core', href: '/spring-boot-core' },
-  { label: 'Spring Boot Setup', href: '/spring-boot/setup' },
+  { label: 'Spring Boot Overview', href: '/spring-boot-overview' },
+  { label: 'Spring Boot Core Concepts', href: '/spring-boot-core' },
+  { label: 'Spring Boot Setup and Installation', href: '/spring-boot/setup' },
   { label: 'Spring Boot Project Structure', href: '/project-structure' },
   { label: 'Spring Boot AOP', href: '/spring-boot-aop' },
-  { label: 'Spring Data JPA', href: '/spring-boot-data-jpa' },
+  { label: 'Spring Boot Data JPA', href: '/spring-boot-data-jpa' },
+  { label: 'Spring Boot Hikari Connection Pool', href: '/spring-boot-hikari-connection-pool' },
+  { label: 'Spring Boot Redis Cache', href: '/spring-boot-redis-cache' },
+  { label: 'Spring Boot File Upload', href: '/spring-boot-file-upload' },
   { label: 'Spring Boot Security', href: '/spring-boot-security' },
-  { label: 'Global Exception Handling', href: '/spring-boot-global-exception-handling' },
+  { label: 'Spring Boot Global Exception Handling', href: '/spring-boot-global-exception-handling' },
   { label: 'Spring Boot Profiles', href: '/spring-boot-profiles' },
   { label: 'Spring Boot Scheduler', href: '/spring-boot-scheduler' },
-  { label: 'Spring Boot REST APIs', href: '/spring-boot-rest-api' },
-  { label: 'REST API Design', href: '/spring-boot-rest-api-design' },
-  { label: 'Spring Boot Validation', href: '/spring-boot-validation' },
+  { label: 'Spring Boot REST API', href: '/spring-boot-rest-api' },
+  { label: 'REST API Design Best Practices', href: '/spring-boot-rest-api-design' },
+  { label: 'Spring Boot Request Validation', href: '/spring-boot-validation' },
   { label: 'Spring Boot Testing', href: '/spring-boot-testing' },
-  { label: 'Comprehensive Spring Boot Testing', href: '/spring-boot/testing-comprehensive' },
-  { label: 'Spring Boot Actuator', href: '/spring-boot-actuator' },
+  { label: 'Spring Boot Testing Comprehensive Guide', href: '/spring-boot/testing-comprehensive' },
+  { label: 'Spring Boot Actuator and Monitoring', href: '/spring-boot-actuator' },
   { label: 'Spring Boot Deployment', href: '/spring-boot-deployment' },
   { label: 'Spring Boot 2 to 3 Migration', href: '/spring-boot-2-to-3-migration' }
 ];
@@ -173,6 +179,10 @@ const JAVA_READING: Record<string, FurtherReadingLink[]> = {
   ]
 };
 
+const PYTHON_ALL_READING: FurtherReadingLink[] = PYTHON_TOPICS
+  .filter((topic) => topic.slug !== 'tutorial')
+  .map((topic) => ({ label: topic.title, href: `/${topic.slug}` }));
+
 const POSTGRESQL_READING: Record<string, FurtherReadingLink[]> = {
   introduction: [
     { label: 'PostgreSQL Installation', href: '/postgresql/installation' },
@@ -246,35 +256,33 @@ const POSTGRESQL_ALL_READING: FurtherReadingLink[] = [
   { label: 'PostgreSQL CASE', href: '/postgresql/case' }
 ];
 
-const MYSQL_ALL_READING: FurtherReadingLink[] = [
-  { label: 'MySQL SQL', href: '/mysql/sql' },
-  { label: 'MySQL SELECT', href: '/mysql/select' },
-  { label: 'MySQL WHERE', href: '/mysql/where' },
-  { label: 'MySQL Joins', href: '/mysql/joins' },
-  { label: 'MySQL GROUP BY', href: '/mysql/group-by' },
-  { label: 'MySQL Create Table', href: '/mysql/create-table' },
-  { label: 'MySQL Constraints', href: '/mysql/constraints' },
-  { label: 'MySQL Prepared Statements', href: '/mysql/prepared-statements' }
-];
-
 export function appendFurtherReading(
   document: Document,
   pageKey: string,
   fallbackLinks: FurtherReadingLink[],
-  overviewLink: FurtherReadingLink
+  overviewLink: FurtherReadingLink,
+  currentHref = ''
 ): void {
   const alreadyPresent = Array.from(document.querySelectorAll('h2')).some((heading) =>
     heading.textContent?.trim().toLowerCase() === 'further reading'
   );
   if (alreadyPresent) return;
+  if (pageKey.startsWith('mysql-')) return;
 
-  const links = pageKey.startsWith('mysql-')
-    ? MYSQL_ALL_READING
+  const isJavaPage = JAVA_ALL_READING.some((link) => link.href === currentHref);
+  const isSpringBootPage = SPRING_BOOT_ALL_READING.some((link) => link.href === currentHref);
+  const isPythonPage = PYTHON_ALL_READING.some((link) => link.href === currentHref);
+  const links = isJavaPage
+    ? JAVA_ALL_READING
+    : isSpringBootPage
+    ? SPRING_BOOT_ALL_READING
+    : isPythonPage
+    ? fallbackLinks
     : pageKey.startsWith('postgresql-')
     ? POSTGRESQL_READING[pageKey.replace('postgresql-', '')] ?? POSTGRESQL_ALL_READING
     : pageKey === 'springboot-index'
     ? SPRING_BOOT_ALL_READING
-    : pageKey === 'java-index'
+      : pageKey === 'java-index'
       ? JAVA_ALL_READING
       : pageKey in SPRING_BOOT_READING
     ? SPRING_BOOT_READING[pageKey]
@@ -283,10 +291,10 @@ export function appendFurtherReading(
       : fallbackLinks;
   const isOverview = pageKey === 'springboot-index' || pageKey === 'java-index';
   const isPostgreSql = pageKey.startsWith('postgresql-');
-  const isMySql = pageKey.startsWith('mysql-');
-  const uniqueLinks = (isOverview || isPostgreSql || isMySql ? links : [overviewLink, ...links])
+  const uniqueLinks = (isOverview || isJavaPage || isSpringBootPage || isPythonPage || isPostgreSql ? links : [overviewLink, ...links])
+    .filter((link) => link.href !== currentHref)
     .filter((link, index, all) => all.findIndex((item) => item.href === link.href) === index)
-    .slice(0, isOverview ? undefined : 4);
+    .slice(0, isOverview || isJavaPage || isSpringBootPage || isPythonPage ? undefined : 4);
 
   const section = document.createElement('section');
   section.className = 'further-reading';
@@ -294,18 +302,34 @@ export function appendFurtherReading(
   heading.textContent = 'Further Reading';
   section.appendChild(heading);
   const paragraph = document.createElement('p');
-  paragraph.textContent = isMySql
-    ? 'Continue learning with these related MySQL tutorials:'
+  paragraph.textContent = isJavaPage
+    ? 'Continue learning with these related Java tutorials:'
+    : isSpringBootPage
+    ? 'Continue learning with these related Spring Boot tutorials:'
+    : isPythonPage
+    ? 'Continue learning with these related Python tutorials:'
     : isPostgreSql
     ? 'Continue learning with these related PostgreSQL tutorials:'
     : 'Continue learning with these related Java and Spring Boot tutorials:';
   section.appendChild(paragraph);
   const list = document.createElement('ul');
-  uniqueLinks.forEach((link) => {
+  uniqueLinks.forEach((link, index) => {
     const item = document.createElement('li');
     const anchor = document.createElement('a');
     anchor.href = link.href;
-    anchor.textContent = link.label;
+    const number = document.createElement('span');
+    number.className = 'further-reading-index';
+    number.textContent = String(index + 1).padStart(2, '0');
+    const label = document.createElement('span');
+    label.className = 'further-reading-label';
+    label.textContent = link.label;
+    const arrow = document.createElement('span');
+    arrow.className = 'further-reading-arrow';
+    arrow.setAttribute('aria-hidden', 'true');
+    arrow.textContent = '→';
+    anchor.appendChild(number);
+    anchor.appendChild(label);
+    anchor.appendChild(arrow);
     item.appendChild(anchor);
     list.appendChild(item);
   });

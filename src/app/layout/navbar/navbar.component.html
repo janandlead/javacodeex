@@ -8,7 +8,7 @@
             @if (hasChildren(item)) {
               <button class="nav-link dropdown-toggle" type="button" [attr.aria-expanded]="openDropdown === item.label" (click)="toggleDropdown(item.label)">@if (item.icon) { <i [class]="item.icon" aria-hidden="true"></i> } {{ item.label }}</button>
               <ul class="dropdown-menu" [class.show]="openDropdown === item.label">
-                @for (child of item.children; track child.label) { @if (child.heading) { <li class="dropdown-heading" role="heading" aria-level="2">{{ child.label }}</li> } @else { <li><a class="dropdown-item" [routerLink]="child.route" routerLinkActive="active" (click)="closeDropdown(item.label)">{{ child.label }}</a>&#32;</li> } }
+                @for (child of item.children; track $index) { @if (child.heading) { <li class="dropdown-heading" role="heading" aria-level="2">{{ formatNavigationLabel(child.label) }}</li> } @else { <li><a class="dropdown-item" [routerLink]="normalizeRoute(child.route)" routerLinkActive="active" (click)="closeDropdown(item.label)">{{ formatNavigationLabel(child.label) }}</a>&#32;</li> } }
               </ul>
             } @else { <a class="nav-link" [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.exact ?? false }">@if (item.icon) { <i [class]="item.icon" aria-hidden="true"></i> } {{ item.label }}</a> }
           </li>

@@ -13,7 +13,7 @@ const javaDocuments = [
 
 const springBootDocuments = [
   ['introduction', 'spring-boot-core'], ['setup', 'spring-boot/setup'], ['project-structure', 'project-structure'],
-  ['aop', 'spring-boot-aop'], ['data-jpa', 'spring-boot-data-jpa'], ['security-comprehensive', 'spring-boot-security'],
+  ['aop', 'spring-boot-aop'], ['data-jpa', 'spring-boot-data-jpa'], ['hikari-connection-pool', 'spring-boot-hikari-connection-pool'], ['redis-cache', 'spring-boot-redis-cache'], ['file-upload', 'spring-boot-file-upload'], ['security-comprehensive', 'spring-boot-security'],
   ['exception-handling', 'spring-boot-global-exception-handling'], ['profiles', 'spring-boot-profiles'],
   ['scheduler', 'spring-boot-scheduler'], ['rest-api', 'spring-boot-rest-api'], ['rest-api-design', 'spring-boot-rest-api-design'],
   ['validation', 'spring-boot-validation'], ['testing', 'spring-boot-testing'], ['testing-comprehensive', 'spring-boot/testing-comprehensive'],
@@ -74,7 +74,7 @@ const javaReading = [
 const springBootReading = [
   ['Spring Boot Core', '/spring-boot-core'], ['Spring Boot Setup', '/spring-boot/setup'],
   ['Spring Boot Project Structure', '/project-structure'], ['Spring Boot AOP', '/spring-boot-aop'],
-  ['Spring Data JPA', '/spring-boot-data-jpa'], ['Spring Boot Security', '/spring-boot-security'],
+  ['Spring Data JPA', '/spring-boot-data-jpa'], ['Spring Boot Hikari Connection Pool', '/spring-boot-hikari-connection-pool'], ['Spring Boot Redis Cache', '/spring-boot-redis-cache'], ['Spring Boot File Upload', '/spring-boot-file-upload'], ['Spring Boot Security', '/spring-boot-security'],
   ['Global Exception Handling', '/spring-boot-global-exception-handling'],
   ['Spring Boot Profiles', '/spring-boot-profiles'], ['Spring Boot Scheduler', '/spring-boot-scheduler'],
   ['Spring Boot REST APIs', '/spring-boot-rest-api'], ['REST API Design', '/spring-boot-rest-api-design'],
@@ -108,14 +108,6 @@ const postgresqlReading = [
   ['PostgreSQL UNION', '/postgresql/union'], ['PostgreSQL GROUP BY', '/postgresql/group-by'],
   ['PostgreSQL HAVING', '/postgresql/having'], ['PostgreSQL EXISTS', '/postgresql/exists'],
   ['PostgreSQL ANY', '/postgresql/any'], ['PostgreSQL ALL', '/postgresql/all'], ['PostgreSQL CASE', '/postgresql/case']
-];
-
-const mysqlReading = [
-  ['MySQL SQL', '/mysql/sql'], ['MySQL SELECT', '/mysql/select'], ['MySQL WHERE', '/mysql/where'],
-  ['MySQL INSERT INTO', '/mysql/insert-into'], ['MySQL UPDATE', '/mysql/update'], ['MySQL DELETE', '/mysql/delete'],
-  ['MySQL Aggregate Functions', '/mysql/aggregate-functions'], ['MySQL Joins', '/mysql/joins'], ['MySQL GROUP BY', '/mysql/group-by'],
-  ['MySQL Create Table', '/mysql/create-table'], ['MySQL Constraints', '/mysql/constraints'], ['MySQL Views', '/mysql/views'],
-  ['MySQL Injection', '/mysql/injection'], ['MySQL Prepared Statements', '/mysql/prepared-statements']
 ];
 
 function stripOverviewSubtopics(content, overview) {
@@ -171,7 +163,7 @@ for (const document of documents) {
   const prerendered = await readFile(document.output, 'utf8');
   const mainMatch = source.match(/<main class="container-xl py-5">([\s\S]*?)<\/main>/)
     ?? source.match(/<div class="container-xl py-5">([\s\S]*?)(?:\n\s*<!-- Footer -->|\n\s*<footer|\n\s*<\/body>)/);
-  if (!mainMatch) continue;
+  const sourceContent = mainMatch?.[1]?.trim() ?? source.trim();
   const titleMatch = source.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
   const title = (titleMatch?.[1] ?? document.source.split('/').pop().replace(/\.html$/, ''))
     .replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').trim();
@@ -179,9 +171,9 @@ for (const document of documents) {
   const bodyStart = prerendered.indexOf(bodyMarker);
   const bodyEnd = prerendered.indexOf('</div><p class="pager-heading">', bodyStart);
   if (bodyStart < 0 || bodyEnd < 0) continue;
-  const mainContent = rewriteLegacyLinks(stripOverviewSubtopics(mainMatch[1].trim(), document.overview), document.source.includes('/java/') ? 'java' : 'springboot');
+  const mainContent = rewriteLegacyLinks(stripOverviewSubtopics(sourceContent, document.overview), document.source.includes('/java/') ? 'java' : 'springboot');
   const heading = /<h1\b/i.test(mainContent) ? '' : `<h1 class="document-prerender-title">${title}</h1>`;
-  const content = `${heading}${mainContent}${document.overview === 'java' ? furtherReading(javaReading) : ''}${document.overview === 'springboot' ? furtherReading(springBootReading) : ''}${document.source.includes('/postgresql/') ? furtherReading(postgresqlReading) : ''}${document.source.includes('/mysql/') ? furtherReading(mysqlReading) : ''}`;
+  const content = `${heading}${mainContent}${document.overview === 'java' ? furtherReading(javaReading) : ''}${document.overview === 'springboot' ? furtherReading(springBootReading) : ''}${document.source.includes('/postgresql/') ? furtherReading(postgresqlReading) : ''}`;
   await writeFile(document.output, `${prerendered.slice(0, bodyStart + bodyMarker.length)}${content}${prerendered.slice(bodyEnd)}`);
   console.log(`Injected ${content.length} characters into ${document.output}.`);
 }

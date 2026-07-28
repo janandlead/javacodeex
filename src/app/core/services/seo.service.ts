@@ -177,7 +177,7 @@ export class SeoService {
       url,
       mainEntityOfPage: { '@type': 'WebPage', '@id': url },
       image: seo?.imageUrl ?? this.defaultImage,
-      ...(isArticle ? { articleSection: seo?.articleSection ?? category, learningResourceType: 'Tutorial', keywords, about: { '@type': 'Thing', name: primaryKeyword }, ...(seo?.publishedTime ? { datePublished: seo.publishedTime } : {}), dateModified: seo?.modifiedTime ?? '2026-07-26' } : {}),
+      ...(isArticle ? { articleSection: seo?.articleSection ?? category, learningResourceType: 'Tutorial', keywords, about: { '@type': 'Thing', name: primaryKeyword }, ...(seo?.publishedTime ? { datePublished: seo.publishedTime } : {}), ...(seo?.modifiedTime ? { dateModified: seo.modifiedTime } : {}) } : {}),
       inLanguage: 'en-IN',
       isPartOf: { '@type': 'WebSite', name: 'Java Codeex', url: `${this.siteUrl}/` },
       author: { '@type': 'Organization', name: 'Java Codeex', url: `${this.siteUrl}/` },

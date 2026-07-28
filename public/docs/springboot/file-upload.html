@@ -1,0 +1,407 @@
+<h1>Spring Boot File Upload and Document Management System</h1>
+<h2>Introduction</h2>
+<p>File upload is a common requirement in web applications. Users may need to upload profile images, invoices, documents, CSV files, or other media through a REST API.</p>
+<p>Spring Boot supports file uploads with HTTP <code>multipart/form-data</code> requests and the <code>MultipartFile</code> interface. A safe implementation validates the file, generates a server-side name, stores it in a controlled location, and returns a useful response to the client.</p>
+
+<h2>How file upload works</h2>
+<ol>
+  <li>The client sends a multipart request containing a file field.</li>
+  <li>Spring Boot maps the field to a <code>MultipartFile</code> parameter.</li>
+  <li>The application validates the file name, type, size, and content.</li>
+  <li>The file is stored using a generated name rather than the original name.</li>
+  <li>The API returns an identifier or download URL.</li>
+</ol>
+
+<h2>Configure multipart limits</h2>
+<p>Set upload limits in <code>application.properties</code>:</p>
+<pre><code>spring.servlet.multipart.enabled=true
+spring.servlet.multipart.max-file-size=10MB
+spring.servlet.multipart.max-request-size=20MB
+
+# Directory used by this example
+app.upload.directory=uploads</code></pre>
+<p>Choose limits according to the application’s needs. Limiting request size helps protect the application from unexpectedly large requests.</p>
+
+<h2>Create the upload service</h2>
+<p>The service creates the upload directory when needed, generates a random storage name, and prevents path traversal by resolving the file inside the configured directory.</p>
+<pre><code>package com.example.fileupload.service;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
+
+@Service
+public class FileStorageService {
+    private final Path uploadDirectory;
+
+    public FileStorageService(@Value("${app.upload.directory}") String directory) {
+        this.uploadDirectory = Path.of(directory).toAbsolutePath().normalize();
+    }
+
+    public String store(MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("Cannot store an empty file");
+        }
+
+        Files.createDirectories(uploadDirectory);
+        String originalName = StringUtils.cleanPath(file.getOriginalFilename() == null
+            ? "file"
+            : file.getOriginalFilename());
+        String extension = originalName.contains(".")
+            ? originalName.substring(originalName.lastIndexOf('.'))
+            : "";
+        String storedName = UUID.randomUUID() + extension.toLowerCase();
+        Path target = uploadDirectory.resolve(storedName).normalize();
+
+        if (!target.getParent().equals(uploadDirectory)) {
+            throw new IllegalArgumentException("Invalid file path");
+        }
+
+        Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
+        return storedName;
+    }
+
+    public Path load(String fileName) {
+        Path file = uploadDirectory.resolve(fileName).normalize();
+        if (!file.getParent().equals(uploadDirectory)) {
+            throw new IllegalArgumentException("Invalid file path");
+        }
+        return file;
+    }
+}</code></pre>
+
+<h2>Create the upload controller</h2>
+<p>The controller accepts the field named <code>file</code>. The client must use the same field name when creating the multipart request.</p>
+<pre><code>package com.example.fileupload.controller;
+
+import com.example.fileupload.service.FileStorageService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+
+@RestController
+@RequestMapping("/files")
+public class FileController {
+    private final FileStorageService storageService;
+
+    public FileController(FileStorageService storageService) {
+        this.storageService = storageService;
+    }
+
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity&lt;String&gt; upload(@RequestParam("file") MultipartFile file) throws IOException {
+        String storedName = storageService.store(file);
+        return ResponseEntity.status(HttpStatus.CREATED).body(storedName);
+    }
+
+    @GetMapping("/{fileName}")
+    public ResponseEntity&lt;byte[]&gt; download(@PathVariable String fileName) throws IOException {
+        var path = storageService.load(fileName);
+        if (!Files.exists(path)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(Files.readAllBytes(path));
+    }
+}</code></pre>
+
+<h2>Test the upload endpoint</h2>
+<p>Start the Spring Boot application and send a multipart request with <code>curl</code>:</p>
+<pre><code>curl -X POST http://localhost:8080/files/upload \
+  -F "file=@C:/files/profile.png"
+
+curl -O http://localhost:8080/files/{stored-file-name}</code></pre>
+<p>The upload response contains the generated storage name. Use that value with the download endpoint.</p>
+
+<h2>Validate uploaded files</h2>
+<p>Do not trust the original file name or the client-provided content type. Add validation for:</p>
+<ul>
+  <li>Maximum file size</li>
+  <li>Allowed extensions</li>
+  <li>Allowed MIME types</li>
+  <li>Actual file content or magic bytes</li>
+  <li>Virus and malware scanning where required</li>
+</ul>
+<p>For images and documents, inspect the file content rather than relying only on the extension. Never execute uploaded files on the server.</p>
+
+<h2>Use external storage in production</h2>
+<p>Local disk storage is suitable for development and some single-server applications. In a containerized or multi-instance deployment, local files may disappear when an instance is replaced or may not be available to another instance.</p>
+<p>For production, consider object storage such as Amazon S3, Azure Blob Storage, or Google Cloud Storage. Store the object key and metadata in the database, and return a controlled download URL.</p>
+
+<h2>File upload security best practices</h2>
+<ul>
+  <li>Generate a random server-side file name and never use the raw client file name as the path.</li>
+  <li>Normalize and validate paths to prevent path traversal attacks.</li>
+  <li>Restrict file size, extension, MIME type, and content.</li>
+  <li>Keep uploaded files outside the application classpath and executable directories.</li>
+  <li>Require authentication and authorization for private files.</li>
+  <li>Do not expose internal filesystem paths in API responses.</li>
+  <li>Apply rate limits and monitor repeated upload failures.</li>
+  <li>Use antivirus scanning when the application accepts untrusted documents.</li>
+</ul>
+
+<h2>Handle upload errors</h2>
+<p>Return clear status codes for common failures. For example, use <code>400 Bad Request</code> for invalid files, <code>413 Payload Too Large</code> when the request exceeds the configured limit, and <code>404 Not Found</code> when a requested file does not exist.</p>
+
+<h2>Conclusion</h2>
+<p>Spring Boot makes multipart file uploads simple with <code>MultipartFile</code>, but a production-ready implementation must also validate content, protect paths, enforce size limits, and choose storage appropriate for the deployment environment. Keep file metadata in the database and use secure external storage when applications run across multiple instances.</p>
+
+<h2>Build a document management system with Spring Boot</h2>
+<p>A document management system (DMS) allows authenticated users to upload, download, and manage documents such as PDFs, images, and text files. The application should provide controlled storage, reliable retrieval, authorization, validation, and clear responses for successful and failed operations.</p>
+
+<h3>Actors</h3>
+<ul>
+  <li><strong>User:</strong> An authenticated person who can upload and download documents that they are authorized to access.</li>
+  <li><strong>Admin:</strong> An authorized user who can manage documents and perform administrative operations such as deletion.</li>
+</ul>
+
+<h3>Preconditions</h3>
+<ul>
+  <li>The user is authenticated before uploading or downloading a document.</li>
+  <li>The application has sufficient storage and the required directory permissions.</li>
+  <li>Allowed file types and maximum file sizes are configured.</li>
+  <li>Documents are stored outside executable application directories.</li>
+</ul>
+
+<h3>Postconditions</h3>
+<ul>
+  <li>An accepted document is stored using a generated server-side name.</li>
+  <li>An authorized download request receives the requested document.</li>
+  <li>An authorized delete request removes the document or returns a clear not-found response.</li>
+  <li>Failures are converted into consistent HTTP responses without exposing internal paths.</li>
+</ul>
+
+<h2>Document management use cases</h2>
+
+<h3>Use case 1: Upload a document</h3>
+<p><strong>Primary actor:</strong> User</p>
+<p><strong>Trigger:</strong> The user selects a document and submits it through the application.</p>
+<ol>
+  <li>The client sends a multipart request containing the document.</li>
+  <li>The system validates the file size, extension, content type, and file content.</li>
+  <li>The system creates the storage directory when necessary.</li>
+  <li>The system generates a safe storage name and saves the document.</li>
+  <li>The system returns a success response containing a document identifier.</li>
+</ol>
+<p><strong>Alternate flows:</strong> An invalid type returns <code>400 Bad Request</code>, an oversized request returns <code>413 Payload Too Large</code>, and a storage failure returns a controlled server error.</p>
+
+<h3>Use case 2: Download a document</h3>
+<p><strong>Primary actor:</strong> User</p>
+<p><strong>Trigger:</strong> The user requests an authorized document.</p>
+<ol>
+  <li>The system verifies the user’s permission to access the document.</li>
+  <li>The system resolves the generated document name inside the configured storage directory.</li>
+  <li>The system verifies that the document exists and is readable.</li>
+  <li>The system streams the document to the user with an appropriate content type.</li>
+</ol>
+<p>If the document does not exist, the API returns <code>404 Not Found</code>. A read failure is logged internally and returned as a safe error response.</p>
+
+<h3>Use case 3: Delete a document</h3>
+<p><strong>Primary actor:</strong> Admin</p>
+<p><strong>Trigger:</strong> An authorized administrator requests document deletion.</p>
+<ol>
+  <li>The system verifies the administrator’s permission.</li>
+  <li>The system checks that the document exists inside the configured directory.</li>
+  <li>The system deletes the document and any associated metadata.</li>
+  <li>The system returns a successful deletion response.</li>
+</ol>
+
+<h2>Document management controller</h2>
+<p>The following controller demonstrates upload, download, and delete endpoints. It generates a UUID-based storage name and validates that resolved paths remain inside the upload directory.</p>
+
+<pre><code>package com.javacodex.controller;
+
+import com.javacodex.exception.FileStorageException;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
+
+@Slf4j
+@RestController
+@RequestMapping("/api/files")
+public class FileUploadController {
+    private final Path uploadDirectory;
+
+    public FileUploadController(@Value("${upload-dir}") String uploadDir) {
+        this.uploadDirectory = Path.of(uploadDir).toAbsolutePath().normalize();
+    }
+
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity&lt;String&gt; handleFileUpload(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body("A file is required");
+        }
+
+        try {
+            Files.createDirectories(uploadDirectory);
+            String originalName = file.getOriginalFilename() == null
+                ? "document"
+                : Path.of(file.getOriginalFilename()).getFileName().toString();
+            String extension = originalName.contains(".")
+                ? originalName.substring(originalName.lastIndexOf('.')).toLowerCase()
+                : "";
+            String storedName = UUID.randomUUID() + extension;
+            Path target = uploadDirectory.resolve(storedName).normalize();
+
+            if (!target.getParent().equals(uploadDirectory)) {
+                throw new FileStorageException("Invalid storage path");
+            }
+
+            Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
+            log.info("Document stored with id {}", storedName);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                .body("Document uploaded successfully: " + storedName);
+        } catch (IOException exception) {
+            throw new FileStorageException("Unable to store the document", exception);
+        }
+    }
+
+    @GetMapping("/download/{fileName:.+}")
+    public ResponseEntity&lt;Resource&gt; downloadFile(@PathVariable String fileName) {
+        try {
+            Path filePath = uploadDirectory.resolve(fileName).normalize();
+            if (!filePath.getParent().equals(uploadDirectory)) {
+                throw new FileStorageException("Invalid document path");
+            }
+
+            Resource resource = new UrlResource(filePath.toUri());
+            if (!resource.exists() || !resource.isReadable()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            String contentType = Files.probeContentType(filePath);
+            MediaType mediaType = contentType == null
+                ? MediaType.APPLICATION_OCTET_STREAM
+                : MediaType.parseMediaType(contentType);
+
+            return ResponseEntity.ok()
+                .contentType(mediaType)
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                    "attachment; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
+        } catch (IOException exception) {
+            throw new FileStorageException("Unable to read the document", exception);
+        }
+    }
+
+    @DeleteMapping("/delete/{fileName:.+}")
+    public ResponseEntity&lt;String&gt; deleteFile(@PathVariable String fileName) {
+        try {
+            Path filePath = uploadDirectory.resolve(fileName).normalize();
+            if (!filePath.getParent().equals(uploadDirectory)) {
+                throw new FileStorageException("Invalid document path");
+            }
+
+            if (!Files.exists(filePath)) {
+                return ResponseEntity.notFound().build();
+            }
+
+            Files.delete(filePath);
+            log.info("Document deleted with id {}", fileName);
+            return ResponseEntity.ok("Document deleted successfully");
+        } catch (IOException exception) {
+            throw new FileStorageException("Unable to delete the document", exception);
+        }
+    }
+}</code></pre>
+
+<h2>Custom storage exception</h2>
+<pre><code>package com.javacodex.exception;
+
+public class FileStorageException extends RuntimeException {
+    public FileStorageException(String message) {
+        super(message);
+    }
+
+    public FileStorageException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}</code></pre>
+
+<h2>Global exception handler</h2>
+<p>A global handler keeps API responses consistent and prevents implementation details such as absolute filesystem paths from being returned to clients.</p>
+
+<pre><code>package com.javacodex.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+    @ExceptionHandler(FileStorageException.class)
+    public ResponseEntity&lt;String&gt; handleFileStorageException(FileStorageException exception) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body("The document operation could not be completed");
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity&lt;String&gt; handleMaxUploadSize() {
+        return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
+            .body("The uploaded document is too large");
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity&lt;String&gt; handleGenericException() {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body("An unexpected error occurred");
+    }
+}</code></pre>
+
+<h2>Configure storage and upload limits</h2>
+<pre><code>upload-dir=/var/lib/javacodex/documents
+spring.servlet.multipart.max-file-size=10MB
+spring.servlet.multipart.max-request-size=10MB</code></pre>
+<p>Use an environment variable or a deployment secret for the production storage path. Ensure the application process has only the minimum directory permissions it needs.</p>
+
+<h2>Document management security checklist</h2>
+<ul>
+  <li>Require authentication for upload and download operations.</li>
+  <li>Allow document deletion only for authorized administrators.</li>
+  <li>Validate file size, extension, MIME type, and actual content.</li>
+  <li>Generate server-side names instead of trusting original filenames.</li>
+  <li>Normalize paths and reject path traversal attempts.</li>
+  <li>Store files outside executable directories and scan untrusted documents when required.</li>
+  <li>Store document ownership and metadata in a database for authorization and auditing.</li>
+  <li>Use object storage for highly available, multi-instance deployments.</li>
+</ul>
+
+<h2>Conclusion</h2>
+<p>A Spring Boot document management system should combine multipart upload support with authentication, authorization, validation, safe storage names, path protection, controlled downloads, administrative deletion, and consistent exception handling. This design provides a reliable foundation for managing PDFs, images, text files, and other documents while reducing common file-upload security risks.</p>

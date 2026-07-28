@@ -4,6 +4,7 @@ import { SPRINGBOOT_PAGES } from './core/constants/tutorial-content';
 import { CourseDocumentComponent } from './features/course-document/course-document.component';
 import { JAVA_ROUTES } from './features/java/java.routes';
 import { SitePagesComponent } from './features/site-pages/site-pages.component';
+import { PYTHON_TOPICS } from './core/constants/python-topics';
 
 const javaFlatRoutes: Routes = JAVA_ROUTES
   .filter((route) => route.path && route.path !== '404' && !route.path.includes(':'))
@@ -19,6 +20,9 @@ const springBootCanonicalNames: Record<string, string> = {
   'project-structure': 'project-structure',
   aop: 'spring-boot-aop',
   'data-jpa': 'spring-boot-data-jpa',
+  'hikari-connection-pool': 'spring-boot-hikari-connection-pool',
+  'redis-cache': 'spring-boot-redis-cache',
+  'file-upload': 'spring-boot-file-upload',
   'security-comprehensive': 'spring-boot-security',
   'exception-handling': 'spring-boot-global-exception-handling',
   profiles: 'spring-boot-profiles',
@@ -31,7 +35,7 @@ const springBootCanonicalNames: Record<string, string> = {
   deployment: 'spring-boot-deployment',
   'migration-2-to-3': 'spring-boot-2-to-3-migration'
 };
-const springBootTopicOrder = ['introduction', 'setup', 'project-structure', 'aop', 'data-jpa', 'security-comprehensive', 'exception-handling', 'profiles', 'scheduler', 'rest-api', 'rest-api-design', 'validation', 'testing', 'testing-comprehensive', 'actuator', 'deployment', 'migration-2-to-3'];
+const springBootTopicOrder = ['introduction', 'setup', 'project-structure', 'aop', 'data-jpa', 'hikari-connection-pool', 'redis-cache', 'file-upload', 'security-comprehensive', 'exception-handling', 'profiles', 'scheduler', 'rest-api', 'rest-api-design', 'validation', 'testing', 'testing-comprehensive', 'actuator', 'deployment', 'migration-2-to-3'];
 const restApiDesignSeoDates = { modifiedTime: '2026-07-26' };
 const restApiDesignRouteTitle = 'REST API Design Best Practices Tutorial | Java Codeex';
 const springBootValidationSeoDates = { modifiedTime: '2026-07-26' };
@@ -43,6 +47,9 @@ const springBootActuatorRouteTitle = 'Spring Boot Actuator Tutorial | Java Codee
 const springBootDeploymentSeoDates = { modifiedTime: '2026-07-26' };
 const springBootDeploymentRouteTitle = 'Spring Boot Deployment Tutorial | Java Codeex';
 const springBootMigrationSeoDates = { modifiedTime: '2026-07-27' };
+const springBootHikariSeoDates = { modifiedTime: '2026-07-27' };
+const springBootRedisSeoDates = { modifiedTime: '2026-07-27' };
+const springBootFileUploadSeoDates = { modifiedTime: '2026-07-27' };
 const springBootMigrationRouteTitle = 'Spring Boot 2 to 3 Migration Guide | Java Codeex';
 const springBootSecurityRouteTitle = 'Spring Boot Security Tutorial | Java Codeex';
 const springBootMigrationVideo = { name: 'Spring Boot 2 to Spring Boot 3 Migration Tutorial', description: 'A practical video guide to migrating a Spring Boot 2 application to Spring Boot 3.', thumbnailUrl: 'https://i.ytimg.com/vi/0eKF-mkZYXo/maxresdefault.jpg', embedUrl: 'https://www.youtube.com/embed/0eKF-mkZYXo', contentUrl: 'https://youtu.be/0eKF-mkZYXo?si=8q1ltC9mliMGKA1I' };
@@ -50,6 +57,8 @@ const springBootExceptionHandlingVideo = { name: 'Spring Boot Global Exception H
 const springBootProfilesVideo = { name: 'Spring Boot Profiles Tutorial', description: 'Learn Spring Boot profiles for development, testing, staging, and production configuration.', thumbnailUrl: 'https://i.ytimg.com/vi/RT9lzRBHxQ4/maxresdefault.jpg', embedUrl: 'https://www.youtube.com/embed/RT9lzRBHxQ4', contentUrl: 'https://youtu.be/RT9lzRBHxQ4?si=KI47dgfqfaiC9RVt' };
 const springBootSchedulerVideo = { name: 'Spring Boot Scheduler Tutorial', description: 'Learn Spring Boot scheduling with @EnableScheduling, @Scheduled, fixed rate, fixed delay, cron expressions, and production configuration.', thumbnailUrl: 'https://i.ytimg.com/vi/81Gd8-zaKIg/maxresdefault.jpg', embedUrl: 'https://www.youtube.com/embed/81Gd8-zaKIg', contentUrl: 'https://youtu.be/81Gd8-zaKIg?si=q55pdz-NBmZm94I0' };
 const springBootSecurityVideo = { name: 'Spring Boot Security 6 Authentication and Authorization Tutorial', description: 'Learn Spring Boot Security 6 authentication, authorization, JWT, roles, password hashing, and secure API configuration.', thumbnailUrl: 'https://i.ytimg.com/vi/4ZqgBb-ck2Y/maxresdefault.jpg', embedUrl: 'https://www.youtube.com/embed/4ZqgBb-ck2Y', contentUrl: 'https://youtu.be/4ZqgBb-ck2Y?si=r51DcJcgOvQftiBE' };
+const springBootHikariVideo = { name: 'Spring Boot HikariCP Connection Pool Tutorial', description: 'Learn how Spring Boot uses HikariCP for database connection pooling, configuration, performance, and production monitoring.', thumbnailUrl: 'https://i.ytimg.com/vi/BubglSQmaig/maxresdefault.jpg', embedUrl: 'https://www.youtube.com/embed/BubglSQmaig', contentUrl: 'https://youtu.be/BubglSQmaig?si=A6A-6sxOdBQx0SbR' };
+const springBootRedisVideo = { name: 'Spring Boot Redis Cache Tutorial', description: 'Learn how to integrate Redis with Spring Boot for caching, cache annotations, TTL values, eviction, and performance improvements.', thumbnailUrl: 'https://i.ytimg.com/vi/0a-RlJx09rg/maxresdefault.jpg', embedUrl: 'https://www.youtube.com/embed/0a-RlJx09rg', contentUrl: 'https://youtu.be/0a-RlJx09rg?si=TtjX94qBcUcdGCS0' };
 const springBootCanonicalRoutes: Routes = Object.entries(springBootCanonicalNames).map(([topic, canonical]) => {
   const index = springBootTopicOrder.indexOf(topic);
   const previousTopic = springBootTopicOrder[index - 1];
@@ -58,7 +67,7 @@ const springBootCanonicalRoutes: Routes = Object.entries(springBootCanonicalName
   return {
     path: canonical,
     title: topic === 'rest-api-design' ? restApiDesignRouteTitle : topic === 'validation' ? springBootValidationRouteTitle : topic === 'testing' ? springBootTestingRouteTitle : topic === 'actuator' ? springBootActuatorRouteTitle : topic === 'deployment' ? springBootDeploymentRouteTitle : topic === 'migration-2-to-3' ? springBootMigrationRouteTitle : topic === 'security-comprehensive' ? springBootSecurityRouteTitle : `${SPRINGBOOT_PAGES[topic].title} | Java Codeex`,
-    data: { fileName: `${topic}.html`, title: SPRINGBOOT_PAGES[topic].title, category: 'Spring Boot', primaryKeyword: topic === 'migration-2-to-3' ? 'Spring Boot 2 to 3 migration' : topic === 'security-comprehensive' ? 'Spring Boot Security' : topic === 'introduction' ? 'Spring Boot tutorial' : SPRINGBOOT_PAGES[topic].title, description: SPRINGBOOT_PAGES[topic].description, keywords: `${SPRINGBOOT_PAGES[topic].title}, Spring Boot Security, authentication, authorization, JWT, Spring Boot tutorial`, seo: { title: topic === 'validation' ? springBootValidationRouteTitle : topic === 'testing' ? springBootTestingRouteTitle : topic === 'actuator' ? springBootActuatorRouteTitle : topic === 'deployment' ? springBootDeploymentRouteTitle : topic === 'migration-2-to-3' ? springBootMigrationRouteTitle : topic === 'security-comprehensive' ? springBootSecurityRouteTitle : `${SPRINGBOOT_PAGES[topic].title} Tutorial | Java Codeex`, description: SPRINGBOOT_PAGES[topic].description, keyword: topic === 'migration-2-to-3' ? 'Spring Boot 2 to 3 migration' : topic === 'security-comprehensive' ? 'Spring Boot Security' : topic === 'introduction' ? 'Spring Boot tutorial' : SPRINGBOOT_PAGES[topic].title, canonicalUrl: `https://javacodeex.com/${canonical}`, keywords: `${SPRINGBOOT_PAGES[topic].title}, Spring Boot Security, authentication, authorization, JWT, Spring Boot tutorial`, ...(topic === 'rest-api-design' ? restApiDesignSeoDates : {}), ...(topic === 'validation' ? springBootValidationSeoDates : {}), ...(topic === 'testing' ? springBootTestingSeoDates : {}), ...(topic === 'actuator' ? springBootActuatorSeoDates : {}), ...(topic === 'migration-2-to-3' ? springBootMigrationSeoDates : {}), ...(topic === 'migration-2-to-3' ? { video: springBootMigrationVideo } : {}), ...(topic === 'exception-handling' ? { video: springBootExceptionHandlingVideo } : {}), ...(topic === 'profiles' ? { video: springBootProfilesVideo } : {}), ...(topic === 'scheduler' ? { video: springBootSchedulerVideo } : {}), ...(topic === 'security-comprehensive' ? { video: springBootSecurityVideo } : {}), breadcrumbs: [{ name: 'Home', url: 'https://javacodeex.com/' }, { name: 'Spring Boot', url: 'https://javacodeex.com/spring-boot-overview' }, { name: SPRINGBOOT_PAGES[topic].title, url: `https://javacodeex.com/${canonical}` }] }, backRoute: '/spring-boot-overview', assetFolder: 'springboot', previousRoute: previousTopic ? routeForTopic(previousTopic) : '/spring-boot-overview', previousLabel: previousTopic ? SPRINGBOOT_PAGES[previousTopic].title : 'Spring Boot Tutorial', nextRoute: nextTopic ? routeForTopic(nextTopic) : '', nextLabel: nextTopic ? SPRINGBOOT_PAGES[nextTopic].title : '' },
+    data: { fileName: `${topic}.html`, title: SPRINGBOOT_PAGES[topic].title, category: 'Spring Boot', primaryKeyword: topic === 'migration-2-to-3' ? 'Spring Boot 2 to 3 migration' : topic === 'security-comprehensive' ? 'Spring Boot Security' : topic === 'introduction' ? 'Spring Boot tutorial' : SPRINGBOOT_PAGES[topic].title, description: SPRINGBOOT_PAGES[topic].description, keywords: topic === 'hikari-connection-pool' ? 'Spring Boot HikariCP, HikariCP connection pool, Spring Boot database connection pool' : topic === 'redis-cache' ? 'Spring Boot Redis cache, Redis caching, Spring Cache, Spring Data Redis' : topic === 'file-upload' ? 'Spring Boot file upload, MultipartFile, document management system, Spring Boot REST file upload' : `${SPRINGBOOT_PAGES[topic].title}, Spring Boot Security, authentication, authorization, JWT, Spring Boot tutorial`, seo: { title: topic === 'validation' ? springBootValidationRouteTitle : topic === 'testing' ? springBootTestingRouteTitle : topic === 'actuator' ? springBootActuatorRouteTitle : topic === 'deployment' ? springBootDeploymentRouteTitle : topic === 'migration-2-to-3' ? springBootMigrationRouteTitle : topic === 'security-comprehensive' ? springBootSecurityRouteTitle : `${SPRINGBOOT_PAGES[topic].title} Tutorial | Java Codeex`, description: SPRINGBOOT_PAGES[topic].description, keyword: topic === 'migration-2-to-3' ? 'Spring Boot 2 to 3 migration' : topic === 'security-comprehensive' ? 'Spring Boot Security' : topic === 'introduction' ? 'Spring Boot tutorial' : SPRINGBOOT_PAGES[topic].title, canonicalUrl: `https://javacodeex.com/${canonical}`, keywords: topic === 'hikari-connection-pool' ? 'Spring Boot HikariCP, HikariCP connection pool, Spring Boot database connection pool' : topic === 'redis-cache' ? 'Spring Boot Redis cache, Redis caching, Spring Cache, Spring Data Redis' : topic === 'file-upload' ? 'Spring Boot file upload, MultipartFile, document management system, Spring Boot REST file upload' : `${SPRINGBOOT_PAGES[topic].title}, Spring Boot Security, authentication, authorization, JWT, Spring Boot tutorial`, ...(topic === 'rest-api-design' ? restApiDesignSeoDates : {}), ...(topic === 'validation' ? springBootValidationSeoDates : {}), ...(topic === 'testing' ? springBootTestingSeoDates : {}), ...(topic === 'actuator' ? springBootActuatorSeoDates : {}), ...(topic === 'migration-2-to-3' ? springBootMigrationSeoDates : {}), ...(topic === 'hikari-connection-pool' ? springBootHikariSeoDates : {}), ...(topic === 'redis-cache' ? springBootRedisSeoDates : {}), ...(topic === 'file-upload' ? springBootFileUploadSeoDates : {}), ...(topic === 'migration-2-to-3' ? { video: springBootMigrationVideo } : {}), ...(topic === 'exception-handling' ? { video: springBootExceptionHandlingVideo } : {}), ...(topic === 'profiles' ? { video: springBootProfilesVideo } : {}), ...(topic === 'scheduler' ? { video: springBootSchedulerVideo } : {}), ...(topic === 'security-comprehensive' ? { video: springBootSecurityVideo } : {}), ...(topic === 'hikari-connection-pool' ? { video: springBootHikariVideo } : {}), ...(topic === 'redis-cache' ? { video: springBootRedisVideo } : {}), breadcrumbs: [{ name: 'Home', url: 'https://javacodeex.com/' }, { name: 'Spring Boot', url: 'https://javacodeex.com/spring-boot-overview' }, { name: SPRINGBOOT_PAGES[topic].title, url: `https://javacodeex.com/${canonical}` }] }, backRoute: '/spring-boot-overview', assetFolder: 'springboot', previousRoute: previousTopic ? routeForTopic(previousTopic) : '/spring-boot-overview', previousLabel: previousTopic ? SPRINGBOOT_PAGES[previousTopic].title : 'Spring Boot Tutorial', nextRoute: nextTopic ? routeForTopic(nextTopic) : '', nextLabel: nextTopic ? SPRINGBOOT_PAGES[nextTopic].title : '' },
     loadComponent: () => Promise.resolve(CourseDocumentComponent)
   };
 });
@@ -109,6 +118,36 @@ const MYSQL_TOPICS = [
   ['sql', 'MySQL SQL'], ['select', 'MySQL SELECT'], ['select-distinct', 'MySQL SELECT DISTINCT'], ['where', 'MySQL WHERE'], ['order-by', 'MySQL ORDER BY'], ['and', 'MySQL AND'], ['or', 'MySQL OR'], ['not', 'MySQL NOT'], ['insert-into', 'MySQL INSERT INTO'], ['null-values', 'MySQL NULL Values'], ['update', 'MySQL UPDATE'], ['delete', 'MySQL DELETE'], ['limit', 'MySQL LIMIT'], ['aggregate-functions', 'MySQL Aggregate Functions'], ['min', 'MySQL MIN()'], ['max', 'MySQL MAX()'], ['count', 'MySQL COUNT()'], ['sum', 'MySQL SUM()'], ['avg', 'MySQL AVG()'], ['like', 'MySQL LIKE'], ['wildcards', 'MySQL Wildcards'], ['in', 'MySQL IN'], ['between', 'MySQL BETWEEN'], ['aliases', 'MySQL Aliases'], ['joins', 'MySQL Joins'], ['inner-join', 'MySQL INNER JOIN'], ['left-join', 'MySQL LEFT JOIN'], ['right-join', 'MySQL RIGHT JOIN'], ['cross-join', 'MySQL CROSS JOIN'], ['self-join', 'MySQL Self Join'], ['union', 'MySQL UNION'], ['union-all', 'MySQL UNION ALL'], ['group-by', 'MySQL GROUP BY'], ['having', 'MySQL HAVING'], ['exists', 'MySQL EXISTS'], ['any', 'MySQL ANY'], ['all', 'MySQL ALL'], ['insert-select', 'MySQL INSERT SELECT'], ['case', 'MySQL CASE'], ['null-functions', 'MySQL Null Functions'], ['stored-procedures', 'MySQL Stored Procedures'], ['comments', 'MySQL Comments'], ['operators', 'MySQL Operators'], ['create-db', 'MySQL Create DB'], ['drop-db', 'MySQL Drop DB'], ['create-table', 'MySQL Create Table'], ['drop-table', 'MySQL Drop Table'], ['alter-table', 'MySQL Alter Table'], ['constraints', 'MySQL Constraints'], ['not-null', 'MySQL Not Null'], ['unique', 'MySQL Unique'], ['primary-key', 'MySQL Primary Key'], ['foreign-key', 'MySQL Foreign Key'], ['check', 'MySQL Check'], ['default', 'MySQL Default'], ['create-index', 'MySQL Create Index'], ['auto-increment', 'MySQL Auto Increment'], ['dates', 'MySQL Dates'], ['views', 'MySQL Views'], ['injection', 'MySQL Injection'], ['prepared-statements', 'MySQL Prepared Statements']
 ] as const;
 
+const pythonLessonTopics = PYTHON_TOPICS.filter((topic) => topic.slug !== 'tutorial');
+const pythonLegacyRedirects: Routes = pythonLessonTopics.map((topic) => ({
+  path: `python/${topic.slug}`,
+  pathMatch: 'full' as const,
+  redirectTo: topic.slug
+}));
+const pythonRoutes: Routes = pythonLessonTopics.map((topic, index) => ({
+  path: topic.slug,
+  title: `${topic.title} | Java Codeex`,
+  data: {
+    category: topic.category, title: topic.title, primaryKeyword: topic.title.toLowerCase(),
+    description: topic.description, keywords: `${topic.title}, Python tutorial, Python programming`,
+    seo: {
+      title: `${topic.title} | Java Codeex`, description: topic.description,
+      keyword: topic.title.toLowerCase(), canonicalUrl: `https://javacodeex.com/${topic.slug}`,
+      articleSection: topic.category,
+      breadcrumbs: [
+        { name: 'Home', url: 'https://javacodeex.com/' },
+        { name: 'Python', url: 'https://javacodeex.com/python-tutorial' },
+        { name: topic.title, url: `https://javacodeex.com/${topic.slug}` }
+      ]
+    },
+    previousRoute: index > 0 ? `/${pythonLessonTopics[index - 1].slug}` : '/python-tutorial',
+    previousLabel: index > 0 ? pythonLessonTopics[index - 1].title : 'Python Tutorial',
+    nextRoute: index < pythonLessonTopics.length - 1 ? `/${pythonLessonTopics[index + 1].slug}` : '',
+    nextLabel: index < pythonLessonTopics.length - 1 ? pythonLessonTopics[index + 1].title : ''
+  },
+  loadComponent: () => import('./features/python/python-document.component').then((m) => m.PythonDocumentComponent)
+}));
+
 const mysqlRoutes: Routes = MYSQL_TOPICS.map(([slug, title]) => {
   const description = `Learn ${title} with clear MySQL syntax, examples, and practical database guidance.`;
   return {
@@ -135,7 +174,19 @@ export const routes: Routes = [
       { path: 'springboot/index.html', pathMatch: 'full', redirectTo: 'spring-boot' },
       { path: 'springboot/:topic/:section', pathMatch: 'full', redirectTo: 'spring-boot/:topic/:section' },
       { path: 'springboot/:topic', pathMatch: 'full', redirectTo: 'spring-boot/:topic' },
-      { path: 'python', title: 'Python Programming Tutorials | Java Codeex', data: { category: 'Programming Course', title: 'Python Programming Tutorials', description: 'Learn Python programming fundamentals through clear explanations, practical examples, and beginner-friendly exercises.', keywords: 'Python tutorials, Python programming, learn Python, Python examples' }, loadComponent: () => import('./features/python/python.component').then((m) => m.PythonComponent) },
+      { path: 'python', pathMatch: 'full', redirectTo: 'python-tutorial' },
+      { path: 'python/tutorial', pathMatch: 'full', redirectTo: 'python-tutorial' },
+      { path: 'python-break', pathMatch: 'full', redirectTo: 'python-break-statement' },
+      { path: 'python/python-break', pathMatch: 'full', redirectTo: 'python-break-statement' },
+      { path: 'for-vs-while-loop', pathMatch: 'full', redirectTo: 'difference-between-for-loop-and-while-loop-in-python' },
+      { path: 'python/for-vs-while-loop', pathMatch: 'full', redirectTo: 'difference-between-for-loop-and-while-loop-in-python' },
+      { path: 'break-vs-continue', pathMatch: 'full', redirectTo: 'difference-between-break-and-continue-in-python' },
+      { path: 'python/break-vs-continue', pathMatch: 'full', redirectTo: 'difference-between-break-and-continue-in-python' },
+      { path: 'control-statements', pathMatch: 'full', redirectTo: 'control-statements-in-python' },
+      { path: 'python/control-statements', pathMatch: 'full', redirectTo: 'control-statements-in-python' },
+      ...pythonLegacyRedirects,
+      { path: 'python-tutorial', title: 'Python Tutorial | Python Programming Language | Java Codeex', data: { category: 'Programming Course', title: 'Python Tutorial', primaryKeyword: 'Python tutorial', description: 'Learn Python programming from the basics with clear explanations, practical examples, and a structured path covering syntax, data structures, functions, OOP, exceptions, and file handling.', keywords: 'Python tutorial, Python programming language, learn Python, Python examples, Python basics', seo: { title: 'Python Tutorial | Python Programming Language | Java Codeex', description: 'Learn Python programming from the basics with clear explanations, practical examples, and a structured path covering syntax, data structures, functions, OOP, exceptions, and file handling.', keyword: 'Python tutorial', canonicalUrl: 'https://javacodeex.com/python-tutorial', articleSection: 'Python', breadcrumbs: [{ name: 'Home', url: 'https://javacodeex.com/' }, { name: 'Python', url: 'https://javacodeex.com/python-tutorial' }] } }, loadComponent: () => import('./features/python/python.component').then((m) => m.PythonComponent) },
+      ...pythonRoutes,
       { path: 'hibernate-tutorial', title: 'Hibernate Tutorial | Java Codeex', data: { category: 'Java Persistence', title: 'Hibernate Tutorial', description: 'Learn Hibernate ORM, JPA, architecture, entity mapping, caching, queries, transactions, generators, and database dialects.', keywords: 'Hibernate tutorial, Hibernate in Java, Hibernate architecture, Hibernate ORM, JPA, Hibernate dialects' }, loadComponent: () => import('./features/hibernate/hibernate-introduction.component').then((m) => m.HibernateIntroductionComponent) },
       { path: 'hibernate', pathMatch: 'full', redirectTo: 'hibernate-tutorial' },
       { path: 'hibernate-architecture', title: 'Hibernate Architecture | Java Codeex', data: { category: 'Java Persistence', title: 'Hibernate Architecture', description: 'Understand Hibernate architecture, SessionFactory, Session, transactions, persistence context, JDBC, and database layers.', keywords: 'Hibernate architecture, Hibernate SessionFactory, Hibernate Session, persistence context, Hibernate JDBC' }, loadComponent: () => import('./features/hibernate/hibernate-architecture.component').then((m) => m.HibernateArchitectureComponent) },

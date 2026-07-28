@@ -15,9 +15,12 @@ export class NavbarComponent {
   closedDropdown: string | null = null;
 
   constructor(private readonly router: Router) {
-    this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd)).subscribe(() => {
+    this.router.events.pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd)).subscribe((event) => {
       this.menuOpen = false;
       this.openDropdown = null;
+      if (typeof window !== 'undefined' && !event.urlAfterRedirects.includes('#')) {
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      }
     });
   }
 
@@ -31,4 +34,30 @@ export class NavbarComponent {
     if (this.closedDropdown === label) this.closedDropdown = null;
   }
   hasChildren(item: NavigationItem): boolean { return !!item.children?.length; }
+  normalizeRoute(route?: string): string | undefined {
+    if (route === '/python/tutorial') return '/python-tutorial';
+    return route?.startsWith('/python/') ? `/${route.slice('/python/'.length)}` : route;
+  }
+  formatNavigationLabel(label: string): string {
+    return {
+      'Python Variable & Data Type': 'Python Variables and Data Types',
+      'Python If else': 'Python if-else',
+      'Python Boolean': 'Python Booleans',
+      'Python OOPs': 'Python OOP',
+      'Python OOPs Concepts': 'Python OOP Concepts',
+      'def Function in Python': 'Python Function Definition',
+      'Python Collection Module': 'Python `collections` Module',
+      'Python Math Module': 'Python `math` Module',
+      'Python OS Module': 'Python `os` Module',
+      'Python Random Module': 'Python `random` Module',
+      'Python Statistics Module': 'Python `statistics` Module',
+      'Python Sys Module': 'Python `sys` Module',
+      'Python Read CSV File': 'Read CSV Files in Python',
+      'Python Write CSV File': 'Write CSV Files in Python',
+      'Read Excel File': 'Read Excel Files in Python',
+      'Write Excel File': 'Write Excel Files in Python',
+      'Python JSON': 'JSON in Python',
+      'Context Manager in Python': 'Python Context Managers'
+    }[label] ?? label;
+  }
 }

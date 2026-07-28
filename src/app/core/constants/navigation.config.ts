@@ -35,6 +35,9 @@ export const MAIN_NAVIGATION: readonly NavigationItem[] = [
       { label: 'Spring Boot Project Structure', route: '/project-structure' },
       { label: 'Spring Boot AOP', route: '/spring-boot-aop' },
       { label: 'Spring Boot Data JPA', route: '/spring-boot-data-jpa' },
+      { label: 'Spring Boot Hikari Connection Pool', route: '/spring-boot-hikari-connection-pool' },
+      { label: 'Spring Boot Redis Cache', route: '/spring-boot-redis-cache' },
+      { label: 'Spring Boot File Upload', route: '/spring-boot-file-upload' },
       { label: 'Spring Boot Security', route: '/spring-boot-security' },
       { label: 'Spring Boot Global Exception Handling', route: '/spring-boot-global-exception-handling' },
       { label: 'Spring Boot Profiles', route: '/spring-boot-profiles' },
@@ -51,7 +54,16 @@ export const MAIN_NAVIGATION: readonly NavigationItem[] = [
   },
   { label: 'Angular', route: '/angular', icon: 'bi bi-braces' },
   { label: 'Interviews', route: '/interviews', icon: 'bi bi-person-workspace' },
-  { label: 'Python', route: '/python', icon: 'bi bi-code-slash' },
+  {
+    label: 'Python', route: '/python-tutorial', icon: 'bi bi-code-slash', children: [
+      { label: 'Python Tutorial', heading: true },
+      { label: 'Python Tutorial', route: '/python/tutorial' }, { label: 'What is Python', route: '/python/what-is-python' }, { label: 'Python Features', route: '/python/python-features' }, { label: 'Advantages of Python', route: '/python/advantages-of-python' }, { label: 'History of Python', route: '/python/history-of-python' }, { label: 'Python Applications', route: '/python/python-applications' }, { label: 'Hello World Program in Python', route: '/python/hello-world-program' }, { label: 'How to Install Python?', route: '/python/install-python' }, { label: 'Python Syntax', route: '/python/python-syntax' }, { label: 'Python Keywords', route: '/python/python-keywords' }, { label: 'Python Literals', route: '/python/python-literals' }, { label: 'Python Operators', route: '/python/python-operators' }, { label: 'Python Comments', route: '/python/python-comments' },
+      { label: 'Python Variable & Data Type', heading: true },
+      { label: 'Python Variables', route: '/python/python-variables' }, { label: 'Python Data Types', route: '/python/python-data-types' }, { label: 'Python Numbers', route: '/python/python-numbers' }, { label: 'Type Casting in Python', route: '/python/type-casting' }, { label: 'Python Strings', route: '/python/python-strings' }, { label: 'Python String Methods', route: '/python/python-string-methods' }, { label: 'Python Boolean', route: '/python/python-boolean' },
+      { label: 'Python Control Statements', heading: true },
+      { label: 'Python If else', route: '/python/python-if-else' }, { label: 'Python Loops', route: '/python/python-loops' }, { label: 'Python For Loop', route: '/python/python-for-loop' }, { label: 'Python While Loop', route: '/python/python-while-loop' }, { label: 'Python Continue', route: '/python/python-continue' }, { label: 'Python Break Statement', route: '/python/python-break-statement' }, { label: 'Python Pass', route: '/python/python-pass' }, { label: 'Difference between Break and Continue in Python', route: '/python/difference-between-break-and-continue-in-python' }, { label: 'Difference Between For Loop and While Loop in Python', route: '/python/difference-between-for-loop-and-while-loop-in-python' }, { label: 'Control Statements in Python', route: '/python/control-statements-in-python' },
+    ]
+  },
   {
     label: 'Hibernate', route: '/hibernate-tutorial', icon: 'bi bi-database-gear', children: [
       { label: 'Hibernate Tutorial Overview', route: '/hibernate-tutorial' },
@@ -149,7 +161,7 @@ export const MAIN_NAVIGATION: readonly NavigationItem[] = [
 
 export const FOOTER_NAVIGATION: readonly NavigationItem[] = [
   { label: 'Java', route: '/java-tutorial-overview' },
-  { label: 'Python', route: '/python' },
+  { label: 'Python', route: '/python-tutorial' },
   { label: 'Spring Boot', route: '/spring-boot-overview' },
   { label: 'Angular', route: '/angular' },
   { label: 'MySQL', route: '/mysql' },

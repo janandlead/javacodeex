@@ -1,0 +1,264 @@
+<h1>Spring Boot Hikari Connection Pool</h1>
+<h2>What is a database connection pool?</h2>
+<p>A database connection pool is a managed collection of reusable database connections. Instead of opening a new connection for every HTTP request, a Spring Boot application borrows an available connection, runs the database operation, and returns the connection to the pool.</p>
+<p>Spring Boot uses HikariCP as its default JDBC connection pool when the application uses Spring JDBC or Spring Data JPA. HikariCP is lightweight, fast, and designed for reliable connection management.</p>
+
+<h2>Why is a connection pool important?</h2>
+
+<h3>1. Efficient resource management</h3>
+<p>Creating a database connection involves network communication, authentication, session setup, and database-side resources. Recreating a connection for every request adds unnecessary overhead.</p>
+<p>A pool creates and reuses connections, which reduces the cost of repeatedly opening and closing database sessions.</p>
+
+<h3>2. Better application performance</h3>
+<p>Because connections are already available, requests spend less time waiting for database setup. A pool also supports concurrent requests by managing multiple connections safely.</p>
+
+<h3>3. Controlled database usage</h3>
+<p>The maximum pool size limits how many connections an application can use at the same time. This prevents a busy application from opening an uncontrolled number of connections and overwhelming the database server.</p>
+<p>Idle connections can also be removed after a configured period, allowing unused resources to be released.</p>
+
+<h3>4. Improved reliability</h3>
+<p>HikariCP validates and replaces connections that are closed, expired, or no longer usable. Connection timeouts also prevent requests from waiting forever when the pool has no available connection.</p>
+
+<h3>5. Easier scalability</h3>
+<p>Connection pooling helps an application handle more concurrent requests efficiently. However, pool size must be planned across all application instances so the combined number of connections stays within the database server’s limits.</p>
+
+<h2>Does Spring Data JPA include HikariCP?</h2>
+<p>In a standard Spring Boot application, you usually do not need to add a separate HikariCP dependency. HikariCP is brought in by the Spring Boot JDBC or Spring Data JPA starter and is selected automatically when it is available.</p>
+<p>You still need to add the JDBC driver for your database. The following Maven dependencies create a simple Spring Boot REST application that uses JPA with MySQL:</p>
+
+<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;parent&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+    &lt;version&gt;3.3.0&lt;/version&gt;
+    &lt;relativePath/&gt;
+  &lt;/parent&gt;
+  &lt;groupId&gt;com.example&lt;/groupId&gt;
+  &lt;artifactId&gt;student&lt;/artifactId&gt;
+  &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+  &lt;name&gt;student&lt;/name&gt;
+  &lt;description&gt;Spring Boot HikariCP demonstration&lt;/description&gt;
+  &lt;properties&gt;&lt;java.version&gt;17&lt;/java.version&gt;&lt;/properties&gt;
+  &lt;dependencies&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+  &lt;/dependency&gt;
+
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+  &lt;/dependency&gt;
+
+  &lt;dependency&gt;
+    &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+    &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+  &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+  &lt;build&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+
+<h2>Example Spring Boot application</h2>
+<p>The following example exposes basic student endpoints. When the repository accesses MySQL, the datasource obtains connections from HikariCP automatically.</p>
+
+<h3>Entity</h3>
+<pre><code>package com.example.student.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "student")
+public class Student {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+    private String course;
+
+    // Constructors, getters, and setters omitted for brevity
+}</code></pre>
+
+<h3>Repository</h3>
+<pre><code>package com.example.student.repository;
+
+import com.example.student.entity.Student;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface StudentRepository extends JpaRepository&lt;Student, Long&gt; {
+}</code></pre>
+
+<h3>Service</h3>
+<pre><code>package com.example.student.service;
+
+import com.example.student.entity.Student;
+import com.example.student.repository.StudentRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class StudentService {
+    private final StudentRepository studentRepository;
+
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
+
+    public List&lt;Student&gt; findAll() {
+        return studentRepository.findAll();
+    }
+
+    public Student save(Student student) {
+        return studentRepository.save(student);
+    }
+}</code></pre>
+
+<h3>Controller</h3>
+<pre><code>package com.example.student.controller;
+
+import com.example.student.entity.Student;
+import com.example.student.service.StudentService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/students")
+public class StudentController {
+    private final StudentService studentService;
+
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
+
+    @GetMapping
+    public List&lt;Student&gt; findAll() {
+        return studentService.findAll();
+    }
+
+    @PostMapping
+    public Student create(@RequestBody Student student) {
+        return studentService.save(student);
+    }
+}</code></pre>
+
+<h2>Configure MySQL and HikariCP</h2>
+<p>Add the datasource and HikariCP settings to <code>src/main/resources/application.properties</code>:</p>
+
+<pre><code>spring.application.name=student
+server.port=9090
+
+spring.datasource.url=jdbc:mysql://localhost:3306/test
+spring.datasource.username=root
+spring.datasource.password=your-password
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+# HikariCP settings
+spring.datasource.hikari.connection-timeout=20000
+spring.datasource.hikari.maximum-pool-size=10
+spring.datasource.hikari.minimum-idle=5
+spring.datasource.hikari.idle-timeout=300000
+spring.datasource.hikari.pool-name=StudentHikariPool
+spring.datasource.hikari.max-lifetime=600000</code></pre>
+
+<h2>Important HikariCP properties</h2>
+<table>
+  <thead>
+    <tr><th>Property</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>connection-timeout</code></td><td>Maximum time, in milliseconds, that a request waits for a connection.</td></tr>
+    <tr><td><code>maximum-pool-size</code></td><td>Maximum number of connections in the pool.</td></tr>
+    <tr><td><code>minimum-idle</code></td><td>Minimum number of idle connections maintained by the pool.</td></tr>
+    <tr><td><code>idle-timeout</code></td><td>Maximum time an unused connection can remain idle.</td></tr>
+    <tr><td><code>max-lifetime</code></td><td>Maximum lifetime of a connection before HikariCP replaces it.</td></tr>
+    <tr><td><code>pool-name</code></td><td>Name shown in logs and monitoring tools.</td></tr>
+  </tbody>
+</table>
+
+<h2>How should you choose the pool size?</h2>
+<p>A larger pool does not automatically improve performance. Each active connection consumes memory and database resources. Start with a reasonable value, measure application behavior, and adjust the pool after reviewing metrics.</p>
+<p>Consider the database connection limit, the number of application instances, average query duration, and the number of concurrent requests. For example, ten connections per instance across five instances can consume up to fifty database connections.</p>
+
+<h2>Enable HikariCP logging</h2>
+<p>Temporary debug logging can help verify the configured pool and investigate connection problems:</p>
+
+<pre><code>logging.level.com.zaxxer.hikari.HikariConfig=DEBUG
+logging.level.com.zaxxer.hikari=TRACE</code></pre>
+
+<p>Use TRACE logging carefully because it can generate a large amount of output. Disable it or reduce it after troubleshooting.</p>
+
+<h2>Monitor the connection pool with Actuator</h2>
+<p>Spring Boot Actuator can expose datasource metrics such as active connections, idle connections, pending requests, and connection timeouts. Expose only the endpoints required by your environment and protect operational endpoints.</p>
+
+<pre><code>management.endpoints.web.exposure.include=health,info,metrics
+management.endpoint.health.show-details=when-authorized</code></pre>
+
+<h2>Test connection-pool behavior with JMeter</h2>
+<p>JMeter can simulate concurrent requests and help you observe how the application behaves when many users access the database at the same time.</p>
+
+<h3>Step 1: Install JMeter</h3>
+<p>Download JMeter from the official Apache JMeter website, extract the archive, and start <code>jmeter.bat</code> on Windows or <code>jmeter</code> on Linux and macOS.</p>
+
+<h3>Step 2: Create a thread group</h3>
+<p>Create a Thread Group under a new Test Plan. As a starting example, configure:</p>
+<ul>
+  <li>Number of threads: 100</li>
+  <li>Ramp-up period: 10 seconds</li>
+  <li>Loop count: 10</li>
+</ul>
+
+<h3>Step 3: Add an HTTP Request</h3>
+<p>Add an HTTP Request sampler for the student endpoint:</p>
+<ul>
+  <li>Server: <code>localhost</code></li>
+  <li>Port: <code>9090</code></li>
+  <li>Method: <code>GET</code></li>
+  <li>Path: <code>/students</code></li>
+</ul>
+
+<h3>Step 4: Add a listener and run the test</h3>
+<p>Add a Summary Report or View Results in Table listener, start the Spring Boot application, and run the test plan. Review response time, throughput, errors, and connection-pool metrics together. A slow response time does not always indicate a pool problem; queries, database indexes, network latency, and application code can also be responsible.</p>
+
+<h2>HikariCP best practices</h2>
+<ul>
+  <li>Use Spring-managed repositories and transactions so connections are returned reliably.</li>
+  <li>Do not create a new datasource or connection for every request.</li>
+  <li>Keep database credentials outside source control and use environment-specific configuration.</li>
+  <li>Set a connection timeout so requests fail clearly instead of waiting indefinitely.</li>
+  <li>Monitor active, idle, pending, and timeout metrics in production.</li>
+  <li>Configure the pool according to the database limits and the number of application instances.</li>
+</ul>

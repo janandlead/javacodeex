@@ -153,6 +153,20 @@ export class JavaDocumentComponent implements OnInit, OnChanges {
     normalizeTutorialHeadings(document);
     if (this.fileName === 'index.html') {
       document.querySelectorAll('.section-card[id] ul.list-group').forEach((list) => list.remove());
+    } else if (contentContainer) {
+      const contentWrapper = contentContainer.querySelector<HTMLElement>('.content-wrapper');
+      if (contentWrapper) {
+        contentWrapper.classList.add('java-article-wrapper');
+        let sectionCard: HTMLElement | undefined;
+        Array.from(contentWrapper.children).forEach((child) => {
+          if (child.tagName === 'H2') {
+            sectionCard = document.createElement('section');
+            sectionCard.className = 'section-card';
+            contentWrapper.insertBefore(sectionCard, child);
+          }
+          sectionCard?.appendChild(child);
+        });
+      }
     }
     document.querySelectorAll('a[href]').forEach((anchor) => {
       const href = anchor.getAttribute('href') ?? '';
@@ -184,7 +198,8 @@ export class JavaDocumentComponent implements OnInit, OnChanges {
         ...(this.previousRoute ? [{ label: this.previousLabel, href: this.previousRoute }] : []),
         ...(this.nextRoute ? [{ label: this.nextLabel, href: this.nextRoute }] : [])
       ],
-      { label: 'Java Tutorial Overview', href: '/java-tutorial-overview' }
+      { label: 'Java Tutorial Overview', href: '/java-tutorial-overview' },
+      this.router.url.split(/[?#]/)[0].replace(/\/$/, '')
     );
     return document.body.innerHTML;
   }
