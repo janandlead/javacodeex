@@ -13,7 +13,6 @@ interface CourseCard {
   readonly accent: string;
   readonly available: boolean;
   readonly enrollmentOnly?: boolean;
-  readonly fee?: string;
 }
 
 @Component({
@@ -25,7 +24,6 @@ interface CourseCard {
 })
 export class HomeComponent {
   readonly enrollmentOptions = ['Java', 'Spring Boot', 'Microservices', 'Design Patterns', 'Focused Java Topics', 'Real-time Project Execution for Freshers', 'Architecture Guidance', 'AWS Course', 'Interview Preparation Tips', 'AI Assistance Tools and Tech Stack Guidance', 'Project Review or Mock Interview', 'One-to-One Mentoring'];
-  readonly enrollmentFees: Readonly<Record<string, string>> = { Java: '₹7,999', 'Spring Boot': '₹8,999', Microservices: '₹10,999', 'Design Patterns': '₹3,999', 'Focused Java Topics': '₹2,999', 'Real-time Project Execution for Freshers': '₹8,999', 'Architecture Guidance': '₹5,999', 'AWS Course': '₹8,999', 'Interview Preparation Tips': '₹4,999', 'AI Assistance Tools and Tech Stack Guidance': '₹3,999', 'Project Review or Mock Interview': '₹999 per session', 'One-to-One Mentoring': '₹1,200–₹1,500 per hour' };
   readonly enrollmentDurations: Readonly<Record<string, string>> = { Java: '4 weekends · 40 hours', 'Spring Boot': '4 weekends · 40 hours', Microservices: '4 weekends · 40 hours', 'Design Patterns': '2 weekends · 20 hours', 'Focused Java Topics': '1 weekend · 10 hours', 'Real-time Project Execution for Freshers': '4 weekends · 40 hours', 'Architecture Guidance': '2 weekends · 20 hours', 'AWS Course': '4 weekends · 40 hours', 'Interview Preparation Tips': '2 weekends · 20 hours', 'AI Assistance Tools and Tech Stack Guidance': '2 weekends · 20 hours', 'Project Review or Mock Interview': '1 session', 'One-to-One Mentoring': '1 hour' };
   private readonly formBuilder = inject(FormBuilder);
   readonly enrollmentForm = this.formBuilder.nonNullable.group({
@@ -38,10 +36,10 @@ export class HomeComponent {
   selectedEnrollmentCourse = '';
   isEnrollmentOpen = false;
   enrollmentMessage = '';
-  get selectedEnrollmentFee(): string { return this.enrollmentFees[this.selectedEnrollmentCourse] ?? ''; }
   get selectedEnrollmentDuration(): string { return this.enrollmentDurations[this.selectedEnrollmentCourse] ?? ''; }
   readonly courses: readonly CourseCard[] = [
     { name: 'Java', route: '/java-tutorial-overview', icon: 'bi bi-cup-hot-fill', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg', eyebrow: 'Core programming', description: 'Master Java fundamentals, OOP, collections, concurrency, IO, networking, and JDBC.', accent: '#2563eb', available: true },
+    { name: 'Python', route: '/python-tutorial', icon: 'bi bi-code-slash', eyebrow: 'Programming fundamentals', description: 'Learn Python syntax, data types, control flow, functions, collections, files, and practical application development.', accent: '#0f766e', available: true },
     { name: 'Spring Boot', route: '/spring-boot-overview', icon: 'bi bi-leaf-fill', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/spring/spring-original.svg', eyebrow: 'Backend development', description: 'Build APIs for production with web, data, security, testing, and deployment lessons.', accent: '#16a34a', available: true },
     { name: 'Hibernate', route: '/hibernate-tutorial', icon: 'bi bi-database-fill-gear', eyebrow: 'Java persistence', description: 'Understand ORM, entities, relationships, fetching, caching, queries, and transaction management.', accent: '#ca8a04', available: true },
     { name: 'MySQL', route: '/mysql', icon: 'bi bi-database-fill', iconUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg', eyebrow: 'Relational database', description: 'Learn MySQL SQL, database design, joins, constraints, views, stored procedures, and secure application practices.', accent: '#0891b2', available: true },
@@ -74,7 +72,7 @@ export class HomeComponent {
       return;
     }
     const { fullName, mobile, email } = this.enrollmentForm.getRawValue();
-    const message = encodeURIComponent(`Course enrollment request\nCourse: ${this.selectedEnrollmentCourse}\nFee: ${this.selectedEnrollmentFee}\nDuration: ${this.selectedEnrollmentDuration}\nFull name: ${fullName}\nMobile: ${mobile}\nEmail: ${email}\nTerms accepted: Yes (payment is non-refundable after payment)`);
+    const message = encodeURIComponent(`Course enrollment request\nCourse: ${this.selectedEnrollmentCourse}\nDuration: ${this.selectedEnrollmentDuration}\nFull name: ${fullName}\nMobile: ${mobile}\nEmail: ${email}\nTerms accepted: Yes`);
     window.open(`https://wa.me/919390416489?text=${message}`, '_blank', 'noopener');
     this.enrollmentMessage = 'WhatsApp is opening with the enrollment details.';
   }

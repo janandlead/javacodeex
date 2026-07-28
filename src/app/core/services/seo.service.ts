@@ -106,6 +106,8 @@ export class SeoService {
     this.setMeta('og:site_name', 'Java Codeex', 'property');
     this.setMeta('og:image', socialImage, 'property');
     this.setMeta('og:image:alt', seo.imageAlt ?? 'Java Codeex programming tutorial logo', 'property');
+    this.setMeta('og:image:width', '1200', 'property');
+    this.setMeta('og:image:height', '630', 'property');
     this.setMeta('twitter:card', 'summary_large_image');
     this.setMeta('twitter:title', title);
     this.setMeta('twitter:description', description);
@@ -116,15 +118,6 @@ export class SeoService {
     this.setMeta('article:section', seo.articleSection ?? category, 'property');
     this.setMeta('article:published_time', seo.publishedTime ?? '', 'property');
     this.setMeta('article:modified_time', seo.modifiedTime ?? '', 'property');
-
-    let alternate = this.document.head.querySelector<HTMLLinkElement>('link[hreflang="en-in"]');
-    if (!alternate) {
-      alternate = this.document.createElement('link');
-      alternate.rel = 'alternate';
-      alternate.hreflang = 'en-in';
-      this.document.head.appendChild(alternate);
-    }
-    alternate.href = url;
 
     const canonicals = Array.from(this.document.head.querySelectorAll<HTMLLinkElement>('link[rel="canonical"]'));
     let canonical = canonicals[0];
@@ -178,7 +171,7 @@ export class SeoService {
       mainEntityOfPage: { '@type': 'WebPage', '@id': url },
       image: seo?.imageUrl ?? this.defaultImage,
       ...(isArticle ? { articleSection: seo?.articleSection ?? category, learningResourceType: 'Tutorial', keywords, about: { '@type': 'Thing', name: primaryKeyword }, ...(seo?.publishedTime ? { datePublished: seo.publishedTime } : {}), ...(seo?.modifiedTime ? { dateModified: seo.modifiedTime } : {}) } : {}),
-      inLanguage: 'en-IN',
+      inLanguage: 'en',
       isPartOf: { '@type': 'WebSite', name: 'Java Codeex', url: `${this.siteUrl}/` },
       author: { '@type': 'Organization', name: 'Java Codeex', url: `${this.siteUrl}/` },
       publisher: { '@type': 'Organization', name: 'Java Codeex', url: `${this.siteUrl}/` },

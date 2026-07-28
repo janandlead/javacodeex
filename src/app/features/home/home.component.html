@@ -14,7 +14,7 @@
   <div class="catalog-heading"><div><p class="eyebrow text-primary mb-2">Explore our courses</p><h2 id="course-catalog" class="section-title">Choose your learning path</h2><p class="text-muted mb-0">Whether you are a beginner, software developer, or experienced professional, learn new technologies and build applications ready for production.</p></div><span class="catalog-badge"><i class="bi bi-stars" aria-hidden="true"></i> Learn at your pace</span></div>
   <div class="row g-4 mt-2">
     @for (course of courses; track course.name) {
-      <div class="col-md-6 col-xl-4"><article class="course-card" [class.coming-soon]="!course.available" [style.--course-accent]="course.accent">@if (!course.enrollmentOnly) { <a class="course-card-link" [routerLink]="course.route"><div class="card-top"><span class="course-icon">@if (course.iconUrl) { <img [src]="course.iconUrl" alt="" aria-hidden="true" width="46" height="46" loading="lazy" /> } @else { <i [class]="course.icon" aria-hidden="true"></i> }</span><span class="course-status">{{ course.available ? 'Available now' : 'Coming soon' }}</span></div><p class="course-eyebrow">{{ course.eyebrow }}</p><h3>{{ course.name }}</h3><p class="course-description">{{ course.description }}</p><span class="course-link">{{ course.available ? 'Explore course' : 'View learning path' }} <i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></a> } @else { <div class="card-top"><span class="course-icon"><i [class]="course.icon" aria-hidden="true"></i></span><span class="course-status">Enrollments open</span></div><p class="course-eyebrow">{{ course.eyebrow }}</p><h3>{{ course.name }}</h3><p class="course-description">{{ course.description }}</p><p class="course-fee">Packages from ₹2,999</p> }<button type="button" class="enroll-button" [disabled]="!course.available" (click)="openEnrollment(course)">{{ course.available ? 'Enroll now' : 'Coming soon' }}</button></article></div>
+      <div class="col-md-6 col-xl-4"><article class="course-card" [class.coming-soon]="!course.available" [style.--course-accent]="course.accent">@if (!course.enrollmentOnly) { <a class="course-card-link" [routerLink]="course.route"><div class="card-top"><span class="course-icon">@if (course.iconUrl) { <img [src]="course.iconUrl" alt="" aria-hidden="true" width="46" height="46" loading="lazy" /> } @else { <i [class]="course.icon" aria-hidden="true"></i> }</span><span class="course-status">{{ course.available ? 'Available now' : 'Coming soon' }}</span></div><p class="course-eyebrow">{{ course.eyebrow }}</p><h3>{{ course.name }}</h3><p class="course-description">{{ course.description }}</p><span class="course-link">{{ course.available ? 'Explore course' : 'View learning path' }} <i class="bi bi-arrow-up-right" aria-hidden="true"></i></span></a> } @else { <div class="card-top"><span class="course-icon"><i [class]="course.icon" aria-hidden="true"></i></span><span class="course-status">Enrollments open</span></div><p class="course-eyebrow">{{ course.eyebrow }}</p><h3>{{ course.name }}</h3><p class="course-description">{{ course.description }}</p> }<button type="button" class="enroll-button" [disabled]="!course.available" (click)="openEnrollment(course)">{{ course.available ? 'Enroll now' : 'Coming soon' }}</button></article></div>
     }
   </div>
 </section>
@@ -32,7 +32,7 @@
           <select id="enrollment-course" [(ngModel)]="selectedEnrollmentCourse" [ngModelOptions]="{ standalone: true }">
             @for (option of enrollmentOptions; track option) { <option [value]="option">{{ option }}</option> }
           </select>
-          <p class="selected-fee">Fee: <strong>{{ selectedEnrollmentFee }}</strong> · Duration: <strong>{{ selectedEnrollmentDuration }}</strong></p>
+          <p class="selected-duration">Duration: <strong>{{ selectedEnrollmentDuration }}</strong></p>
         }
         <label for="enrollment-name">Full name</label>
         <input id="enrollment-name" type="text" formControlName="fullName" autocomplete="name" placeholder="Your full name" />
@@ -43,7 +43,7 @@
         <label for="enrollment-email">Email address</label>
         <input id="enrollment-email" type="email" formControlName="email" autocomplete="email" placeholder="you@example.com" />
         @if (enrollmentForm.controls.email.touched && enrollmentForm.controls.email.invalid) { <small class="field-error">Enter a valid email address.</small> }
-        <label class="terms-label"><input type="checkbox" formControlName="termsAccepted" /> <span>I agree to the terms and conditions. I understand that the payment is non-refundable once paid.</span></label>
+        <label class="terms-label"><input type="checkbox" formControlName="termsAccepted" /> <span>I agree to the terms and conditions.</span></label>
         @if (enrollmentForm.controls.termsAccepted.touched && enrollmentForm.controls.termsAccepted.invalid) { <small class="field-error">You must accept the terms and conditions.</small> }
         <button class="submit-enrollment" type="submit">Send via WhatsApp</button>
         @if (enrollmentMessage) { <p class="enrollment-message" aria-live="polite">{{ enrollmentMessage }}</p> }
