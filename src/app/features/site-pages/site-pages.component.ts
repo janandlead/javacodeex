@@ -5,6 +5,7 @@ type SitePage = {
   label: string;
   title: string;
   intro: string;
+  whatsapp?: boolean;
   sections: { heading: string; paragraphs?: string[]; items?: string[] }[];
 };
 
@@ -40,6 +41,7 @@ const pages: Record<string, SitePage> = {
   contact: {
     label: 'Contact Java Codeex', title: 'We would like to hear from you',
     intro: 'Send questions, corrections, suggestions, or collaboration enquiries to the Java Codeex team.',
+    whatsapp: true,
     sections: [
       { heading: 'Email', paragraphs: ['General enquiries: contact@javacodeex.com', 'Please include the relevant page URL when reporting a correction or technical issue.'] },
       { heading: 'Before you write', items: ['For code questions, include the error message and the smallest relevant example.', 'For content corrections, explain what is inaccurate and include a reliable reference when possible.', 'Do not send passwords, API keys, or other confidential information.'] }
@@ -82,7 +84,7 @@ const pages: Record<string, SitePage> = {
 
 @Component({
   selector: 'app-site-pages', standalone: true, imports: [RouterLink],
-  template: `<article class="site-page container-xl"><p class="site-page-label">{{ page.label }}</p><h1>{{ page.title }}</h1><p class="site-page-intro">{{ page.intro }}</p><div class="site-page-content">@for (section of page.sections; track section.heading) {<section><h2>{{ section.heading }}</h2>@for (paragraph of section.paragraphs ?? []; track paragraph) {<p>{{ paragraph }}</p>}@if (section.items?.length) {<ul>@for (item of section.items; track item) {<li>{{ item }}</li>}</ul>}</section>}</div><nav class="site-page-actions" aria-label="Related pages"><a routerLink="/categories">Browse tutorial categories</a><a routerLink="/contact">Contact us</a></nav></article>`,
+  template: `<article class="site-page container-xl"><p class="site-page-label">{{ page.label }}</p><h1>{{ page.title }}</h1><p class="site-page-intro">{{ page.intro }}</p><div class="site-page-content">@for (section of page.sections; track section.heading) {<section><h2>{{ section.heading }}</h2>@for (paragraph of section.paragraphs ?? []; track paragraph) {<p>{{ paragraph }}</p>}@if (section.items?.length) {<ul>@for (item of section.items; track item) {<li>{{ item }}</li>}</ul>}</section>}</div><nav class="site-page-actions" aria-label="Related pages"><a routerLink="/categories">Browse tutorial categories</a><a routerLink="/contact">Contact us</a>@if (page.whatsapp) {<a href="https://wa.me/919390416489?text=Hello%20Java%20Codeex%2C%20I%20have%20an%20enquiry." target="_blank" rel="noopener noreferrer"><i class="bi bi-whatsapp" aria-hidden="true"></i> WhatsApp: +91 93904 16489</a>}</nav></article>`,
   styles: [`.site-page{padding:4rem 1rem 5rem}.site-page-label{margin-bottom:1rem;color:#0891b2;font-size:.85rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.site-page h1{max-width:52rem;margin-bottom:1rem;color:#1e3a8a;font-size:clamp(2.2rem,5vw,4rem)}.site-page-intro{max-width:52rem;color:#64748b;font-size:1.1rem;line-height:1.8}.site-page-content{max-width:52rem;margin-top:3rem}.site-page-content section{margin-bottom:2.5rem;padding:1.5rem;border:1px solid #dbeafe;border-radius:1rem;background:#fff;box-shadow:0 .5rem 1.25rem rgba(15,23,42,.04)}.site-page-content h2{margin-bottom:1rem;color:#1e3a8a;font-size:1.45rem}.site-page-content p{color:#475569;line-height:1.8}.site-page-content ul{margin-bottom:0;padding-left:1.3rem;color:#475569}.site-page-content li+li{margin-top:.55rem}.site-page-actions{display:flex;flex-wrap:wrap;gap:1rem;margin-top:2rem}.site-page-actions a{padding:.7rem 1rem;border:1px solid #bae6fd;border-radius:.65rem;color:#0e7490;background:#ecfeff;font-weight:700;text-decoration:none}.site-page-actions a:hover{border-color:#06b6d4;background:#cffafe}`]
 })
 export class SitePagesComponent {

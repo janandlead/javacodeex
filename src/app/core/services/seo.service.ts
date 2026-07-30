@@ -161,6 +161,15 @@ export class SeoService {
       this.document.head.appendChild(script);
     }
     const isArticle = type === 'article';
+    const websiteStructuredData = {
+      '@type': 'WebSite',
+      '@id': `${this.siteUrl}/#website`,
+      name: 'Java Codeex',
+      url: `${this.siteUrl}/`,
+      description: 'Programming tutorials, technology courses, and practical projects.',
+      inLanguage: 'en',
+      publisher: { '@type': 'Organization', name: 'Java Codeex', url: `${this.siteUrl}/` }
+    };
     const pageStructuredData = {
       '@context': 'https://schema.org',
       '@type': isArticle ? 'TechArticle' : 'WebPage',
@@ -181,13 +190,13 @@ export class SeoService {
     };
     script.textContent = JSON.stringify(seo?.howTo ? {
       '@context': 'https://schema.org',
-      '@graph': [pageStructuredData, {
+      '@graph': [websiteStructuredData, pageStructuredData, {
         '@type': 'HowTo',
         name: seo.howTo.name,
         description: seo.howTo.description,
         step: seo.howTo.steps.map((step, index) => ({ '@type': 'HowToStep', position: index + 1, name: step.name, text: step.text }))
       }]
-    } : pageStructuredData);
+    } : { '@context': 'https://schema.org', '@graph': [websiteStructuredData, pageStructuredData] });
   }
 
   private setMeta(name: string, content: string, attribute: 'name' | 'property' = 'name'): void {

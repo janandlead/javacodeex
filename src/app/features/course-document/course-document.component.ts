@@ -329,11 +329,11 @@ export class CourseDocumentComponent implements OnInit, OnChanges {
     const document = this.document.implementation.createHTMLDocument('course-document');
     document.documentElement.innerHTML = source;
     const contentContainer = document.querySelector<HTMLElement>('.container-xl.py-5') ?? document.body;
-    if (this.fileName !== 'index.html') {
+    if (this.assetFolder === 'springboot' || this.assetFolder === 'postgresql') {
       const pageHero = document.querySelector('.spring-hero');
       if (pageHero) {
         const heading = pageHero.querySelector('h1');
-        const description = pageHero.querySelector('p');
+        const description = pageHero.querySelector('p:not(.spring-pill)');
         const titleBlock = document.createElement('div');
         titleBlock.className = 'document-title mb-4';
         if (heading?.textContent?.trim()) {
@@ -366,7 +366,8 @@ export class CourseDocumentComponent implements OnInit, OnChanges {
     normalizeTutorialHeadings(document);
     if (this.assetFolder === 'springboot' && this.fileName === 'index.html') {
       document.querySelectorAll('.section-card ul.list-group, .spring-topic-nav, .spring-subtopic-nav').forEach((element) => element.remove());
-    } else if (this.assetFolder === 'springboot' && contentContainer) {
+      contentContainer.classList.add('spring-article-container');
+    } else if (this.assetFolder === 'springboot' || this.assetFolder === 'postgresql') {
       contentContainer.classList.add('spring-article-container');
       let sectionCard: HTMLElement | undefined;
       Array.from(contentContainer.children).forEach((child) => {
