@@ -13,7 +13,7 @@
     />
     <meta name="robots" content="index, follow" />
     <meta name="author" content="Java Codeex" />
-    <link rel="canonical" href="https://javacodeex.com/java/exception-handling/" />
+    <link rel="canonical" href="https://javacodeex.com/java-exception-handling" />
     <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
     <link
       rel="shortcut icon"
@@ -35,11 +35,11 @@
     />
     <meta
       property="og:image"
-      content="https://javacodeex.com/icons/javacodeex.jpg"
+      content="https://javacodeex.com/assets/images/java/java-exception-handling-guide.png"
     />
     <meta
       property="og:url"
-      content="https://javacodeex.com/exception-handling/"
+      content="https://javacodeex.com/java-exception-handling"
     />
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -53,7 +53,7 @@
     />
     <meta
       name="twitter:image"
-      content="https://javacodeex.com/icons/javacodeex.jpg"
+      content="https://javacodeex.com/assets/images/java/java-exception-handling-guide.png"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
@@ -460,11 +460,11 @@
       </div>
       <div class="topic-guide-step">
         <span>02</span><strong>Handle failures</strong
-        ><small>Catch and explain it</small>
+        ><small>Catch and explain them</small>
       </div>
       <div class="topic-guide-step">
-        <span>03</span><strong>Handle failures</strong
-        ><small>Recover or finish safely</small>
+        <span>03</span><strong>Finish safely</strong
+        ><small>Recover and clean up</small>
       </div>
       <p class="topic-guide-summary">
         <strong>Learning goal:</strong> Exceptions let programs respond to
@@ -486,6 +486,18 @@
               mechanism lets you detect, handle, and recover from such events
               without crashing the program.
             </p>
+            <figure class="oop-visual" aria-labelledby="exception-visual-caption">
+              <img
+                src="/assets/images/java/java-exception-handling-guide.png"
+                alt="Java exception handling overview showing exception hierarchy, try-catch-finally, throw, throws, custom exceptions, and resource management"
+                loading="eager"
+                decoding="async"
+              />
+              <figcaption id="exception-visual-caption">
+                Java exception handling connects detection, recovery, propagation,
+                and resource cleanup.
+              </figcaption>
+            </figure>
             <p>Java distinguishes three categories of throwable problems:</p>
             <div class="table-responsive my-3">
               <table class="table table-bordered table-hover">
@@ -1562,6 +1574,93 @@ public class TryWithResourcesDemo {
               </p>
             </div>
 
+            <!-- Section 13: Multiple Exceptions -->
+            <h2 id="multiple-exceptions">13. Handling Multiple Exceptions</h2>
+            <p>
+              Java 7 introduced the multi-catch syntax, which lets one
+              <code class="inline">catch</code> block handle unrelated
+              exception types when the recovery action is the same. This keeps
+              error handling concise without hiding the original exception.
+            </p>
+            <pre><code>public class MultiCatchExample {
+    public static void main(String[] args) {
+        try {
+            int[] values = {1, 2, 3};
+            int result = values[5] / 0;
+            System.out.println(result);
+        } catch (ArithmeticException | ArrayIndexOutOfBoundsException error) {
+            System.out.println("Input or calculation error: "
+                    + error.getMessage());
+        }
+    }
+}</code></pre>
+            <div class="note-box">
+              <p>
+                Exception types in a multi-catch must not be related by
+                inheritance. For example, catching both
+                <code class="inline">IOException</code> and
+                <code class="inline">FileNotFoundException</code> in the same
+                multi-catch is invalid because the latter is a subtype of the
+                former.
+              </p>
+            </div>
+
+            <!-- Section 14: Exception Propagation -->
+            <h2 id="exception-propagation">14. Exception Propagation</h2>
+            <p>
+              If a method does not handle an exception, Java propagates it up
+              the call stack to its caller. The process stops when a matching
+              <code class="inline">catch</code> block handles the exception;
+              otherwise the thread terminates and prints a stack trace.
+            </p>
+            <pre><code>static void readConfig() throws IOException {
+    Files.readString(Path.of("config.properties"));
+}
+
+static void startApplication() throws IOException {
+    readConfig(); // propagates to the caller
+}
+
+public static void main(String[] args) {
+    try {
+        startApplication();
+    } catch (IOException error) {
+        System.err.println("Configuration failed: " + error.getMessage());
+    }
+}</code></pre>
+
+            <!-- Section 15: Throwable Methods -->
+            <h2 id="throwable-methods">15. Useful Throwable Methods</h2>
+            <p>
+              The methods inherited from <code class="inline">Throwable</code>
+              help you preserve context while diagnosing failures.
+            </p>
+            <div class="table-responsive my-3">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr><th>Method</th><th>Purpose</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><code class="inline">getMessage()</code></td><td>Returns the detailed message.</td></tr>
+                  <tr><td><code class="inline">getCause()</code></td><td>Returns the original cause of a chained exception.</td></tr>
+                  <tr><td><code class="inline">printStackTrace()</code></td><td>Prints the exception type, message, and call stack.</td></tr>
+                  <tr><td><code class="inline">getSuppressed()</code></td><td>Returns exceptions suppressed during resource cleanup.</td></tr>
+                  <tr><td><code class="inline">toString()</code></td><td>Returns the exception class name and message.</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Section 16: Best Practices -->
+            <h2 id="exception-best-practices">16. Java Exception Handling Best Practices</h2>
+            <ul>
+              <li>Catch the most specific exception you can handle.</li>
+              <li>Use meaningful messages and preserve the original cause.</li>
+              <li>Do not use empty catch blocks or catch <code class="inline">Throwable</code> casually.</li>
+              <li>Use checked exceptions for recoverable external failures and unchecked exceptions for invalid state or arguments.</li>
+              <li>Prefer try-with-resources for files, streams, sockets, and database resources.</li>
+              <li>Log failures at the correct boundary without exposing secrets or sensitive data.</li>
+            </ul>
+
             <!-- Prev / Next Navigation -->
             <div class="d-flex justify-content-between mt-5 pt-3 border-top">
               <a href="./interfaces.html" class="btn btn-outline-secondary"
@@ -1592,6 +1691,10 @@ public class TryWithResourcesDemo {
             <a href="#null-pointer-exception">10. NullPointerException</a>
             <a href="#overriding-exceptions">11. Exceptions &amp; Overriding</a>
             <a href="#try-with-resources">12. try-with-resources</a>
+            <a href="#multiple-exceptions">13. Multiple Exceptions</a>
+            <a href="#exception-propagation">14. Exception Propagation</a>
+            <a href="#throwable-methods">15. Useful Throwable Methods</a>
+            <a href="#exception-best-practices">16. Best Practices</a>
           </div>
         </div>
       </div>

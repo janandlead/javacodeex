@@ -160,7 +160,7 @@ export class CourseDocumentComponent implements OnInit, OnChanges {
     this.loading = true;
     this.error = false;
     this.http.get(`/docs/${this.assetFolder}/${documentFile}`, { responseType: 'text' }).subscribe({
-      next: (source) => { this.html = this.extractDocument(source); this.loading = false; setTimeout(() => this.scrollToSection(), 0); },
+      next: (source) => { this.html = this.extractDocument(documentFile.endsWith('.md') ? this.markdownToHtml(source) : source); this.loading = false; setTimeout(() => this.scrollToSection(), 0); },
       error: () => { this.loading = false; this.error = false; }
     });
   }
@@ -288,11 +288,72 @@ export class CourseDocumentComponent implements OnInit, OnChanges {
     return id;
   }
 
+  private markdownToHtml(source: string): string {
+    const lines = source.replace(/\r/g, '').split('\n');
+    const output: string[] = [];
+    let paragraph: string[] = [];
+    let listTag = '';
+    let inCode = false;
+    let code: string[] = [];
+    let hasTitle = false;
+    const flushParagraph = () => { if (paragraph.length) { output.push(`<p>${this.markdownInline(paragraph.join(' '))}</p>`); paragraph = []; } };
+    const closeList = () => { if (listTag) { output.push(`</${listTag}>`); listTag = ''; } };
+    for (let index = 0; index < lines.length; index++) {
+      const line = lines[index];
+      if (line.trim().startsWith('```')) { if (inCode) { output.push(`<pre><code>${this.escapeHtml(code.join('\n'))}</code></pre>`); code = []; } inCode = !inCode; continue; }
+      if (inCode) { code.push(line); continue; }
+      const trimmed = line.trim();
+      if (!trimmed) { flushParagraph(); closeList(); continue; }
+      if (trimmed.includes('|') && index + 1 < lines.length && /^\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)+\|?$/.test(lines[index + 1].trim())) {
+        flushParagraph(); closeList();
+        const headers = this.markdownTableCells(trimmed);
+        index++;
+        const rows: string[] = [];
+        while (index + 1 < lines.length && lines[index + 1].trim().includes('|')) {
+          index++;
+          rows.push(`<tr>${this.markdownTableCells(lines[index]).map((cell) => `<td>${this.markdownInline(cell)}</td>`).join('')}</tr>`);
+        }
+        output.push(`<div class="table-responsive"><table class="table table-striped align-middle"><thead><tr>${headers.map((cell) => `<th scope="col">${this.markdownInline(cell)}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`);
+        continue;
+      }
+      const heading = trimmed.match(/^(#{1,6})\s+(.+)$/);
+      if (heading) {
+        flushParagraph(); closeList();
+        const markdownLevel = heading[1].length;
+        const level = markdownLevel === 1 ? (hasTitle ? 2 : 1) : Math.min(markdownLevel + 1, 6);
+        hasTitle = hasTitle || markdownLevel === 1;
+        output.push(`<h${level}>${this.markdownInline(heading[2])}</h${level}>`);
+        continue;
+      }
+      const bullet = trimmed.match(/^[-*+]\s+(.+)$/);
+      const ordered = trimmed.match(/^\d+[.)]\s+(.+)$/);
+      if (bullet || ordered) { flushParagraph(); const tag = bullet ? 'ul' : 'ol'; if (listTag !== tag) { closeList(); output.push(`<${tag}>`); listTag = tag; } output.push(`<li>${this.markdownInline((bullet ?? ordered)![1])}</li>`); continue; }
+      closeList(); paragraph.push(trimmed);
+    }
+    if (inCode) output.push(`<pre><code>${this.escapeHtml(code.join('\n'))}</code></pre>`);
+    flushParagraph(); closeList();
+    return `<div class="container-xl py-5 markdown-document">${output.join('')}</div>`;
+  }
+
+  private markdownTableCells(value: string): string[] {
+    return value.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map((cell) => cell.trim());
+  }
+
+  private markdownInline(value: string): string {
+    let html = this.escapeHtml(value);
+    html = html.replace(/`([^`]+)`/g, '<code>$1</code>').replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>').replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+|#[^\s)]+)\)/g, '<a href="$2">$1</a>');
+    return html;
+  }
+
+  private escapeHtml(value: string): string {
+    return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
   private extractDocument(source: string): string {
     const document = this.document.implementation.createHTMLDocument('course-document');
     document.documentElement.innerHTML = source.replace(/<title\b[^>]*>[\s\S]*?<\/title>/gi, '');
     const contentContainer = document.querySelector<HTMLElement>('.container-xl.py-5') ?? document.body;
-    if (this.assetFolder === 'springboot' || this.assetFolder === 'postgresql') {
+    if (this.assetFolder === 'springboot' || this.assetFolder === 'postgresql' || this.assetFolder === 'ai-assistant') {
       const pageHero = document.querySelector('.spring-hero');
       if (pageHero) {
         const heading = pageHero.querySelector('h1');
@@ -311,12 +372,16 @@ export class CourseDocumentComponent implements OnInit, OnChanges {
         }
         contentContainer?.prepend(titleBlock);
         pageHero.remove();
-      } else if (this.assetFolder === 'springboot' && !contentContainer.querySelector('.document-title')) {
+      } else if ((this.assetFolder === 'springboot' || this.assetFolder === 'ai-assistant') && !contentContainer.querySelector('.document-title')) {
         const titleBlock = document.createElement('div');
         titleBlock.className = 'document-title mb-4';
-        const title = document.createElement('h1');
-        title.textContent = this.title;
-        titleBlock.appendChild(title);
+        const title = contentContainer.querySelector<HTMLElement>('h1');
+        if (title) titleBlock.appendChild(title);
+        else {
+          const fallbackTitle = document.createElement('h1');
+          fallbackTitle.textContent = this.title;
+          titleBlock.appendChild(fallbackTitle);
+        }
         if (this.description) {
           const summary = document.createElement('p');
           summary.textContent = this.description;
@@ -330,7 +395,7 @@ export class CourseDocumentComponent implements OnInit, OnChanges {
     if (this.assetFolder === 'springboot' && this.fileName === 'index.html') {
       document.querySelectorAll('.section-card ul.list-group, .spring-topic-nav, .spring-subtopic-nav').forEach((element) => element.remove());
       contentContainer.classList.add('spring-article-container');
-    } else if (this.assetFolder === 'springboot' || this.assetFolder === 'postgresql') {
+    } else if (this.assetFolder === 'springboot' || this.assetFolder === 'postgresql' || this.assetFolder === 'ai-assistant') {
       contentContainer.classList.add('spring-article-container');
       let sectionCard: HTMLElement | undefined;
       Array.from(contentContainer.children).forEach((child) => {
@@ -374,6 +439,7 @@ export class CourseDocumentComponent implements OnInit, OnChanges {
       document,
       readingPageKey,
       [
+        ...(this.assetFolder === 'ai-assistant' ? [{ label: 'Live Java and Spring Boot Workshops', href: '/workshops' }] : []),
         ...(this.previousRoute ? [{ label: this.previousLabel, href: this.previousRoute }] : []),
         ...(this.nextRoute ? [{ label: this.nextLabel, href: this.nextRoute }] : [])
       ],
