@@ -1,5 +1,13 @@
 /
 /workshops
+/corporate-training
+/corporate-java-training
+/spring-boot-corporate-training
+/ai-training-for-developers
+/java-bootcamp-india
+/trainers
+/brochure
+/request-corporate-demo
 /spring-boot-ai-workshop
 /java-tutorial-overview
 /introduction-to-java

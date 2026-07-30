@@ -25,7 +25,6 @@ const topics = [
   'jdbc',
   'marker-interface'
 ];
-const markerInterfaceVideoSeo = { name: 'Java Marker Interfaces Tutorial', description: 'Learn Java marker interfaces including Serializable, Cloneable, Remote, and object serialization.', thumbnailUrl: 'https://i.ytimg.com/vi/smMODFC5Ewk/maxresdefault.jpg', embedUrl: 'https://www.youtube.com/embed/smMODFC5Ewk', contentUrl: 'https://youtu.be/smMODFC5Ewk?si=eFtMoSgop4gyogqI' };
 const javaRoute = (slug: string): string => slug === 'introduction-to-java' || slug.startsWith('java-') ? slug : `java-${slug}`;
 const routeFor = (slug: string, index: number): Routes[number] => {
   const page = JAVA_PAGES[slug];
@@ -52,7 +51,6 @@ const routeFor = (slug: string, index: number): Routes[number] => {
         canonicalUrl: `https://javacodeex.com/${javaRoute(slug)}`, keywords,
         breadcrumbs: [{ name: 'Home', url: 'https://javacodeex.com/' }, { name: 'Java', url: 'https://javacodeex.com/java-tutorial-overview' }, { name: page.title, url: `https://javacodeex.com/${javaRoute(slug)}` }],
         ...((isObjectClass || isMarkerInterface) ? { articleSection: 'Java Fundamentals', modifiedTime: '2026-07-27' } : {}),
-        ...(isMarkerInterface ? { video: markerInterfaceVideoSeo } : {})
       },
       previousRoute: index > 0 ? `/${javaRoute(topics[index - 1])}` : '/java-tutorial-overview', previousLabel: index > 0 ? JAVA_PAGES[topics[index - 1]].title : 'Java Tutorial Overview',
       nextRoute: index < topics.length - 1 ? `/${javaRoute(topics[index + 1])}` : '', nextLabel: index < topics.length - 1 ? JAVA_PAGES[topics[index + 1]].title : ''

@@ -10,6 +10,18 @@ import { filter } from 'rxjs';
 export class SeoService {
   private readonly siteUrl = 'https://javacodeex.com';
   private readonly defaultImage = `${this.siteUrl}/assets/images/javacodeex.jpg`;
+  private readonly corporateKeywordMap: Record<string, string> = {
+    corporate: 'corporate technical training, Java corporate training India, Spring Boot team training, developer upskilling, engineering team training, backend development training',
+    java: 'Java team training, enterprise Java training, Java upskilling, Java workshop for developers, clean code training',
+    spring: 'Spring Boot workshop, Spring Boot REST API training, backend team training, enterprise Spring training, Java API development',
+    ai: 'AI for software developers, AI coding assistant workshop, developer productivity training, responsible AI development, AI-assisted coding',
+    bootcamp: 'Java training India, backend developer bootcamp, Java placement training, fresher Java training, project-based Java course',
+    trainer: 'Java trainers, Spring Boot trainers, corporate technical trainers, backend development trainers, developer training India',
+    brochure: 'corporate training brochure, Java training programs, Spring Boot training courses, developer upskilling programs'
+  };
+  private readonly corporateDescriptionMap: Record<string, string> = {
+    trainer: 'Meet the Java Codeex training team for practical Java, Spring Boot, backend engineering, system design, testing, and AI-assisted development programs.'
+  };
   private readonly document = inject(DOCUMENT);
   private readonly meta = inject(Meta);
   private readonly title = inject(Title);
@@ -67,18 +79,22 @@ export class SeoService {
   private update(route: ActivatedRouteSnapshot, navigationUrl: string): void {
     const data = this.routeData(route);
     const routeSeo = data['seo'] as SeoConfig | undefined;
-    const pageTitle = routeSeo?.title ?? route.title ?? data['title'] as string | undefined ?? 'Programming Tutorials';
+    const pageTitle = data['corporatePage'] === 'trainer'
+      ? 'Java and Spring Boot Trainers | Java Codeex'
+      : routeSeo?.title ?? route.title ?? data['title'] as string | undefined ?? 'Programming Tutorials';
     const title = pageTitle.includes('Java Codeex') ? pageTitle : `${pageTitle} | Java Codeex`;
     const category = data['category'] as string | undefined;
     const primaryKeyword = routeSeo?.primaryKeyword ?? routeSeo?.keyword ?? data['primaryKeyword'] as string | undefined ?? data['keyword'] as string | undefined ?? this.inferPrimaryKeyword(title, category);
-    const description = routeSeo?.description ?? data['description'] as string | undefined ?? 'Learn programming, web development, cloud, DevOps, databases, AI, system design, and popular frameworks through practical tutorials and projects.';
+    const corporateDescription = data['corporatePage'] ? this.corporateDescriptionMap[data['corporatePage'] as string] : undefined;
+    const description = corporateDescription ?? routeSeo?.description ?? data['description'] as string | undefined ?? 'Learn programming, web development, cloud, DevOps, databases, AI, system design, and popular frameworks through practical tutorials and projects.';
     const robots = routeSeo?.robots ?? data['robots'] as string | undefined ?? 'index, follow, max-image-preview:large';
-    const routeKeywords = this.asKeywords(routeSeo?.keywords, primaryKeyword, data['keywords'] as string | undefined);
+    const corporateKeywords = data['corporatePage'] ? this.corporateKeywordMap[data['corporatePage'] as string] : undefined;
+    const routeKeywords = this.asKeywords(routeSeo?.keywords, primaryKeyword, [data['keywords'] as string | undefined, corporateKeywords].filter(Boolean).join(', '));
     const url = routeSeo?.canonicalUrl ?? this.canonicalUrl(navigationUrl);
     const socialImage = routeSeo?.imageUrl ?? this.defaultImage;
     const type = routeSeo?.type ?? (category && !/overview/i.test(title) ? 'article' : 'website');
 
-      this.updatePageSeo({ title, description, canonicalUrl: url, keywords: routeKeywords, robots, imageUrl: socialImage, imageAlt: routeSeo?.imageAlt, type, articleSection: routeSeo?.articleSection ?? category, publishedTime: routeSeo?.publishedTime, modifiedTime: routeSeo?.modifiedTime, primaryKeyword, breadcrumbs: routeSeo?.breadcrumbs ?? data['breadcrumbs'] as SeoConfig['breadcrumbs'], video: routeSeo?.video, howTo: routeSeo?.howTo, event: routeSeo?.event });
+      this.updatePageSeo({ title, description, canonicalUrl: url, keywords: routeKeywords, robots, imageUrl: socialImage, imageAlt: routeSeo?.imageAlt, type, articleSection: routeSeo?.articleSection ?? category, publishedTime: routeSeo?.publishedTime, modifiedTime: routeSeo?.modifiedTime, primaryKeyword, breadcrumbs: routeSeo?.breadcrumbs ?? data['breadcrumbs'] as SeoConfig['breadcrumbs'], howTo: routeSeo?.howTo, event: routeSeo?.event, faq: routeSeo?.faq });
   }
 
   private routeData(route: ActivatedRouteSnapshot): Record<string, unknown> {
@@ -97,7 +113,7 @@ export class SeoService {
     this.setMeta('description', description);
     this.setMeta('keywords', routeKeywords.join(', '));
     this.setMeta('robots', robots);
-    this.setMeta('googlebot', robots.replace(', max-image-preview:large', ''));
+    this.setMeta('googlebot', robots);
     this.setMeta('og:title', title, 'property');
     this.setMeta('og:description', description, 'property');
     this.setMeta('og:type', type, 'property');
@@ -168,7 +184,14 @@ export class SeoService {
       url: `${this.siteUrl}/`,
       description: 'Programming tutorials, technology courses, and practical projects.',
       inLanguage: 'en',
-      publisher: { '@type': 'Organization', name: 'Java Codeex', url: `${this.siteUrl}/` }
+      publisher: { '@id': `${this.siteUrl}/#organization` }
+    };
+    const organizationStructuredData = {
+      '@type': 'Organization',
+      '@id': `${this.siteUrl}/#organization`,
+      name: 'Java Codeex',
+      url: `${this.siteUrl}/`,
+      logo: { '@type': 'ImageObject', url: `${this.siteUrl}/assets/images/javacodeex.jpg` }
     };
     const pageStructuredData = {
       '@context': 'https://schema.org',
@@ -184,19 +207,20 @@ export class SeoService {
       isPartOf: { '@type': 'WebSite', name: 'Java Codeex', url: `${this.siteUrl}/` },
       author: { '@type': 'Organization', name: 'Java Codeex', url: `${this.siteUrl}/` },
       publisher: { '@type': 'Organization', name: 'Java Codeex', url: `${this.siteUrl}/` },
-      ...(seo?.video ? { video: { '@type': 'VideoObject', ...seo.video, url } } : {}),
       ...(seo?.event ? { event: { '@type': 'EducationEvent', name: seo.event.name, description, startDate: seo.event.startDate, ...(seo.event.endDate ? { endDate: seo.event.endDate } : {}), eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: seo.event.attendanceMode ?? 'https://schema.org/OnlineEventAttendanceMode', location: { '@type': 'VirtualLocation', url: seo.event.locationUrl ?? url, name: seo.event.locationName }, organizer: { '@type': 'Organization', name: 'Java Codeex', url: `${this.siteUrl}/` } } } : {}),
+      ...(seo?.faq?.length ? { mainEntity: seo.faq.map((item) => ({ '@type': 'Question', name: item.question, acceptedAnswer: { '@type': 'Answer', text: item.answer } })) } : {}),
       ...((seo?.breadcrumbs ?? structuredData?.breadcrumbs)?.length ? { breadcrumb: { '@type': 'BreadcrumbList', itemListElement: (seo?.breadcrumbs ?? structuredData?.breadcrumbs)?.map((item, index) => ({ '@type': 'ListItem', position: index + 1, name: item.name, item: item.url })) } } : {})
     };
+    const pageGraph = seo?.faq?.length ? { ...pageStructuredData, '@type': 'FAQPage' } : pageStructuredData;
     script.textContent = JSON.stringify(seo?.howTo ? {
       '@context': 'https://schema.org',
-      '@graph': [websiteStructuredData, pageStructuredData, {
+      '@graph': [websiteStructuredData, organizationStructuredData, pageGraph, {
         '@type': 'HowTo',
         name: seo.howTo.name,
         description: seo.howTo.description,
         step: seo.howTo.steps.map((step, index) => ({ '@type': 'HowToStep', position: index + 1, name: step.name, text: step.text }))
       }]
-    } : { '@context': 'https://schema.org', '@graph': [websiteStructuredData, pageStructuredData] });
+    } : { '@context': 'https://schema.org', '@graph': [websiteStructuredData, organizationStructuredData, pageGraph] });
   }
 
   private setMeta(name: string, content: string, attribute: 'name' | 'property' = 'name'): void {
