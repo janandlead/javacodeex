@@ -18,13 +18,6 @@ export interface SeoConfig {
     readonly description: string;
     readonly steps: readonly { name: string; text: string }[];
   };
-  readonly video?: {
-    readonly name: string;
-    readonly description: string;
-    readonly thumbnailUrl: string;
-    readonly embedUrl: string;
-    readonly contentUrl?: string;
-  };
   readonly event?: {
     readonly name: string;
     readonly startDate: string;
@@ -33,6 +26,7 @@ export interface SeoConfig {
     readonly locationUrl?: string;
     readonly attendanceMode?: string;
   };
+  readonly faq?: readonly { question: string; answer: string }[];
 }
 
 export interface StructuredDataConfig {

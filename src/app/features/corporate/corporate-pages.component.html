@@ -1,0 +1,62 @@
+<div class="corporate-page">
+  @if (pageKey === 'trainer') {
+    <section class="corporate-hero">
+      <div class="container-xl hero-grid">
+        <div>
+          <p class="eyebrow">Our trainers</p>
+          <h1>Learn From Practical Java and Backend Trainers</h1>
+          <p class="hero-lead">Meet the trainers who help developers and teams connect clear fundamentals with production-style engineering practices.</p>
+          <div class="hero-actions">
+            <a class="corporate-button primary" routerLink="/request-corporate-demo">Discuss your training needs</a>
+            <a class="corporate-button secondary" routerLink="/corporate-training">Explore corporate training</a>
+          </div>
+        </div>
+        <div class="trainer-card hero-trainer">
+          <div class="trainer-avatar">{{ trainers.length }}</div>
+          <p class="eyebrow">Java Codeex training team</p>
+          <h2>Experts for every learning path</h2>
+          <p>Choose trainers with experience across Java, Spring Boot, backend engineering, system design, testing, and AI-assisted development.</p>
+          <div class="tag-list"><span>Java</span><span>Spring Boot</span><span>Backend</span><span>Testing</span><span>AI-assisted development</span></div>
+        </div>
+      </div>
+    </section>
+    <main class="container-xl corporate-content">
+      <section class="trainer-directory" aria-labelledby="trainer-directory-title">
+        <div class="section-heading"><div><p class="eyebrow">Meet the team</p><h2 id="trainer-directory-title">Trainers for different team goals</h2></div><span class="duration-badge">{{ trainers.length }} specialists</span></div>
+        <div class="trainer-grid">
+          @for (trainer of trainers; track trainer.name) {
+            <article class="trainer-profile">
+              <div class="trainer-avatar">{{ trainer.initials }}</div>
+              <p class="eyebrow">{{ trainer.role }}</p>
+              <h3>{{ trainer.name }}</h3>
+              <p>{{ trainer.summary }}</p>
+              <div class="tag-list">@for (skill of trainer.expertise; track skill) { <span>{{ skill }}</span> }</div>
+            </article>
+          }
+        </div>
+      </section>
+      <section class="proof-panel"><p class="eyebrow">Client references</p><h2>Build confidence with a conversation</h2><p>Client testimonials and references are shared with permission and matched to the relevant program. Request a corporate demo to discuss your team’s context, goals, and expected outcomes.</p><a class="text-link" routerLink="/request-corporate-demo">Request a corporate demo <i class="bi bi-arrow-right" aria-hidden="true"></i></a></section>
+    </main>
+  } @else if (pageKey === 'brochure') {
+    <section class="corporate-hero"><div class="container-xl hero-copy"><p class="eyebrow">Corporate training brochure</p><h1>Java Codeex Corporate Training Programs</h1><p class="hero-lead">Review the programs, delivery formats, project-led approach, and next steps for training your development team.</p><div class="hero-actions"><a class="corporate-button primary" href="/assets/brochures/java-codeex-corporate-training.html" download>Download brochure</a><a class="corporate-button secondary" routerLink="/request-corporate-demo">Request a demo</a></div></div></section>
+    <main class="container-xl corporate-content"><section class="content-grid"><div><p class="eyebrow">What the brochure covers</p><h2>Choose a practical path for your team</h2><p>Use the brochure to compare Java, Spring Boot, AI-assisted development, and bootcamp formats before speaking with the training team.</p></div><div class="outcome-grid"><article><i class="bi bi-file-earmark-arrow-down" aria-hidden="true"></i><p>Program tracks and learning outcomes</p></article><article><i class="bi bi-calendar2-week" aria-hidden="true"></i><p>Delivery formats and sample durations</p></article><article><i class="bi bi-kanban" aria-hidden="true"></i><p>Project-led agenda and team practice</p></article><article><i class="bi bi-chat-square-text" aria-hidden="true"></i><p>Simple next step for a tailored discussion</p></article></div></section></main>
+  } @else {
+    <section class="corporate-hero"><div class="container-xl hero-grid"><div><p class="eyebrow">{{ page.eyebrow }}</p><h1>{{ page.title }}</h1><p class="hero-lead">{{ page.intro }}</p><div class="hero-actions"><a class="corporate-button primary" routerLink="/request-corporate-demo">Request a corporate demo</a><a class="corporate-button secondary" routerLink="/brochure">Download brochure</a></div><div class="hero-proof"><span><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Practical projects</span><span><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Custom delivery</span><span><i class="bi bi-check-circle-fill" aria-hidden="true"></i> India-friendly formats</span></div></div><div class="hero-visual"><div class="visual-label">Training pathway</div><div class="visual-step"><strong>01</strong><span>Understand the concept</span></div><div class="visual-step"><strong>02</strong><span>Build with guidance</span></div><div class="visual-step"><strong>03</strong><span>Review and apply</span></div></div></div></section>
+    <main class="container-xl corporate-content"><section class="content-grid" aria-labelledby="audience-title"><div><p class="eyebrow">Designed for teams</p><h2 id="audience-title">Who this program is for</h2><p>{{ page.audience }}</p><p>Bring your current stack, delivery challenges, and learning goals. The agenda can be adapted for developers at different experience levels.</p></div><div class="outcome-grid">@for (item of page.outcomes; track item) { <article><i class="bi bi-check2-circle" aria-hidden="true"></i><p>{{ item }}</p></article> }</div></section>@if (pageKey !== 'corporate') { <section class="module-panel" aria-labelledby="module-title"><div class="section-heading"><div><p class="eyebrow">Sample curriculum</p><h2 id="module-title">What your team can work through</h2></div><span class="duration-badge">{{ page.duration }}</span></div><div class="module-grid">@for (module of page.modules; track module; let index = $index) { <article><span>0{{ index + 1 }}</span><h3>{{ module }}</h3><p>Concepts, exercises, discussion, and practical application.</p></article> }</div></section><section class="agenda-panel" aria-labelledby="agenda-title"><div><p class="eyebrow">Sample agenda</p><h2 id="agenda-title">A format that moves from understanding to application</h2><p>Every program can be shortened, expanded, or mapped to a team project. A typical session includes explanation, guided implementation, review, and action items.</p></div><ol><li><strong>Concept and context</strong><span>Connect the topic to a real engineering problem.</span></li><li><strong>Guided build</strong><span>Implement a focused example with trainer support.</span></li><li><strong>Review and practice</strong><span>Discuss trade-offs, testing, mistakes, and improvements.</span></li><li><strong>Team next steps</strong><span>Leave with exercises, references, and an adoption plan.</span></li></ol></section> }<section class="proof-panel"><p class="eyebrow">Client outcomes</p><h2>Training that fits the work your team already does</h2><p>Client testimonials and references are added with permission. Request a demo to discuss relevant examples, team goals, and the right delivery format.</p><a class="text-link" routerLink="/request-corporate-demo">Talk to the training team <i class="bi bi-arrow-right" aria-hidden="true"></i></a></section>@if (pageKey === 'corporate') { <section class="faq-panel" aria-labelledby="faq-title"><p class="eyebrow">Questions answered</p><h2 id="faq-title">Corporate training FAQs</h2><div class="faq-grid">@for (faq of faqs; track faq[0]) { <details><summary>{{ faq[0] }} <i class="bi bi-plus" aria-hidden="true"></i></summary><p>{{ faq[1] }}</p></details> }</div></section> }</main>
+  }
+</div>
+@if (pageKey === 'corporate') {
+  <section class="hub-cards container-xl" aria-labelledby="hub-cards-title">
+    <p class="eyebrow">Explore the full training catalogue</p>
+    <h2 id="hub-cards-title">Choose the right program for your team</h2>
+    <div class="hub-card-grid">
+      @for (program of programLinks; track program.key) {
+        <a class="hub-card" [routerLink]="program.href"><span class="hub-card-icon"><i class="bi bi-arrow-up-right" aria-hidden="true"></i></span><p class="eyebrow">{{ program.eyebrow }}</p><h3>{{ program.title }}</h3><p>{{ program.intro }}</p><span class="text-link">Explore program <i class="bi bi-arrow-right" aria-hidden="true"></i></span></a>
+      }
+      <a class="hub-card" routerLink="/trainers"><span class="hub-card-icon"><i class="bi bi-people" aria-hidden="true"></i></span><p class="eyebrow">Our trainers</p><h3>Meet the training team</h3><p>See multiple trainer profiles and find the right expertise for your Java, Spring Boot, backend, or AI learning goals.</p><span class="text-link">View trainers <i class="bi bi-arrow-right" aria-hidden="true"></i></span></a>
+      <a class="hub-card" routerLink="/workshops"><span class="hub-card-icon"><i class="bi bi-calendar3" aria-hidden="true"></i></span><p class="eyebrow">Public workshops</p><h3>See the workshop calendar</h3><p>Find upcoming Java, Spring Boot, and developer-focused public learning opportunities.</p><span class="text-link">View calendar <i class="bi bi-arrow-right" aria-hidden="true"></i></span></a>
+      <a class="hub-card" routerLink="/brochure"><span class="hub-card-icon"><i class="bi bi-file-earmark-arrow-down" aria-hidden="true"></i></span><p class="eyebrow">Corporate brochure</p><h3>Download the brochure</h3><p>Share the programs, formats, outcomes, and sample delivery approach with your stakeholders.</p><span class="text-link">Download brochure <i class="bi bi-arrow-right" aria-hidden="true"></i></span></a>
+      <a class="hub-card" routerLink="/request-corporate-demo"><span class="hub-card-icon"><i class="bi bi-chat-square-text" aria-hidden="true"></i></span><p class="eyebrow">Next step</p><h3>Request a corporate demo</h3><p>Tell us about your team, preferred topics, format, and timeline for a tailored conversation.</p><span class="text-link">Start enquiry <i class="bi bi-arrow-right" aria-hidden="true"></i></span></a>
+    </div>
+  </section>
+}

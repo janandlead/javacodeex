@@ -65,7 +65,7 @@ const pythonRoutes = [
 ].map((route) => `/${route}`);
 
 export const publicRoutes = [
-  '/', '/workshops', '/spring-boot-ai-workshop', ...javaRoutes, ...springBootRoutes, ...hibernateRoutes,
+  '/', '/workshops', '/corporate-training', '/corporate-java-training', '/spring-boot-corporate-training', '/ai-training-for-developers', '/java-bootcamp-india', '/trainers', '/brochure', '/request-corporate-demo', '/spring-boot-ai-workshop', ...javaRoutes, ...springBootRoutes, ...hibernateRoutes,
   '/spring-boot-2-to-3-migration', '/python-tutorial', '/angular', '/mysql', '/mongodb', ...mysqlRoutes, ...postgresqlRoutes, ...pythonRoutes,
   '/spring-ai', '/design-patterns', '/interviews', ...interviewRoutes,
   '/about', '/author', '/categories', '/contact', '/privacy-policy', '/terms-and-conditions', '/disclaimer',
