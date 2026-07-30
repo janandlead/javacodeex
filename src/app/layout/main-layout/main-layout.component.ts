@@ -40,7 +40,7 @@ export class MainLayoutComponent {
 
   get sidebarItem() {
     const path = this.router.url.split(/[?#]/)[0].replace(/\/$/, '') || '/';
-    return MAIN_NAVIGATION.find((item) => item.label === 'Java' && (path === '/java' || path === '/java-tutorial-overview' || path.startsWith('/java/') || javaTopicPaths.has(path)) || item.label === 'Spring Boot' && (path === '/project-structure' || this.matchesCoursePath(path, '/spring-boot')) || item.label === 'Python' && (path === '/python-tutorial' || path === '/python' || pythonTopicPaths.has(path) || this.matchesCoursePath(path, '/python')) || item.label === 'Hibernate' && this.matchesCoursePath(path, '/hibernate') || item.label === 'PostgreSQL' && this.matchesCoursePath(path, '/postgresql') || item.label === 'MySQL' && this.matchesCoursePath(path, '/mysql') || item.label === 'Design Patterns' && this.matchesCoursePath(path, '/design-patterns'));
+    return MAIN_NAVIGATION.find((item) => item.label === 'Java' && (path === '/java' || path === '/java-tutorial-overview' || path.startsWith('/java/') || javaTopicPaths.has(path)) || item.label === 'Spring Boot' && !this.isWorkshopRoute(path) && (path === '/project-structure' || this.matchesCoursePath(path, '/spring-boot')) || item.label === 'Python' && (path === '/python-tutorial' || path === '/python' || pythonTopicPaths.has(path) || this.matchesCoursePath(path, '/python')) || item.label === 'Hibernate' && this.matchesCoursePath(path, '/hibernate') || item.label === 'PostgreSQL' && this.matchesCoursePath(path, '/postgresql') || item.label === 'MySQL' && this.matchesCoursePath(path, '/mysql') || item.label === 'Design Patterns' && this.matchesCoursePath(path, '/design-patterns'));
   }
 
   get sidebarLessons() {
@@ -64,6 +64,7 @@ export class MainLayoutComponent {
 
   get isCourseSidebarRoute(): boolean { return !!this.sidebarItem; }
   get isInterviewRoute(): boolean { const path = this.router.url.split(/[?#]/)[0]; return path === '/java-technical-interview-questions' || path.startsWith('/interview-questions'); }
+  private isWorkshopRoute(path: string): boolean { return path === '/workshops' || path === '/spring-boot-ai-workshop'; }
   get selectedInterviewTopicId(): string { return new URLSearchParams(this.router.url.split('?')[1]?.split('#')[0] ?? '').get('topic') ?? 'java'; }
   interviewChildTopics(topicId: string) { return INTERVIEW_TOPICS.filter((topic) => topic.parentId === topicId); }
   private matchesCoursePath(path: string, prefix: string): boolean { return path === prefix || path.startsWith(`${prefix}/`) || path.startsWith(`${prefix}-`); }

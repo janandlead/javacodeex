@@ -78,7 +78,7 @@ export class SeoService {
     const socialImage = routeSeo?.imageUrl ?? this.defaultImage;
     const type = routeSeo?.type ?? (category && !/overview/i.test(title) ? 'article' : 'website');
 
-    this.updatePageSeo({ title, description, canonicalUrl: url, keywords: routeKeywords, robots, imageUrl: socialImage, imageAlt: routeSeo?.imageAlt, type, articleSection: routeSeo?.articleSection ?? category, publishedTime: routeSeo?.publishedTime, modifiedTime: routeSeo?.modifiedTime, primaryKeyword, breadcrumbs: routeSeo?.breadcrumbs ?? data['breadcrumbs'] as SeoConfig['breadcrumbs'], video: routeSeo?.video, howTo: routeSeo?.howTo });
+      this.updatePageSeo({ title, description, canonicalUrl: url, keywords: routeKeywords, robots, imageUrl: socialImage, imageAlt: routeSeo?.imageAlt, type, articleSection: routeSeo?.articleSection ?? category, publishedTime: routeSeo?.publishedTime, modifiedTime: routeSeo?.modifiedTime, primaryKeyword, breadcrumbs: routeSeo?.breadcrumbs ?? data['breadcrumbs'] as SeoConfig['breadcrumbs'], video: routeSeo?.video, howTo: routeSeo?.howTo, event: routeSeo?.event });
   }
 
   private routeData(route: ActivatedRouteSnapshot): Record<string, unknown> {
@@ -176,6 +176,7 @@ export class SeoService {
       author: { '@type': 'Organization', name: 'Java Codeex', url: `${this.siteUrl}/` },
       publisher: { '@type': 'Organization', name: 'Java Codeex', url: `${this.siteUrl}/` },
       ...(seo?.video ? { video: { '@type': 'VideoObject', ...seo.video, url } } : {}),
+      ...(seo?.event ? { event: { '@type': 'EducationEvent', name: seo.event.name, description, startDate: seo.event.startDate, ...(seo.event.endDate ? { endDate: seo.event.endDate } : {}), eventStatus: 'https://schema.org/EventScheduled', eventAttendanceMode: seo.event.attendanceMode ?? 'https://schema.org/OnlineEventAttendanceMode', location: { '@type': 'VirtualLocation', url: seo.event.locationUrl ?? url, name: seo.event.locationName }, organizer: { '@type': 'Organization', name: 'Java Codeex', url: `${this.siteUrl}/` } } } : {}),
       ...((seo?.breadcrumbs ?? structuredData?.breadcrumbs)?.length ? { breadcrumb: { '@type': 'BreadcrumbList', itemListElement: (seo?.breadcrumbs ?? structuredData?.breadcrumbs)?.map((item, index) => ({ '@type': 'ListItem', position: index + 1, name: item.name, item: item.url })) } } : {})
     };
     script.textContent = JSON.stringify(seo?.howTo ? {
