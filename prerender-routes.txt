@@ -250,6 +250,7 @@
 /python-json
 /context-manager
 /spring-ai
+/java-ai-assistant-projects/spring-boot-ai-assist-project
 /design-patterns
 /interviews
 /company-interview-questions

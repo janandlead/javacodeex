@@ -5,15 +5,15 @@
     <meta charset="UTF-8" />
     <meta
       name="description"
-      content="Java Memory Management - Stack vs Heap memory, JVM memory areas, Garbage Collection algorithms, memory leaks detection and prevention best practices."
+      content="Learn Java memory management with JVM memory areas, stack versus heap, class loaders, garbage collection, memory leaks, and troubleshooting tools."
     />
     <meta
       name="keywords"
-      content="Java memory management, stack heap Java, garbage collection Java, JVM memory, memory leaks Java, Java GC"
+      content="Java memory management, JVM memory areas, Java class loaders, stack vs heap, garbage collection, Java memory leaks"
     />
     <meta name="robots" content="index, follow" />
     <meta name="author" content="Java Codeex" />
-    <link rel="canonical" href="https://javacodeex.com/java/memory-allocation/" />
+    <link rel="canonical" href="https://javacodeex.com/java-memory-allocation" />
     <link rel="icon" type="image/jpeg" href="../icons/javacodeex.jpg" />
     <link
       rel="shortcut icon"
@@ -27,11 +27,11 @@
     <meta property="og:site_name" content="Java Codeex" />
     <meta
       property="og:title"
-      content="Java Memory Management - Stack, Heap and Garbage Collection | Java Codeex"
+      content="Java Memory Management: JVM Memory, Class Loaders & Garbage Collection | Java Codeex"
     />
     <meta
       property="og:description"
-      content="Java Memory Management - Stack vs Heap memory, JVM memory areas, Garbage Collection algorithms, memory leaks detection and prevention best practices."
+      content="Learn Java memory management with JVM memory areas, stack versus heap, class loaders, garbage collection, memory leaks, and troubleshooting tools."
     />
     <meta
       property="og:image"
@@ -39,17 +39,17 @@
     />
     <meta
       property="og:url"
-      content="https://javacodeex.com/memory-allocation/"
+      content="https://javacodeex.com/java-memory-allocation"
     />
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="Java Memory Management - Stack, Heap and Garbage Collection | Java Codeex"
+      content="Java Memory Management: JVM Memory, Class Loaders & Garbage Collection | Java Codeex"
     />
     <meta
       name="twitter:description"
-      content="Java Memory Management - Stack vs Heap memory, JVM memory areas, Garbage Collection algorithms, memory leaks detection and prevention best practices."
+      content="Learn Java memory management with JVM memory areas, stack versus heap, class loaders, garbage collection, memory leaks, and troubleshooting tools."
     />
     <meta
       name="twitter:image"
@@ -57,7 +57,7 @@
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
-      Java Memory Management - Stack, Heap and Garbage Collection | Java Codeex
+      Java Memory Management: JVM Memory, Class Loaders &amp; Garbage Collection | Java Codeex
     </title>
     <link
       rel="stylesheet"
@@ -368,7 +368,7 @@
             <li class="breadcrumb-item active">Java Memory Management</li>
           </ol>
         </nav>
-        <h1 class="mb-2">Java Memory Management</h1>
+        <h1 class="mb-2">Java Memory Management: JVM Memory, Class Loaders, and Garbage Collection</h1>
         <p class="mb-0" style="color: #cdd6f4; font-size: 1.08rem">
           Understand how the JVM allocates and manages memory with Stack, Heap,
           and Garbage Collection.
@@ -444,6 +444,19 @@
               </p>
             </div>
 
+            <figure class="memory-visual">
+              <img
+                src="/assets/images/java/java-memory-management-guide.png"
+                alt="Detailed Java memory management guide showing JVM memory areas, heap generations, stack, Metaspace, PC register, native method stack, memory lifecycle, common problems, tools, and best practices"
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption>
+                Java memory management overview: JVM memory areas, object allocation,
+                garbage collection, common problems, and diagnostic tools.
+              </figcaption>
+            </figure>
+
             <!-- 2. JVM Memory Areas -->
             <h2 id="jvm-areas">2. JVM Memory Areas</h2>
             <p>
@@ -513,6 +526,26 @@
                 </tr>
               </tbody>
             </table>
+
+            <h3>Class Loader and Runtime Class Loading</h3>
+            <p>
+              Before the JVM can create objects from a class, a class loader
+              loads the compiled bytecode, links it, and initializes it when
+              required. The delegation model normally asks parent loaders first,
+              which keeps core Java classes consistent and improves security.
+            </p>
+            <figure class="memory-visual">
+              <img
+                src="/assets/images/java/java-class-loader-guide.png"
+                alt="Detailed Java class loader guide showing loading, linking, initialization, loader types, delegation, and ClassNotFoundException versus NoClassDefFoundError"
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption>
+                Java class loading lifecycle, loader types, parent-first delegation,
+                and common class-loading errors.
+              </figcaption>
+            </figure>
 
             <!-- 3. Stack Memory -->
             <h2 id="stack-memory">3. Stack Memory</h2>
@@ -726,6 +759,18 @@ class Person {
               reachable from any live reference. An object becomes eligible for
               GC when:
             </p>
+            <figure class="memory-visual">
+              <img
+                src="/assets/images/java/java-garbage-collection-guide.png"
+                alt="Detailed Java garbage collection guide showing GC roots, reachability analysis, mark sweep, compaction, collectors, pauses, monitoring, and tuning"
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption>
+                How Java garbage collection identifies unreachable objects and
+                reclaims heap memory across common collector strategies.
+              </figcaption>
+            </figure>
             <ul>
               <li>
                 <strong>Nulled reference:</strong> The reference is explicitly
@@ -832,6 +877,19 @@ public class GCDemo {
               <strong>reachable but are no longer needed</strong> — the GC
               cannot collect them because there is still a live reference.
             </p>
+
+            <figure class="memory-visual">
+              <img
+                src="/assets/images/java/java-memory-leaks-guide.png"
+                alt="Java memory leaks guide showing reachable leaked objects, common causes, symptoms, detection tools, prevention practices, and cache examples"
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption>
+                Common Java memory leak causes, symptoms, analysis tools, and
+                practical prevention techniques.
+              </figcaption>
+            </figure>
 
             <h3>Common Causes</h3>
             <ul>
@@ -1012,4 +1070,3 @@ for (int i = 0; i &lt; arr.length; i++) {
     <script src="../site-footer.js"></script>
   </body>
 </html>
-

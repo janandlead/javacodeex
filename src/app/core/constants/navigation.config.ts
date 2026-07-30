@@ -5,26 +5,26 @@ export const MAIN_NAVIGATION: readonly NavigationItem[] = [
     label: 'Java', route: '/java-tutorial-overview', icon: 'bi bi-cup-hot', children: [
       { label: 'Java Tutorial Overview', route: '/java-tutorial-overview' },
       { label: 'Introduction to Java', route: '/introduction-to-java' },
-      { label: 'Download and Install Java', route: '/java-download-and-install-java' },
-      { label: 'Install IntelliJ IDEA', route: '/java-download-and-install-intellij-idea' },
+      { label: 'Install Java JDK', route: '/java-download-and-install-java' },
+      { label: 'Install IntelliJ IDEA for Java', route: '/java-download-and-install-intellij-idea' },
       { label: 'Java Methods', route: '/java-methods' },
       { label: 'Java Arrays', route: '/java-arrays' },
       { label: 'Java Strings', route: '/java-strings' },
       { label: 'Java OOP Concepts', route: '/java-oop-concepts' },
-      { label: 'Java Object Class', route: '/java-object-class' },
+      { label: 'Java Object Class Methods', route: '/java-object-class' },
       { label: 'Java Interfaces', route: '/java-interfaces' },
       { label: 'Java Exception Handling', route: '/java-exception-handling' },
       { label: 'Java Regular Expressions', route: '/java-regex' },
       { label: 'Java Memory Management', route: '/java-memory-allocation' },
       { label: 'Java Generics', route: '/java-generics' },
       { label: 'Java Collections Framework', route: '/java-collections' },
-      { label: 'Java 8+ Features', route: '/java-8-features' },
+      { label: 'Java 8 Features: Lambdas, Streams & Optional', route: '/java-8-features' },
       { label: 'Java Date and Time API', route: '/java-date-and-time-api' },
       { label: 'Java Multithreading', route: '/java-multithreading' },
       { label: 'Java File Handling', route: '/java-file-handling' },
       { label: 'Java Networking', route: '/java-networking' },
-      { label: 'Java JDBC', route: '/java-jdbc' },
-      { label: 'Java Marker Interfaces', route: '/java-marker-interface' }
+      { label: 'Java JDBC Database Connectivity', route: '/java-jdbc' },
+      { label: 'Java Marker Interfaces: Serializable & Cloneable', route: '/java-marker-interface' }
     ]
   },
   {
@@ -156,7 +156,12 @@ export const MAIN_NAVIGATION: readonly NavigationItem[] = [
     ]
   },
   { label: 'Design Patterns', route: '/design-patterns', icon: 'bi bi-diagram-3' },
-  { label: 'Spring AI', route: '/spring-ai', icon: 'bi bi-stars' }
+  { label: 'Spring AI', route: '/spring-ai', icon: 'bi bi-stars' },
+  {
+    label: 'Java AI Projects', route: '/java-ai-assistant-projects', icon: 'bi bi-robot', children: [
+      { label: 'Spring Boot AI Agent User API', route: '/java-ai-assistant-projects/spring-boot-ai-assist-project' }
+    ]
+  }
 ];
 
 export const FOOTER_NAVIGATION: readonly NavigationItem[] = [
