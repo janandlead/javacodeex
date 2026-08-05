@@ -182,7 +182,8 @@ export class SeoService {
       '@id': `${this.siteUrl}/#website`,
       name: 'Java Codeex',
       url: `${this.siteUrl}/`,
-      description: 'Programming tutorials, technology courses, and practical projects.',
+      alternateName: ['JavaCodeex', 'Java Codeex Tutorials'],
+      description: 'Java tutorials, programming courses, and practical software projects.',
       inLanguage: 'en',
       publisher: { '@id': `${this.siteUrl}/#organization` }
     };
@@ -191,7 +192,7 @@ export class SeoService {
       '@id': `${this.siteUrl}/#organization`,
       name: 'Java Codeex',
       url: `${this.siteUrl}/`,
-      logo: { '@type': 'ImageObject', url: `${this.siteUrl}/assets/images/javacodeex.jpg` }
+      logo: { '@type': 'ImageObject', url: `${this.siteUrl}/assets/images/jc.png`, width: 1024, height: 1024 }
     };
     const pageStructuredData = {
       '@context': 'https://schema.org',

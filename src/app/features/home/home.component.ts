@@ -34,6 +34,7 @@ export class HomeComponent {
   });
   selectedCourse = '';
   selectedEnrollmentCourse = '';
+  selectedCourseDetails = '';
   isEnrollmentOpen = false;
   enrollmentMessage = '';
   get selectedEnrollmentDuration(): string { return this.enrollmentDurations[this.selectedEnrollmentCourse] ?? ''; }
@@ -54,6 +55,7 @@ export class HomeComponent {
   openEnrollment(course: CourseCard): void {
     this.selectedCourse = course.name;
     this.selectedEnrollmentCourse = course.enrollmentOnly ? this.enrollmentOptions[0] : course.name;
+    this.selectedCourseDetails = course.description;
     this.enrollmentMessage = '';
     this.enrollmentForm.reset();
     this.isEnrollmentOpen = true;
@@ -72,7 +74,8 @@ export class HomeComponent {
       return;
     }
     const { fullName, mobile, email } = this.enrollmentForm.getRawValue();
-    const message = encodeURIComponent(`Course enrollment request\nCourse: ${this.selectedEnrollmentCourse}\nDuration: ${this.selectedEnrollmentDuration}\nFull name: ${fullName}\nMobile: ${mobile}\nEmail: ${email}\nTerms accepted: Yes`);
+    const courseDetails = this.selectedCourse === 'Weekend Batch Enrollment' ? '' : `\nCourse details: ${this.selectedCourseDetails}`;
+    const message = encodeURIComponent(`Course enrollment request\nCourse: ${this.selectedEnrollmentCourse}\nDuration: ${this.selectedEnrollmentDuration}${courseDetails}\nFull name: ${fullName}\nMobile: ${mobile}\nEmail: ${email}\nTerms accepted: Yes`);
     window.open(`https://wa.me/919390416489?text=${message}`, '_blank', 'noopener');
     this.enrollmentMessage = 'WhatsApp is opening with the enrollment details.';
   }
